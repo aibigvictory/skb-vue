@@ -2,6 +2,12 @@ import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 import { Actions, Mutations } from "@/store/enums/StoreEnums";
 import { Module, Action, Mutation, VuexModule } from "vuex-module-decorators";
+import { useCookies } from "vue3-cookies";
+
+const { cookies } = useCookies();
+
+cookies.set('test', '123', 30);
+cookies.get('test');
 
 export interface User {
   name: string;
@@ -22,6 +28,7 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
   errors = {};
   user = {} as User;
   isAuthenticated = !!JwtService.getToken();
+  // isAuthenticated = true;
 
   /**
    * Get current user object
@@ -118,6 +125,9 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
 
   @Action
   [Actions.VERIFY_AUTH](payload) {
+    // const token: any = JwtService.getToken() ?JwtService.getToken() : 'null'
+    // console.log(token);
+    // cookies.set('token', token, 30)
     if (JwtService.getToken()) {
       ApiService.setHeader();
       ApiService.post("verify_token", payload)

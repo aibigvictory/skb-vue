@@ -22,18 +22,9 @@
           <div class="d-flex justify-content-center flex-column me-3">
             <a
               href="#"
-              class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1"
-              >Brian Cox</a
+              class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 lh-1"
+              >Today 접속회원</a
             >
-
-            <!--begin::Info-->
-            <div class="mb-0 lh-1">
-              <span
-                class="badge badge-success badge-circle w-10px h-10px me-1"
-              ></span>
-              <span class="fs-7 fw-semobold text-gray-400">Active</span>
-            </div>
-            <!--end::Info-->
           </div>
           <!--end::User-->
         </div>
@@ -41,20 +32,6 @@
 
         <!--begin::Card toolbar-->
         <div class="card-toolbar">
-          <!--begin::Menu-->
-          <div class="me-2">
-            <button
-              class="btn btn-sm btn-icon btn-active-icon-primary"
-              data-kt-menu-trigger="click"
-              data-kt-menu-placement="bottom-end"
-              data-kt-menu-flip="top-end"
-            >
-              <i class="bi bi-three-dots fs-3"></i>
-            </button>
-            <Dropdown4></Dropdown4>
-          </div>
-          <!--end::Menu-->
-
           <!--begin::Close-->
           <div
             class="btn btn-sm btn-icon btn-active-icon-primary"
@@ -80,7 +57,6 @@
           data-kt-scroll="true"
           data-kt-scroll-activate="true"
           data-kt-scroll-height="auto"
-          data-kt-scroll-dependencies="#kt_drawer_chat_messenger_header, #kt_drawer_chat_messenger_footer"
           data-kt-scroll-wrappers="#kt_drawer_chat_messenger_body"
           data-kt-scroll-offset="0px"
         >
@@ -106,55 +82,6 @@
       </div>
       <!--end::Card body-->
 
-      <!--begin::Card footer-->
-      <div class="card-footer pt-4" id="kt_drawer_chat_messenger_footer">
-        <!--begin::Input-->
-        <input
-          class="form-control form-control-flush mb-3"
-          data-kt-element="input"
-          placeholder="Type a message"
-          v-model="newMessageText"
-          @keydown.enter="addNewMessage"
-        />
-        <!--end::Input-->
-
-        <!--begin:Toolbar-->
-        <div class="d-flex flex-stack">
-          <!--begin::Actions-->
-          <div class="d-flex align-items-center me-2">
-            <button
-              class="btn btn-sm btn-icon btn-active-light-primary me-1"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Coming soon"
-            >
-              <i class="bi bi-paperclip fs-3"></i>
-            </button>
-            <button
-              class="btn btn-sm btn-icon btn-active-light-primary me-1"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Coming soon"
-            >
-              <i class="bi bi-upload fs-3"></i>
-            </button>
-          </div>
-          <!--end::Actions-->
-
-          <!--begin::Send-->
-          <button
-            @click="addNewMessage"
-            class="btn btn-primary"
-            type="button"
-            data-kt-element="send"
-          >
-            Send
-          </button>
-          <!--end::Send-->
-        </div>
-        <!--end::Toolbar-->
-      </div>
-      <!--end::Card footer-->
     </div>
     <!--end::Messenger-->
   </div>

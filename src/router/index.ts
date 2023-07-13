@@ -462,11 +462,6 @@ router.beforeEach(() => {
   // reset config to initial state
   store.commit(Mutations.RESET_LAYOUT_CONFIG);
 
-  JwtService.saveToken('123123')
-
-  console.log(JwtService.getToken());
-  
-
   store.dispatch(Actions.VERIFY_AUTH, { api_token: JwtService.getToken() });
 
   // Scroll page to top on every route change
