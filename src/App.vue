@@ -61,4 +61,11 @@ export default defineComponent({
 #app {
   display: contents;
 }
+.text-left{
+  text-align: left !important;
+}
+img{
+  width: 100%;
+  height: 100%;
+}
 </style>

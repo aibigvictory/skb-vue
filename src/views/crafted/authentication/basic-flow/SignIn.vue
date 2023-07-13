@@ -9,34 +9,23 @@
       :validation-schema="login"
     >
       <!--begin::Heading-->
-      <div class="text-center mb-10">
-        <!--begin::Title-->
-        <h1 class="text-dark mb-3">Sign In</h1>
-        <!--end::Title-->
-
-        <!--begin::Link-->
-        <div class="text-gray-400 fw-semobold fs-4">
-          New Here?
-
-          <router-link to="/sign-up" class="link-primary fw-bold">
-            Create an Account
-          </router-link>
+      <div class="text-left mb-10">
+        <!--begin::Logo-->
+        <!-- <h1 class="text-dark mb-3">로고</h1> -->
+        <div class="logo">
+          <img src="@/assets/img/SK-broadban2d.png" alt="">
         </div>
-        <!--end::Link-->
+        <!--end::Logo-->
+        <!--begin::Title-->
+        <h1 class="text-dark mb-3">로그인</h1>
+        <!--end::Title-->
       </div>
       <!--begin::Heading-->
-
-      <div class="mb-10 bg-light-info p-8 rounded">
-        <div class="text-info">
-          Use account <strong>admin@demo.com</strong> and password
-          <strong>demo</strong> to continue.
-        </div>
-      </div>
 
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
-        <label class="form-label fs-6 fw-bold text-dark">Email</label>
+        <label class="form-label fs-6 fw-bold text-dark">이메일</label>
         <!--end::Label-->
 
         <!--begin::Input-->
@@ -61,14 +50,8 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-dark fs-6 mb-0">Password</label>
+          <label class="form-label fw-bold text-dark fs-6 mb-0">비밀번호</label>
           <!--end::Label-->
-
-          <!--begin::Link-->
-          <router-link to="/password-reset" class="link-primary fs-6 fw-bold">
-            Forgot Password ?
-          </router-link>
-          <!--end::Link-->
         </div>
         <!--end::Wrapper-->
 
@@ -99,7 +82,7 @@
           id="kt_sign_in_submit"
           class="btn btn-lg btn-primary w-100 mb-5"
         >
-          <span class="indicator-label"> Continue </span>
+          <span class="indicator-label"> 로그인 </span>
 
           <span class="indicator-progress">
             Please wait...
@@ -111,47 +94,12 @@
         <!--end::Submit button-->
 
         <!--begin::Separator-->
-        <div class="text-center text-muted text-uppercase fw-bold mb-5">or</div>
+        <div class="text-center text-muted text-uppercase fw-bold mb-5"><hr></div>
         <!--end::Separator-->
-
-        <!--begin::Google link-->
-        <a
-          href="#"
-          class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5"
-        >
-          <img
-            alt="Logo"
-            src="media/svg/brand-logos/google-icon.svg"
-            class="h-20px me-3"
-          />
-          Continue with Google
-        </a>
-        <!--end::Google link-->
-
-        <!--begin::Google link-->
-        <a
-          href="#"
-          class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5"
-        >
-          <img
-            alt="Logo"
-            src="media/svg/brand-logos/facebook-4.svg"
-            class="h-20px me-3"
-          />
-          Continue with Facebook
-        </a>
-        <!--end::Google link-->
-
-        <!--begin::Google link-->
-        <a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100">
-          <img
-            alt="Logo"
-            src="media/svg/brand-logos/apple-black.svg"
-            class="h-20px me-3"
-          />
-          Continue with Apple
-        </a>
-        <!--end::Google link-->
+        <router-link to="/sign-up" class="text-muted text-decoration-underline fw-bold">
+          회원가입
+        </router-link>
+        <div class="text-left text-muted text-uppercase fw-bold mb-5 mt-5 me-10 ms-10">로그인 시 문의사항은 내선번호 221로 연락을 주시면 지원을 받으실 수 있습니다.</div>
       </div>
       <!--end::Actions-->
     </Form>
@@ -168,6 +116,47 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.min.js";
 import * as Yup from "yup";
+
+Yup.setLocale({
+  mixed: {
+    default: '사용할수 없는 값입니다.',
+    required: (value) => {
+      if (value.label == "Email") return '이메일을 입력해주세요.'
+      if (value.label == "Password") return '비밀번호를 입력해주세요.'
+    },
+    oneOf: '다음 값 중 하나여야 합니다.: ${values}',
+    notOneOf: '다음 값 중 하나가 아니어야 합니다.: ${values}',
+    notType: function notType(_ref) {
+      var path = _ref.path,
+        type = _ref.type,
+        value = _ref.value,
+        originalValue = _ref.originalValue;
+      var isCast = originalValue != null && originalValue !== value;
+
+      if (type == 'number') {
+        var msg = ' 숫자만 입력해주세요.';
+      } else if (type == 'date') {
+        var msg = ' 날짜 형식으로 입력해주세요.';
+      } else {
+        var msg = path + ' 항목은 `' + type + '` 형식으로 입력해주세요.';
+      }
+
+      // if (value === null) {
+      //   msg +=
+      //     '\n If "null" is intended as an empty value be sure to mark the schema as `.nullable()`';
+      // }
+
+      return msg;
+    },
+    defined: '정의되지 않았습니다.',
+  },
+  string: {
+    length: '${length}자로 입력해주세요.',
+    min: '${min}자 이상 입력바랍니다.',
+    max: '${max}자 까지 입력됩니다.',
+    email: '올바른 형식의 이메일을 입력해 주세요.',
+  },
+});
 
 export default defineComponent({
   name: "sign-in",
@@ -205,30 +194,45 @@ export default defineComponent({
       const [errorName] = Object.keys(store.getters.getErrors);
       const error = store.getters.getErrors[errorName];
 
-      if (!error) {
+      // if (!error) {
+      //   Swal.fire({
+      //     text: "You have successfully logged in!",
+      //     icon: "success",
+      //     buttonsStyling: false,
+      //     confirmButtonText: "Ok, got it!",
+      //     customClass: {
+      //       confirmButton: "btn fw-semobold btn-light-primary",
+      //     },
+      //   }).then(function () {
+      //     
+      //   });
+      // } else
+      if (error) {
         Swal.fire({
-          text: "You have successfully logged in!",
-          icon: "success",
-          buttonsStyling: false,
-          confirmButtonText: "Ok, got it!",
-          customClass: {
-            confirmButton: "btn fw-semobold btn-light-primary",
-          },
-        }).then(function () {
-          // Go to page after successfully login
-          router.push({ name: "dashboard" });
-        });
-      } else {
-        Swal.fire({
-          text: error[0],
+          text: `이메일 또는 비밀번호를 확인 후 다시 시도해 주세요.`,
           icon: "error",
           buttonsStyling: false,
-          confirmButtonText: "Try again!",
+          confirmButtonText: "창 닫기",
           customClass: {
             confirmButton: "btn fw-semobold btn-light-danger",
           },
         });
       }
+      else {
+        // Go to page after successfully login
+        router.push({ name: "dashboard" });
+      }
+      // else {
+      //   Swal.fire({
+      //     text: `관리자 승인 후 사용 가능 가능합니다. 담당자에게 문의 요청 바랍니다.`,
+      //     icon: "error",
+      //     buttonsStyling: false,
+      //     confirmButtonText: "창 닫기",
+      //     customClass: {
+      //       confirmButton: "btn fw-semobold btn-light-danger",
+      //     },
+      //   });
+      // }
 
       //Deactivate indicator
       submitButton.value?.removeAttribute("data-kt-indicator");
@@ -244,3 +248,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.logo{
+  width: 50%;
+  margin-bottom: 30px;
+}
+</style>
