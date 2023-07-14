@@ -52,7 +52,6 @@
         <!--begin::Messages-->
         <div
           class="scroll-y me-n5 pe-5"
-          ref="messagesRef"
           data-kt-element="messages"
           data-kt-scroll="true"
           data-kt-scroll-activate="true"
@@ -61,14 +60,12 @@
           data-kt-scroll-offset="0px"
         >
           <template v-for="(item, index) in messages" :key="index">
-            <MessageIn
-              ref="messagesInRef"
-              v-if="item.type === 'in'"
+            <Member
+              :status="item.status"
               :name="item.name"
-              :image="item.image"
+              :company="item.company"
               :time="item.time"
-              :text="item.text"
-            ></MessageIn>
+            ></Member>
           </template>
         </div>
         <!--end::Messages-->
@@ -81,124 +78,200 @@
   <!--end::Chat drawer-->
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
-import MessageIn from "@/components/messenger-parts/MessageIn.vue";
-import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
+<script setup lang="ts">
+import { defineComponent, reactive, ref } from "vue";
+import Member from "@/components/connect-member/EachConnectMember.vue";
+import { io } from "socket.io-client";
 
 interface KTMessage {
-  type: string;
   name?: string;
-  image: string;
+  company: string;
   time: string;
-  text: string;
+  status: string;
 }
 
-export default defineComponent({
-  name: "upgrade-to-pro",
-  components: {
-    MessageIn,
-    Dropdown4,
-  },
-  setup() {
-    const messagesRef = ref<null | HTMLElement>(null);
-    const messagesInRef = ref<null | HTMLElement>(null);
-    const messagesOutRef = ref<null | HTMLElement>(null);
-
-    const messages = ref<Array<KTMessage>>([
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "media/avatars/300-25.jpg",
-        time: "5 Hours",
-        text: "How likely are you to recommend our company to your friends and family ?",
-      },
-      {
-        type: "out",
-        image: "media/avatars/300-1.jpg",
-        time: "2 Hours",
-        text: "Hey there, we’re just writing to let you know that you’ve been subscribed to a repository on GitHub.",
-      },
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "media/avatars/300-25.jpg",
-        time: "2 Hour",
-        text: "Ok, Understood!",
-      },
-      {
-        type: "out",
-        image: "media/avatars/300-1.jpg",
-        time: "2 Hours",
-        text: "You’ll receive notifications for all issues, pull requests!",
-      },
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "media/avatars/300-25.jpg",
-        time: "1 Hour",
-        text: "You can unwatch this repository immediately by clicking here: Keenthemes.com",
-      },
-      {
-        type: "out",
-        image: "media/avatars/300-1.jpg",
-        time: "4 mins",
-        text: "Most purchased Business courses during this sale!",
-      },
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "media/avatars/300-25.jpg",
-        time: "2 mins",
-        text: "Company BBQ to celebrate the last quater achievements and goals. Food and drinks provided",
-      },
-    ]);
-
-    const newMessageText = ref("");
-
-    const addNewMessage = () => {
-      if (!newMessageText.value) {
-        return;
-      }
-      messages.value.push({
-        type: "out",
-        image: "media/avatars/300-1.jpg",
-        time: "Just now",
-        text: newMessageText.value,
-      });
-
-      setTimeout(() => {
-        if (messagesRef.value) {
-          messagesRef.value.scrollTop = messagesRef.value.scrollHeight;
-        }
-      }, 1);
-
-      newMessageText.value = "";
-      setTimeout(() => {
-        messages.value.push({
-          type: "in",
-          name: "Ja Morant",
-          image: "media/avatars/300-25.jpg",
-          time: "Just now",
-          text: "Thank you for your awesome support!",
-        });
-
-        setTimeout(() => {
-          if (messagesRef.value) {
-            messagesRef.value.scrollTop = messagesRef.value.scrollHeight;
-          }
-        }, 1);
-      }, 2000);
-    };
-
-    return {
-      messages,
-      messagesRef,
-      newMessageText,
-      addNewMessage,
-      messagesInRef,
-      messagesOutRef,
-    };
-  },
+const state = reactive({
+  connected: false,
+  fooEvents: [],
+  barEvents: []
 });
+
+const socket = io('/api');
+
+socket.on("connect", () => {
+  state.connected = true;
+});
+
+socket.on("disconnect", () => {
+  state.connected = false;
+});
+
+// socket.on("foo", (...args) => {
+//   state.fooEvents.push(args);
+// });
+
+// socket.on("bar", (...args) => {
+//   state.barEvents.push(args);
+// });
+
+
+function randomTime() {
+  // 현재 날짜와 시간을 가져오는 객체
+  var date = new Date();
+  
+  // 랜덤 연도를 생성하기 위해 2020~2025 사이의 정수 난수를 생성
+  var year = Math.floor(Math.random() * 6) + 2020;
+  
+  // 랜덤 월을 생성하기 위해 1~12 사이의 정수 난수를 생성
+  var month = Math.floor(Math.random() * 12) + 1;
+  
+  // 랜덤 일을 생성하기 위해 해당 월의 마지막 일자를 구하고, 1~마지막 일자 사이의 정수 난수를 생성
+  var lastDay = new Date(year, month, 0).getDate();
+  var day = Math.floor(Math.random() * lastDay) + 1;
+  
+  // 랜덤 시간을 생성하기 위해 0~23 사이의 정수 난수를 생성
+  var hour = Math.floor(Math.random() * 24);
+  
+  // 랜덤 분을 생성하기 위해 0~59 사이의 정수 난수를 생성
+  var minute = Math.floor(Math.random() * 60);
+  
+  // 랜덤 시간을 문자열로 변환하고 반환
+  return year + "년 " + month + "월 " + day + "일 " + hour + ":" + minute;
+}
+
+const messages = ref<Array<KTMessage>>([
+  {
+    name: "홍애리",
+    company: "SKB",
+    time: randomTime(),
+    status: "being",
+  },
+  // {
+  //   name: "홍애리",
+  //   company: "NS 쇼핑",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "SKB",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "NS 쇼핑",
+  //   time: randomTime(),
+  //   status: "out",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "SKB",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "NS 쇼핑",
+  //   time: randomTime(),
+  //   status: "out",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "SKB",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "SKB",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "NS 쇼핑",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "SKB",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "NS 쇼핑",
+  //   time: randomTime(),
+  //   status: "out",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "SKB",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "NS 쇼핑",
+  //   time: randomTime(),
+  //   status: "out",
+  // },
+  // {
+  //   name: "홍애리",
+  //   company: "SKB",
+  //   time: randomTime(),
+  //   status: "being",
+  // },
+]);
+
+setTimeout(() => {
+  
+  messages.value = [
+    {
+      name: "아이유",
+      company: "SKB",
+      time: randomTime(),
+      status: "being",
+    },
+    {
+      name: "아이유",
+      company: "NS 쇼핑",
+      time: randomTime(),
+      status: "being",
+    },
+    {
+      name: "아이유",
+      company: "SKB",
+      time: randomTime(),
+      status: "being",
+    },
+    {
+      name: "아이유",
+      company: "NS 쇼핑",
+      time: randomTime(),
+      status: "out",
+    },
+    {
+      name: "아이유",
+      company: "SKB",
+      time: randomTime(),
+      status: "being",
+    },
+    {
+      name: "아이유",
+      company: "NS 쇼핑",
+      time: randomTime(),
+      status: "out",
+    },
+    {
+      name: "아이유",
+      company: "SKB",
+      time: randomTime(),
+      status: "being",
+    },
+  ]
+}, 5000)
+
 </script>

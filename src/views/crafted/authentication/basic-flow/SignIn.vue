@@ -218,11 +218,7 @@ export default defineComponent({
           },
         });
       }
-      else {
-        // Go to page after successfully login
-        router.push({ name: "dashboard" });
-      }
-      // else {
+      // if (error) {
       //   Swal.fire({
       //     text: `관리자 승인 후 사용 가능 가능합니다. 담당자에게 문의 요청 바랍니다.`,
       //     icon: "error",
@@ -233,6 +229,11 @@ export default defineComponent({
       //     },
       //   });
       // }
+      else {
+        // Go to page after successfully login
+        router.push({ name: "dashboard" });
+      }
+      
 
       //Deactivate indicator
       submitButton.value?.removeAttribute("data-kt-indicator");
