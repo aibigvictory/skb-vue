@@ -1,38 +1,37 @@
 <template>
   <router-view />
+  <!--  -->
+  <FileUploadVue/>
+  <!--  -->
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import FileUploadVue from "@/components/modals/general/FileUploadModal.vue";
 import { defineComponent, nextTick, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Mutations, Actions } from "@/store/enums/StoreEnums";
 import { themeMode } from "@/core/helpers/config";
 import { initializeComponents } from "@/core/plugins/keenthemes";
 
-export default defineComponent({
-  name: "app",
-  setup() {
-    const store = useStore();
+const store = useStore();
 
-    onMounted(() => {
-      /**
-       * Overrides the layout config using saved data from localStorage
-       * remove this to use static config (@/core/config/DefaultLayoutConfig.ts)
-       */
-      store.commit(Mutations.OVERRIDE_LAYOUT_CONFIG);
+onMounted(() => {
+  /**
+   * Overrides the layout config using saved data from localStorage
+   * remove this to use static config (@/core/config/DefaultLayoutConfig.ts)
+   */
+  store.commit(Mutations.OVERRIDE_LAYOUT_CONFIG);
 
-      /**
-       *  Sets a mode from configuration
-       */
-      store.dispatch(Actions.SET_THEME_MODE_ACTION, themeMode.value);
+  /**
+   *  Sets a mode from configuration
+   */
+  store.dispatch(Actions.SET_THEME_MODE_ACTION, themeMode.value);
 
-      nextTick(() => {
-        initializeComponents();
+  nextTick(() => {
+    initializeComponents();
 
-        store.dispatch(Actions.REMOVE_BODY_CLASSNAME, "page-loading");
-      });
-    });
-  },
+    store.dispatch(Actions.REMOVE_BODY_CLASSNAME, "page-loading");
+  });
 });
 </script>
 
@@ -67,5 +66,8 @@ export default defineComponent({
 img{
   width: 100%;
   height: 100%;
+}
+.vh-40{
+  height: 40vh;
 }
 </style>
