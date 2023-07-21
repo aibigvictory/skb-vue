@@ -41,10 +41,10 @@
 
           <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
-                  <FileUploadVue/>
+                  <FileUploadVue ref="FileUploadChildVue"/>
               </div>
               <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
-                  <FileUploadVue/>
+                  <FileUploadVue />
               </div>
           </div>
           </div>
@@ -60,7 +60,7 @@
               취소
             </button>
 
-            <button type="submit" class="btn btn-primary">파일 업로드</button>
+            <button type="submit" class="btn btn-primary" @click="fileUpload">파일 업로드</button>
           </div>
           <!--end::Actions-->
         </div>
@@ -76,6 +76,19 @@
 <script setup lang="ts">
 import FileUploadVue from '@/components/file-upload/FileUpload.vue'
 import { defineComponent, onMounted, ref } from "vue";
+
+const FileUploadChildVue = ref()
+
+const fileUpload = () => {
+  FileUploadChildVue.value.tmp()
+}
+
+onMounted(() => {
+  // console.log(FileUploadChildVue.value.tmp());
+  
+})
+
+
 
     const current = ref<"month" | "annual">("month");
 
@@ -223,7 +236,6 @@ import { defineComponent, onMounted, ref } from "vue";
       },
     ];
 
-    
 
 </script>
 

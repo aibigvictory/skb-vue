@@ -96,15 +96,15 @@ const state = reactive({
   barEvents: []
 });
 
-const socket = io('/api');
+// const socket = io('/api');
 
-socket.on("connect", () => {
-  state.connected = true;
-});
+// socket.on("connect", () => {
+//   state.connected = true;
+// });
 
-socket.on("disconnect", () => {
-  state.connected = false;
-});
+// socket.on("disconnect", () => {
+//   state.connected = false;
+// });
 
 // socket.on("foo", (...args) => {
 //   state.fooEvents.push(args);
