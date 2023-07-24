@@ -10,12 +10,21 @@ import FileUploadVue from "@/components/modals/general/FileUploadModal.vue";
 import { defineComponent, nextTick, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Mutations, Actions } from "@/store/enums/StoreEnums";
-import { themeMode } from "@/core/helpers/config";
+import { config, layout, themeMode } from "@/core/helpers/config";
 import { initializeComponents } from "@/core/plugins/keenthemes";
 
 const store = useStore();
 
 onMounted(() => {
+  store.commit(Mutations.SET_LAYOUT_CONFIG_PROPERTY, {
+    property: "general.mode",
+    value: 'light',
+  });
+  store.dispatch(Actions.SET_THEME_MODE_ACTION, 'light');
+
+  // save new config to localStorage
+  localStorage.setItem("config", JSON.stringify(config.value));
+
   /**
    * Overrides the layout config using saved data from localStorage
    * remove this to use static config (@/core/config/DefaultLayoutConfig.ts)

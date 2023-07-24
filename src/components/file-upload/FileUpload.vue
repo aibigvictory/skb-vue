@@ -17,14 +17,20 @@ import 'dropzone/dist/dropzone.css';
 const dropzone = ref()
 const dropzoneList = ref()
 
-let fileUpload = () => {
-    console.log('12312313');
-}      
+let myDropzone: any = 'DropZone Object'
+
+const fileUpload = () => {
+    if (!myDropzone.files.length) return alert('파일이 없습니다.')
+    
+    myDropzone.processQueue()
+}   
 
 onMounted(() => {
-    const myDropzone = new Dropzone(dropzone.value, {
+    myDropzone = new Dropzone(dropzone.value, {
         url: 'http://localhost:3000/file',
-        // autoProcessQueue: false,
+        autoProcessQueue: false,
+        maxFiles: 100,
+        parallelUploads: 100,
         clickable: true,
         addRemoveLinks: true,
         dictRemoveFile: '✘',
@@ -41,11 +47,13 @@ onMounted(() => {
             </div>
         </div>`
     });
-
-    fileUpload = () => {
-        myDropzone.processQueue()
-    }
 })
+
+defineExpose({
+    fileUpload,
+});
+
+
 </script>
 
 <style lang="scss">
@@ -73,7 +81,7 @@ onMounted(() => {
 
 }
 #dropzone-list{
-    .dz-preview.dz-file-preview {
+    .dz-preview {
         display: flex;
         justify-content: space-between;
         align-items: center;
