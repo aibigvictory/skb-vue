@@ -1,123 +1,109 @@
 <template>
   <!--begin::Row-->
-  <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+  <div class="row g-5 g-xl-10 mb-5 mt-1">
     <!--begin::Col-->
-    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
-      <Widget1
-        className="h-md-50 mb-5 mb-xl-10"
-        description="Active Projects"
-        bgColor="#F1416C"
-        bgImage="media/patterns/vector-1.png"
-      />
+    <!-- <div class="row g-5 g-xl-10 mb-5"> -->
+      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
+        <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px">최근 업로드 파일</h1> -->
+        <Widget1
+          className="h-md-90 mb-5 mt-3"
+          description="Active Projects"
+          bgColor="#FFFFFF"
+          title="최근 업로드 파일"
+        />
 
-      <Widget2
-        className="h-md-50 mb-5 mb-xl-10"
-        :icon="false"
-        stats="357"
-        description="Professionals"
-        labelColor="dark"
-        textColor="gray-300"
-      />
-    </div>
-    <!--end::Col-->
+      </div>
+      <!--end::Col-->
 
-    <!--begin::Col-->
-    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
-      <Widget3 className="h-md-50 mb-5 mb-xl-10" :chartSize="70" />
+      <!--begin::Col-->
+      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
+        <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px"></h1> -->
+        <Widget1
+          className="h-md-90 mb-5 mt-3"
+          description="Active Projects"
+          bgColor="#FFFFFF"
+          title=""
+        />
+      </div>
+      <!--end::Col-->
 
-      <Widget4 className="h-lg-50" />
-    </div>
-    <!--end::Col-->
+      <!--begin::Col-->
+      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
+        <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px"></h1> -->
+        <Widget1
+          className="h-md-90 mb-5 mt-3"
+          description="Active Projects"
+          bgColor="#FFFFFF"
+          title=""
+        />
+      </div>
+      <!--end::Col-->
 
-    <!--begin::Col-->
-    <div class="col-xxl-6">
-      <Widget5 className="h-md-100" />
-    </div>
-    <!--end::Col-->
+      <!--begin::Col-->
+      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
+        <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px">접속회원</h1> -->
+        <Widget1
+          className="h-md-90 mb-5 mt-3"
+          description="Active Projects"
+          bgColor="#FFFFFF"
+          title="접속회원"
+        />
+      </div>
+      <!--end::Col-->
+    <!-- </div> -->
   </div>
   <!--end::Row-->
 
   <!--begin::Row-->
-  <div class="row gx-5 gx-xl-10">
-    <!--begin::Col-->
-    <div class="col-xxl-6 mb-5 mb-xl-10">
-      <Widget6 className="h-xl-100" height="275px" />
+  <div class="mt-10">
+    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+      <div class="d-flex flex-stack container-fluid">
+        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+          <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">관리파일</h1>
+          <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+            <li class="breadcrumb-item text-muted">기타파일은 좌측 하단의 Excel Upload에서 업로드 가능 합니다.</li>
+          </ul>
+        </div>
+        <div class="d-flex align-items-center gap-2 gap-lg-3">
+           <button class="btn btn-primary" @click="fileUpload">업로드</button>
+        </div>
+      </div>
     </div>
-    <!--end::Col-->
-
-    <!--begin::Col-->
-    <div class="col-xl-6 mb-5 mb-xl-10">
-      <Widget7 className="h-xl-100" />
-    </div>
-    <!--end::Col-->
+  </div>
+  <div>
+    <FileUploadVue ref="FileUploadChildVue"/>
   </div>
   <!--end::Row-->
 
-  <!--begin::Row-->
-  <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-    <!--begin::Col-->
-    <div class="col-xxl-6">
-      <Widget8 className="h-xl-100" image="media/stock/600x600/img-65.jpg" />
-    </div>
-    <!--end::Col-->
-
-    <!--begin::Col-->
-    <div class="col-xl-6">
-      <Widget9 className="h-lg-100" :height="300" />
-    </div>
-    <!--end::Col-->
-  </div>
-  <!--end::Row-->
-
-  <!--begin::Row-->
-  <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-    <!--begin::Col-->
-    <div class="col-xl-4">
-      <MixedWidget5
-        widget-classes="card-xl-stretch mb-xl-8 h-md-100"
-        chart-color="primary"
-        chart-height="150"
-      ></MixedWidget5>
-    </div>
-    <!--end::Col-->
-
-    <!--begin::Col-->
-    <div class="col-xl-8">
-      <Widget10 className="h-md-100" />
-    </div>
-    <!--end::Col-->
-  </div>
-  <!--end::Row-->
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import Widget1 from "@/components/dashboard-default-widgets/Widget1.vue";
-import Widget2 from "@/components/dashboard-default-widgets/Widget2.vue";
-import Widget3 from "@/components/dashboard-default-widgets/Widget3.vue";
-import Widget4 from "@/components/dashboard-default-widgets/Widget4.vue";
-import Widget5 from "@/components/dashboard-default-widgets/Widget5.vue";
-import Widget6 from "@/components/dashboard-default-widgets/Widget6.vue";
-import Widget7 from "@/components/dashboard-default-widgets/Widget7.vue";
-import Widget8 from "@/components/dashboard-default-widgets/Widget8.vue";
-import Widget9 from "@/components/dashboard-default-widgets/Widget9.vue";
-import Widget10 from "@/components/dashboard-default-widgets/Widget10.vue";
-import MixedWidget5 from "@/components/widgets/mixed/Widget5.vue";
+<script setup lang="ts">
+import Widget1 from "@/components/dashboard-default-widgets/RecentUploadFile.vue";
+import FileUploadVue from '@/components/file-upload/FileUpload.vue'
+import { defineComponent, ref } from "vue";
 
-export default defineComponent({
-  name: "main-dashboard",
-  components: {
-    Widget1,
-    Widget2,
-    Widget3,
-    Widget4,
-    Widget5,
-    Widget6,
-    Widget7,
-    Widget8,
-    Widget9,
-    Widget10,
-    MixedWidget5,
-  },
-});
+// export default defineComponent({
+//   name: "main-dashboard",
+//   components: {
+//     Widget1,
+//     Widget2,
+//     Widget3,
+//     Widget4,
+//     Widget5,
+//     Widget6,
+//     Widget7,
+//     Widget8,
+//     Widget9,
+//     Widget10,
+//     MixedWidget5,
+//     FileUploadVue,
+//   },
+// });
+
+const FileUploadChildVue = ref()
+
+let fileUpload = () => {
+  FileUploadChildVue.value.fileUpload()
+  
+}
 </script>

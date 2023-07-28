@@ -42,27 +42,43 @@
           <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
                   <FileUploadVue ref="FileUploadChildVue"/>
+
+                   <!--begin::Actions-->
+                  <div class="d-flex flex-center flex-row-fluid pt-12">
+                    <button
+                      type="reset"
+                      class="btn btn-light me-3"
+                      data-bs-dismiss="modal"
+                    >
+                      취소
+                    </button>
+
+                    <button type="submit" class="btn btn-primary" @click="fileUpload">파일 업로드</button>
+                  </div>
+                  <!--end::Actions-->
               </div>
               <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
-                  <FileUploadVue />
+                  <FileUploadVue ref="FileUploadChildVue2"/>
+
+                  <!--begin::Actions-->
+                  <div class="d-flex flex-center flex-row-fluid pt-12">
+                    <button
+                      type="reset"
+                      class="btn btn-light me-3"
+                      data-bs-dismiss="modal"
+                    >
+                      취소
+                    </button>
+
+                    <button type="submit" class="btn btn-primary" @click="fileUpload2">파일 업로드</button>
+                  </div>
+                  <!--end::Actions-->
               </div>
           </div>
           </div>
           <!--end::Plans-->
 
-          <!--begin::Actions-->
-          <div class="d-flex flex-center flex-row-fluid pt-12">
-            <button
-              type="reset"
-              class="btn btn-light me-3"
-              data-bs-dismiss="modal"
-            >
-              취소
-            </button>
-
-            <button type="submit" class="btn btn-primary" @click="fileUpload">파일 업로드</button>
-          </div>
-          <!--end::Actions-->
+         
         </div>
         <!--end::Modal body-->
       </div>
@@ -78,9 +94,15 @@ import FileUploadVue from '@/components/file-upload/FileUpload.vue'
 import { defineComponent, onMounted, ref } from "vue";
 
 const FileUploadChildVue = ref()
+const FileUploadChildVue2 = ref()
 
 let fileUpload = () => {
   FileUploadChildVue.value.fileUpload()
+  
+}
+
+let fileUpload2 = () => {
+  FileUploadChildVue2.value.fileUpload()
   
 }
 

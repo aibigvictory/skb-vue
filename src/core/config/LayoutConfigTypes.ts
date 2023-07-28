@@ -23,7 +23,7 @@ interface Header {
     };
     menu: {
       display: boolean;
-      iconType: "svg" | "font";
+      iconType: "font" | "svg";
     };
   };
 }
@@ -45,7 +45,7 @@ interface Sidebar {
       };
     };
     menu: {
-      iconType: "svg" | "font";
+      iconType: "font" | "svg";
     };
   };
 }

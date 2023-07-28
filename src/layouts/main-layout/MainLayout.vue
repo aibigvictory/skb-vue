@@ -11,13 +11,13 @@
         <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
           <!--begin::Content wrapper-->
           <div class="d-flex flex-column flex-column-fluid">
-            <KTToolbar />
+            <!-- <KTToolbar /> -->
             <div id="kt_app_content" class="app-content flex-column-fluid">
               <KTContent></KTContent>
             </div>
           </div>
           <!--end::Content wrapper-->
-          <KTFooter />
+          <!-- <KTFooter /> -->
         </div>
         <!--end:::Main-->
       </div>

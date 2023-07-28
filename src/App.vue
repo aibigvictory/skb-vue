@@ -16,6 +16,8 @@ import { initializeComponents } from "@/core/plugins/keenthemes";
 const store = useStore();
 
 onMounted(() => {
+  config.value.sidebar.default.menu.iconType = "font"
+
   store.commit(Mutations.SET_LAYOUT_CONFIG_PROPERTY, {
     property: "general.mode",
     value: 'light',
@@ -24,6 +26,8 @@ onMounted(() => {
 
   // save new config to localStorage
   localStorage.setItem("config", JSON.stringify(config.value));
+
+  console.log(localStorage.getItem("config"));
 
   /**
    * Overrides the layout config using saved data from localStorage
