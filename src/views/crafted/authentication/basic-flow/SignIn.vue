@@ -99,7 +99,7 @@
         <router-link to="/sign-up" class="text-muted text-decoration-underline fw-bold">
           회원가입
         </router-link>
-        <div class="text-left text-muted text-uppercase fw-bold mb-5 mt-5 me-10 ms-10">로그인 시 문의사항은 내선번호 221로 연락을 주시면 지원을 받으실 수 있습니다.</div>
+        <div class="fz-14px fw-500 text-left text-muted text-uppercase fw-bold mb-5 mt-5 me-10 ms-10">로그인 시 문의사항은 <span class="fw-900">내선번호 221</span>로 연락을 주시면 지원을 받으실 수 있습니다.</div>
       </div>
       <!--end::Actions-->
     </Form>
@@ -250,9 +250,18 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .logo{
   width: 50%;
   margin-bottom: 30px;
+}
+button[type="submit"].btn.btn-primary {
+  background: #EA002C !important;
+  background-color: #EA002C !important;
+  
+  &:hover:not(.btn-active){
+    background: #EA002C !important;
+    background-color: #EA002C !important;
+  }
 }
 </style>

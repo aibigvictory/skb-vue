@@ -40,3 +40,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+* {
+  font-size: 14px !important;
+}
+</style>

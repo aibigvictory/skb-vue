@@ -70,6 +70,10 @@ onMounted(() => {
 //RTL version styles
 //@import "assets/css/style.rtl.css";
 
+* {
+  font-family: Pretendard !important;
+}
+
 #app {
   display: contents;
 }
@@ -82,5 +86,23 @@ img{
 }
 .vh-40{
   height: 40vh;
+}
+.fz-20px{
+  font-size: 20px !important;
+}
+.fz-14px{
+  font-size: 14px !important;
+}
+.fw-500{
+  font-weight: 500 !important;
+}
+.fw-700{
+  font-weight: 700 !important;
+}
+.fw-800{
+  font-weight: 800 !important;
+}
+.fw-900{
+  font-weight: 900 !important;
 }
 </style>

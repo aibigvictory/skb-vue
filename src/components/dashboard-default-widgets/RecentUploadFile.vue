@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-dark fw-bold fs-3 container-fluid h-25px">{{title}}</h1>
+  <h1 class="fz-20px text-dark fw-bold fs-3 container-fluid h-25px">{{title}}</h1>
   <div
     class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end"
     :class="className"
@@ -58,14 +58,11 @@ export default defineComponent({
 .h-md-90{
   height: 90% !important;
 }
-</style>
-
-<style lang="scss" scoped>
 .circle{
   display: flex;
   align-items: center;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   background: #EEE;
   border-radius: 50%;
 }

@@ -59,7 +59,7 @@
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
       <div class="d-flex flex-stack container-fluid">
         <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-          <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">관리파일</h1>
+          <h1 class="fz-20px page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">관리파일</h1>
           <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
             <li class="breadcrumb-item text-muted">기타파일은 좌측 하단의 Excel Upload에서 업로드 가능 합니다.</li>
           </ul>

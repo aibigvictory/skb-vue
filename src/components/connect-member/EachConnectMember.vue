@@ -4,11 +4,11 @@
     <div class="d-flex flex-column align-items-start">
       <!--begin::User-->
       <div class="d-flex align-items-center">
-        <div class="symbol symbol-35px symbol-circle">
+        <div class="h-100 d-flex align-items-center">
           <i class="fa fa-circle" :class="status" aria-hidden="true"></i>
         </div>
         <!--begin::Details-->
-        <div class="w-100px text-center" :class="status">
+        <div class="name w-60px fw-bold text-left ms-3" :class="status">
           {{ name }}
         </div>
         <!--end::Details-->
@@ -49,5 +49,8 @@ const props = defineProps({
 }
 .badge.out {
   background: #666 !important;
+}
+.name {
+  font-size: 14px !important;
 }
 </style>

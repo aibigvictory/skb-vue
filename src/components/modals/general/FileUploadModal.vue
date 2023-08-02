@@ -112,4 +112,29 @@ let fileUpload2 = () => {
 .dropzone{
   height: 150px;
 }
+.modal-dialog{
+  width: 60%;
+}
+.nav-link{
+  font-weight: 600 !important;
+  color: var(--kt-gray-600) !important;
+}
+.nav-link.active{
+  color: var(--kt-black) !important;
+}
+.modal-header{
+  .svg-icon{
+    svg{
+      color: var(--kt-black);
+    }
+  }
+}
+button[type="reset"] {
+  padding-left: 60px !important;
+  padding-right: 60px !important;
+}
+button[type="submit"] {
+  padding-left: 80px !important;
+  padding-right: 80px !important;
+}
 </style>

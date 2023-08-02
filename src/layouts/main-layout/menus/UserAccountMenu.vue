@@ -241,3 +241,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.menu{
+  inset: -9px 0px auto auto !important;
+}
+</style>
