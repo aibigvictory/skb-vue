@@ -20,6 +20,24 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/favo",
+        name: "favo",
+        component: () => import("@/views/Favorites.vue"),
+        meta: {
+          pageTitle: "Excel",
+          breadcrumbs: ["Excel"],
+        },
+      },
+      {
+        path: "/revi",
+        name: "revi",
+        component: () => import("@/views/Revision.vue"),
+        meta: {
+          pageTitle: "Excel",
+          breadcrumbs: ["Excel"],
+        },
+      },
+      {
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/Dashboard.vue"),

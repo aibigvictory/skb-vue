@@ -16,7 +16,7 @@ import { initializeComponents } from "@/core/plugins/keenthemes";
 const store = useStore();
 
 onMounted(() => {
-  config.value.sidebar.default.menu.iconType = "font"
+  config.value.sidebar.default.menu.iconType = "svg"
 
   store.commit(Mutations.SET_LAYOUT_CONFIG_PROPERTY, {
     property: "general.mode",
@@ -104,5 +104,11 @@ img{
 }
 .fw-900{
   font-weight: 900 !important;
+}
+.h-md-90{
+  height: 90% !important;
+}
+.overflow-y-scroll{
+  overflow-y: scroll;
 }
 </style>

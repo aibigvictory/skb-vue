@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <input id="uploadBtn" type="file" @change="loadExcel" />
 
     <span>Or Load remote xlsx file:</span>
@@ -12,17 +12,63 @@
     </select>
 
     <a href="javascript:void(0)" @click="downloadExcel">Download source xlsx file</a>
-  </div>
+  </div> -->
   <div id="luckysheet"></div>
   <div v-show="isMaskShow" id="tip">Downloading</div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { exportExcel } from '@/assets/utils/export'
 // import { exportExcel } from '@/assets/utils/export.js'
 import { isFunction } from '@/assets/utils/is.js'
 import LuckyExcel from 'luckyexcel'
+
+try{
+  LuckyExcel.transformExcelToLuckyByUrl(`http://dev.peerline.net:9494${localStorage.getItem('path')}`, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
+      if(exportJson.sheets==null || exportJson.sheets.length==0){
+          // 예외처리
+          return;
+      }
+       
+      // console.log(exportJson, luckysheetfile);    
+      window.luckysheet.destroy();    
+      // 뷰어
+      window.luckysheet.create({
+          container: 'luckysheet',
+          showinfobar:false,
+          data:exportJson.sheets,
+          title:exportJson.info.name,
+          userInfo:exportJson.info.name.creator
+      });
+  });
+}
+catch(error) {}
+
+let path = localStorage.getItem('path')
+setInterval(() => {
+  if (path == localStorage.getItem('path')) return
+
+  console.log('change');
+  path = localStorage.getItem('path')
+  LuckyExcel.transformExcelToLuckyByUrl(`http://dev.peerline.net:9494${localStorage.getItem('path')}`, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
+      if(exportJson.sheets==null || exportJson.sheets.length==0){
+          // 예외처리
+          return;
+      }
+       
+      // console.log(exportJson, luckysheetfile);    
+      window.luckysheet.destroy();    
+      // 뷰어
+      window.luckysheet.create({
+          container: 'luckysheet',
+          showinfobar:false,
+          data:exportJson.sheets,
+          title:exportJson.info.name,
+          userInfo:exportJson.info.name.creator
+      });
+  });
+}, 100)
 
 const isMaskShow = ref(false)
 const selected = ref('')
@@ -156,6 +202,7 @@ onMounted(() => {
   left: 0px;
   top: 30px;
   bottom: 0px;
+  overflow-x: hidden;
 }
 
 #uploadBtn {

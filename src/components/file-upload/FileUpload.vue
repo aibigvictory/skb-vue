@@ -1,7 +1,22 @@
 
 <template>
     <div id="dropzone" class="dropzone dropzone-multiple" ref="dropzone">
-        <button class="btn btn btn-lg btn-dark fw-bold w-200px">파일선택</button>
+        <div class="svg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="114" height="114" viewBox="0 0 114 114" fill="none">
+            <circle cx="57.1764" cy="56.8793" r="56.4713" fill="#F5F8FA"/>
+            <path d="M35.1331 28.6439C35.1331 27.3963 36.1444 26.385 37.392 26.385H58.2962H68.964C69.55 26.385 70.1132 26.6128 70.5344 27.0203L75.52 31.8427L80.6859 36.3524C81.1772 36.7813 81.4592 37.4018 81.4592 38.0541V47.67V79.7945C81.4592 81.042 80.4479 82.0534 79.2004 82.0534H37.392C36.1444 82.0534 35.1331 81.042 35.1331 79.7945V28.6439Z" fill="#DEE9EC"/>
+            <rect x="31.7643" y="36.797" width="22.7176" height="17.0382" rx="1.12943" fill="#13A650"/>
+            <path d="M40.4925 38.6903L43.0708 43.2479H43.1579L45.7537 38.6903H48.7154L44.8652 45.3163L48.8025 51.9422H45.7712L43.1579 47.3846H43.0708L40.4576 51.9422H37.4437L41.3984 45.3163L37.5134 38.6903H40.4925Z" fill="white"/>
+            <rect x="41.072" y="58.5852" width="16.036" height="3.27461" fill="#8C9095"/>
+            <rect x="41.072" y="64.0426" width="16.036" height="3.27461" fill="#8C9095"/>
+            <rect x="41.072" y="69.5006" width="16.036" height="3.27461" fill="#8C9095"/>
+            <rect x="59.484" y="58.5852" width="16.036" height="3.27461" fill="#8C9095"/>
+            <rect x="59.484" y="64.0426" width="16.036" height="3.27461" fill="#8C9095"/>
+            <rect x="59.484" y="69.5006" width="16.036" height="3.27461" fill="#8C9095"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M75.5781 73.8127C76.609 73.8127 77.101 72.5448 76.3398 71.8495L69.1539 65.2847C68.7225 64.8906 68.0618 64.8906 67.6304 65.2847L60.4445 71.8495C59.6833 72.5448 60.1753 73.8127 61.2062 73.8127H63.0831C63.7069 73.8127 64.2125 74.3184 64.2125 74.9422V85.8358C64.2125 86.4596 64.7182 86.9652 65.342 86.9652H71.8823C72.5061 86.9652 73.0117 86.4596 73.0117 85.8358V74.9422C73.0117 74.3184 73.5174 73.8127 74.1411 73.8127H75.5781Z" fill="#DA1E28"/>
+            </svg>
+        </div>
+        <button class="select btn btn btn-lg btn-dark fw-bold w-200px">파일선택</button>
         <p class="fs-4">파일을 업로드 하려면 드래그 하거나 파일을 선택해 주세요.</p>
         <p class="text-danger">xlsx, xls 파일만 업로드 가능</p>
         <!-- <div @click="fileUpload">asdasdasd</div> -->
@@ -13,22 +28,31 @@
 import { onMounted, ref } from "vue";
 import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css';
+import axios from "axios";
 
 const dropzone = ref()
 const dropzoneList = ref()
 
 let myDropzone: any = 'DropZone Object'
 
-const fileUpload = () => {
-    if (!myDropzone.files.length) return alert('파일이 없습니다.')
+const fileUpload = async () => {
+    // console.log(myDropzone.files);
     
+    if (!myDropzone.files.length) return alert('파일이 없습니다.')
+
     myDropzone.processQueue()
 }   
 
 onMounted(() => {
     myDropzone = new Dropzone(dropzone.value, {
-        url: 'http://localhost:3000/file',
-        autoProcessQueue: false,
+        url: 'http://dev.peerline.net:9494/file/upload',
+        autoProcessQueue: false, 
+        params: {
+            userId: '0',
+            type: 'manage',
+        },
+        paramName: "files",
+        acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         maxFiles: 100,
         parallelUploads: 100,
         clickable: true,
@@ -38,14 +62,20 @@ onMounted(() => {
         previewTemplate: 
         `<div class="dz-preview dz-file-preview">
             <div class="dz-content">
-                <div class="dz-thumbnail"><img src="${require('@/assets/img/excel.png')}" /></div>
+                <div class="dz-thumbnail"><img src="${require('@/assets/img/upload-icon.svg')}" /></div>
                 <div class="dz-details">
                     <div class="dz-filename"><span data-dz-name></span></div>
-                    <div class="dz-size" data-dz-size></div>
                     <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                    <div class="dz-size" data-dz-size></div>
                 </div>
             </div>
         </div>`
+    });
+
+    myDropzone.on("addedfile", function(file) {
+        if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
+            myDropzone.removeFile(file); // 파일 제거
+        }
     });
 })
 
@@ -63,16 +93,52 @@ defineExpose({
     justify-content: space-around;
     align-items: center;
     background: #fff !important;
-    height: 200px;
     width: 100%;
-    padding: 20px 0;
+    padding: 30px 0 50px 0;
     margin-bottom: 10px;
+
+    .select{
+        margin-top: 27.11px;
+        border-radius: 49.695px;
+        background: var(--data-bs-theme-light-bs-text-gray-200, #F1F1F2) !important;
+        display: flex;
+        padding: 15.812px 9.035px;
+        justify-content: center;
+        align-items: center;
+        gap: 9.035px;
+
+        color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
+        text-align: center;
+        font-family: Pretendard;
+        font-size: 18.071px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 100%; /* 18.071px */
+    }
 
     button, p{
         pointer-events: none;
     }
     p{
         margin-bottom: 0;
+        margin-top: 22.59px;
+        color: var(--primary-text, #222);
+        text-align: center;
+        font-family: Pretendard;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 100%; /* 16px */
+        &:nth-child(4) {
+            margin-top: 9.04px;
+            color: var(--data-bs-theme-light-bs-red, #DC3545);
+            text-align: center;
+            font-family: Pretendard;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 100%; /* 16px */
+        }
     }
     
     &.dz-drag-hover{background: #eee;}
@@ -81,12 +147,12 @@ defineExpose({
 
 }
 #dropzone-list{
+    background: #fff;
     .dz-preview {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #eee;
-        width: 75%;
+        width: 50%;
         padding: 10px 20px 10px 10px;
         margin-bottom: 10px;
         .dz-content{
@@ -102,12 +168,14 @@ defineExpose({
                 width: 100%;
                 .dz-progress{
                     width: 95%;
-                    margin-top: 10px;
+                    margin: 6px 0;
+                    height: 8px;
+                    background: var(--data-bs-theme-light-bs-text-gray-200, #F1F1F2);
                     .dz-upload{
                         display: block;
-                        height: 5px;
+                        height: 8px;
                         width: 0;
-                        background: #297e5a;
+                        background: var(--root-data-theme-light-kt-primary, #009EF7);
                     }
                 }
             }

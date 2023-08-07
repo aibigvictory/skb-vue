@@ -1,7 +1,7 @@
 <template>
   <KTConnectMember />
   <KTActivityDrawer />
-  <KTToolButtons />
+  <!-- <KTToolButtons /> -->
   <KTDemosDrawer />
   <KTHelpDrawer />
 </template>

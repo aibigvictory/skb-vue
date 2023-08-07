@@ -10,6 +10,8 @@
           description="Active Projects"
           bgColor="#FFFFFF"
           title="최근 업로드 파일"
+          file="다이렉트 HD방송_IPto8VSB_채널라인업"
+          date="2023년 8월 08일 15:47"
         />
 
       </div>
@@ -23,6 +25,8 @@
           description="Active Projects"
           bgColor="#FFFFFF"
           title=""
+          file="다이렉트 HD방송_QAMto8VSB_채널라인업"
+          date="2023년 7월 14일 18:12"
         />
       </div>
       <!--end::Col-->
@@ -35,6 +39,8 @@
           description="Active Projects"
           bgColor="#FFFFFF"
           title=""
+          file="TITAN Live TC_230428_주요채널분산"
+          date="2023년 6월 23일 17:25"
         />
       </div>
       <!--end::Col-->
@@ -42,7 +48,7 @@
       <!--begin::Col-->
       <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
         <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px">접속회원</h1> -->
-        <Widget1
+        <Widget2
           className="h-md-90 mb-5 mt-3"
           description="Active Projects"
           bgColor="#FFFFFF"
@@ -65,7 +71,9 @@
           </ul>
         </div>
         <div class="d-flex align-items-center gap-2 gap-lg-3">
-           <button class="btn btn-primary" @click="fileUpload">업로드</button>
+          <button class="btn-upload btn btn-primary" @click="fileUpload">
+            업로드
+          </button>
         </div>
       </div>
     </div>
@@ -79,6 +87,7 @@
 
 <script setup lang="ts">
 import Widget1 from "@/components/dashboard-default-widgets/RecentUploadFile.vue";
+import Widget2 from "@/components/dashboard-default-widgets/ConnectMember.vue";
 import FileUploadVue from '@/components/file-upload/FileUpload.vue'
 import { defineComponent, ref } from "vue";
 
@@ -107,3 +116,33 @@ let fileUpload = () => {
   
 }
 </script>
+
+<style lang="scss" scoped>
+.btn.btn-primary.btn-upload{
+  display: flex;
+  width: 240.568px;
+  height: 54.212px;
+  padding: 14.683px 27.106px;
+  justify-content: center;
+  align-items: center;
+  gap: 9.035px;
+  flex-shrink: 0;
+  border-radius: 6.777px;
+  background: var(--data-bs-theme-light-bs-red, #DC3545) !important;
+
+  color: #FFF;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18.071px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 18.071px */
+
+  &:hover:not(.btn-active){
+    background: var(--data-bs-theme-light-bs-red, #a01c2a) !important;
+  }
+}
+.container-fluid{
+  padding-right: 0 !important;
+}
+</style>

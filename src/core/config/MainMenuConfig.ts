@@ -3,55 +3,9 @@ const DocMenuConfig = [
     pages: [
       {
         sectionTitle: "관리파일",
-        route: "/pages",
-        svgIcon: "media/icons/duotune/general/gen022.svg",
+        route: "/excel",
+        svgIcon: "media/icons/duotune/art/art001.svg",
         fontIcon: "bi-folder-fill",
-        sub: [
-          {
-            sectionTitle: "profile",
-            route: "/profile",
-            sub: [
-              {
-                heading: "profileOverview",
-                route: "/crafted/pages/profile/overview",
-              },
-              {
-                heading: "projects",
-                route: "/crafted/pages/profile/projects",
-              },
-              {
-                heading: "campaigns",
-                route: "/crafted/pages/profile/campaigns",
-              },
-              {
-                heading: "documents",
-                route: "/crafted/pages/profile/documents",
-              },
-              {
-                heading: "connections",
-                route: "/crafted/pages/profile/connections",
-              },
-              {
-                heading: "activity",
-                route: "/crafted/pages/profile/activity",
-              },
-            ],
-          },
-          {
-            sectionTitle: "wizards",
-            route: "/wizard",
-            sub: [
-              {
-                heading: "horizontal",
-                route: "/crafted/pages/wizards/horizontal",
-              },
-              {
-                heading: "vertical",
-                route: "/crafted/pages/wizards/vertical",
-              },
-            ],
-          },
-        ],
       },
       {
         heading: "기타파일",
@@ -61,20 +15,20 @@ const DocMenuConfig = [
       },
       {
         heading: "최근 수정내역",
-        route: "/etc",
-        svgIcon: "media/icons/duotune/art/art002.svg",
+        route: "/revi",
+        svgIcon: "media/icons/duotune/art/art003.svg",
         fontIcon: "bi-folder2-open",
       },
       {
         heading: "즐겨찾기",
-        route: "/etc",
-        svgIcon: "media/icons/duotune/art/art002.svg",
+        route: "/favo",
+        svgIcon: "media/icons/duotune/art/art004.svg",
         fontIcon: "bi-folder2-open",
       },
       {
         heading: "미사용 파일",
         route: "/etc",
-        svgIcon: "media/icons/duotune/art/art002.svg",
+        svgIcon: "media/icons/duotune/art/art001.svg",
         fontIcon: "bi-folder2-open",
       },
       // {

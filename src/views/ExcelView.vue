@@ -11,7 +11,6 @@ import LuckySheet from '@/components/lucky-sheet/LuckySheet.vue'
 
 <style lang="scss" scoped>
 .div{
-    width: 90%;
-    height: 100vh;
+    margin: 0 -30px 0 -30px;
 }
 </style>

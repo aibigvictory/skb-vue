@@ -77,7 +77,10 @@
                     v-else-if="sidebarMenuIcons === 'svg'"
                     class="svg-icon svg-icon-2"
                   >
-                    <inline-svg :src="menuItem.svgIcon" />
+                    <div class="svg"></div>
+                    <!-- <inline-svg :src="menuItem.svgIcon" /> -->
+                    <!-- <inline-svg v-if="!hasActiveChildren(menuItem.route)" :src="menuItem.svgIcon" /> -->
+                    <!-- <inline-svg v-if="hasActiveChildren(menuItem.route)" src="media/icons/duotune/art/art005.svg" /> -->
                   </span>
                 </span>
                 <span class="menu-title">{{
@@ -89,7 +92,7 @@
                 :class="{ show: hasActiveChildren(menuItem.route) }"
                 class="menu-sub menu-sub-accordion"
               >
-                <template v-for="(item2, k) in menuItem.sub" :key="k">
+                <template v-for="(item2, k) in files" :key="k">
                   <div v-if="item2.heading" class="menu-item">
                     <router-link
                       class="menu-link"
@@ -105,20 +108,20 @@
                     </router-link>
                   </div>
                   <div
-                    v-if="item2.sectionTitle"
+                    v-if="item2.name"
                     :class="{ show: hasActiveChildren(item2.route) }"
                     class="menu-item menu-accordion"
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
                   >
-                    <span class="menu-link">
+                    <span class="menu-link sub-menu-link" @click="file_click(item2.path, item2.name)">
                       <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
+                        <img src="@/assets/img/group32.svg" alt="">
                       </span>
                       <span class="menu-title">{{
-                        translate(item2.sectionTitle)
+                        translate(item2.name)
                       }}</span>
-                      <span class="menu-arrow"></span>
+                      <!-- <span class="menu-arrow"></span> -->
                     </span>
                     <div
                       :class="{ show: hasActiveChildren(item2.route) }"
@@ -158,10 +161,12 @@
 
 <script>
 import { defineComponent, onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import MainMenuConfig from "@/core/config/MainMenuConfig";
 import { sidebarMenuIcons } from "@/core/helpers/config";
 import { useI18n } from "vue-i18n";
+import axios from "axios";
+import store from "@/store";
 
 export default defineComponent({
   name: "sidebar-menu",
@@ -169,7 +174,32 @@ export default defineComponent({
   setup() {
     const { t, te } = useI18n();
     const route = useRoute();
+    const router = useRouter();
     const scrollElRef = (ref < null) | (HTMLElement > null);
+
+    const files = ref([])
+
+    const init = async () => {
+      try{
+        const excel_list = await axios.get('http://dev.peerline.net:9494/file/list')
+        // console.log(excel_list.data);
+        files.value = excel_list.data
+
+      }
+      catch(error) {console.log(error);}
+    }
+
+    setInterval(() => {
+      init()
+    }, 1000);
+
+    const file_click = (path, name) => {
+      // console.log(path, name);
+      localStorage.setItem('path', path)
+      localStorage.setItem('name', name)
+
+      router.push({ name: "excel" });
+    }
 
     onMounted(() => {
       if (scrollElRef.value) {
@@ -194,7 +224,36 @@ export default defineComponent({
       MainMenuConfig,
       sidebarMenuIcons,
       translate,
+      files,
+      file_click
     };
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.sub-menu-link{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.menu-item.menu-accordion{
+  .svg{
+    width: 16px;height: 16px;
+    background: url('@/assets/img/art001.svg');
+  }
+
+  &.hover{
+    .svg{
+      width: 16px;height: 16px;
+      background: url('@/assets/img/art005.svg');
+    }
+  }
+
+  &.show{
+    .svg{
+      width: 16px;height: 16px;
+      background: url('@/assets/img/art005.svg');
+    }
+  }
+}
+</style>

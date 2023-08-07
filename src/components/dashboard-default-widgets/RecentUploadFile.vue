@@ -6,22 +6,22 @@
     :style="{ backgroundColor: bgColor, backgroundImage: `url('${bgImage}')` }"
   >
     <!--begin::Header-->
-    <div class="card-header pt-5">
+    <div class="card-header pt-5 d-flex align-items-center">
       <!--begin::Title-->
       <div>
         <div class="circle">
           <div class="img">
-            <img src="@/assets/img/excel.png" alt="">
+            <img src="@/assets/img/group32.svg" alt="">
           </div>
         </div>
       </div>
 
-      <div>
+      <div class="name-date">
         <div class="one d-flex align-items-center">
           신해철 
-          <span class="badge bg-primary ms-3">SKB</span>
+          <span class="company ms-3">SKB</span>
         </div>
-        <div class="two">2023년 6월 23일 17:25</div>
+        <div class="two">{{date}}</div>
       </div>
       <!--end::Title-->
     </div>
@@ -30,8 +30,9 @@
     <!--begin::Card body-->
     <div class="card-body d-flex align-items-end pt-0">
       <div class="content">
-        <div class="title">asdasdasdasdasdasd</div>
-        <div class="tag"><span class="badge bg-primary">SKB</span></div>
+        <div class="title">{{file}}</div>
+        <div v-if="file!='다이렉트 HD방송_IPto8VSB_채널라인업'">ㅤ</div>
+        <div class="tag"><span class="badge bg-primary" v-if="file=='다이렉트 HD방송_IPto8VSB_채널라인업'">Today</span></div>
       </div>
     </div>
     <!--end::Card body-->
@@ -50,20 +51,92 @@ export default defineComponent({
     bgImage: { type: String, required: false },
     description: { type: String, required: true },
     title: { type: String, required: false },
+    user: { type: String, required: false },
+    file: { type: String, required: false },
+    date: { type: String, required: false },
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.h-md-90{
-  height: 90% !important;
-}
+
 .circle{
   display: flex;
   align-items: center;
-  width: 80px;
-  height: 80px;
+  justify-content: center;
+  width: 76.801px;
+  height: 76.801px;
   background: #EEE;
   border-radius: 50%;
+}
+.name-date{
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7.906px;
+
+  .company{
+    display: flex;
+    width: 78px;
+    padding: 4px 0px;
+    margin: 0 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 21px;
+    background: var(--data-bs-theme-light-bs-danger-light, #FFF5F8);
+
+    color: var(--data-bs-theme-light-bs-danger, #F1416C);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%; /* 13px */
+  }
+
+  .one{
+    color: var(--primary-text, #222);
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%; /* 18px */
+  }
+  .two{
+    color: #58595D;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%; /* 14px */
+  }
+}
+.content{
+  .title{
+    color: var(--primary-text, #222);
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 22.4px */
+
+    // overflow: hidden;
+    white-space: nowrap;
+    // text-overflow: ellipsis;
+  }
+  .tag{
+    margin-top: 10px;
+    .badge{
+      display: inline-flex;
+      padding: 6.777px 9.035px;
+      justify-content: center;
+      align-items: center;
+      gap: 9.035px;
+      border-radius: 4.518px;
+      background: var(--data-bs-theme-light-bs-info, #7239EA) !important;
+    }
+  }
 }
 </style>

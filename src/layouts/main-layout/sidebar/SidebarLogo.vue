@@ -9,8 +9,8 @@
           (themeMode === 'dark' && layout === 'light-sidebar')
         "
         alt="Logo"
-        src="media/logos/default-dark.svg"
-        class="h-25px app-sidebar-logo-default"
+        src="media/logos/default-dark.png"
+        class="app-sidebar-logo-default"
       />
       <img
         v-if="themeMode === 'light' && layout === 'light-sidebar'"
@@ -61,3 +61,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.app-sidebar-logo-default{
+  display: flex;
+  width: 120px;
+  height: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+</style>
