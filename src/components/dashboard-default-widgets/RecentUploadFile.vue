@@ -64,8 +64,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 76.801px;
-  height: 76.801px;
+  width: 68px;
+  height: 68px;
   background: #EEE;
   border-radius: 50%;
 }

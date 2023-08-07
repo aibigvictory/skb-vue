@@ -110,7 +110,7 @@ defineExpose({
         color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
         text-align: center;
         font-family: Pretendard;
-        font-size: 18.071px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 600;
         line-height: 100%; /* 18.071px */
