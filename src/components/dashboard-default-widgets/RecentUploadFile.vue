@@ -122,9 +122,9 @@ export default defineComponent({
     font-weight: 500;
     line-height: 140%; /* 22.4px */
 
-    // overflow: hidden;
+    overflow: hidden;
     white-space: nowrap;
-    // text-overflow: ellipsis;
+    text-overflow: ellipsis;
   }
   .tag{
     margin-top: 10px;

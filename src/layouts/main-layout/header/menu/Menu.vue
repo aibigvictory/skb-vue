@@ -109,7 +109,7 @@ export default defineComponent({
   font-family: Pretendard Variable;
   font-size: 16px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 100%; /* 16px */
   letter-spacing: 0.5px;
 }

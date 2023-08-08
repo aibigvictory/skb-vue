@@ -59,7 +59,7 @@
             <div
               v-if="menuItem.sectionTitle"
               :class="{ show: hasActiveChildren(menuItem.route) }"
-              class="menu-item menu-accordion"
+              class="menu-item menu-accordion hover show"
               data-kt-menu-sub="accordion"
               data-kt-menu-trigger="click"
             >
@@ -110,7 +110,7 @@
                   <div
                     v-if="item2.name"
                     :class="{ show: hasActiveChildren(item2.route) }"
-                    class="menu-item menu-accordion"
+                    class="menu-item menu-accordion show"
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
                   >

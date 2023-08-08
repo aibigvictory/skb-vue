@@ -111,4 +111,8 @@ img{
 .overflow-y-scroll{
   overflow-y: scroll;
 }
+
+.luckysheet-sheet-area{
+  // position: fixed;
+}
 </style>

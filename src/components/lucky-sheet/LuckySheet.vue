@@ -196,9 +196,9 @@ onMounted(() => {
 #luckysheet {
   margin: 0px;
   padding: 0px;
-  /* position: absolute; */
+  position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 130px);
   left: 0px;
   top: 30px;
   bottom: 0px;
@@ -223,4 +223,5 @@ onMounted(() => {
   justify-content: center;
   display: flex;
 }
+
 </style>
