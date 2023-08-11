@@ -43,6 +43,7 @@
     "socicon": "^3.0.5",
     "socket.io-client": "^4.7.1",
     "sweetalert2": "^9.10.12",
+    "tui-grid": "^4.21.15",
     "typescript": "^5.1.6",
     "vee-validate": "^4.5.11",
     "vue": "^3.2.29",

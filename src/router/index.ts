@@ -20,6 +20,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/search",
+        name: "search",
+        component: () => import("@/views/SearchResult.vue"),
+        meta: {
+          pageTitle: "Search",
+          breadcrumbs: ["Search"],
+        },
+      },
+      {
         path: "/favo",
         name: "favo",
         component: () => import("@/views/Favorites.vue"),
