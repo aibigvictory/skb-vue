@@ -34,116 +34,134 @@
 
 <script setup lang="ts">
 import Grid from 'tui-grid';
+import 'tui-grid/dist/tui-grid.css';
 import { onMounted } from 'vue';
 
 onMounted(() => {
-    class CustomTextEditor {
-      constructor(props) {
-        const el = document.createElement('input');
-        const { maxLength } = props.columnInfo.editor.options;
+  class CustomTextEditor {
+    constructor(props) {
+      const el = document.createElement('input');
+      const { maxLength } = props.columnInfo.editor.options;
 
-        el.type = 'text';
-        el.maxLength = maxLength;
-        el.value = String(props.value);
+      el.type = 'text';
+      el.maxLength = maxLength;
+      el.value = String(props.value);
 
-        this.el = el;
-      }
-
-      getElement() {
-        return this.el;
-      }
-
-      getValue() {
-        return this.el.value;
-      }
-
-      mounted() {
-        this.el.select();
-      }
+      this.el = el;
     }
 
-    const grid = new Grid({
-      el: document.getElementById('grid'),
-      scrollX: false,
-      scrollY: false,
-      columns: [
-        {
-          header: 'Name',
-          name: 'name',
-          editor: 'text'
-        },
-        {
-          header: 'Artist',
-          name: 'artist',
-          editor: {
-            type: CustomTextEditor,
-            options: {
-              maxLength: 10
-            }
-          }
-        },
-        {
-          header: 'Type',
-          name: 'typeCode',
-          formatter: 'listItemText',
-          editor: {
-            type: 'select',
-            options: {
-              listItems: [
-                { text: 'Deluxe', value: '1' },
-                { text: 'EP', value: '2' },
-                { text: 'Single', value: '3' }
-              ]
-            }
-          }
-        },
-        {
-          header: 'Genre',
-          name: 'genreCode',
-          formatter: 'listItemText',
-          editor: {
-            type: 'checkbox',
-            options: {
-              listItems: [
-                { text: 'Pop', value: '1' },
-                { text: 'Rock', value: '2' },
-                { text: 'R&B', value: '3' },
-                { text: 'Electronic', value: '4' },
-                { text: 'etc.', value: '5' }
-              ]
-            }
-          },
-          copyOptions: {
-            useListItemText: true // when this option is used, the copy value is concatenated text
-          }
-        },
-        {
-          header: 'Grade',
-          name: 'grade',
-          copyOptions: {
-            useListItemText: true
-          },
-          formatter: 'listItemText',
-          editor: {
-            type: 'radio',
-            options: {
-              listItems: [
-                { text: '★☆☆', value: '1' },
-                { text: '★★☆', value: '2' },
-                { text: '★★★', value: '3' }
-              ]
-            }
+    getElement() {
+      return this.el;
+    }
+
+    getValue() {
+      return this.el.value;
+    }
+
+    mounted() {
+      this.el.select();
+    }
+  }
+
+  const grid = new Grid({
+    el: document.getElementById('grid'),
+    scrollX: false,
+    scrollY: false,
+    columns: [
+      {
+        header: 'Name',
+        name: 'name',
+        editor: 'text'
+      },
+      {
+        header: 'Artist',
+        name: 'artist',
+        editor: {
+          type: CustomTextEditor,
+          options: {
+            maxLength: 10
           }
         }
-      ]
-    });
-    grid.on('beforeChange', ev => {
-      console.log('before change:', ev);
-    });
-    grid.on('afterChange', ev => {
-      console.log('after change:', ev);
-    })
-    // grid.resetData(gridData);
+      },
+      {
+        header: 'Type',
+        name: 'typeCode',
+        formatter: 'listItemText',
+        editor: {
+          type: 'select',
+          options: {
+            listItems: [
+              { text: 'Deluxe', value: '1' },
+              { text: 'EP', value: '2' },
+              { text: 'Single', value: '3' }
+            ]
+          }
+        }
+      },
+      {
+        header: 'Genre',
+        name: 'genreCode',
+        formatter: 'listItemText',
+        editor: {
+          type: 'checkbox',
+          options: {
+            listItems: [
+              { text: 'Pop', value: '1' },
+              { text: 'Rock', value: '2' },
+              { text: 'R&B', value: '3' },
+              { text: 'Electronic', value: '4' },
+              { text: 'etc.', value: '5' }
+            ]
+          }
+        },
+        copyOptions: {
+          useListItemText: true // when this option is used, the copy value is concatenated text
+        }
+      },
+      {
+        header: 'Grade',
+        name: 'grade',
+        copyOptions: {
+          useListItemText: true
+        },
+        formatter: 'listItemText',
+        editor: {
+          type: 'radio',
+          options: {
+            listItems: [
+              { text: '★☆☆', value: '1' },
+              { text: '★★☆', value: '2' },
+              { text: '★★★', value: '3' }
+            ]
+          }
+        }
+      }
+    ],
+    data: [
+      {
+        name: 'Beautiful Lies',
+        artist: 'Birdy',
+        typeCode: '',
+        genreCode: '',
+        grade: ''
+      }
+    ]
+  });
+
+  Grid.applyTheme('striped', {
+    cell: {
+      normal: {
+        // background: '#000',
+        text: '#333',
+        border: '#000'
+      }
+    }
+});
+
+  setInterval(() => {
+    // console.log(grid.getData());
+    
+  },2000)
 })
 
 
@@ -201,5 +219,11 @@ li{list-style: none;}
             }
         }
     }
+}
+#grid{
+  margin-top: 12px;
+}
+.tui-grid-body-area{
+  height: auto !important;
 }
 </style>

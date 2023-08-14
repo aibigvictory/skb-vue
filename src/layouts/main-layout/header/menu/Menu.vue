@@ -86,7 +86,10 @@ import store from "@/store";
 
 const search_function = (e) => {
   store.state.search_keyword = e.target.value
-  if (!e.target.value) router.go(-1)
+  console.log(e.target.value);
+  
+  // if (!e.target.value) router.go(-1)
+  // if (!e.target.value) router.push('dashboard')
   // console.log('before: ',store.state.search_keyword);
   // console.log('after: ',store.state.search_keyword);
 
