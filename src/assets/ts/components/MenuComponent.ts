@@ -522,9 +522,9 @@ class MenuComponent {
       return
     }
 
-    if (this.options.accordion.expand === false) {
-      this._hideAccordions(item)
-    }
+    // if (this.options.accordion.expand === false) {
+    //   this._hideAccordions(item)
+    // }
 
     if (DataUtil.has(item, 'popper') === true) {
       this._hideDropdown(item)

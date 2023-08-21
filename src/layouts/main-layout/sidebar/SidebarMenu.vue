@@ -56,9 +56,9 @@
                 </router-link>
               </div>
             </template>
+              <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
             <div
               v-if="menuItem.sectionTitle"
-              :class="{ show: hasActiveChildren(menuItem.route) }"
               class="menu-item menu-accordion hover show"
               data-kt-menu-sub="accordion"
               data-kt-menu-trigger="click"
@@ -88,8 +88,8 @@
                 }}</span>
                 <span class="menu-arrow"></span>
               </span>
+                <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
               <div
-                :class="{ show: hasActiveChildren(menuItem.route) }"
                 class="menu-sub menu-sub-accordion"
               >
                 <template v-for="(item2, k) in files" :key="k">
@@ -107,9 +107,9 @@
                       }}</span>
                     </router-link>
                   </div>
+                    <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
                   <div
                     v-if="item2.name"
-                    :class="{ show: hasActiveChildren(item2.route) }"
                     class="menu-item menu-accordion show"
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
@@ -123,8 +123,100 @@
                       }}</span>
                       <!-- <span class="menu-arrow"></span> -->
                     </span>
+                      <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
                     <div
-                      :class="{ show: hasActiveChildren(item2.route) }"
+                      class="menu-sub menu-sub-accordion"
+                    >
+                      <template v-for="(item3, k) in item2.sub" :key="k">
+                        <div v-if="item3.heading" class="menu-item">
+                          <router-link
+                            class="menu-link"
+                            active-class="active"
+                            :to="item3.route"
+                          >
+                            <span class="menu-bullet">
+                              <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{{
+                              translate(item3.heading)
+                            }}</span>
+                          </router-link>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+              <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
+            <div
+              v-if="menuItem.etcFile"
+              class="menu-item menu-accordion"
+              data-kt-menu-sub="accordion"
+              data-kt-menu-trigger="click"
+            >
+              <span class="menu-link">
+                <span
+                  v-if="menuItem.svgIcon || menuItem.fontIcon"
+                  class="menu-icon"
+                >
+                  <i
+                    v-if="sidebarMenuIcons === 'font'"
+                    :class="menuItem.fontIcon"
+                    class="bi fs-3"
+                  ></i>
+                  <span
+                    v-else-if="sidebarMenuIcons === 'svg'"
+                    class="svg-icon svg-icon-2"
+                  >
+                    <div class="svg"></div>
+                    <!-- <inline-svg :src="menuItem.svgIcon" /> -->
+                    <!-- <inline-svg v-if="!hasActiveChildren(menuItem.route)" :src="menuItem.svgIcon" /> -->
+                    <!-- <inline-svg v-if="hasActiveChildren(menuItem.route)" src="media/icons/duotune/art/art005.svg" /> -->
+                  </span>
+                </span>
+                <span class="menu-title">{{
+                  translate(menuItem.etcFile)
+                }}</span>
+                <span class="menu-arrow"></span>
+              </span>
+              <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
+              <div
+                class="menu-sub menu-sub-accordion"
+              >
+                <template v-for="(item2, k) in files_etc" :key="k">
+                  <div v-if="item2.heading" class="menu-item">
+                    <router-link
+                      class="menu-link"
+                      active-class="active"
+                      :to="item2.route"
+                    >
+                      <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                      </span>
+                      <span class="menu-title">{{
+                        translate(item2.heading)
+                      }}</span>
+                    </router-link>
+                  </div>
+                    <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
+                  <div
+                    v-if="item2.name"
+                    class="menu-item menu-accordion show"
+                    data-kt-menu-sub="accordion"
+                    data-kt-menu-trigger="click"
+                  >
+                    <span class="menu-link sub-menu-link" @click="file_click(item2.path, item2.name)">
+                      <span class="menu-bullet">
+                        <img src="@/assets/img/group32.svg" alt="">
+                      </span>
+                      <span class="menu-title">{{
+                        translate(item2.name)
+                      }}</span>
+                      <!-- <span class="menu-arrow"></span> -->
+                    </span>
+                      <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
+                    <div
                       class="menu-sub menu-sub-accordion"
                     >
                       <template v-for="(item3, k) in item2.sub" :key="k">
@@ -178,20 +270,32 @@ export default defineComponent({
     const scrollElRef = (ref < null) | (HTMLElement > null);
 
     const files = ref([])
+    const files_etc = ref([])
 
     const init = async () => {
       try{
-        const excel_list = await axios.get('http://dev.peerline.net:9494/file/list')
+        const excel_list = await axios.post('http://dev.peerline.net:9494/file/list', {
+          type: 'manage'
+        })
         // console.log(excel_list.data);
         files.value = excel_list.data
+
+        const excel_list_etc = await axios.post('http://dev.peerline.net:9494/file/list', {
+          type: 'etc'
+        })
+        // console.log(excel_list.data);
+        files.value = excel_list.data
+        files_etc.value = excel_list_etc.data
 
       }
       catch(error) {console.log(error);}
     }
 
-    setInterval(() => {
-      init()
-    }, 1000);
+    init()
+
+    // setInterval(() => {
+    //   init()
+    // }, 1000);
 
     const file_click = (path, name) => {
       // console.log(path, name);
@@ -225,6 +329,7 @@ export default defineComponent({
       sidebarMenuIcons,
       translate,
       files,
+      files_etc,
       file_click
     };
   },

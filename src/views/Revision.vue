@@ -1,28 +1,155 @@
 <template>
     <div class="wrap">
-        <div class="title">즐겨찾기</div>
+        <div class="title">최근 수정내역</div>
         <div class="table-wrap">
             <div class="table-header">
                 <ul>
                     <li>파일명</li>
                     <li>시트</li>
-                    <li>asdasd</li>
-                    <li>asdasd</li>
-                    <li>asdasd</li>
+                    <li>최초등록</li>
+                    <li>등록일시</li>
+                    <li>수정자</li>
+                    <li>수정일시</li>
                 </ul>
             </div>
             <div class="table-body">
-                <ul>
-                    <li><p>asdasda</p><p>asdasda</p></li>
-                    <li>asdasd</li>
-                    <li>asdasd</li>
-                    <li>asdasd</li>
-                    <li>asdasd</li>
+                <ul v-for="ul in data" :key="ul">
+                    <!-- <li v-for="li in ul" :key="li">{{li}}</li> -->
+                    <li>{{ul.filename}}</li>
+                    <li><span>{{ul.sheet}}</span></li>
+                    <li><span class="purson">{{ul.registor}}</span> <span class="depart" v-if="ul.registor_depart">{{ul.registor_depart}}</span></li>
+                    <li><div>
+                        <div>{{ul.register_date.slice(0,10)}}</div>
+                        <div>{{ul.register_date.slice(10,20)}}</div>
+                    </div></li>
+                    <li><span class="purson">{{ul.editor ?ul.editor :'-'}}</span> <span class="depart" v-if="ul.editor_depart">{{ul.editor_depart}}</span></li>
+                    <li><div>
+                        <div>{{ul.edit_date.slice(0,10)}}</div>
+                        <div>{{ul.edit_date.slice(10,20)}}</div>
+                    </div></li>
                 </ul>
             </div>
         </div>
     </div>
-</template>
+</template> 
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+const data:any = ref([])
+data.value = [
+    {
+        filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
+        sheet: '도봉강북_IP',
+        registor: '공유',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '공유',
+        editor_depart: 'SKB',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
+        sheet: '수원',
+        registor: '안보현',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '유재석',
+        editor_depart: 'SKB',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: 'CATV관리문서_MUX_SCR_230428',
+        sheet: 'SD ReENC_MUX',
+        registor: '장원영',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '',
+        editor_depart: '',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
+        sheet: '수원_QAM',
+        registor: '이효리',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '공유',
+        editor_depart: 'SKB',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
+        sheet: '수원_QAM',
+        registor: '화사',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '보아',
+        editor_depart: 'SKB',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: 'CATV관리문서_MUX_SCR_230428',
+        sheet: '낙동,동남, 북부산_QAM',
+        registor: '화사',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '',
+        editor_depart: '',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: 'CATV관리문서_MUX_SCR_230428',
+        sheet: '낙동,동남, 북부산_QAM',
+        registor: '화사',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '',
+        editor_depart: '',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: 'CATV관리문서_MUX_SCR_230428',
+        sheet: '낙동,동남, 북부산_QAM',
+        registor: '화사',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '',
+        editor_depart: '',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: 'CATV관리문서_MUX_SCR_230428',
+        sheet: '낙동,동남, 북부산_QAM',
+        registor: '화사',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '',
+        editor_depart: '',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: 'CATV관리문서_MUX_SCR_230428',
+        sheet: '낙동,동남, 북부산_QAM',
+        registor: '화사',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '',
+        editor_depart: '',
+        edit_date: '2023.06.26 12:23:35'
+    },
+    {
+        filename: 'CATV관리문서_MUX_SCR_230428',
+        sheet: '낙동,동남, 북부산_QAM',
+        registor: '화사',
+        registor_depart: 'SKB',
+        register_date: '2023.06.26 12:23:35',
+        editor: '',
+        editor_depart: '',
+        edit_date: '2023.06.26 12:23:35'
+    },
+]
+</script>
 
 <style lang="scss" scoped>
 li{list-style: none;}
@@ -30,6 +157,7 @@ ul{padding: 0;margin: 0;}
 p{margin: 0;padding: 0;}
 .wrap{
     margin: 48px 30px 30px 0;
+    background: #fff;
     .title{
         color: var(--primary-text, #222);
         font-family: Pretendard;
@@ -37,22 +165,22 @@ p{margin: 0;padding: 0;}
         font-style: normal;
         font-weight: 600;
         line-height: 100%; /* 20px */
-        margin-bottom: 24px;
-        padding-bottom: 24px;
+        // margin-bottom: 24px;
+        // padding-bottom: 24px;
+        padding: 24px 30px;
     }
     .table-wrap{
         .table-header{
             display: flex;
-            padding: 10px 16px;
+            padding: 10px 30px;
             align-items: center;
-            background: #000;
-            height: 70px;
-            border-bottom: 2px solid var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
-            background: #F4F4F4;
+            // border-bottom: 2px solid var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
+            // background: #F4F4F4;
             ul{
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
+                height: 49px;
                 li{
                     &:nth-child(1){
                         width: 560px;
@@ -67,27 +195,31 @@ p{margin: 0;padding: 0;}
                     font-family: Pretendard;
                     font-size: 16px;
                     font-style: normal;
-                    font-weight: 500;
+                    font-weight: bold;
                     line-height: 100%; /* 16px */
                 }
             }
         }
         .table-body{
-            display: flex;
-            height: 80px;
-            padding: 10px 16px;
-            align-items: center;
-            border-bottom: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
             background: #FFF;
-
+            padding: 0 30px;
             ul{
                 width: 100%;
                 display: flex;
+                align-items: center;
                 justify-content: space-between;
+                border-top: 1px solid var(--kt-border-color, #EFF2F5);
+                padding: 10px 0;
                 li{
                     &:nth-child(1){
                         width: 560px;
                     }
+                    &:nth-child(2){
+                        span{
+                            width: 120px;
+                        }
+                    }
+                    padding: 10px 0;
                     width: 190px;
                     display: flex;
                     flex-direction: column;
@@ -100,6 +232,25 @@ p{margin: 0;padding: 0;}
                     font-style: normal;
                     font-weight: 500;
                     line-height: 100%; /* 14px */
+
+                    word-wrap: keep-all;
+
+                    span.purson{
+                        // height: 38px;
+                    }
+
+                    span.depart{
+                        width: 66px;
+                        height: 21px;
+                        display: flex;
+                        padding: 4px 20px;
+                        margin-top: 8px;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 8px;
+                        border-radius: 21px;
+                        background: #FFF5F8;
+                    }
                 }
             }
         }

@@ -8,8 +8,8 @@ const DocMenuConfig = [
         fontIcon: "bi-folder-fill",
       },
       {
-        heading: "기타파일",
-        route: "/etc",
+        etcFile: "기타파일",
+        route: "/excel",
         svgIcon: "media/icons/duotune/art/art002.svg",
         fontIcon: "bi-folder2-open",
       },
