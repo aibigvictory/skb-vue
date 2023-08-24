@@ -122,6 +122,12 @@ let fileUpload2 = () => {
 .nav-link.active{
   color: var(--kt-black) !important;
 }
+.nav-line-tabs .nav-item .nav-link{
+  border-bottom: 2px solid transparent;
+}
+.nav-line-tabs .nav-item .nav-link.active, .nav-line-tabs .nav-item .nav-link.active{
+  border-bottom: 2px solid var(--kt-primary) !important;
+}
 .modal-header{
   .svg-icon{
     svg{

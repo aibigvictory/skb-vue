@@ -26,7 +26,7 @@ const DocMenuConfig = [
         fontIcon: "bi-folder2-open",
       },
       {
-        heading: "미사용 파일",
+        lockFile: "미사용 파일",
         route: "/etc",
         svgIcon: "media/icons/duotune/art/art001.svg",
         fontIcon: "bi-folder2-open",

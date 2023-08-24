@@ -21,7 +21,7 @@
         <p class="text-danger">xlsx, xls 파일만 업로드 가능</p>
         <!-- <div @click="fileUpload">asdasdasd</div> -->
     </div>
-    <div id="dropzone-list" class="scroll-y vh-40 mt-10" ref="dropzoneList"></div>
+    <div id="dropzone-list" class="scroll-y mt-10" ref="dropzoneList"></div>
 </template>
 
 <script setup lang="ts">
@@ -148,6 +148,7 @@ defineExpose({
 }
 #dropzone-list{
     background: #fff;
+    max-height: 30vh;
     .dz-preview {
         display: flex;
         justify-content: space-between;

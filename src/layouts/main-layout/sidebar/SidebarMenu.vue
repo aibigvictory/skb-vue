@@ -56,6 +56,7 @@
                 </router-link>
               </div>
             </template>
+            <!-- ACCORDION MENU START -->
               <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
             <div
               v-if="menuItem.sectionTitle"
@@ -89,10 +90,87 @@
                 <span class="menu-arrow"></span>
               </span>
                 <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
-              <div
-                class="menu-sub menu-sub-accordion"
-              >
-                <template v-for="(item2, k) in files" :key="k">
+              <div class="menu-sub menu-sub-accordion">
+                <template v-for="(item2, k) in categorys" :key="k">
+                    <!-- v-if="item2.name" -->
+                  <div
+                    class="menu-item menu-accordion"
+                    data-kt-menu-sub="accordion"
+                    data-kt-menu-trigger="click"
+                    style="color: #fff"
+                    @drop="file_drag_drop_unlock()" @dragenter.prevent @dragover.prevent
+                  >
+                    
+                    <span class="menu-link sub-menu-link">
+                      <span class="menu-bullet">
+                        <img src="@/assets/img/art001.svg" alt="">
+                      </span>
+                      <span class="menu-title">{{
+                        translate(item2)
+                      }}</span>
+                      <span class="menu-arrow"></span>
+                    </span>
+                    <div
+                      class="menu-sub menu-sub-accordion"
+                    >
+                      <template v-for="(item2, k) in files" :key="k">
+                        <div v-if="item2.heading" class="menu-item">
+                          <router-link
+                            class="menu-link"
+                            active-class="active"
+                            :to="item2.route"
+                          >
+                            <span class="menu-bullet">
+                              <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{{
+                              translate(item2.heading)
+                            }}</span>
+                          </router-link>
+                        </div>
+                        <div
+                          v-if="item2.name"
+                          class="menu-item menu-accordion show"
+                          data-kt-menu-sub="accordion"
+                          data-kt-menu-trigger="click"
+                        >
+                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.path, item2.name)">
+                            <span class="menu-bullet">
+                              <div>
+                                <img src="@/assets/img/group32.svg" alt="">
+                              </div>
+                            </span>
+                            <span class="menu-title" style="display: block">
+                              <div class="badge badge-primary">2023.08.22 16:44</div>
+                              <div>{{translate(item2.name)}}</div>
+                            </span>
+                          </span>
+                          <div
+                            class="menu-sub menu-sub-accordion"
+                          >
+                            <template v-for="(item3, k) in item2.sub" :key="k">
+                              <div v-if="item3.heading" class="menu-item">
+                                <router-link
+                                  class="menu-link"
+                                  active-class="active"
+                                  :to="item3.route"
+                                >
+                                  <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                  </span>
+                                  <span class="menu-title">{{
+                                    translate(item3.heading)
+                                  }}</span>
+                                </router-link>
+                              </div>
+                            </template>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </template>
+                <!-- <template v-for="(item2, k) in files" :key="k">
                   <div v-if="item2.heading" class="menu-item">
                     <router-link
                       class="menu-link"
@@ -107,7 +185,6 @@
                       }}</span>
                     </router-link>
                   </div>
-                    <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
                   <div
                     v-if="item2.name"
                     class="menu-item menu-accordion show"
@@ -121,9 +198,7 @@
                       <span class="menu-title">{{
                         translate(item2.name)
                       }}</span>
-                      <!-- <span class="menu-arrow"></span> -->
                     </span>
-                      <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
                     <div
                       class="menu-sub menu-sub-accordion"
                     >
@@ -145,7 +220,7 @@
                       </template>
                     </div>
                   </div>
-                </template>
+                </template> -->
               </div>
             </div>
               <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
@@ -240,6 +315,79 @@
                 </template>
               </div>
             </div>
+
+            <div
+              v-if="menuItem.lockFile"
+              class="menu-item menu-accordion hover show"
+              data-kt-menu-sub="accordion"
+              data-kt-menu-trigger="click"
+            >
+              <span class="menu-link">
+                <span
+                  v-if="menuItem.svgIcon || menuItem.fontIcon"
+                  class="menu-icon"
+                >
+                  <i
+                    v-if="sidebarMenuIcons === 'font'"
+                    :class="menuItem.fontIcon"
+                    class="bi fs-3"
+                  ></i>
+                  <span
+                    v-else-if="sidebarMenuIcons === 'svg'"
+                    class="svg-icon svg-icon-2"
+                  >
+                    <div class="svg"></div>
+                  </span>
+                </span>
+                <span class="menu-title">{{
+                  translate(menuItem.lockFile)
+                }}</span>
+              </span>
+              <!--  -->
+              <div class="menu nav">
+                <div class="badge badge-primary active" data-bs-toggle="tab" href="#kt_tab_pane_11">관리파일</div>
+                <div class="badge badge-primary" data-bs-toggle="tab" href="#kt_tab_pane_22">기타파일</div>
+                <!-- <div class="badge badge-primary">삭제</div> -->
+              </div>
+              <!--begin::Plans-->
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="kt_tab_pane_11" role="tabpanel">
+                  <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
+                    <div v-for="item2 in files_lock" :key="item2">
+                      <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
+                        <span class="menu-bullet">
+                          <div>
+                            <img src="@/assets/img/group32.svg" alt="">
+                          </div>
+                        </span>
+                        <span class="menu-title" style="display: block">
+                          <!-- <div>dsadsadsadasd</div> -->
+                          <div>{{item2.name}}</div>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="kt_tab_pane_22" role="tabpanel">
+                  <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
+                    <div v-for="item2 in files_etc_lock" :key="item2">
+                      <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
+                        <span class="menu-bullet">
+                          <div>
+                            <img src="@/assets/img/group32.svg" alt="">
+                          </div>
+                        </span>
+                        <span class="menu-title" style="display: block">
+                          <!-- <div>dsadsadsadasd</div> -->
+                          <div>{{item2.name}}</div>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--end::Plans-->
+            </div>
           </template>
         </template>
 
@@ -269,24 +417,51 @@ export default defineComponent({
     const router = useRouter();
     const scrollElRef = (ref < null) | (HTMLElement > null);
 
-    const files = ref([])
-    const files_etc = ref([])
+    const categorys = ref(['HD방송 ', 'CATV_SO'])
+    const categorys_etc = ref([])
+
+    const files = ref({})
+    const files_lock = ref({})
+
+    const files_etc = ref({})
+    const files_etc_lock = ref({})
 
     const init = async () => {
       try{
-        const excel_list = await axios.post('http://dev.peerline.net:9494/file/list', {
+        const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
           type: 'manage'
         })
-        // console.log(excel_list.data);
-        files.value = excel_list.data
 
-        const excel_list_etc = await axios.post('http://dev.peerline.net:9494/file/list', {
+        for (let i = 0; i < data.length; i++) {
+          const { id, lock } = data[i]
+
+          if (lock) files_lock.value[id] = data[i]
+          else files.value[id] = data[i]
+        }
+
+        console.log('files.value: ', files.value);
+        console.log('files_lock.value: ', files_lock.value);
+
+        // files.value = excel_list.data
+      }
+      catch(error) {console.log(error);}
+
+      try{
+        const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
           type: 'etc'
         })
-        // console.log(excel_list.data);
-        files.value = excel_list.data
-        files_etc.value = excel_list_etc.data
 
+        for (let i = 0; i < data.length; i++) {
+          const { lock } = data[i]
+
+          if (lock) files_etc_lock.value[id] = data[i]
+          else files_etc.value[id] = data[i]
+        }
+
+        console.log('files_etc.value: ', files_etc.value);
+        console.log('files_etc_lock.value: ', files_etc_lock.value);
+
+        // files.value = excel_list.data
       }
       catch(error) {console.log(error);}
     }
@@ -303,6 +478,35 @@ export default defineComponent({
       localStorage.setItem('name', name)
 
       router.push({ name: "excel" });
+    }
+
+    let drag_file = null
+
+    const file_drag = (file) => {
+      console.log(1234);
+      drag_file = file
+    }
+
+    const file_drag_drop_lock = () => {
+      console.log(4321);
+      files_lock.value[drag_file.id] = drag_file
+      delete files.value[drag_file.id]
+      axios.post('http://dev.peerline.net:9494/file/lock', {
+        id: drag_file.id
+      })
+
+      drag_file = null
+    }
+
+    const file_drag_drop_unlock = () => {
+      console.log(5321);
+      files.value[drag_file.id] = drag_file
+      delete files_lock.value[drag_file.id]
+      axios.post('http://dev.peerline.net:9494/file/unlock', {
+        id: drag_file.id
+      })
+
+      drag_file = null
     }
 
     onMounted(() => {
@@ -329,8 +533,15 @@ export default defineComponent({
       sidebarMenuIcons,
       translate,
       files,
+      files_lock,
       files_etc,
-      file_click
+      files_etc_lock,
+      categorys,
+      categorys_etc,
+      file_click,
+      file_drag,
+      file_drag_drop_lock,
+      file_drag_drop_unlock,
     };
   },
 });
@@ -360,5 +571,23 @@ export default defineComponent({
       background: url('@/assets/img/art005.svg');
     }
   }
+}
+.menu-sub-accordion{
+  span.menu-title{
+    word-break: break-all;
+    div{
+      font-size: 12px !important;
+    }
+  }
+  .menu-item{
+    // padding: 0;
+  }
+  .menu-link{
+    // padding-top: 0;
+    // padding-bottom: 0;
+  }
+}
+.lockfile-wrap{
+  height: 400px;
 }
 </style>
