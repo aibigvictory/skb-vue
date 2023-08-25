@@ -1,27 +1,32 @@
 
 <template>
-    <div id="dropzone" class="dropzone dropzone-multiple" ref="dropzone">
-        <div class="svg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="114" height="114" viewBox="0 0 114 114" fill="none">
-            <circle cx="57.1764" cy="56.8793" r="56.4713" fill="#F5F8FA"/>
-            <path d="M35.1331 28.6439C35.1331 27.3963 36.1444 26.385 37.392 26.385H58.2962H68.964C69.55 26.385 70.1132 26.6128 70.5344 27.0203L75.52 31.8427L80.6859 36.3524C81.1772 36.7813 81.4592 37.4018 81.4592 38.0541V47.67V79.7945C81.4592 81.042 80.4479 82.0534 79.2004 82.0534H37.392C36.1444 82.0534 35.1331 81.042 35.1331 79.7945V28.6439Z" fill="#DEE9EC"/>
-            <rect x="31.7643" y="36.797" width="22.7176" height="17.0382" rx="1.12943" fill="#13A650"/>
-            <path d="M40.4925 38.6903L43.0708 43.2479H43.1579L45.7537 38.6903H48.7154L44.8652 45.3163L48.8025 51.9422H45.7712L43.1579 47.3846H43.0708L40.4576 51.9422H37.4437L41.3984 45.3163L37.5134 38.6903H40.4925Z" fill="white"/>
-            <rect x="41.072" y="58.5852" width="16.036" height="3.27461" fill="#8C9095"/>
-            <rect x="41.072" y="64.0426" width="16.036" height="3.27461" fill="#8C9095"/>
-            <rect x="41.072" y="69.5006" width="16.036" height="3.27461" fill="#8C9095"/>
-            <rect x="59.484" y="58.5852" width="16.036" height="3.27461" fill="#8C9095"/>
-            <rect x="59.484" y="64.0426" width="16.036" height="3.27461" fill="#8C9095"/>
-            <rect x="59.484" y="69.5006" width="16.036" height="3.27461" fill="#8C9095"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M75.5781 73.8127C76.609 73.8127 77.101 72.5448 76.3398 71.8495L69.1539 65.2847C68.7225 64.8906 68.0618 64.8906 67.6304 65.2847L60.4445 71.8495C59.6833 72.5448 60.1753 73.8127 61.2062 73.8127H63.0831C63.7069 73.8127 64.2125 74.3184 64.2125 74.9422V85.8358C64.2125 86.4596 64.7182 86.9652 65.342 86.9652H71.8823C72.5061 86.9652 73.0117 86.4596 73.0117 85.8358V74.9422C73.0117 74.3184 73.5174 73.8127 74.1411 73.8127H75.5781Z" fill="#DA1E28"/>
-            </svg>
+    <div>
+        <div class="category d-flex">
+            <div v-for="category in categorys" :key="category" @click="change_category($event, category)">{{category}}</div>
         </div>
-        <button class="select btn btn btn-lg btn-dark fw-bold w-200px">파일선택</button>
-        <p class="fs-4">파일을 업로드 하려면 드래그 하거나 파일을 선택해 주세요.</p>
-        <p class="text-danger">xlsx, xls 파일만 업로드 가능</p>
-        <!-- <div @click="fileUpload">asdasdasd</div> -->
+        <div id="dropzone" class="dropzone dropzone-multiple" ref="dropzone">
+            <div class="svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="114" height="114" viewBox="0 0 114 114" fill="none">
+                <circle cx="57.1764" cy="56.8793" r="56.4713" fill="#F5F8FA"/>
+                <path d="M35.1331 28.6439C35.1331 27.3963 36.1444 26.385 37.392 26.385H58.2962H68.964C69.55 26.385 70.1132 26.6128 70.5344 27.0203L75.52 31.8427L80.6859 36.3524C81.1772 36.7813 81.4592 37.4018 81.4592 38.0541V47.67V79.7945C81.4592 81.042 80.4479 82.0534 79.2004 82.0534H37.392C36.1444 82.0534 35.1331 81.042 35.1331 79.7945V28.6439Z" fill="#DEE9EC"/>
+                <rect x="31.7643" y="36.797" width="22.7176" height="17.0382" rx="1.12943" fill="#13A650"/>
+                <path d="M40.4925 38.6903L43.0708 43.2479H43.1579L45.7537 38.6903H48.7154L44.8652 45.3163L48.8025 51.9422H45.7712L43.1579 47.3846H43.0708L40.4576 51.9422H37.4437L41.3984 45.3163L37.5134 38.6903H40.4925Z" fill="white"/>
+                <rect x="41.072" y="58.5852" width="16.036" height="3.27461" fill="#8C9095"/>
+                <rect x="41.072" y="64.0426" width="16.036" height="3.27461" fill="#8C9095"/>
+                <rect x="41.072" y="69.5006" width="16.036" height="3.27461" fill="#8C9095"/>
+                <rect x="59.484" y="58.5852" width="16.036" height="3.27461" fill="#8C9095"/>
+                <rect x="59.484" y="64.0426" width="16.036" height="3.27461" fill="#8C9095"/>
+                <rect x="59.484" y="69.5006" width="16.036" height="3.27461" fill="#8C9095"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M75.5781 73.8127C76.609 73.8127 77.101 72.5448 76.3398 71.8495L69.1539 65.2847C68.7225 64.8906 68.0618 64.8906 67.6304 65.2847L60.4445 71.8495C59.6833 72.5448 60.1753 73.8127 61.2062 73.8127H63.0831C63.7069 73.8127 64.2125 74.3184 64.2125 74.9422V85.8358C64.2125 86.4596 64.7182 86.9652 65.342 86.9652H71.8823C72.5061 86.9652 73.0117 86.4596 73.0117 85.8358V74.9422C73.0117 74.3184 73.5174 73.8127 74.1411 73.8127H75.5781Z" fill="#DA1E28"/>
+                </svg>
+            </div>
+            <button class="select btn btn btn-lg btn-dark fw-bold w-200px">파일선택</button>
+            <p class="fs-4">파일을 업로드 하려면 드래그 하거나 파일을 선택해 주세요.</p>
+            <p class="text-danger">xlsx, xls 파일만 업로드 가능</p>
+            <!-- <div @click="fileUpload">asdasdasd</div> -->
+        </div>
+        <div id="dropzone-list" class="scroll-y mt-10" ref="dropzoneList"></div>
     </div>
-    <div id="dropzone-list" class="scroll-y mt-10" ref="dropzoneList"></div>
 </template>
 
 <script setup lang="ts">
@@ -29,6 +34,26 @@ import { onMounted, ref } from "vue";
 import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css';
 import axios from "axios";
+import { ca } from "element-plus/es/locale";
+
+// 카테고리 시작---------------------------------------------
+
+// 관리파일 카테고리 목록
+const categorys = ref(['HD방송', 'CATV_SO', 'TITAN'])
+
+// 카테고리 클릭시 이벤트
+const change_category = (e, selected_category) => {
+    // 카테고리 클릭시 모든 html 요소에 active 클래스 제거하고 클릭한 요소에 active 클래스 추가
+    e.target.parentNode.childNodes.forEach(element => {
+        if (element.classList && element.classList.contains('active')) element.classList.remove('active')  
+    })
+    e.target.classList.add('active')
+    
+    // 카테고리 클릭시 myDropzone option params 카테고리 변경
+    myDropzone.options.params.category = selected_category
+}
+
+// 카테고리 종료---------------------------------------------
 
 const dropzone = ref()
 const dropzoneList = ref()
@@ -37,6 +62,10 @@ let myDropzone: any = 'DropZone Object'
 
 const fileUpload = async () => {
     // console.log(myDropzone.files);
+    // console.log(category);
+    
+    console.log(myDropzone.options.params);
+    
     
     if (!myDropzone.files.length) return alert('파일이 없습니다.')
 
@@ -50,6 +79,7 @@ onMounted(() => {
         params: {
             userId: '0',
             type: 'manage',
+            category: '',
         },
         paramName: "files",
         acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -186,6 +216,16 @@ defineExpose({
         //         background: #297e5a !important;
         //     }
         // }
+    }
+}
+.category{
+    div{
+        margin-left: 13px;
+        font-size: 16px;
+        font-weight: 300;
+        &.active{
+            font-weight: 800;
+        }
     }
 }
 </style>
