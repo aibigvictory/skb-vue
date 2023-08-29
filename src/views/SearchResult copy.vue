@@ -22,14 +22,6 @@
           <li v-for="item in [1,2,3,4]" :key="item" class="d-flex align-items-center"><input type="checkbox" class="form-check-input" :id="`checkbox${item}`"><label :for="`checkbox${item}`">CATV관리문서_MUX_SCR_230428</label></li>
         </ul>
       </div> 
-      <div class="option">
-        <select class="form-select" aria-label="Select example">
-          <option value="1">최신순</option>
-          <option value="2">오래된순</option>
-          <option value="3">오름차순</option>
-          <option value="3">내림차순</option>
-        </select>
-      </div>
     </div>
     <div class="search-result-section2">
       <div class="title">관리파일 리스트 <span>2건</span></div>
@@ -54,16 +46,9 @@
 </template>
 
 <script setup lang="ts">
-import store from '@/store';
 import { onMounted, ref } from 'vue';
 
-let search_keyword = ref('')
-
-search_keyword.value = store.state.search_keyword
-store.state.search_keyword = undefined
-
-// console.log(store.state.search_keyword);
-
+let search_keyword = ref('SRC1632')
 
 
 onMounted(() => {
@@ -91,7 +76,6 @@ li{list-style: none;}
     }
   }
   .search-result-section {
-    position: relative;
     margin-top: 16px;
     border-radius: 10px;
     background: #FFF;
@@ -172,11 +156,6 @@ li{list-style: none;}
           }
         }
       }
-    }
-    .option{
-      position: absolute;
-      top: 24px;
-      right: 18px;
     }
   }
   .search-result-section2{

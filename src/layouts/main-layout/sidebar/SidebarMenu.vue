@@ -91,8 +91,8 @@
               </span>
                 <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
               <div class="menu-sub menu-sub-accordion">
-                <template v-for="(item2, k) in categorys" :key="k">
-                    <!-- v-if="item2.name" -->
+                <template v-for="(category, k) in files" :key="k">
+                    <!-- v-if="category.name" -->
                   <div
                     class="menu-item menu-accordion"
                     data-kt-menu-sub="accordion"
@@ -106,14 +106,14 @@
                         <img src="@/assets/img/art001.svg" alt="">
                       </span>
                       <span class="menu-title">{{
-                        translate(item2)
+                        translate(category.name)
                       }}</span>
                       <span class="menu-arrow"></span>
                     </span>
                     <div
                       class="menu-sub menu-sub-accordion"
                     >
-                      <template v-for="(item2, k) in files" :key="k">
+                      <template v-for="(item2, k) in category.files" :key="k">
                         <div v-if="item2.heading" class="menu-item">
                           <router-link
                             class="menu-link"
@@ -376,11 +376,11 @@
                 <!--begin::Plans-->
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active d-flex" id="kt_tab_pane_11" role="tabpanel">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    </div>
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
-                      <div v-for="item2 in files_lock" :key="item2">
+                      <div v-for="item2 in files_lock" :key="item2" class="d-flex">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        </div>
                         <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
                           <span class="menu-bullet">
                             <div>
@@ -397,7 +397,10 @@
                   </div>
                   <div class="tab-pane fade" id="kt_tab_pane_22" role="tabpanel">
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
-                      <div v-for="item2 in files_etc_lock" :key="item2">
+                      <div v-for="item2 in files_etc_lock" :key="item2" class="d-flex">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        </div>
                         <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
                           <span class="menu-bullet">
                             <div>
@@ -445,8 +448,8 @@ export default defineComponent({
     const router = useRouter();
     const scrollElRef = (ref < null) | (HTMLElement > null);
 
-    const categorys = ref(['HD방송 ', 'CATV_SO'])
-    const categorys_etc = ref([])
+    // const categorys = ref({})
+    const categorys_etc = ref({})
 
     const files = ref({})
     const files_lock = ref({})
@@ -456,15 +459,45 @@ export default defineComponent({
 
     const init = async () => {
       try{
+        const { data } = await axios.post('http://dev.peerline.net:9494/folder/list')
+
+        for (let i = 0; i < data.length; i++) {
+          const { name, code } = data[i]
+
+          if (code.includes('/')) {
+            if (code.slice(0,3) == '001') files.value[code] = data[i]
+            if (code.slice(0,3) == '001') files.value[code]['files'] = {}
+          }
+
+          if (code.includes('/')) {
+            if (code.slice(0,3) == '002') files_etc.value[code] = data[i]
+          }
+
+          // 파일 카테고리 분류
+          // if ()
+
+        }
+        
+        console.log('files.value: ', files.value);
+      }
+      catch(error) {console.log(error);}
+
+
+      try{
         const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
           type: 'manage'
         })
 
         for (let i = 0; i < data.length; i++) {
-          const { id, lock } = data[i]
+          const { id, lock, folderCd } = data[i]
 
+          // lock 파일 (카테고리 분류 필요없음)
           if (lock) files_lock.value[id] = data[i]
-          else files.value[id] = data[i]
+          
+          // normal 파일 (카테고리 분류 필요)
+          else {
+            if (folderCd.includes('/')) files.value[folderCd].files[id] = data[i];
+          }
         }
 
         console.log('files.value: ', files.value);
@@ -511,14 +544,15 @@ export default defineComponent({
     let drag_file = null
 
     const file_drag = (file) => {
-      console.log(1234);
+      console.log(file);
+
       drag_file = file
     }
 
     const file_drag_drop_lock = () => {
-      console.log(4321);
+      console.log(drag_file);
       files_lock.value[drag_file.id] = drag_file
-      delete files.value[drag_file.id]
+      delete files.value[drag_file.folderCd].files[drag_file.id]
       axios.post('http://dev.peerline.net:9494/file/lock', {
         id: drag_file.id
       })
@@ -527,8 +561,8 @@ export default defineComponent({
     }
 
     const file_drag_drop_unlock = () => {
-      console.log(5321);
-      files.value[drag_file.id] = drag_file
+      console.log(files.value[drag_file.folderCd]);
+      files.value[drag_file.folderCd].files[drag_file.id] = drag_file
       delete files_lock.value[drag_file.id]
       axios.post('http://dev.peerline.net:9494/file/unlock', { 
         id: drag_file.id
@@ -564,7 +598,7 @@ export default defineComponent({
       files_lock,
       files_etc,
       files_etc_lock,
-      categorys,
+      // categorys,
       categorys_etc,
       file_click,
       file_drag,
@@ -619,7 +653,10 @@ export default defineComponent({
   margin: 12px 4px;
   margin-top: 0;
   .lockfile-wrap{
+    width: 100%;
+    min-height: 200px;
     max-height: 400px;
+    overflow-x: hidden;
     overflow-y: scroll;
     font-size: 13px !important;
   }

@@ -40,6 +40,7 @@ import { ca } from "element-plus/es/locale";
 
 // 관리파일 카테고리 목록
 const categorys = ref(['HD방송', 'CATV_SO', 'TITAN'])
+const categorys_code = {'HD방송': '001/001', 'CATV_SO': '001/002', 'TITAN': '001/003'}
 
 // 카테고리 클릭시 이벤트
 const change_category = (e, selected_category) => {
@@ -50,7 +51,7 @@ const change_category = (e, selected_category) => {
     e.target.classList.add('active')
     
     // 카테고리 클릭시 myDropzone option params 카테고리 변경
-    myDropzone.options.params.category = selected_category
+    myDropzone.options.params.folderCd = categorys_code[selected_category]
 }
 
 // 카테고리 종료---------------------------------------------
@@ -68,6 +69,7 @@ const fileUpload = async () => {
     
     
     if (!myDropzone.files.length) return alert('파일이 없습니다.')
+    if (!myDropzone.options.params.folderCd) return alert('카테고리를 선택해주세요.')
 
     myDropzone.processQueue()
 }   
@@ -79,7 +81,7 @@ onMounted(() => {
         params: {
             userId: '0',
             type: 'manage',
-            category: '',
+            folderCd: '',
         },
         paramName: "files",
         acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

@@ -41,7 +41,7 @@
           </span>
           <input type="text" v-on:input="search_keyword_input" data-kt-subscription-table-filter="search" class="input-search" placeholder="통합검색">
         </div>
-        <button class="btn-search" @click="search_function ">
+        <button class="btn-search" @click="search_function">
           <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <mask id="mask0_274_10051" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="16">
           <rect width="18" height="16" fill="#D9D9D9"/>
@@ -92,6 +92,7 @@ const search_keyword_input = (e) => {
 
 const search_function = (e) => {
   console.log(search_keyword.value);
+  store.state.search_keyword = search_keyword.value
   
   router.push('/search')
 }
