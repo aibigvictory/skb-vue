@@ -115,4 +115,7 @@ img{
 .luckysheet-sheet-area{
   // position: fixed;
 }
+.tui-grid-body-area{
+  height: auto !important;
+}
 </style>

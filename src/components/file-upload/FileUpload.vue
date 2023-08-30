@@ -75,40 +75,46 @@ const fileUpload = async () => {
 }   
 
 onMounted(() => {
-    myDropzone = new Dropzone(dropzone.value, {
-        url: 'http://dev.peerline.net:9494/file/upload',
-        autoProcessQueue: false, 
-        params: {
-            userId: '0',
-            type: 'manage',
-            folderCd: '',
-        },
-        paramName: "files",
-        acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        maxFiles: 100,
-        parallelUploads: 100,
-        clickable: true,
-        addRemoveLinks: true,
-        dictRemoveFile: '✘',
-        previewsContainer: dropzoneList.value,
-        previewTemplate: 
-        `<div class="dz-preview dz-file-preview">
-            <div class="dz-content">
-                <div class="dz-thumbnail"><img src="${require('@/assets/img/upload-icon.svg')}" /></div>
-                <div class="dz-details">
-                    <div class="dz-filename"><span data-dz-name></span></div>
-                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-                    <div class="dz-size" data-dz-size></div>
-                </div>
-            </div>
-        </div>`
-    });
-
-    myDropzone.on("addedfile", function(file) {
-        if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
-            myDropzone.removeFile(file); // 파일 제거
-        }
-    });
+    try{
+        // myDropzone = new Dropzone(dropzone.value, {
+        //     url: 'http://dev.peerline.net:9494/file/upload',
+        //     autoProcessQueue: false, 
+        //     params: {
+        //         userId: '0',
+        //         type: 'manage',
+        //         folderCd: '',
+        //     },
+        //     paramName: "files",
+        //     acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        //     maxFiles: 100,
+        //     parallelUploads: 100,
+        //     clickable: true,
+        //     addRemoveLinks: true,
+        //     dictRemoveFile: '✘',
+        //     previewsContainer: dropzoneList.value,
+        //     previewTemplate: 
+        //     `<div class="dz-preview dz-file-preview">
+        //         <div class="dz-content">
+        //             <div class="dz-thumbnail"><img src="${require('@/assets/img/upload-icon.svg')}" /></div>
+        //             <div class="dz-details">
+        //                 <div class="dz-filename"><span data-dz-name></span></div>
+        //                 <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+        //                 <div class="dz-size" data-dz-size></div>
+        //             </div>
+        //         </div>
+        //     </div>`
+        // });
+    
+        // myDropzone.on("addedfile", function(file) {
+        //     if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
+        //         myDropzone.removeFile(file); // 파일 제거
+        //     }
+        // });
+    }
+    catch(error) {
+        console.log(error);
+    }
+    
 })
 
 defineExpose({

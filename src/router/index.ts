@@ -29,6 +29,24 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/load",
+        name: "load",
+        component: () => import("@/views/SearchLoad.vue"),
+        meta: {
+          pageTitle: "Load",
+          breadcrumbs: ["Load"],
+        },
+      },
+      {
+        path: "/exp",
+        name: "ResultBack",
+        component: () => import("@/views/SearchResultBack.vue"),
+        meta: {
+          pageTitle: "ResultBack",
+          breadcrumbs: ["ResultBack"],
+        },
+      },
+      {
         path: "/favo",
         name: "favo",
         component: () => import("@/views/Favorites.vue"),

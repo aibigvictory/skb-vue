@@ -141,7 +141,10 @@
                               </div>
                             </span>
                             <span class="menu-title" style="display: block">
-                              <div class="badge badge-primary">2023.08.22 16:44</div>
+                              <div class="badge-wrap d-flex">
+                                <div class="badge badge-primary">2023.08.22 16:44</div>
+                                <div class="badge badge-primary" style="background: #622CE1 !important; margin-left: 4px;">홍길동</div>
+                              </div>
                               <div>{{translate(item2.name)}}</div>
                             </span>
                           </span>
@@ -375,7 +378,7 @@
                 </div>
                 <!--begin::Plans-->
                 <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active d-flex" id="kt_tab_pane_11" role="tabpanel">
+                  <div class="tab-pane fade show active" id="kt_tab_pane_11" role="tabpanel">
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
                       <div v-for="item2 in files_lock" :key="item2" class="d-flex">
                         <div class="form-check">
