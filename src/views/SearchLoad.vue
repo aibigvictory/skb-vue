@@ -40,7 +40,7 @@
               <span>(CATV 운용팀)</span>
             </div>
           </div>
-          <div :id="`grid${sheet.index}`"></div>
+          <div class="grid" :id="`grid${sheet.index}`"></div>
         </div>
       </li>
     </ul>
@@ -85,10 +85,9 @@ const init = async () => {
 
   console.log(data.files);
   
-  data.files.forEach((item) => {
-    console.log(item);
+  data.files.forEach((item, index) => {
     const { name, sheets, updatedAt } = item
-    const { columns, complexColumns, data, index } = sheets
+    const { columns, complexColumns, data } = sheets
     
     if (!search_result_list.value[item.folderCd]) {
       search_result_list.value[item.folderCd] = {}
@@ -142,11 +141,11 @@ onMounted(async() => {
   await init()
 
   for (let key in search_result_list2) {
-    // console.log(key);
-    // console.log(search_result_list2[key]);
+    console.log(key);
+    console.log(search_result_list2[key]);
     const { columns, complexColumns, data } = search_result_list2[key]
 
-    console.log('-----------------------');
+    // console.log('-----------------------');
     columns.forEach((item) => {
       item.editor = {
         type: CustomTextEditor,
@@ -155,29 +154,30 @@ onMounted(async() => {
         }
       }
     })
-    console.log(columns);
+    // console.log(columns);
     
 
-    let result = {}
+    // let result = {}
 
-    data.forEach((item) => {
-      result = {
-        ...result,
-        ...item
-      }
-    })
-    console.log('-----------------------');
+    // data.forEach((item) => {
+    //   result = {
+    //     ...result,
+    //     ...item
+    //   }
+    // })
+    // console.log('-----------------------');
     
 
-    // console.log(`grid${key}`);
+    console.log(`grid${key}`);
+    console.log(document.getElementById(`grid${key}`));
 
     new Grid({
       el: document.getElementById(`grid${key}`),
-      scrollX: true,
+      scrollX: false,
       scrollY: false,
       columns,
       complexColumns,
-      data: [result],
+      data: [data]
     });
 
     Grid.applyTheme('striped', {
@@ -339,7 +339,7 @@ li{list-style: none;}
         }
       }
       .content{
-        margin: 0 24px;
+        margin: 24px 24px;
         .sub-title{
           display: flex;
           align-items: center;
@@ -399,5 +399,8 @@ li{list-style: none;}
       background: var(--el-color-info-light-8, #E9E9EB);
     }
   }
+}
+.grid{
+  overflow-x: scroll;
 }
 </style>

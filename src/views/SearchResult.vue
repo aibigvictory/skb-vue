@@ -89,9 +89,7 @@ let search_keyword = ref('')
 let folder_list = ref([])
 let file_push = []
 
-// search_keyword.value = store.state.search_keyword
-search_keyword.value = "SRC1670"
-store.state.search_keyword = "SRC1670"
+search_keyword.value = store.state.search_keyword
 
 const folder_code = {
   '001/001': 'HD방송',

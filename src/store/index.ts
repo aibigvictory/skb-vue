@@ -17,6 +17,10 @@ const store = createStore({
     ConfigModule,
     ThemeModeModule,
   },
+
+  state: {
+    upload: 0
+  }
 });
 
 export default store;

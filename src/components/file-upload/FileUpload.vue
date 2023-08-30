@@ -35,6 +35,7 @@ import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css';
 import axios from "axios";
 import { ca } from "element-plus/es/locale";
+import store from "@/store";
 
 // 카테고리 시작---------------------------------------------
 
@@ -62,6 +63,8 @@ const dropzoneList = ref()
 let myDropzone: any = 'DropZone Object'
 
 const fileUpload = async () => {
+    
+    
     // console.log(myDropzone.files);
     // console.log(category);
     
@@ -71,45 +74,48 @@ const fileUpload = async () => {
     if (!myDropzone.files.length) return alert('파일이 없습니다.')
     if (!myDropzone.options.params.folderCd) return alert('카테고리를 선택해주세요.')
 
-    myDropzone.processQueue()
+    await myDropzone.processQueue()
+    setTimeout(() => {
+        store.state.upload++
+    }, 1000)
 }   
 
 onMounted(() => {
     try{
-        // myDropzone = new Dropzone(dropzone.value, {
-        //     url: 'http://dev.peerline.net:9494/file/upload',
-        //     autoProcessQueue: false, 
-        //     params: {
-        //         userId: '0',
-        //         type: 'manage',
-        //         folderCd: '',
-        //     },
-        //     paramName: "files",
-        //     acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //     maxFiles: 100,
-        //     parallelUploads: 100,
-        //     clickable: true,
-        //     addRemoveLinks: true,
-        //     dictRemoveFile: '✘',
-        //     previewsContainer: dropzoneList.value,
-        //     previewTemplate: 
-        //     `<div class="dz-preview dz-file-preview">
-        //         <div class="dz-content">
-        //             <div class="dz-thumbnail"><img src="${require('@/assets/img/upload-icon.svg')}" /></div>
-        //             <div class="dz-details">
-        //                 <div class="dz-filename"><span data-dz-name></span></div>
-        //                 <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-        //                 <div class="dz-size" data-dz-size></div>
-        //             </div>
-        //         </div>
-        //     </div>`
-        // });
+        myDropzone = new Dropzone(dropzone.value, {
+            url: 'http://dev.peerline.net:9494/file/upload',
+            autoProcessQueue: false, 
+            params: {
+                userId: '0',
+                type: 'manage',
+                folderCd: '',
+            },
+            paramName: "files",
+            acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            maxFiles: 100,
+            parallelUploads: 100,
+            clickable: true,
+            addRemoveLinks: true,
+            dictRemoveFile: '✘',
+            previewsContainer: dropzoneList.value,
+            previewTemplate: 
+            `<div class="dz-preview dz-file-preview">
+                <div class="dz-content">
+                    <div class="dz-thumbnail"><img src="${require('@/assets/img/upload-icon.svg')}" /></div>
+                    <div class="dz-details">
+                        <div class="dz-filename"><span data-dz-name></span></div>
+                        <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                        <div class="dz-size" data-dz-size></div>
+                    </div>
+                </div>
+            </div>`
+        });
     
-        // myDropzone.on("addedfile", function(file) {
-        //     if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
-        //         myDropzone.removeFile(file); // 파일 제거
-        //     }
-        // });
+        myDropzone.on("addedfile", function(file) {
+            if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
+                myDropzone.removeFile(file); // 파일 제거
+            }
+        });
     }
     catch(error) {
         console.log(error);
