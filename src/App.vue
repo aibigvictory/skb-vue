@@ -118,4 +118,33 @@ img{
 .tui-grid-body-area{
   height: auto !important;
 }
+.tui-grid-cell-content{
+  text-align: center;
+}
+.tui-grid-cell-header{
+  word-break: keep-all;
+}
+.tui-grid-header-area{
+  height: auto !important;
+
+  .tui-grid-cell{
+    white-space: normal;
+  }
+}
+// .tui-grid-body-container{
+//   height: auto !important;
+  
+//   .tui-grid-table-container{
+//     position: relative !important;
+
+//     .tui-grid-cell{
+//       white-space: normal;
+//     }
+//   }
+// }
+// .tui-grid-layer-editing{
+//   height: calc(100% - 4px) !;
+//   line-height: normal
+// }
+
 </style>
