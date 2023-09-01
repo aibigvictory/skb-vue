@@ -129,6 +129,8 @@ img{
 
   .tui-grid-cell{
     white-space: normal;
+    background: #FAFAFA;
+    border: 1px solid #EEE;
   }
 }
 // .tui-grid-body-container{
