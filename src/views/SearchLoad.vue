@@ -114,12 +114,13 @@ const init = async () => {
 
 class CustomTextEditor {
   constructor(props) {
-    const el = document.createElement('input');
+    const el = document.createElement('textarea');
     const { maxLength } = props.columnInfo.editor.options;
 
-    el.type = 'text';
-    el.maxLength = maxLength;
-    el.value = String(props.value);
+    // el.type = 'text';
+    // el.maxLength = maxLength;
+    // el.value = String(props.value);
+    el.value = String(props.value)//.replace(/<br>/g, '\n');
 
     this.el = el;
   }
@@ -129,13 +130,29 @@ class CustomTextEditor {
   }
 
   getValue() {
-    return this.el.value;
+    // return this.el.value;
+    return this.el.value//.replace(/\n/g, '<br>');
   }
 
   mounted() {
     this.el.select();
   }
 }
+
+// class CustomTextEditor {
+//   constructor(props) {
+//     const el = document.createElement('textarea');
+
+//     el.value = String(props.value).replace(/<br>/g, '\n');
+
+//     this.el = el;
+//   }
+
+//   getValue() {
+//     return this.el.value.replace(/\n/g, '<br>');
+//   }
+//   //...
+// }
 
 onMounted(async() => {
   await init()

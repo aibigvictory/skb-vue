@@ -133,6 +133,7 @@ img{
     border: 1px solid #EEE;
   }
 }
+
 // .tui-grid-body-container{
 //   height: auto !important;
   
@@ -144,9 +145,14 @@ img{
 //     }
 //   }
 // }
-// .tui-grid-layer-editing{
+.tui-grid-layer-editing{
+  textarea{
+    line-height: normal;
+    text-align: center;
+    padding: 0;
+  }
 //   height: calc(100% - 4px) !;
 //   line-height: normal
-// }
+}
 
 </style>
