@@ -86,8 +86,18 @@ const init = async () => {
   console.log(data.files);
   
   data.files.forEach((item, index) => {
-    const { name, sheets, updatedAt } = item
-    const { columns, complexColumns, data } = sheets
+    let { name, sheets, updatedAt } = item
+    let { columns, complexColumns, data } = sheets
+
+    for (let item in data) {
+      console.log('---------------');
+      
+      data[item] = data[item].replace(/\n/g, '<br>');
+      console.log(item);
+      console.log(data[item]);
+      
+      console.log('---------------');
+    }
     
     if (!search_result_list.value[item.folderCd]) {
       search_result_list.value[item.folderCd] = {}
@@ -120,7 +130,8 @@ class CustomTextEditor {
     // el.type = 'text';
     // el.maxLength = maxLength;
     // el.value = String(props.value);
-    el.value = String(props.value)//.replace(/<br>/g, '\n');
+    el.value = String(props.value).replace(/<br>/g, '\n');
+    // el.value =  ' ' + String(props.value) + ' ';
 
     this.el = el;
   }
@@ -131,7 +142,8 @@ class CustomTextEditor {
 
   getValue() {
     // return this.el.value;
-    return this.el.value//.replace(/\n/g, '<br>');
+    return this.el.value.replace(/\n/g, '<br>');
+    // return ' ' +  this.el.value + ' ';
   }
 
   mounted() {
@@ -164,6 +176,7 @@ onMounted(async() => {
 
     // console.log('-----------------------');
     columns.forEach((item) => {
+      item.width = 'auto'
       item.editor = {
         type: CustomTextEditor,
         options: {
@@ -190,8 +203,9 @@ onMounted(async() => {
 
     new Grid({
       el: document.getElementById(`grid${key}`),
-      scrollX: false,
+      scrollX: true,
       scrollY: false,
+      rowHeight: 'auto',
       columns,
       complexColumns,
       data: [data]

@@ -115,27 +115,64 @@ img{
 .luckysheet-sheet-area{
   // position: fixed;
 }
-.tui-grid-body-area{
-  height: auto !important;
-}
+
+// table{
+//   table-layout: fixed !important;
+// }
+// th, td {
+//   width: auto !important;
+// }
+// .tui-grid-body-area{
+//   height: auto !important;
+// }
 .tui-grid-cell-content{
   text-align: center;
 }
-.tui-grid-cell-header{
-  word-break: keep-all;
-}
+// .tui-grid-cell-header{
+//   word-break: keep-all;
+// }
 .tui-grid-header-area{
   height: auto !important;
 
   .tui-grid-cell{
-    white-space: normal;
     background: #FAFAFA;
     border: 1px solid #EEE;
+
   }
+}
+
+.tui-grid-cell{
+    white-space: normal !important;
+    border: 1px solid #EEE !important;
+    .tui-grid-cell-content {
+      word-break: normal;
+      padding: 0 !important;
+    }
+    min-width: 70px !important;
 }
 
 // .tui-grid-body-container{
 //   height: auto !important;
+//   .tui-grid-table-container{
+//     position: relative !important;
+//   }
+// }
+
+// .tui-grid-table-container{
+//   .tui-grid-table{
+//     width: 100%;
+//     colgroup{
+//       display: none;
+//       width: 100%;
+//       col{
+//         width: 100px !important;
+//       }
+//     }
+//   }
+
+// }
+// // .tui-grid-body-container{
+// //   height: auto !important;
   
 //   .tui-grid-table-container{
 //     position: relative !important;
@@ -145,14 +182,50 @@ img{
 //     }
 //   }
 // }
-.tui-grid-layer-editing{
-  textarea{
-    line-height: normal;
-    text-align: center;
-    padding: 0;
+.tui-grid-body-area{
+  height: auto !important;
+
+  .tui-grid-body-container{
+    height: 100% !important;
+
+    .tui-grid-table-container{
+      position: relative;
+      // height: 100%;
+    }
+
+    .tui-grid-layer-focus{
+      height: 100%;
+
+      .tui-grid-layer-focus-border{
+        &:nth-child(1) {
+          height: 100% !important;
+        }
+        &:nth-child(3) {
+          height: 100% !important;
+        }
+        &:nth-child(4) {
+          top: auto !important;
+          bottom: 0 !important;
+        }
+      }
+    }
+    .tui-grid-layer-editing{
+      height: 100% !important;
+      line-height: normal !important;
+
+      textarea{
+        // line-height: normal;
+        text-align: center;
+        padding: 0;
+      }
+    //   height: calc(100% - 4px) !;
+      // line-height: normal
+    }
+    .tui-grid-layer-selection{
+      height: 100% !important;
+    }
   }
-//   height: calc(100% - 4px) !;
-//   line-height: normal
 }
+
 
 </style>

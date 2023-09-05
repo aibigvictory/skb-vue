@@ -347,6 +347,11 @@ li{list-style: none;}
       position: absolute;
       top: 24px;
       right: 18px;
+      .form-select{
+        width: 125px;
+        height: 28px;
+        padding: 0 0 0 12px;
+      }
     }
   }
   .search-result-section2{
