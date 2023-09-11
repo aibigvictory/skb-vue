@@ -201,14 +201,15 @@ onMounted(async() => {
     console.log(`grid${key}`);
     console.log(document.getElementById(`grid${key}`));
 
-    new Grid({
+    const toast = new Grid({
       el: document.getElementById(`grid${key}`),
       scrollX: true,
       scrollY: false,
       rowHeight: 'auto',
       columns,
       complexColumns,
-      data: [data]
+      data: [data],
+      contextMenu: null
     });
 
     Grid.applyTheme('striped', {
@@ -219,6 +220,10 @@ onMounted(async() => {
           border: '#000'
         }
       }
+    });
+
+    toast.on('contextMenu', function(ev) {
+      ev.stop(); // 우클릭 이벤트 막기
     });
   }
 

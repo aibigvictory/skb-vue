@@ -50,6 +50,7 @@
     <div class="search-result-section2">
       <div class="title">관리파일 리스트 <span>{{checked_file_sum}}건</span></div>
       <ul class="search-result-section2-wrap">
+        <li v-if="!Object.keys(checked_file_list).length">선택한 관리파일이 없습니다.</li>
         <li v-for="item1 in checked_file_list" :key="item1" class="search-result-section2-folder">
           <div class="folder d-flex align-items-center">
             <div class="img d-flex justify-content-center align-items-center">
@@ -197,7 +198,13 @@ const click_category = (e) => {
 // console.log(store.state.search_keyword);
 
 const load_search_result = () => {
+  if (!Object.keys(checked_file_list.value).length) return alert('엑셀파일을 선택해 주세요.')
+
   store.state.search_result = checked_file_list.value
+
+  // console.log(checked_file_list.value);
+  // console.log(Object.keys(checked_file_list.value).length);
+  
 
   router.push('/load')
 }
