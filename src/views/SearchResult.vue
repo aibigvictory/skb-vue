@@ -125,6 +125,9 @@ const init = async () => {
 }
 
 watch(() => store.state.search_keyword, async (value) => {
+  folder_list.value = []
+  file_push = []
+
   search_keyword.value = store.state.search_keyword
   await init()
 })

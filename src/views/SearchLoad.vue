@@ -1,6 +1,11 @@
 <template>
   <div class="warp">
     <div class="download-wrap">
+      <div class="sort-btn">
+        <button class="btn btn-primary">123</button>
+        <button class="btn btn-primary">ABC</button>
+        <button class="btn btn-primary">가나다</button>
+      </div>
       <button class="download-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M0.5 9.90002C0.776142 9.90002 1 10.1239 1 10.4V12.9C1 13.4523 1.44772 13.9 2 13.9H14C14.5523 13.9 15 13.4523 15 12.9V10.4C15 10.1239 15.2239 9.90002 15.5 9.90002C15.7761 9.90002 16 10.1239 16 10.4V12.9C16 14.0046 15.1046 14.9 14 14.9H2C0.895431 14.9 0 14.0046 0 12.9V10.4C0 10.1239 0.223858 9.90002 0.5 9.90002Z" fill="white"/>
@@ -337,8 +342,15 @@ li{list-style: none;}
   margin: 24px 30px 48px 30px;
   .download-wrap{
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     margin-bottom: 10px;
+    .sort-btn{
+      .btn{
+        margin-right: 10px;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+      }
+    }
     .download-btn{
       border: none;
       padding: 10px 12px;
