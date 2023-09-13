@@ -27,7 +27,7 @@ onMounted(() => {
   // save new config to localStorage
   localStorage.setItem("config", JSON.stringify(config.value));
 
-  console.log(localStorage.getItem("config"));
+  // console.log(localStorage.getItem("config"));
 
   /**
    * Overrides the layout config using saved data from localStorage

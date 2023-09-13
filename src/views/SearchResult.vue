@@ -20,7 +20,7 @@
                 <button @click="check_file_all('delete', $event, folder)">전체해제</button>
               </div>
             </div>
-            {{item}}
+            <!-- {{item}} -->
             <ul class="search-result-item-list d-flex align-items-center">
               <li v-for="item in folder.files" :key="item" class="d-flex align-items-center"><input @change="check_file($event, folder, item)" type="checkbox" class="form-check-input" :id="`checkbox${item.id}`"><label :for="`checkbox${item.id}`">{{item.name}}</label></li>
             </ul>
@@ -39,11 +39,11 @@
         
       </div> 
       <div class="option">
-        <select class="form-select" aria-label="Select example">
-          <option value="1">최신순</option>
-          <option value="2">오래된순</option>
-          <option value="3">오름차순</option>
-          <option value="3">내림차순</option>
+        <select @change="change_file_sort" class="form-select" aria-label="Select example">
+          <option value="recent">최신순</option>
+          <option value="old">오래된순</option>
+          <option value="asc">오름차순</option>
+          <option value="desc">내림차순</option>
         </select>
       </div>
     </div>
@@ -99,7 +99,7 @@ const folder_code = {
 }
 
 const init = async () => {
-  const { data } = await axios.get(`http://dev.peerline.net:9400/search?q=${search_keyword.value}`)
+  const { data } = await axios.get(`http://dev.peerline.net:9494/search?q=${search_keyword.value}`)
   const { files, folders } = data
 
   folder_list.value = folders
@@ -119,6 +119,9 @@ const init = async () => {
     catch(error) {console.log(error)};
     
   })
+
+  console.log(folder_list.value);
+  
 }
 
 watch(() => store.state.search_keyword, async (value) => {
@@ -139,6 +142,61 @@ const checked_file_sum = computed(() => {
 
   return count
 })
+
+const change_file_sort = (e) => {
+  const type = e.target.value
+  console.log(e.target.value);
+
+  if (type == 'recent') {
+    folder_list.value.forEach((folder: any) => {
+      console.log(folder.files);
+  
+      folder.files = folder.files.sort((a, b) => {
+        if(a.createdAt < b.createdAt) return 1;
+        if(a.createdAt > b.createdAt) return -1;
+        return 0;
+      })
+    })
+  }
+
+  if (type == 'old') {
+    folder_list.value.forEach((folder: any) => {
+      console.log(folder.files);
+  
+      folder.files = folder.files.sort((a, b) => {
+        if(a.createdAt > b.createdAt) return 1;
+        if(a.createdAt < b.createdAt) return -1;
+        return 0;
+      })
+    })
+  }
+
+  if (type == 'asc') {
+    folder_list.value.forEach((folder: any) => {
+      console.log(folder.files);
+  
+      folder.files = folder.files.sort((a, b) => {
+        if(a.name < b.name) return 1;
+        if(a.name > b.name) return -1;
+        return 0;
+      })
+    })
+  }
+
+  if (type == 'desc') {
+    folder_list.value.forEach((folder: any) => {
+      console.log(folder.files);
+  
+      folder.files = folder.files.sort((a, b) => {
+        if(a.name > b.name) return 1;
+        if(a.name < b.name) return -1;
+        return 0;
+      })
+    })
+  }
+
+  
+}
 
 const check_file = (e, folder, file) => {
   console.log(e.target.checked);

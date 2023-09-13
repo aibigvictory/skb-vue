@@ -78,7 +78,7 @@ const init = async () => {
   console.log(store.state.search_keyword);
   console.log(file_id_list);
   
-  const { data } = await axios.post('http://dev.peerline.net:9400/search/detail', {
+  const { data } = await axios.post('http://dev.peerline.net:9494/search/detail', {
     "q": store.state.search_keyword,
     "id": file_id_list
   })
