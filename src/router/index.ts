@@ -11,6 +11,15 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/layouts/main-layout/MainLayout.vue"),
     children: [
       {
+        path: "/signup/accept",
+        name: "signup-accept",
+        component: () => import("@/views/manage/SignUpAccept.vue"),
+        meta: {
+          pageTitle: "회원가입 승인",
+          breadcrumbs: ["회원가입 승인"],
+        },
+      },
+      {
         path: "/excel",
         name: "excel",
         component: () => import("@/views/ExcelView.vue"),

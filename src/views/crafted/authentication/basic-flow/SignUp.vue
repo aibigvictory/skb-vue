@@ -10,92 +10,80 @@
       :validation-schema="registration"
     >
       <!--begin::Heading-->
-      <div class="mb-10 text-center">
-        <!--begin::Title-->
-        <h1 class="text-dark mb-3">Create an Account</h1>
-        <!--end::Title-->
-
-        <!--begin::Link-->
-        <div class="text-gray-400 fw-semobold fs-4">
-          Already have an account?
-
-          <router-link to="/sign-in" class="link-primary fw-bold">
-            Sign in here
-          </router-link>
+      <div class="text-left mb-10">
+        <!--begin::Logo-->
+        <!-- <h1 class="text-dark mb-3">로고</h1> -->
+        <div class="logo">
+          <img src="@/assets/img/SK-broadban2d.png" alt="">
         </div>
-        <!--end::Link-->
+        <!--end::Logo-->
+        <!--begin::Title-->
+        <h1 class="text-dark mb-3">회원가입</h1>
+        <!--end::Title-->
       </div>
-      <!--end::Heading-->
-
-      <!--begin::Action-->
-      <button type="button" class="btn btn-light-primary fw-bold w-100 mb-10">
-        <img
-          alt="Logo"
-          src="media/svg/brand-logos/google-icon.svg"
-          class="h-20px me-3"
-        />
-        Sign in with Google
-      </button>
-      <!--end::Action-->
-
-      <!--begin::Separator-->
-      <div class="d-flex align-items-center mb-10">
-        <div class="border-bottom border-gray-300 mw-50 w-100"></div>
-        <span class="fw-semobold text-gray-400 fs-7 mx-2">OR</span>
-        <div class="border-bottom border-gray-300 mw-50 w-100"></div>
-      </div>
-      <!--end::Separator-->
+      <!--begin::Heading-->
 
       <!--begin::Input group-->
-      <div class="row fv-row mb-7">
-        <!--begin::Col-->
-        <div class="col-xl-6">
-          <label class="form-label fw-bold text-dark fs-6">First Name</label>
-          <Field
-            class="form-control form-control-lg form-control-solid"
-            type="text"
-            placeholder=""
-            name="first_name"
-            autocomplete="off"
-          />
-          <div class="fv-plugins-message-container">
-            <div class="fv-help-block">
-              <ErrorMessage name="first_name" />
-            </div>
-          </div>
-        </div>
-        <!--end::Col-->
+      <div class="fv-row mb-10">
+        <!--begin::Label-->
+        <label class="form-label fs-6 fw-bold text-dark">이름</label>
+        <!--end::Label-->
 
-        <!--begin::Col-->
-        <div class="col-xl-6">
-          <label class="form-label fw-bold text-dark fs-6">Last Name</label>
-          <Field
-            class="form-control form-control-lg form-control-solid"
-            type="text"
-            placeholder=""
-            name="last_name"
-            autocomplete="off"
-          />
-          <div class="fv-plugins-message-container">
-            <div class="fv-help-block">
-              <ErrorMessage name="last_name" />
-            </div>
+        <!--begin::Input-->
+        <Field
+          tabindex="1"
+          class="form-control form-control-lg form-control-solid"
+          type="text"
+          name="name"
+          autocomplete="off"
+        />
+        <!--end::Input-->
+        <div class="fv-plugins-message-container">
+          <div class="fv-help-block">
+            <ErrorMessage name="name" />
           </div>
         </div>
-        <!--end::Col-->
       </div>
       <!--end::Input group-->
 
       <!--begin::Input group-->
-      <div class="fv-row mb-7">
-        <label class="form-label fw-bold text-dark fs-6">Email</label>
+      <div class="fv-row mb-10">
+        <!--begin::Label-->
+        <label class="form-label fs-6 fw-bold text-dark">팀명</label>
+        <!--end::Label-->
+
+        <!--begin::Input-->
         <Field
+          tabindex="1"
           class="form-control form-control-lg form-control-solid"
-          type="email"
-          placeholder=""
+          type="text"
+          name="team"
+          autocomplete="off"
+        />
+        <!--end::Input-->
+        <div class="fv-plugins-message-container">
+          <div class="fv-help-block">
+            <ErrorMessage name="team" />
+          </div>
+        </div>
+      </div>
+      <!--end::Input group-->
+
+      <!--begin::Input group-->
+      <div class="fv-row mb-10">
+        <!--begin::Label-->
+        <label class="form-label fs-6 fw-bold text-dark">이메일</label>
+        <!--end::Label-->
+
+        <!--begin::Input-->
+        <Field
+          tabindex="1"
+          class="form-control form-control-lg form-control-solid"
+          type="text"
           name="email"
           autocomplete="off"
         />
+        <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
             <ErrorMessage name="email" />
@@ -105,62 +93,36 @@
       <!--end::Input group-->
 
       <!--begin::Input group-->
-      <div class="mb-10 fv-row" data-kt-password-meter="true">
+      <div class="fv-row mb-10">
         <!--begin::Wrapper-->
-        <div class="mb-1">
+        <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-dark fs-6"> Password </label>
+          <label class="form-label fw-bold text-dark fs-6 mb-0">비밀번호</label>
           <!--end::Label-->
-
-          <!--begin::Input wrapper-->
-          <div class="position-relative mb-3">
-            <Field
-              class="form-control form-control-lg form-control-solid"
-              type="password"
-              placeholder=""
-              name="password"
-              autocomplete="off"
-            />
-            <div class="fv-plugins-message-container">
-              <div class="fv-help-block">
-                <ErrorMessage name="password" />
-              </div>
-            </div>
-          </div>
-          <!--end::Input wrapper-->
-          <!--begin::Meter-->
-          <div
-            class="d-flex align-items-center mb-3"
-            data-kt-password-meter-control="highlight"
-          >
-            <div
-              class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-            ></div>
-            <div
-              class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-            ></div>
-            <div
-              class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-            ></div>
-            <div
-              class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"
-            ></div>
-          </div>
-          <!--end::Meter-->
         </div>
         <!--end::Wrapper-->
-        <!--begin::Hint-->
-        <div class="text-muted">
-          Use 8 or more characters with a mix of letters, numbers & symbols.
+
+        <!--begin::Input-->
+        <Field
+          tabindex="2"
+          class="form-control form-control-lg form-control-solid"
+          type="password"
+          name="password"
+          autocomplete="off"
+        />
+        <!--end::Input-->
+        <div class="fv-plugins-message-container">
+          <div class="fv-help-block">
+            <ErrorMessage name="password" />
+          </div>
         </div>
-        <!--end::Hint-->
       </div>
-      <!--end::Input group--->
+      <!--end::Input group-->
 
       <!--begin::Input group-->
       <div class="fv-row mb-5">
         <label class="form-label fw-bold text-dark fs-6"
-          >Confirm Password</label
+          >비밀번호 확인</label
         >
         <Field
           class="form-control form-control-lg form-control-solid"
@@ -177,32 +139,18 @@
       </div>
       <!--end::Input group-->
 
-      <!--begin::Input group-->
-      <div class="fv-row mb-10">
-        <label class="form-check form-check-custom form-check-solid">
-          <Field
-            class="form-check-input"
-            type="checkbox"
-            name="toc"
-            value="1"
-          />
-          <span class="form-check-label fw-semobold text-gray-700 fs-6">
-            I Agree &
-            <a href="#" class="ms-1 link-primary">Terms and conditions</a>.
-          </span>
-        </label>
-      </div>
-      <!--end::Input group-->
-
       <!--begin::Actions-->
       <div class="text-center">
+        <!--begin::Submit button-->
         <button
-          id="kt_sign_up_submit"
-          ref="submitButton"
+          tabindex="3"
           type="submit"
-          class="btn btn-lg btn-primary"
+          ref="submitButton"
+          id="kt_sign_in_submit"
+          class="btn btn-lg btn-primary w-100 mb-5"
         >
-          <span class="indicator-label"> Submit </span>
+          <span class="indicator-label"> 회원가입 </span>
+
           <span class="indicator-progress">
             Please wait...
             <span
@@ -210,6 +158,15 @@
             ></span>
           </span>
         </button>
+        <!--end::Submit button-->
+
+        <!--begin::Separator-->
+        <div class="text-center text-muted text-uppercase fw-bold mb-5"><hr></div>
+        <!--end::Separator-->
+        <router-link to="/sign-in" class="text-muted text-decoration-underline fw-bold">
+          로그인
+        </router-link>
+        <div class="fz-14px fw-500 text-left text-muted text-uppercase fw-bold mb-5 mt-5 me-10 ms-10">회원가입시 시 문의사항은 <span class="fw-900">내선번호 221</span>로 연락을 주시면 지원을 받으실 수 있습니다.</div>
       </div>
       <!--end::Actions-->
     </Form>
@@ -228,6 +185,50 @@ import { Actions } from "@/store/enums/StoreEnums";
 import { PasswordMeterComponent } from "@/assets/ts/components";
 import Swal from "sweetalert2/dist/sweetalert2.min.js";
 
+Yup.setLocale({
+  mixed: {
+    default: '사용할수 없는 값입니다.',
+    required: (value) => {
+      if (value.label == "Name") return '이름을 입력해주세요.'
+      if (value.label == "Team") return '팀명을 입력해주세요.'
+      if (value.label == "Email") return '이메일을 입력해주세요.'
+      if (value.label == "Password") return '비밀번호를 입력해주세요.'
+      if (value.label == "Password Confirmation") return '비밀번호 확인을 입력해주세요.'
+    },
+    oneOf: '다음 값 중 하나여야 합니다.: ${values}',
+    notOneOf: '다음 값 중 하나가 아니어야 합니다.: ${values}',
+    notType: function notType(_ref) {
+      var path = _ref.path,
+        type = _ref.type,
+        value = _ref.value,
+        originalValue = _ref.originalValue;
+      var isCast = originalValue != null && originalValue !== value;
+
+      if (type == 'number') {
+        var msg = ' 숫자만 입력해주세요.';
+      } else if (type == 'date') {
+        var msg = ' 날짜 형식으로 입력해주세요.';
+      } else {
+        var msg = path + ' 항목은 `' + type + '` 형식으로 입력해주세요.';
+      }
+
+      // if (value === null) {
+      //   msg +=
+      //     '\n If "null" is intended as an empty value be sure to mark the schema as `.nullable()`';
+      // }
+
+      return msg;
+    },
+    defined: '정의되지 않았습니다.',
+  },
+  string: {
+    length: '${length}자로 입력해주세요.',
+    min: '${min}자 이상 입력바랍니다.',
+    max: '${max}자 까지 입력됩니다.',
+    email: '올바른 형식의 이메일을 입력해 주세요.',
+  },
+});
+
 export default defineComponent({
   name: "sign-up",
   components: {
@@ -242,13 +243,13 @@ export default defineComponent({
     const submitButton = ref<HTMLButtonElement | null>(null);
 
     const registration = Yup.object().shape({
-      first_name: Yup.string().required().label("Name"),
-      last_name: Yup.string().required().label("Surname"),
-      email: Yup.string().min(4).required().email().label("Email"),
-      password: Yup.string().required().label("Password"),
-      password_confirmation: Yup.string()
+      name: Yup.string().required().matches(/^[가-힣a-zA-Z]+$/, '한글과 영문만 입력해주세요.').label("Name"),
+      team: Yup.string().required().matches(/^[가-힣a-zA-Z]+$/, '한글과 영문만 입력해주세요.').label("Team"),
+      email: Yup.string().required().email().label("Email"),
+      password: Yup.string().required().min(4).label("Password"),
+      password_confirmation: Yup.string().min(4)
         .required()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .oneOf([Yup.ref("password"), null], "비밀번호가 일치해야 합니다.")
         .label("Password Confirmation"),
     });
 
@@ -312,3 +313,19 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.logo{
+  width: 50%;
+  margin-bottom: 30px;
+}
+button[type="submit"].btn.btn-primary {
+  background: #EA002C !important;
+  background-color: #EA002C !important;
+  
+  &:hover:not(.btn-active){
+    background: #EA002C !important;
+    background-color: #EA002C !important;
+  }
+}
+</style>

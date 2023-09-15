@@ -1,11 +1,30 @@
 <template>
   <div class="warp">
     <div class="download-wrap">
-      <div class="sort-btn">
-        <button class="btn btn-primary">123</button>
-        <button class="btn btn-primary">ABC</button>
-        <button class="btn btn-primary">가나다</button>
+      <div class="nav-group nav-group-fluid">
+        <label>
+          <input type="radio" class="btn-check" name="type" value="has" checked>
+          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary"> 기본 </span>
+        </label>
+        <label>
+          <input type="radio" class="btn-check" name="type" value="users">
+          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> 123 </span>
+        </label>
+        <label>
+          <input type="radio" class="btn-check" name="type" value="orders">
+          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> ABC </span>
+        </label>
+        <label>
+          <input type="radio" class="btn-check" name="type" value="projects">
+          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> 가나다 </span>
+        </label>
       </div>
+      <!-- <div class="sort-btn">
+        <button @click="sort_search_result($event,'default')" class="btn btn-primary">기본</button>
+        <button @click="sort_search_result($event,'num')" class="btn btn-primary btn-secondary">123</button>
+        <button @click="sort_search_result($event,'en')" class="btn btn-primary btn-secondary">ABC</button>
+        <button @click="sort_search_result($event,'ko')" class="btn btn-primary btn-secondary">가나다</button>
+      </div> -->
       <button class="download-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M0.5 9.90002C0.776142 9.90002 1 10.1239 1 10.4V12.9C1 13.4523 1.44772 13.9 2 13.9H14C14.5523 13.9 15 13.4523 15 12.9V10.4C15 10.1239 15.2239 9.90002 15.5 9.90002C15.7761 9.90002 16 10.1239 16 10.4V12.9C16 14.0046 15.1046 14.9 14 14.9H2C0.895431 14.9 0 14.0046 0 12.9V10.4C0 10.1239 0.223858 9.90002 0.5 9.90002Z" fill="white"/>
@@ -83,7 +102,7 @@ const init = async () => {
   console.log(store.state.search_keyword);
   console.log(file_id_list);
   
-  const { data } = await axios.post('http://dev.peerline.net:9494/search/detail', {
+  const { data } = await axios.post('http://dev.peerline.net:9400/search/detail', {
     "q": store.state.search_keyword,
     "id": file_id_list
   })
@@ -125,7 +144,15 @@ const init = async () => {
   console.log(search_result_list2);
 }
 
+const sort_search_result = (e, type) => {
+  // 카테고리 클릭시 모든 html 요소에 active 클래스 제거하고 클릭한 요소에 active 클래스 추가
+  // e.target.parentNode.childNodes.forEach(element => {
+  //     if (element.classList && !element.classList.contains('btn-secondary')) element.classList.add('btn-secondary')  
+  // })
+  // e.target.classList.remove('btn-secondary')
 
+  
+}
 
 class CustomTextEditor {
   constructor(props) {
@@ -227,100 +254,11 @@ onMounted(async() => {
       }
     });
 
-    toast.on('contextMenu', function(ev) {
-      ev.stop(); // 우클릭 이벤트 막기
-    });
+    // toast.on('contextMenu', function(ev) {
+    //   ev.stop(); // 우클릭 이벤트 막기
+    // });
   }
 
-['HD방송', 'CATV_SO'].forEach((item) => {
-
-  // new Grid({
-  //   el: document.getElementById(`grid${item}`),
-  //   scrollX: false,
-  //   scrollY: false,
-  //   columns: [
-  //     {
-  //       header: 'Name',
-  //       name: 'name',
-  //       editor: 'text'
-  //     },
-  //     {
-  //       header: 'Artist',
-  //       name: 'artist',
-  //       editor: {
-  //         type: CustomTextEditor,
-  //         options: {
-  //           maxLength: 10
-  //         }
-  //       }
-  //     },
-  //     {
-  //       header: 'Type',
-  //       name: 'typeCode',
-  //       formatter: 'listItemText',
-  //       editor: {
-  //         type: 'select',
-  //         options: {
-  //           listItems: [
-  //             { text: 'Deluxe', value: '1' },
-  //             { text: 'EP', value: '2' },
-  //             { text: 'Single', value: '3' }
-  //           ]
-  //         }
-  //       }
-  //     },
-  //     {
-  //       header: 'Genre',
-  //       name: 'genreCode',
-  //       formatter: 'listItemText',
-  //       editor: {
-  //         type: 'checkbox',
-  //         options: {
-  //           listItems: [
-  //             { text: 'Pop', value: '1' },
-  //             { text: 'Rock', value: '2' },
-  //             { text: 'R&B', value: '3' },
-  //             { text: 'Electronic', value: '4' },
-  //             { text: 'etc.', value: '5' }
-  //           ]
-  //         }
-  //       },
-  //       copyOptions: {
-  //         useListItemText: true // when this option is used, the copy value is concatenated text
-  //       }
-  //     },
-  //     {
-  //       header: 'Grade',
-  //       name: 'grade',
-  //       copyOptions: {
-  //         useListItemText: true
-  //       },
-  //       formatter: 'listItemText',
-  //       editor: {
-  //         type: 'radio',
-  //         options: {
-  //           listItems: [
-  //             { text: '★☆☆', value: '1' },
-  //             { text: '★★☆', value: '2' },
-  //             { text: '★★★', value: '3' }
-  //           ]
-  //         }
-  //       }
-  //     }
-  //   ],
-  //   data: [
-  //     {
-  //       name: 'Beautiful Lies',
-  //       artist: 'Birdy',
-  //       typeCode: '',
-  //       genreCode: '',
-  //       grade: ''
-  //     }
-  //   ]
-  // });
-
-  
-})
 
 
 //   setInterval(() => {
@@ -344,13 +282,20 @@ li{list-style: none;}
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
-    .sort-btn{
+    .nav-group{
+      // padding: 0;
+      background: rgb(237,237,237);
       .btn{
-        margin-right: 10px;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
+        background: rgb(237,237,237);
       }
     }
+    // .sort-btn{
+    //   .btn{
+    //     margin-right: 10px;
+    //     padding-top: 10px !important;
+    //     padding-bottom: 10px !important;
+    //   }
+    // }
     .download-btn{
       border: none;
       padding: 10px 12px;
