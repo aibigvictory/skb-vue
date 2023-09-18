@@ -20,6 +20,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/password/change",
+        name: "password-change",
+        component: () => import("@/views/manage/PasswordChange.vue"),
+        meta: {
+          pageTitle: "비밀번호 변경",
+          breadcrumbs: ["비밀번호 변경"],
+        },
+      },
+      {
         path: "/excel",
         name: "excel",
         component: () => import("@/views/ExcelView.vue"),
