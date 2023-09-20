@@ -29,6 +29,24 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/password/config",
+        name: "password-change-config",
+        component: () => import("@/views/manage/PasswordChangeConfig.vue"),
+        meta: {
+          pageTitle: "비밀번호 설정 변경",
+          breadcrumbs: ["비밀번호 설정 변경"],
+        },
+      },
+      {
+        path: "/company/list",
+        name: "company-list",
+        component: () => import("@/views/manage/CompanyList.vue"),
+        meta: {
+          pageTitle: "개발사 리스트",
+          breadcrumbs: ["개발사 리스트"],
+        },
+      },
+      {
         path: "/excel",
         name: "excel",
         component: () => import("@/views/ExcelView.vue"),
