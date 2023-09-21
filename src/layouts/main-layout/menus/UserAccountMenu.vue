@@ -155,7 +155,32 @@
 
     <!--begin::Menu item-->
     <div class="menu-item px-5 my-1">
-      <router-link to="/pages/profile/overview" class="menu-link px-5">
+      <router-link to="/company/list" class="menu-link px-5">
+        업체정보
+      </router-link>
+    </div>
+    <div class="menu-item px-5 my-1">
+      <router-link to="/profile/overview" class="menu-link px-5">
+        사용자 정보
+      </router-link>
+    </div>
+    <div class="menu-item px-5 my-1">
+      <router-link to="/profile/overview" class="menu-link px-5">
+        관리파일 그룹
+      </router-link>
+    </div>
+    <div class="menu-item px-5 my-1">
+      <router-link to="/signup/accept" class="menu-link px-5">
+        회원가입 승인
+      </router-link>
+    </div>
+    <div class="menu-item px-5 my-1">
+      <router-link to="/password/config" class="menu-link px-5">
+        비밀번호 변경 설정
+      </router-link>
+    </div>
+    <div class="menu-item px-5 my-1">
+      <router-link to="/password/change" class="menu-link px-5">
         비밀번호 변경
       </router-link>
     </div>
