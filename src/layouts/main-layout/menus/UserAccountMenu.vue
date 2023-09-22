@@ -165,7 +165,7 @@
       </router-link>
     </div>
     <div class="menu-item px-5 my-1">
-      <router-link to="/profile/overview" class="menu-link px-5">
+      <router-link to="/manage/file" class="menu-link px-5">
         관리파일 그룹
       </router-link>
     </div>

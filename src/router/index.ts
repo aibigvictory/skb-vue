@@ -20,6 +20,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/manage/file",
+        name: "manage-file",
+        component: () => import("@/views/manage/ManageFile.vue"),
+        meta: {
+          pageTitle: "회원가입 승인",
+          breadcrumbs: ["회원가입 승인"],
+        },
+      },
+      {
         path: "/password/change",
         name: "password-change",
         component: () => import("@/views/manage/PasswordChange.vue"),

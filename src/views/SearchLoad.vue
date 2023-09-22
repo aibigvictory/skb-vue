@@ -99,14 +99,15 @@ const init = async () => {
       file_id_list.push(key2)
   }
 
-  console.log(store.state.search_keyword);
-  console.log(file_id_list);
+  // console.log(store.state.search_keyword);
+  // console.log(file_id_list);
   
-  const { data } = await axios.post('http://dev.peerline.net:9400/search/detail', {
+  const { data } = await axios.post('http://dev.peerline.net:9494/search/detail', {
     "q": store.state.search_keyword,
     "id": file_id_list
   })
 
+  console.log(data);
   console.log(data.files);
   
   data.files.forEach((item, index) => {
@@ -114,13 +115,13 @@ const init = async () => {
     let { columns, complexColumns, data } = sheets
 
     for (let item in data) {
-      console.log('---------------');
+      // console.log('---------------');
       
       data[item] = data[item].replace(/\n/g, '<br>');
-      console.log(item);
-      console.log(data[item]);
+      // console.log(item);
+      // console.log(data[item]);
       
-      console.log('---------------');
+      // console.log('---------------');
     }
     
     if (!search_result_list.value[item.folderCd]) {
@@ -140,8 +141,8 @@ const init = async () => {
     }
     
   })
-  console.log(search_result_list.value);
-  console.log(search_result_list2);
+  // console.log(search_result_list.value);
+  // console.log(search_result_list2);
 }
 
 const sort_search_result = (e, type) => {
@@ -202,8 +203,8 @@ onMounted(async() => {
   await init()
 
   for (let key in search_result_list2) {
-    console.log(key);
-    console.log(search_result_list2[key]);
+    // console.log(key);
+    // console.log(search_result_list2[key]);
     const { columns, complexColumns, data } = search_result_list2[key]
 
     // console.log('-----------------------');
@@ -230,8 +231,8 @@ onMounted(async() => {
     // console.log('-----------------------');
     
 
-    console.log(`grid${key}`);
-    console.log(document.getElementById(`grid${key}`));
+    // console.log(`grid${key}`);
+    // console.log(document.getElementById(`grid${key}`));
 
     const toast = new Grid({
       el: document.getElementById(`grid${key}`),
