@@ -182,36 +182,36 @@ img{
 //     }
 //   }
 // }
-.tui-grid-body-area{
-  height: auto !important;
+// .tui-grid-body-area{
+//   height: auto !important;
 
-  .tui-grid-body-container{
-    height: 100% !important;
+//   .tui-grid-body-container{
+//     height: 100% !important;
 
-    .tui-grid-table-container{
-      position: relative;
-      // height: 100%;
-    }
+//     .tui-grid-table-container{
+//       position: relative;
+//       // height: 100%;
+//     }
 
-    .tui-grid-layer-focus{
-      height: 100%;
+//     .tui-grid-layer-focus{
+//       height: 100%;
 
-      .tui-grid-layer-focus-border{
-        &:nth-child(1) {
-          height: 100% !important;
-        }
-        &:nth-child(3) {
-          height: 100% !important;
-        }
-        &:nth-child(4) {
-          top: auto !important;
-          bottom: 0 !important;
-        }
-      }
-    }
+//       .tui-grid-layer-focus-border{
+//         &:nth-child(1) {
+//           height: 100% !important;
+//         }
+//         &:nth-child(3) {
+//           height: 100% !important;
+//         }
+//         &:nth-child(4) {
+//           top: auto !important;
+//           bottom: 0 !important;
+//         }
+//       }
+//     }
     .tui-grid-layer-editing{
-      height: 100% !important;
-      line-height: normal !important;
+      // height: 100% !important;
+      // line-height: normal !important;
 
       textarea{
         // line-height: normal;
@@ -221,11 +221,11 @@ img{
     //   height: calc(100% - 4px) !;
       // line-height: normal
     }
-    .tui-grid-layer-selection{
-      height: 100% !important;
-    }
-  }
-}
+//     .tui-grid-layer-selection{
+//       height: 100% !important;
+//     }
+//   }
+// }
 
 
 </style>

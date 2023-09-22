@@ -39,8 +39,8 @@
             {{folder.name}}
           </div>
         </div>
-        <div v-for="sheet in folder.files" :key="sheet" class="content">
-          <div class="sub-title">{{sheet.name}}</div>
+        <div v-for="file in folder.files" :key="file" class="content">
+          <div class="sub-title">{{file.name}}</div>
           <div class="info">
             <div class="time">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -49,7 +49,7 @@
               <path d="M6.5625 2.625C6.80413 2.625 7 2.82088 7 3.0625V7.62111L9.84206 9.24514C10.0519 9.36502 10.1247 9.63227 10.0049 9.84206C9.88498 10.0519 9.61773 10.1247 9.40794 10.0049L6.34544 8.25486C6.20913 8.17696 6.125 8.032 6.125 7.875V3.0625C6.125 2.82088 6.32088 2.625 6.5625 2.625Z" fill="black"/>
               </svg>
               마지막 수정일자:
-              <span>{{new Date(sheet.updatedAt).toISOString().slice(0,19).replace(/T/g, ' ')}}</span>
+              <span>{{new Date(file.updatedAt).toISOString().slice(0,19).replace(/T/g, ' ')}}</span>
             </div>
             <div class="type">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -64,7 +64,7 @@
               <span>(CATV 운용팀)</span>
             </div>
           </div>
-          <div class="grid" :id="`grid${sheet.index}`"></div>
+          <div class="grid" :id="`grid${file.sheets.index}`"></div>
         </div>
       </li>
     </ul>
@@ -81,7 +81,8 @@ import Grid from 'tui-grid';
 import 'tui-grid/dist/tui-grid.css';
 import { onMounted, ref } from 'vue';
 
-let search_result_list2: any = {}
+// let search_result_list2: any = {}
+let sheet_list:any = []
 const search_result_list = ref({})
 const folder_name = {
   '001/001' : 'HD방송',
@@ -107,22 +108,18 @@ const init = async () => {
     "id": file_id_list
   })
 
-  console.log(data);
-  console.log(data.files);
+  // console.log(data);
+  // console.log(data.files);
   
   data.files.forEach((item, index) => {
     let { name, sheets, updatedAt } = item
     let { columns, complexColumns, data } = sheets
 
-    for (let item in data) {
-      // console.log('---------------');
-      
-      data[item] = data[item].replace(/\n/g, '<br>');
-      // console.log(item);
-      // console.log(data[item]);
-      
-      // console.log('---------------');
-    }
+    sheet_list.push(sheets)
+
+    // for (let item in data) {
+    //   data[item] = data[item].replace(/\n/g, '<br>');
+    // }
     
     if (!search_result_list.value[item.folderCd]) {
       search_result_list.value[item.folderCd] = {}
@@ -130,15 +127,22 @@ const init = async () => {
     }
     if (!search_result_list.value[item.folderCd]['files']) search_result_list.value[item.folderCd]['files'] = []
 
+    // console.log(search_result_list.value[item.folderCd].files);
+    
+    search_result_list.value[item.folderCd].files.push(item)
 
-    search_result_list.value[item.folderCd]['files'].push({
-      index, name, updatedAt, list: {
-        columns, complexColumns, data
-      }
-    })
-    search_result_list2[index] = {
-      columns, complexColumns, data, 
-    }
+    
+    console.log(search_result_list.value);
+
+
+    // search_result_list.value[item.folderCd]['files'].push({
+    //   index, name, updatedAt, list: {
+    //     columns, complexColumns, data
+    //   }
+    // })
+    // search_result_list2[index] = {
+    //   columns, complexColumns, data, 
+    // }
     
   })
   // console.log(search_result_list.value);
@@ -202,12 +206,16 @@ class CustomTextEditor {
 onMounted(async() => {
   await init()
 
-  for (let key in search_result_list2) {
-    // console.log(key);
-    // console.log(search_result_list2[key]);
-    const { columns, complexColumns, data } = search_result_list2[key]
+  console.log(sheet_list);
+  console.log(sheet_list);
 
-    // console.log('-----------------------');
+  sheet_list.forEach((sheet) => {
+    console.log(sheet);
+    const { index, columns, complexColumns, data } = sheet
+
+    // console.log(index, columns, complexColumns, data);
+    // console.log(index, columns, complexColumns, data);
+
     columns.forEach((item) => {
       item.width = 'auto'
       item.editor = {
@@ -217,48 +225,91 @@ onMounted(async() => {
         }
       }
     })
-    // console.log(columns);
+    console.log(document.getElementById(`grid${index}`));
     
-
-    // let result = {}
-
-    // data.forEach((item) => {
-    //   result = {
-    //     ...result,
-    //     ...item
-    //   }
-    // })
-    // console.log('-----------------------');
-    
-
-    // console.log(`grid${key}`);
-    // console.log(document.getElementById(`grid${key}`));
 
     const toast = new Grid({
-      el: document.getElementById(`grid${key}`),
+      el: document.getElementById(`grid${index}`),
       scrollX: true,
       scrollY: false,
       rowHeight: 'auto',
       columns,
       complexColumns,
-      data: [data],
+      data,
       contextMenu: null
     });
 
-    Grid.applyTheme('striped', {
-      cell: {
-        normal: {
-          // background: '#000',
-          text: '#333',
-          border: '#000'
-        }
-      }
-    });
-
-    // toast.on('contextMenu', function(ev) {
-    //   ev.stop(); // 우클릭 이벤트 막기
+    // Grid.applyTheme('striped', {
+    //   cell: {
+    //     normal: {
+    //       // background: '#000',
+    //       text: '#333',
+    //       border: '#000'
+    //     }
+    //   }
     // });
-  }
+  })
+
+  // for (let key in search_result_list2) {
+  //   // console.log(key);
+  //   // console.log(search_result_list2[key]);
+  //   const { columns, complexColumns, data } = search_result_list2[key]
+
+    
+    
+
+  //   // console.log('-----------------------');
+  //   columns.forEach((item) => {
+  //     item.width = 'auto'
+  //     item.editor = {
+  //       type: CustomTextEditor,
+  //       options: {
+  //         maxLength: 100
+  //       }
+  //     }
+  //   })
+  //   // console.log(columns);
+    
+
+  //   // let result = {}
+
+  //   // data.forEach((item) => {
+  //   //   result = {
+  //   //     ...result,
+  //   //     ...item
+  //   //   }
+  //   // })
+  //   // console.log('-----------------------');
+    
+
+  //   // console.log(`grid${key}`);
+  //   // console.log(document.getElementById(`grid${key}`));
+
+  //   const toast = new Grid({
+  //     el: document.getElementById(`grid${key}`),
+  //     scrollX: true,
+  //     scrollY: false,
+  //     rowHeight: 'auto',
+  //     columns,
+  //     complexColumns,
+  //     data: data,
+  //     contextMenu: null
+  //   });
+
+  //   Grid.applyTheme('striped', {
+  //     cell: {
+  //       normal: {
+  //         // background: '#000',
+  //         text: '#333',
+  //         border: '#000'
+  //       }
+  //     }
+  //   });
+
+  //   // toast.on('contextMenu', function(ev) {
+  //   //   ev.stop(); // 우클릭 이벤트 막기
+  //   // });
+  // }
 
 
 
