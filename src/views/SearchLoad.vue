@@ -211,10 +211,18 @@ onMounted(async() => {
 
   sheet_list.forEach((sheet) => {
     console.log(sheet);
-    const { index, columns, complexColumns, data } = sheet
+    const { index, name, columns, complexColumns, data } = sheet
 
     // console.log(index, columns, complexColumns, data);
     // console.log(index, columns, complexColumns, data);
+
+    columns.unshift({
+      "name": "R1C0",
+      "header": "시트"
+    })
+    data.forEach((item) => {
+      item["R1C0"] = name
+    })
 
     columns.forEach((item) => {
       item.width = 'auto'
@@ -225,7 +233,9 @@ onMounted(async() => {
         }
       }
     })
-    console.log(document.getElementById(`grid${index}`));
+    
+    console.log(columns);
+    console.log(data);
     
 
     const toast = new Grid({
