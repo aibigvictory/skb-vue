@@ -56,6 +56,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/user/list",
+        name: "user-list",
+        component: () => import("@/views/manage/UserList.vue"),
+        meta: {
+          pageTitle: "사용자 리스트",
+          breadcrumbs: ["사용자 리스트"],
+        },
+      },
+      {
         path: "/excel",
         name: "excel",
         component: () => import("@/views/ExcelView.vue"),

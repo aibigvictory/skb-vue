@@ -18,7 +18,11 @@
         </div>
         <div class="section">
             <div class="group">
-                <ul>
+                <div class="no-group">
+                    <div class="no-group-img"><img src="@/assets/img/no-group-img.png" alt=""></div>
+                    <div class="no-group-txt">등록된 관리파일 그룹이 없습니다.</div>
+                </div>
+                <!-- <ul>
                     <li>
                         <div>HD방송<span>7</span></div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -41,7 +45,7 @@
                         </g>
                         </svg>
                     </li>
-                </ul>
+                </ul> -->
             </div>
             <div class="group-adjust">
                 <div class="group-name">관리파일 그룹 명</div>
@@ -225,6 +229,35 @@ p{margin: 0;padding: 0;}
         display: flex;
         .group{
             width: 280px;
+            .no-group{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: calc(100vh - 70px - 48px - 190px);
+                margin: 20px 0;
+                padding-top: 200px;
+                border-radius: 10px;
+                background: var(--root-data-theme-light-kt-light, #F5F8FA);
+                .no-group-img{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 50%;
+                    background: #fff;
+                    img{
+                        width: 48px;
+                        height: 48px;
+                    }
+                }
+                .no-group-txt{
+                    margin-top: 16px;
+                    color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }
             ul{
                 padding: 24px 10px 0 10px;
                 border-right: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);

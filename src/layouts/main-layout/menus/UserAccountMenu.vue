@@ -160,7 +160,7 @@
       </router-link>
     </div>
     <div class="menu-item px-5 my-1">
-      <router-link to="/profile/overview" class="menu-link px-5">
+      <router-link to="/user/list" class="menu-link px-5">
         사용자 정보
       </router-link>
     </div>
