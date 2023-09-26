@@ -241,7 +241,8 @@ const check_file_all = (type, e, folder) => {
 
 const delete_checked_file = (folder_name, file_id) => {
   delete checked_file_list.value[folder_name]['files'][file_id]
-  if (!checked_file_list.value[folder_name]['files'].length) delete checked_file_list.value[folder_name]
+
+  if (!Object.keys(checked_file_list.value[folder_name]['files']).length) delete checked_file_list.value[folder_name]
   
   document.querySelector(`#checkbox${file_id}`).checked = false
 }

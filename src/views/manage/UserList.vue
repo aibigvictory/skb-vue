@@ -19,6 +19,29 @@
                         </div>
                         <button class="search-btn">검색</button>
                     </div>
+                    <div class="search-detail" @click.capture="search_detail = !search_detail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M4 0H1C0.447715 0 0 0.447715 0 1V4C0 4.55228 0.447715 5 1 5H4C4.55228 5 5 4.55228 5 4V1C5 0.447715 4.55228 0 4 0Z" fill="#3E97FF"/>
+                        <path d="M13 0H10C9.44772 0 9 0.447715 9 1V4C9 4.55228 9.44772 5 10 5H13C13.5523 5 14 4.55228 14 4V1C14 0.447715 13.5523 0 13 0Z" fill="#C5E0FF"/>
+                        <path d="M4 9H1C0.447715 9 0 9.44772 0 10V13C0 13.5523 0.447715 14 1 14H4C4.55228 14 5 13.5523 5 13V10C5 9.44772 4.55228 9 4 9Z" fill="#C5E0FF"/>
+                        <path d="M13 9H10C9.44772 9 9 9.44772 9 10V13C9 13.5523 9.44772 14 10 14H13C13.5523 14 14 13.5523 14 13V10C14 9.44772 13.5523 9 13 9Z" fill="#009EF7"/>
+                        </svg>
+                        <div class="search-detail-wrap" v-if="search_detail">
+                            <div class="title">상세검색</div>
+                            <div class="content">
+                                <label for="">구분</label>
+                                <select id=""></select>
+                                <label for="">시스템 / 서비스</label>
+                                <select id=""></select>
+                                <label for="">업체 / 개발사</label>
+                                <select id=""></select>
+                            </div>
+                            <div class="btn-wrap">
+                                <div class="btn btn-primary" @click="search_detail = false">검색</div>
+                                <div class="btn btn-secondary">초기화</div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- <div class="only-skb-view">
                         <button class="btn-only-skb-view">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
@@ -150,6 +173,7 @@
 import { ref } from 'vue'
 
 const user_add = ref(false)
+const search_detail = ref(false)
 </script>
 
 <style lang="scss" scoped>
@@ -240,6 +264,69 @@ li{list-style: none;}
                             color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
                             font-size: 14px;
                             font-weight: 400;
+                        }
+                    }
+                }
+                .search-detail{
+                    cursor: pointer;
+                    margin-right: 10px;
+                    position: relative;
+                    .search-detail-wrap{
+                        position: absolute;
+                        top: 42px;
+                        right: 0;
+                        width: 300px;
+                        background: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0px 0px 40px 0px rgba(82, 63, 105, 0.14);
+                        .title{
+                            border-radius: 8px 8px 0px 0px;
+                            border-bottom: 1px solid var(----kt-border-color, #EFF2F5);
+                            padding: 20px;
+                            color: var(--primary-text, #222);
+                            font-size: 16px;
+                            font-weight: 600;
+                            letter-spacing: 0.5px;
+                        }
+                        .content{
+                            padding: 20px;
+                            label{
+                                display: block;
+                                color: var(--primary-text, #222);
+                                font-size: 14px;
+                                font-weight: 500;
+                                margin-bottom: 10px;
+                                span{
+                                    color: var(--data-bs-theme-light-bs-red, #DC3545);
+                                    font-size: 10px;
+                                    font-weight: 400;
+                                }
+                            }
+                            select{
+                                display: block;
+                                height: 40px;
+                                padding: 0 12px;
+                                width: 100%;
+                                margin-bottom: 10px;
+                                border-radius: 10px;
+                                background: var(----kt-input-solid-bg, #F5F8FA);
+                                background: #FFF;
+                            }
+                        }
+                        .btn-wrap{
+                            padding: 20px;
+                            padding-top: 0;
+                            display: flex;
+                            justify-content: center;
+                            .btn{
+                                width: 50%;
+                                &:nth-child(1) {
+                                    margin-right: 4px;
+                                }
+                                &:nth-child(2) {
+                                    margin-left: 4px;
+                                }
+                            }
                         }
                     }
                 }
