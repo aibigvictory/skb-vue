@@ -211,7 +211,8 @@ const check_file = (e, folder, file) => {
   }
   else{
     delete checked_file_list.value[folder.name]['files'][file.id]
-    if (!checked_file_list.value[folder.name]['files'].length) delete checked_file_list.value[folder.name]
+    
+    if (!Object.keys(checked_file_list.value[folder.name]['files']).length) delete checked_file_list.value[folder.name]
   }
 }
 
