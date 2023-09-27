@@ -34,6 +34,9 @@
               <path xmlns="http://www.w3.org/2000/svg" d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
             </svg>
           </span> -->
+          <select class="select-search" name="" id="">
+            <option value="">전체</option>
+          </select>
           <span class="icon-search" @click="search_function">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M11.7422 10.3439C12.5329 9.2673 13 7.9382 13 6.5C13 2.91015 10.0899 0 6.5 0C2.91015 0 0 2.91015 0 6.5C0 10.0899 2.91015 13 6.5 13C7.93858 13 9.26801 12.5327 10.3448 11.7415L10.3439 11.7422C10.3734 11.7822 10.4062 11.8204 10.4424 11.8566L14.2929 15.7071C14.6834 16.0976 15.3166 16.0976 15.7071 15.7071C16.0976 15.3166 16.0976 14.6834 15.7071 14.2929L11.8566 10.4424C11.8204 10.4062 11.7822 10.3734 11.7422 10.3439ZM12 6.5C12 9.53757 9.53757 12 6.5 12C3.46243 12 1 9.53757 1 6.5C1 3.46243 3.46243 1 6.5 1C9.53757 1 12 3.46243 12 6.5Z" fill="white"/>
@@ -127,14 +130,34 @@ const enter = (e) => {
   line-height: 100%; /* 16px */
   letter-spacing: 0.5px;
 }
+.select-search{
+  width: 120px;
+  height: 44px;
+  padding: 4px 0px 4px 16px;
+
+  border-radius: 44px 0px 0px 44px;
+  border-top: 1px solid var(----el-border, #DCDFE6);
+  border-bottom: 1px solid var(----el-border, #DCDFE6);
+  border-left: 1px solid var(----el-border, #DCDFE6);
+  border-right: 1px solid var(----el-border, #DCDFE6);
+  background: #FFF;
+
+  // -webkit-appearance:none; /* 크롬 화살표 없애기 */
+  // -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
+  // appearance:none; /* 화살표 없애기 */
+}
 .input-search{
   display: flex;
   width: 422px;
+  height: 44px;
   padding: 12px 4px 12px 16px;
   align-items: center;
-  gap: 313px;
-  border-radius: 52px;
-  border: 1px solid #CCC;
+  border-radius: 0px 44px 44px 0px;
+  border-top: 1px solid var(----el-border, #DCDFE6);
+  border-right: 1px solid var(----el-border, #DCDFE6);
+  border-bottom: 1px solid var(----el-border, #DCDFE6);
+  border-left: none;
+  background: #FFF;
   background: #FFF;
 }
 .icon-search{

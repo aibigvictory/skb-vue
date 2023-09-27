@@ -64,7 +64,7 @@
               <span>(CATV 운용팀)</span>
             </div>
           </div>
-          <div class="grid" :id="`grid${file.sheets.index}`"></div>
+          <div v-for="sheet in [file.sheets]" :key="sheet" class="grid" :id="`grid${sheet.index}`"></div>
         </div>
       </li>
     </ul>
@@ -234,8 +234,9 @@ onMounted(async() => {
       }
     })
     
-    console.log(columns);
     console.log(data);
+    console.log(columns);
+    console.log(complexColumns);
     
 
     const toast = new Grid({
@@ -243,8 +244,10 @@ onMounted(async() => {
       scrollX: true,
       scrollY: false,
       rowHeight: 'auto',
+      header: {
+        complexColumns,
+      },
       columns,
-      complexColumns,
       data,
       contextMenu: null
     });
