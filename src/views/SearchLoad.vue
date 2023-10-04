@@ -64,7 +64,8 @@
               <span>(CATV 운용팀)</span>
             </div>
           </div>
-          <div v-for="sheet in [file.sheets]" :key="sheet" class="grid" :id="`grid${sheet.index}`"></div>
+          <div class="grid" :id="`grid${file.id}`"></div>
+          <!-- <div v-for="sheet in file.sheets" :key="sheet" class="grid" :id="`grid${sheet.index}`"></div> -->
         </div>
       </li>
     </ul>
@@ -83,6 +84,7 @@ import { onMounted, ref } from 'vue';
 
 // let search_result_list2: any = {}
 let sheet_list:any = []
+let files:any = []
 const search_result_list = ref({})
 const folder_name = {
   '001/001' : 'HD방송',
@@ -110,6 +112,7 @@ const init = async () => {
 
   // console.log(data);
   // console.log(data.files);
+  files = data.files
   
   data.files.forEach((item, index) => {
     let { name, sheets, updatedAt } = item
@@ -132,7 +135,7 @@ const init = async () => {
     search_result_list.value[item.folderCd].files.push(item)
 
     
-    console.log(search_result_list.value);
+    // console.log(search_result_list.value);
 
 
     // search_result_list.value[item.folderCd]['files'].push({
@@ -206,51 +209,57 @@ class CustomTextEditor {
 onMounted(async() => {
   await init()
 
-  console.log(sheet_list);
-  console.log(sheet_list);
+  // console.log(sheet_list);
+  // console.log(sheet_list);
 
-  sheet_list.forEach((sheet) => {
-    console.log(sheet);
-    const { index, name, columns, complexColumns, data } = sheet
+  // console.log();
+  files.forEach((file) => {
+    console.log(file);
 
-    // console.log(index, columns, complexColumns, data);
-    // console.log(index, columns, complexColumns, data);
+    
 
-    columns.unshift({
-      "name": "R1C0",
-      "header": "시트"
-    })
-    data.forEach((item) => {
-      item["R1C0"] = name
-    })
-
-    columns.forEach((item) => {
-      item.width = 'auto'
-      item.editor = {
-        type: CustomTextEditor,
-        options: {
-          maxLength: 100
+    file.sheets.forEach((sheet) => {
+      const { index, name, columns, complexColumns, data } = sheet
+      // console.log(index, columns, complexColumns, data);
+      // console.log(index, columns, complexColumns, data);
+  
+      columns.unshift({
+        "name": "R1C0",
+        "header": "시트"
+      })
+      data.forEach((item) => {
+        item["R1C0"] = name
+      })
+  
+      columns.forEach((item) => {
+        item.width = 'auto'
+        item.editor = {
+          type: CustomTextEditor,
+          options: {
+            maxLength: 100
+          }
         }
-      }
+      })
+      
+      // console.log(data);
+      // console.log(columns);
+      // console.log(complexColumns);
+      
+  
+      const toast = new Grid({
+        el: document.getElementById(`grid${file.id}`),
+        scrollX: true,
+        scrollY: false,
+        rowHeight: 'auto',
+        header: {
+          complexColumns,
+        },
+        columns,
+        data,
+        contextMenu: null
+      });
     })
-    
-    console.log(data);
-    console.log(columns);
-    console.log(complexColumns);
-    
 
-    const toast = new Grid({
-      el: document.getElementById(`grid${index}`),
-      scrollX: true,
-      scrollY: false,
-      rowHeight: 'auto',
-      header: {
-        complexColumns,
-      },
-      columns,
-      data,
-      contextMenu: null
-    });
 
     // Grid.applyTheme('striped', {
     //   cell: {

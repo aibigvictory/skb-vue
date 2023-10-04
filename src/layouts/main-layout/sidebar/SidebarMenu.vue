@@ -350,9 +350,9 @@
               <div class="non-use-file">
                 <div class="menu nav">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                    <input @change="check_all_useless_file" class="form-check-input" type="checkbox" value="" id="all-check" />
                   </div>
-                  <div class="non-use-file-category active" data-bs-toggle="tab" href="#kt_tab_pane_11">
+                  <div class="non-use-file-category active" data-bs-toggle="tab" href="#kt_tab_pane_11" @click="change_lock_state('manage')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <mask id="mask0_552_28805" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
                     <rect width="16" height="16" fill="#D9D9D9"/>
@@ -363,7 +363,7 @@
                     </svg>
                     관리파일
                   </div>
-                  <div class="non-use-file-category" data-bs-toggle="tab" href="#kt_tab_pane_22">
+                  <div class="non-use-file-category" data-bs-toggle="tab" href="#kt_tab_pane_22" @click="change_lock_state('etc')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <mask id="mask0_552_28810" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
                     <rect width="16" height="16" fill="#D9D9D9"/>
@@ -374,7 +374,7 @@
                     </svg>
                     기타파일
                   </div>
-                  <div class="non-use-file-category">삭제</div>
+                  <div @click="delete_file" class="non-use-file-category">삭제</div>
                 </div>
                 <!--begin::Plans-->
                 <div class="tab-content" id="myTabContent">
@@ -382,7 +382,8 @@
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
                       <div v-for="item2 in files_lock" :key="item2" class="d-flex">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                          <input class="form-check-input" type="checkbox" v-model="list_check_useless_file" :value="item2.id" id="flexCheckDefault" />
+                          <!-- <input class="form-check-input" type="checkbox" v-model="list_check_useless_file" :value="item2.id" id="flexCheckDefault" /> -->
                         </div>
                         <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
                           <span class="menu-bullet">
@@ -402,7 +403,7 @@
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
                       <div v-for="item2 in files_etc_lock" :key="item2" class="d-flex">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                          <input class="form-check-input" type="checkbox" v-model="list_check_useless_file" value="" id="flexCheckDefault" />
                         </div>
                         <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
                           <span class="menu-bullet">
@@ -615,6 +616,35 @@ export default defineComponent({
       drag_file = null
     }
 
+    let lock_state = 'manage'
+    let list_check_useless_file = ref([])
+    const change_lock_state = (state) => {
+      document.querySelector('#all-check').checked = false
+      lock_state = state
+      list_check_useless_file.value = []
+    }
+    const check_all_useless_file = (e, id) => {
+      // console.log(list_check_useless_file.value);
+      // console.log(e.target.checked);
+      // console.log(id);
+
+      if(e.target.checked) {
+        if (lock_state == 'manage') {
+          for (const key in files_lock.value) {
+            list_check_useless_file.value.push(key)
+          }
+        }
+        if (lock_state == 'etc') {
+          for (const key in files_etc_lock.value) {
+            list_check_useless_file.value.push(key)
+          }
+        }
+      }
+      else{
+        list_check_useless_file.value = []
+      }
+    }
+
     onMounted(() => {
       if (scrollElRef.value) {
         scrollElRef.value.scrollTop = 0;
@@ -633,6 +663,15 @@ export default defineComponent({
       return route.path.indexOf(match) !== -1;
     };
 
+    const delete_file = () => {
+      list_check_useless_file.value.forEach((file_id) => {
+        // console.log(file_id);
+        axios.post('http://dev.peerline.net:9494/file/delete', {id: file_id})
+      })
+
+      init()
+    }
+
     return {
       hasActiveChildren,
       MainMenuConfig,
@@ -648,6 +687,10 @@ export default defineComponent({
       file_drag,
       file_drag_drop_lock,
       file_drag_drop_unlock,
+      list_check_useless_file,
+      check_all_useless_file,
+      change_lock_state,
+      delete_file
     };
   },
 });
