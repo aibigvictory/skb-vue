@@ -13,15 +13,15 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M11.7422 10.3439C12.5329 9.2673 13 7.9382 13 6.5C13 2.91015 10.0899 0 6.5 0C2.91015 0 0 2.91015 0 6.5C0 10.0899 2.91015 13 6.5 13C7.93858 13 9.26801 12.5327 10.3448 11.7415L10.3439 11.7422C10.3734 11.7822 10.4062 11.8204 10.4424 11.8566L14.2929 15.7071C14.6834 16.0976 15.3166 16.0976 15.7071 15.7071C16.0976 15.3166 16.0976 14.6834 15.7071 14.2929L11.8566 10.4424C11.8204 10.4062 11.7822 10.3734 11.7422 10.3439ZM12 6.5C12 9.53757 9.53757 12 6.5 12C3.46243 12 1 9.53757 1 6.5C1 3.46243 3.46243 1 6.5 1C9.53757 1 12 3.46243 12 6.5Z" fill="#A1A5B7"/>
                     </svg>
-                    <input class="search-input" type="text" placeholder="이름/이메일 검색">
+                    <input ref="search_input" class="search-input" type="text" placeholder="이름/이메일 검색">
                 </div>
-                <button class="search-btn">검색</button>
+                <button @click="search($event)" class="search-btn">검색</button>
                 <div class="type">
-                    <input type="checkbox" name="" id="search-check-all">
+                    <input @change="change_type($event, '전체')" type="checkbox" checked name="" id="search-check-all">
                     <label for="search-check-all">전체</label>
-                    <input type="checkbox" name="" id="search-check-accepted">
+                    <input @change="change_type($event, '승인')" type="checkbox" name="" id="search-check-accepted">
                     <label for="search-check-accepted">승인</label>
-                    <input type="checkbox" name="" id="search-check-wait-accept">
+                    <input @change="change_type($event, '승인요청')" type="checkbox" name="" id="search-check-wait-accept">
                     <label for="search-check-wait-accept">승인요청</label>
                 </div>
                 <!-- <div class="search-input"></div> -->
@@ -39,7 +39,7 @@
                     </li>
                 </ul>
                 <ul class="member">
-                    <li>
+                    <!-- <li>
                         <input type="checkbox">
                         <div>CATV운용팀</div>
                          <div>홍길동</div>
@@ -47,21 +47,98 @@
                          <div><span class="accept-type">승인요청</span></div>
                          <div>신성우</div>
                          <div>2023.07.10 14:11</div>
-                    </li>
-                    <li>
+                    </li> -->
+                    <li v-for="member in view_member" :key="member">
                         <input type="checkbox">
-                        <div>CATV운용팀</div>
-                         <div>홍길동</div>
-                         <div>test@test.com</div>
-                         <div><span class="accept-type">승인요청</span></div>
-                         <div>신성우</div>
-                         <div>2023.07.10 14:11</div>
+                        <div>{{member.team}}</div>
+                        <div>{{member.name}}</div>
+                        <div>{{member.email}}</div>
+                        <div><span class="accept-type">{{member.state}}</span></div>
+                        <div>{{member.acceptor}}</div>
+                        <div>{{member.date}}</div>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+
+let accept_type = ref('전체')
+let search_keyword = ref('')
+
+watch(accept_type, (type) => {
+    view_member.value = search_member(search_keyword.value, origin_member)
+    view_member.value = filter_member(accept_type.value, view_member.value)
+})
+watch(search_keyword, (keyword) => {
+    view_member.value = search_member(search_keyword.value, origin_member)
+    view_member.value = filter_member(accept_type.value, view_member.value)
+})
+
+const change_type = (e, type) => {
+    e.target.parentNode.childNodes.forEach(element => {
+        if (!(element.checked == undefined)) element.checked = false
+    })
+    e.target.checked = true
+
+    accept_type.value = type
+}
+const search_input = ref()
+const search = (e) => {
+    const keyword = search_input.value.value
+    
+    search_keyword.value = keyword
+}
+
+const filter_member = (type, arr) => {
+    if (type == '전체') return arr
+    return arr.filter((member) => member.state == type)
+}
+const search_member = (keyword, arr) => {
+    if (!keyword) return arr
+    // return arr.filter((member) => member.name == keyword || member.email == keyword)
+    return arr.filter((member) => new RegExp(keyword).test(member.name) || new RegExp(keyword).test(member.email))
+}
+const origin_member = [
+    {
+        team: 'CATV운용팀',
+        name: '홍길동',
+        email: 'test@test.com',
+        state: '승인요청',
+        acceptor: '신성우',
+        date: '2023.07.10 14:11',
+    },
+    {
+        team: 'CATV운용팀',
+        name: '홍길동',
+        email: 'test@test.com',
+        state: '승인',
+        acceptor: '신성우',
+        date: '2023.07.10 14:11',
+    },
+    {
+        team: 'CATV운용팀',
+        name: '홍길동',
+        email: 'test@test.com',
+        state: '승인요청',
+        acceptor: '신성우',
+        date: '2023.07.10 14:11',
+    },
+    {
+        team: 'CATV운용팀',
+        name: '홍길동',
+        email: 'test@test.com',
+        state: '승인요청',
+        acceptor: '신성우',
+        date: '2023.07.10 14:11',
+    },
+    
+]
+const view_member = ref(origin_member)
+</script>
 
 <style lang="scss" scoped>
 ul{margin: 0;padding: 0;}
