@@ -155,6 +155,7 @@ Yup.setLocale({
     min: '${min}자 이상 입력바랍니다.',
     max: '${max}자 까지 입력됩니다.',
     email: '올바른 형식의 이메일을 입력해 주세요.',
+    // password: 'ddsad',
   },
 });
 
@@ -174,7 +175,7 @@ export default defineComponent({
     //Create form validation object
     const login = Yup.object().shape({
       email: Yup.string().email().required().label("Email"),
-      password: Yup.string().min(4).required().label("Password"),
+      password: Yup.string().required().label("Password"),
     });
 
     //Form submit function
