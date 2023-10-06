@@ -13,14 +13,15 @@
                 <input @change="change_password_config($event, 0)" type="radio" id="password-change-every-none">
                 <label for="password-change-every-none">사용안함</label>
             </div>
-            <button class="btn-password-change">변경 설정하기</button>
+            <button @click="send_server_config" :class="{active: before_config != config}" class="btn-password-change">변경 설정하기</button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
+let before_config = 0
 let config = ref(0)
 
 const change_password_config = (e, config_value) => {
@@ -30,6 +31,10 @@ const change_password_config = (e, config_value) => {
     e.target.checked = true
     
     config.value = config_value
+}
+const send_server_config = () => {
+    alert('complete')
+    before_config = config.value
 }
 </script>
 
@@ -67,8 +72,8 @@ const change_password_config = (e, config_value) => {
                 height: 16px;
             }
             label{
-                margin-right: 10px;
-                margin-left: 2px;
+                margin-right: 15px;
+                margin-left: 5px;
                 color: var(--primary-text, #222);
                 font-size: 14px;
                 font-weight: 400;
@@ -86,6 +91,10 @@ const change_password_config = (e, config_value) => {
             font-size: 16px;
             font-weight: 700;
             letter-spacing: 0.5px;
+            &.active{
+                background: #009EF7;
+                color: #fff;
+            }
         }
     }
 }
