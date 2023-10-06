@@ -137,6 +137,17 @@
             transition: $app-sidebar-base-transition;
 			width: var(--kt-app-sidebar-width-actual);
             @include property( box-shadow, $app-sidebar-minimize-hover-box-shadow);
+
+            .non-use-file{
+                display: block;
+            }
+
+            .btn-upload{
+                display: block !important;
+            }
+            .btn-upload2{
+                display: none !important;
+            }
         }
 
         [data-kt-app-sidebar-collapse="on"] & {
@@ -155,6 +166,18 @@
         .app-sidebar-minimize-d-flex {
             display: flex !important;    
         }
+
+        .non-use-file{
+            display: none;
+        }
+
+        .btn-upload{
+            display: none !important;
+        }
+        .btn-upload2{
+            display: flex !important;
+        }
+
     }
 
     [data-kt-app-sidebar-sticky="on"] {

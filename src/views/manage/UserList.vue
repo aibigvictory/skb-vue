@@ -4,7 +4,7 @@
             <div class="header">
                 <div class="title">사용자 리스트</div>
                 <div class="btn-wrap">
-                    <div class="btn btn-danger">삭제</div>
+                    <div class="btn btn-danger" @click="change_popup_state('delete', true)">삭제</div>
                     <div class="btn btn-primary" @click="user_add = true">사용자 등록</div>
                 </div>
             </div>
@@ -15,9 +15,9 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M11.7422 10.3439C12.5329 9.2673 13 7.9382 13 6.5C13 2.91015 10.0899 0 6.5 0C2.91015 0 0 2.91015 0 6.5C0 10.0899 2.91015 13 6.5 13C7.93858 13 9.26801 12.5327 10.3448 11.7415L10.3439 11.7422C10.3734 11.7822 10.4062 11.8204 10.4424 11.8566L14.2929 15.7071C14.6834 16.0976 15.3166 16.0976 15.7071 15.7071C16.0976 15.3166 16.0976 14.6834 15.7071 14.2929L11.8566 10.4424C11.8204 10.4062 11.7822 10.3734 11.7422 10.3439ZM12 6.5C12 9.53757 9.53757 12 6.5 12C3.46243 12 1 9.53757 1 6.5C1 3.46243 3.46243 1 6.5 1C9.53757 1 12 3.46243 12 6.5Z" fill="#A1A5B7"/>
                             </svg>
-                            <input class="search-input" type="text" placeholder="구분, 시스템/서비스, 업체/개발사 검색">
+                            <input @keypress="enter" ref="search_input" class="search-input" type="text" placeholder="구분, 시스템/서비스, 업체/개발사 검색">
                         </div>
-                        <button class="search-btn">검색</button>
+                        <button @click="search($event)" class="search-btn">검색</button>
                     </div>
                     <div class="search-detail" @click.capture="search_detail = !search_detail">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -55,7 +55,7 @@
                 <div class="accept">
                     <ul class="info">
                         <li>
-                            <input type="checkbox">
+                            <input @change="check_all_member" type="checkbox">
                             <div>구분</div>
                             <div>시스템/서비스</div>
                             <div>업체/개발사</div>
@@ -71,7 +71,22 @@
                         </li>
                     </ul>
                     <ul class="member">
-                        <li>
+                        <li v-for="member in view_member" :key="member">
+                            <input v-model="member_checked_list" :value="member.id" type="checkbox">
+                            <div>{{member.type}}</div>
+                            <div>{{member.system}}</div>
+                            <div>{{member.company}}</div>
+                            <div>{{member.manage}}</div>
+                            <div>{{member.name}}</div>
+                            <div>{{member.position}}</div>
+                            <div>{{member.depart}}</div>
+                            <div>{{member.phone}}</div>
+                            <div>{{member.landline}}</div>
+                            <div>{{member.email}}</div>
+                            <div>{{member.note}}</div>
+                            <div>{{member.date}}</div>
+                        </li>
+                        <!-- <li>
                             <input type="checkbox">
                             <div>MCR</div>
                             <div>멀티뷰어</div>
@@ -85,22 +100,7 @@
                             <div>m1@naver.com</div>
                             <div>비고</div>
                             <div>2023.07.10 14:11</div>
-                        </li>
-                        <li>
-                            <input type="checkbox">
-                            <div>MCR</div>
-                            <div>멀티뷰어</div>
-                            <div>삼성전자</div>
-                            <div>담당</div>
-                            <div>홍길동</div>
-                            <div>부장</div>
-                            <div>-</div>
-                            <div>010-1231-1231</div>
-                            <div>02-1231-1231</div>
-                            <div>m1@naver.com</div>
-                            <div>비고</div>
-                            <div>2023.07.10 14:11</div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -163,17 +163,138 @@
             </div>
             <div class="btn-wrap">
                 <div class="btn btn-primary" @click="user_add = false">등록</div>
-                <div class="btn btn-secondary">사용자리스트</div>
+                <div class="btn btn-secondary" @click="user_add = false">사용자리스트</div>
             </div>
         </div>
     </div>
+    <Popup v-if="delete_popup_state" @accept="delete_member" @exit="change_popup_state('delete', false)" :content="`${member_checked_list.length}명의 사용자를 삭제 하시겠습니까?`" :danger="`삭제 후 복구가 불가능 합니다.`"/>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import Popup from '@/components/Popup.vue'
+
+import { ref, watch } from 'vue'
 
 const user_add = ref(false)
 const search_detail = ref(false)
+
+//---------------------------------
+
+let search_keyword = ref('')
+
+watch(search_keyword, (keyword) => {
+    view_member.value = search_member(search_keyword.value, origin_member)
+})
+
+const search_input = ref()
+const search = (e) => {
+    const keyword = search_input.value.value
+    
+    search_keyword.value = keyword
+}
+const enter = (e) => {
+    if (e.key == 'Enter') {
+        search(e)
+    };
+}
+
+const search_member = (keyword, arr) => {
+    if (!keyword) return arr
+    // return arr.filter((member) => member.name == keyword || member.email == keyword)
+    return arr.filter((member) => new RegExp(keyword).test(member.type) || new RegExp(keyword).test(member.system) || new RegExp(keyword).test(member.company))
+}
+
+const origin_member = [
+    {
+        id: 1,
+        type: 'MCR',
+        system: '멀티뷰어',
+        company: '삼성전자',
+        manage: '담당',
+        name: '홍길동',
+        position: '부장',
+        depart: '-',
+        email: 'test@test.com',
+        phone: '010-1231-1231',
+        landline: '02-1231-1231',
+        note: '비고',
+        date: '2023.07.10 14:11',
+    },
+    {
+        id: 2,
+        type: 'MCR',
+        system: '멀티뷰어',
+        company: '삼성전자',
+        manage: '담당',
+        name: '홍길동',
+        position: '부장',
+        depart: '-',
+        email: 'test@test.com',
+        phone: '010-1231-1231',
+        landline: '02-1231-1231',
+        note: '비고',
+        date: '2023.07.10 14:11',
+    },
+    {
+        id: 3,
+        type: 'MCR',
+        system: '멀티뷰어',
+        company: '삼성전자',
+        manage: '담당',
+        name: '홍길동',
+        position: '부장',
+        depart: '-',
+        email: 'test@test.com',
+        phone: '010-1231-1231',
+        landline: '02-1231-1231',
+        note: '비고',
+        date: '2023.07.10 14:11',
+    },
+    {
+        id: 4,
+        type: 'MCR',
+        system: '멀티뷰어',
+        company: '삼성전자',
+        manage: '담당',
+        name: '홍길동',
+        position: '부장',
+        depart: '-',
+        email: 'test@test.com',
+        phone: '010-1231-1231',
+        landline: '02-1231-1231',
+        note: '비고',
+        date: '2023.07.10 14:11',
+    },
+    
+]
+const view_member = ref(origin_member)
+
+let member_checked_list:any = ref([])
+const check_all_member = (e) => {
+    if(e.target.checked) {
+        view_member.value.forEach((member) => {
+            member_checked_list.value.push(member.id)
+        })
+    }
+    else{
+        member_checked_list.value = []
+    }
+}
+
+let accept_popup_state = ref(false)
+let delete_popup_state = ref(false)
+
+const delete_member = () => {
+    member_checked_list.value.forEach((member_id) => {
+    console.log(member_id);
+        // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
+    })
+}
+
+const change_popup_state = (popup_type, state) => {
+    if (popup_type == 'delete') delete_popup_state.value = state
+    if (popup_type == 'accept') accept_popup_state.value = state
+}
 </script>
 
 <style lang="scss" scoped>
