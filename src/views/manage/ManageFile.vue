@@ -12,18 +12,29 @@
                 </svg>
                 관리파일 그룹추가</div>
             <div class="btn-wrap">
-                <div class="manage-file-btn order-save">순서저장</div>
-                <div class="manage-file-btn group-create">그룹생성</div>
+                <div class="manage-file-btn order-save" @click="save">순서저장</div>
+                <div class="manage-file-btn group-create" @click="create">그룹생성</div>
             </div>
         </div>
         <div class="section">
             <div class="group">
-                <div class="no-group">
+                <div class="no-group" v-if="!data.length">
                     <div class="no-group-img"><img src="@/assets/img/no-group-img.png" alt=""></div>
                     <div class="no-group-txt">등록된 관리파일 그룹이 없습니다.</div>
                 </div>
-                <!-- <ul>
-                    <li>
+                <draggable class="group-list" v-if="data.length" :list="data" @change="move"> 
+                    <li v-for="(group, idx) in data" :key="group">
+                        <div>{{group.name}}<span>{{group.count}}</span></div>
+                        <svg @click="change_popup_state('delete', true, idx)" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <mask id="mask0_1006_6108" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="18">
+                        <rect width="18" height="18" fill="#D9D9D9"/>
+                        </mask>
+                        <g mask="url(#mask0_1006_6108)">
+                        <path d="M8.99998 9.79035L11.3048 12.0952C11.4086 12.199 11.5392 12.2521 11.6964 12.2545C11.8536 12.2569 11.9865 12.2038 12.0952 12.0952C12.2038 11.9865 12.2582 11.8548 12.2582 11.7C12.2582 11.5452 12.2038 11.4135 12.0952 11.3048L9.79035 8.99998L12.0952 6.69516C12.199 6.59132 12.2521 6.46079 12.2545 6.30358C12.2569 6.14638 12.2038 6.01346 12.0952 5.90481C11.9865 5.79614 11.8548 5.74181 11.7 5.74181C11.5452 5.74181 11.4135 5.79614 11.3048 5.90481L8.99998 8.20961L6.69516 5.90481C6.59132 5.80096 6.46079 5.74783 6.30358 5.74543C6.14638 5.74302 6.01346 5.79614 5.90481 5.90481C5.79614 6.01346 5.74181 6.14518 5.74181 6.29998C5.74181 6.45478 5.79614 6.58651 5.90481 6.69516L8.20961 8.99998L5.90481 11.3048C5.80096 11.4086 5.74783 11.5392 5.74543 11.6964C5.74302 11.8536 5.79614 11.9865 5.90481 12.0952C6.01346 12.2038 6.14518 12.2582 6.29998 12.2582C6.45478 12.2582 6.58651 12.2038 6.69516 12.0952L8.99998 9.79035ZM9.00124 16.125C8.01579 16.125 7.08951 15.938 6.22241 15.564C5.3553 15.19 4.60104 14.6824 3.95963 14.0413C3.3182 13.4001 2.81041 12.6462 2.43624 11.7795C2.06208 10.9128 1.875 9.98669 1.875 9.00124C1.875 8.01579 2.062 7.08951 2.436 6.22241C2.81 5.3553 3.31756 4.60104 3.95869 3.95963C4.59983 3.3182 5.35376 2.81041 6.22048 2.43624C7.08719 2.06208 8.01328 1.875 8.99873 1.875C9.98418 1.875 10.9105 2.062 11.7776 2.436C12.6447 2.81 13.3989 3.31756 14.0403 3.95869C14.6818 4.59983 15.1896 5.35376 15.5637 6.22048C15.9379 7.08719 16.125 8.01328 16.125 8.99873C16.125 9.98418 15.938 10.9104 15.564 11.7776C15.19 12.6447 14.6824 13.3989 14.0413 14.0403C13.4001 14.6818 12.6462 15.1896 11.7795 15.5637C10.9128 15.9379 9.98669 16.125 9.00124 16.125ZM8.99998 15C10.675 15 12.0937 14.4187 13.2562 13.2562C14.4187 12.0937 15 10.675 15 8.99998C15 7.32498 14.4187 5.90623 13.2562 4.74373C12.0937 3.58123 10.675 2.99998 8.99998 2.99998C7.32498 2.99998 5.90623 3.58123 4.74373 4.74373C3.58123 5.90623 2.99998 7.32498 2.99998 8.99998C2.99998 10.675 3.58123 12.0937 4.74373 13.2562C5.90623 14.4187 7.32498 15 8.99998 15Z" fill="#B5B5C3"/>
+                        </g>
+                        </svg>
+                    </li>
+                    <!-- <li>
                         <div>HD방송<span>7</span></div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <mask id="mask0_1006_6108" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="18">
@@ -33,146 +44,92 @@
                         <path d="M8.99998 9.79035L11.3048 12.0952C11.4086 12.199 11.5392 12.2521 11.6964 12.2545C11.8536 12.2569 11.9865 12.2038 12.0952 12.0952C12.2038 11.9865 12.2582 11.8548 12.2582 11.7C12.2582 11.5452 12.2038 11.4135 12.0952 11.3048L9.79035 8.99998L12.0952 6.69516C12.199 6.59132 12.2521 6.46079 12.2545 6.30358C12.2569 6.14638 12.2038 6.01346 12.0952 5.90481C11.9865 5.79614 11.8548 5.74181 11.7 5.74181C11.5452 5.74181 11.4135 5.79614 11.3048 5.90481L8.99998 8.20961L6.69516 5.90481C6.59132 5.80096 6.46079 5.74783 6.30358 5.74543C6.14638 5.74302 6.01346 5.79614 5.90481 5.90481C5.79614 6.01346 5.74181 6.14518 5.74181 6.29998C5.74181 6.45478 5.79614 6.58651 5.90481 6.69516L8.20961 8.99998L5.90481 11.3048C5.80096 11.4086 5.74783 11.5392 5.74543 11.6964C5.74302 11.8536 5.79614 11.9865 5.90481 12.0952C6.01346 12.2038 6.14518 12.2582 6.29998 12.2582C6.45478 12.2582 6.58651 12.2038 6.69516 12.0952L8.99998 9.79035ZM9.00124 16.125C8.01579 16.125 7.08951 15.938 6.22241 15.564C5.3553 15.19 4.60104 14.6824 3.95963 14.0413C3.3182 13.4001 2.81041 12.6462 2.43624 11.7795C2.06208 10.9128 1.875 9.98669 1.875 9.00124C1.875 8.01579 2.062 7.08951 2.436 6.22241C2.81 5.3553 3.31756 4.60104 3.95869 3.95963C4.59983 3.3182 5.35376 2.81041 6.22048 2.43624C7.08719 2.06208 8.01328 1.875 8.99873 1.875C9.98418 1.875 10.9105 2.062 11.7776 2.436C12.6447 2.81 13.3989 3.31756 14.0403 3.95869C14.6818 4.59983 15.1896 5.35376 15.5637 6.22048C15.9379 7.08719 16.125 8.01328 16.125 8.99873C16.125 9.98418 15.938 10.9104 15.564 11.7776C15.19 12.6447 14.6824 13.3989 14.0413 14.0403C13.4001 14.6818 12.6462 15.1896 11.7795 15.5637C10.9128 15.9379 9.98669 16.125 9.00124 16.125ZM8.99998 15C10.675 15 12.0937 14.4187 13.2562 13.2562C14.4187 12.0937 15 10.675 15 8.99998C15 7.32498 14.4187 5.90623 13.2562 4.74373C12.0937 3.58123 10.675 2.99998 8.99998 2.99998C7.32498 2.99998 5.90623 3.58123 4.74373 4.74373C3.58123 5.90623 2.99998 7.32498 2.99998 8.99998C2.99998 10.675 3.58123 12.0937 4.74373 13.2562C5.90623 14.4187 7.32498 15 8.99998 15Z" fill="#B5B5C3"/>
                         </g>
                         </svg>
-                    </li>
-                    <li>
-                        <div>HD방송<span>7</span></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <mask id="mask0_1006_6108" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="18">
-                        <rect width="18" height="18" fill="#D9D9D9"/>
-                        </mask>
-                        <g mask="url(#mask0_1006_6108)">
-                        <path d="M8.99998 9.79035L11.3048 12.0952C11.4086 12.199 11.5392 12.2521 11.6964 12.2545C11.8536 12.2569 11.9865 12.2038 12.0952 12.0952C12.2038 11.9865 12.2582 11.8548 12.2582 11.7C12.2582 11.5452 12.2038 11.4135 12.0952 11.3048L9.79035 8.99998L12.0952 6.69516C12.199 6.59132 12.2521 6.46079 12.2545 6.30358C12.2569 6.14638 12.2038 6.01346 12.0952 5.90481C11.9865 5.79614 11.8548 5.74181 11.7 5.74181C11.5452 5.74181 11.4135 5.79614 11.3048 5.90481L8.99998 8.20961L6.69516 5.90481C6.59132 5.80096 6.46079 5.74783 6.30358 5.74543C6.14638 5.74302 6.01346 5.79614 5.90481 5.90481C5.79614 6.01346 5.74181 6.14518 5.74181 6.29998C5.74181 6.45478 5.79614 6.58651 5.90481 6.69516L8.20961 8.99998L5.90481 11.3048C5.80096 11.4086 5.74783 11.5392 5.74543 11.6964C5.74302 11.8536 5.79614 11.9865 5.90481 12.0952C6.01346 12.2038 6.14518 12.2582 6.29998 12.2582C6.45478 12.2582 6.58651 12.2038 6.69516 12.0952L8.99998 9.79035ZM9.00124 16.125C8.01579 16.125 7.08951 15.938 6.22241 15.564C5.3553 15.19 4.60104 14.6824 3.95963 14.0413C3.3182 13.4001 2.81041 12.6462 2.43624 11.7795C2.06208 10.9128 1.875 9.98669 1.875 9.00124C1.875 8.01579 2.062 7.08951 2.436 6.22241C2.81 5.3553 3.31756 4.60104 3.95869 3.95963C4.59983 3.3182 5.35376 2.81041 6.22048 2.43624C7.08719 2.06208 8.01328 1.875 8.99873 1.875C9.98418 1.875 10.9105 2.062 11.7776 2.436C12.6447 2.81 13.3989 3.31756 14.0403 3.95869C14.6818 4.59983 15.1896 5.35376 15.5637 6.22048C15.9379 7.08719 16.125 8.01328 16.125 8.99873C16.125 9.98418 15.938 10.9104 15.564 11.7776C15.19 12.6447 14.6824 13.3989 14.0413 14.0403C13.4001 14.6818 12.6462 15.1896 11.7795 15.5637C10.9128 15.9379 9.98669 16.125 9.00124 16.125ZM8.99998 15C10.675 15 12.0937 14.4187 13.2562 13.2562C14.4187 12.0937 15 10.675 15 8.99998C15 7.32498 14.4187 5.90623 13.2562 4.74373C12.0937 3.58123 10.675 2.99998 8.99998 2.99998C7.32498 2.99998 5.90623 3.58123 4.74373 4.74373C3.58123 5.90623 2.99998 7.32498 2.99998 8.99998C2.99998 10.675 3.58123 12.0937 4.74373 13.2562C5.90623 14.4187 7.32498 15 8.99998 15Z" fill="#B5B5C3"/>
-                        </g>
-                        </svg>
-                    </li>
-                </ul> -->
+                    </li> -->
+                </draggable>
+                <!-- <draggable class="dragArea list-group w-full" :list="list" @change="log">
+                    <div
+                    class="list-group-item bg-gray-300 m-1 p-3 rounded-md text-center"
+                    v-for="element in list"
+                    :key="element.name"
+                    >
+                    {{ element.name }}
+                    </div>
+                </draggable> -->
             </div>
             <div class="group-adjust">
                 <div class="group-name">관리파일 그룹 명</div>
                 <div class="group-name-change">
-                    <input type="text">
+                    <input type="text" ref="input_add_group">
                 </div>
             </div>
         </div>
     </div>
+    <Popup v-if="delete_popup_state" @accept="delete_group" @exit="change_popup_state('delete', false, null)" :content="`TITAN 그룹을 삭제하시겠습니까?`"/>
+    <!-- <Popup v-if="accept_popup_state" @accept="accept_member" @exit="change_popup_state('accept', false)" :content="`${member_checked_list.length}명의 회원을 승인처리 하시겠습니까?`" /> -->
 </template> 
 
 <script setup lang="ts">
+import Popup from '@/components/Popup.vue'
+import {VueDraggableNext as draggable} from "vue-draggable-next"
+
 import { ref } from "vue";
 
 const data:any = ref([])
 data.value = [
     {
-        filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
-        sheet: '도봉강북_IP',
-        registor: '공유',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '공유',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
+        id: 1,
+        name: 'HD방송',
+        count: 7
     },
     {
-        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
-        sheet: '수원',
-        registor: '안보현',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '유재석',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: 'SD ReENC_MUX',
-        registor: '장원영',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
-        sheet: '수원_QAM',
-        registor: '이효리',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '공유',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
-        sheet: '수원_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '보아',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
+        id: 2,
+        name: 'HD방송2',
+        count: 7
     },
 ]
+
+const move = (e) => {
+    console.log(data.value);
+}
+
+const save = () => {
+    console.log(data.value);
+}
+
+const input_add_group = ref()
+
+const create = () => {
+    console.log(data.value);
+    data.value.push({
+        name: input_add_group.value.value,
+        count: 0
+    })
+}
+
+// const change_popup_state = (type) => {
+//     delete_popup_state
+
+//     data.value.splice(idx, 1)
+// }
+
+// let accept_popup_state = ref(false)
+let delete_idx = null
+let delete_popup_state = ref(false)
+
+// const accept_member = () => {
+//     // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
+// }
+const delete_group = () => {
+    data.value.splice(delete_idx, 1)
+
+    delete_idx = null
+}
+
+const change_popup_state = (popup_type, state, idx) => {
+    if (popup_type == 'delete') delete_popup_state.value = state
+    
+    delete_idx = idx
+}
 </script>
 
 <style lang="scss" scoped>
@@ -258,7 +215,7 @@ p{margin: 0;padding: 0;}
                     font-weight: 500;
                 }
             }
-            ul{
+            .group-list{
                 padding: 24px 10px 0 10px;
                 border-right: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
                 height: calc(100vh - 70px - 48px - 150px);

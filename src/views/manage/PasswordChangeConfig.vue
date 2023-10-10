@@ -10,7 +10,7 @@
                 <label for="password-change-every-3month">3개월 마다</label>
                 <input @change="change_password_config($event, 6)" type="radio" id="password-change-every-6month">
                 <label for="password-change-every-6month">6개월 마다</label>
-                <input @change="change_password_config($event, 0)" type="radio" id="password-change-every-none">
+                <input @change="change_password_config($event, 0)" type="radio" id="password-change-every-none" checked>
                 <label for="password-change-every-none">사용안함</label>
             </div>
             <button @click="send_server_config" :class="{active: before_config != config}" class="btn-password-change">변경 설정하기</button>

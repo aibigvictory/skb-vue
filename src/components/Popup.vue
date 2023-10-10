@@ -15,9 +15,12 @@
                 <div class="content">{{content}}</div>
                 <div v-if="danger" class="danger">{{danger}}</div>
             </div>
-            <div class="popup-footer">
+            <div class="popup-footer" v-if="btnCount == 2">
                 <button class="popup-btn accept" @click="accept">확인</button>
                 <button class="popup-btn" @click="emits('exit')">취소</button>
+            </div>
+            <div class="popup-footer" v-if="btnCount == 1">
+                <button class="popup-btn accept" @click="emits('exit')">확인</button>
             </div>
             <!-- <div class="popup-footer" v-if="btn == 1">
                 <button class="popup-btn accept">확인</button>
@@ -30,6 +33,10 @@
 const props = defineProps({
     content: String,
     danger: String,
+    btnCount: {
+        type: Number,
+        default: 2
+    }
 })
 const emits = defineEmits([
     'accept',

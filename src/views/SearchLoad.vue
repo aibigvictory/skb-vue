@@ -70,7 +70,7 @@
       </li>
     </ul>
     <div class="save-wrap">
-      <button class="save-btn">저장하기</button>
+      <button class="save-btn" @click="save">저장하기</button>
     </div>
   </div>
 </template>
@@ -271,75 +271,11 @@ onMounted(async() => {
     //   }
     // });
   })
-
-  // for (let key in search_result_list2) {
-  //   // console.log(key);
-  //   // console.log(search_result_list2[key]);
-  //   const { columns, complexColumns, data } = search_result_list2[key]
-
-    
-    
-
-  //   // console.log('-----------------------');
-  //   columns.forEach((item) => {
-  //     item.width = 'auto'
-  //     item.editor = {
-  //       type: CustomTextEditor,
-  //       options: {
-  //         maxLength: 100
-  //       }
-  //     }
-  //   })
-  //   // console.log(columns);
-    
-
-  //   // let result = {}
-
-  //   // data.forEach((item) => {
-  //   //   result = {
-  //   //     ...result,
-  //   //     ...item
-  //   //   }
-  //   // })
-  //   // console.log('-----------------------');
-    
-
-  //   // console.log(`grid${key}`);
-  //   // console.log(document.getElementById(`grid${key}`));
-
-  //   const toast = new Grid({
-  //     el: document.getElementById(`grid${key}`),
-  //     scrollX: true,
-  //     scrollY: false,
-  //     rowHeight: 'auto',
-  //     columns,
-  //     complexColumns,
-  //     data: data,
-  //     contextMenu: null
-  //   });
-
-  //   Grid.applyTheme('striped', {
-  //     cell: {
-  //       normal: {
-  //         // background: '#000',
-  //         text: '#333',
-  //         border: '#000'
-  //       }
-  //     }
-  //   });
-
-  //   // toast.on('contextMenu', function(ev) {
-  //   //   ev.stop(); // 우클릭 이벤트 막기
-  //   // });
-  // }
-
-
-
-//   setInterval(() => {
-//     // console.log(grid.getData());
-    
-//   },2000)
 })
+
+const save = () => {
+  axios.post('http://dev.peerline.net:80/excel')
+}
 
 
 // instance.resetData(newData); // Call API of instance's public method

@@ -32,7 +32,7 @@
           <span class="bullet bullet-dot bg-danger h-6px w-6px position-absolute translate-middle top-0 end-0">
           </span>
         </div>
-        <div class="large">
+        <div class="large" @click="toggleFullScreen">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
           <path d="M1.125 0.75C0.917893 0.75 0.75 0.917893 0.75 1.125V4.125C0.75 4.33211 0.582107 4.5 0.375 4.5C0.167893 4.5 0 4.33211 0 4.125V1.125C0 0.50368 0.50368 0 1.125 0H4.125C4.33211 0 4.5 0.167893 4.5 0.375C4.5 0.582107 4.33211 0.75 4.125 0.75H1.125ZM7.5 0.375C7.5 0.167893 7.66789 0 7.875 0H10.875C11.4963 0 12 0.50368 12 1.125V4.125C12 4.33211 11.8321 4.5 11.625 4.5C11.4179 4.5 11.25 4.33211 11.25 4.125V1.125C11.25 0.917893 11.0821 0.75 10.875 0.75H7.875C7.66789 0.75 7.5 0.582107 7.5 0.375ZM0.375 7.5C0.582107 7.5 0.75 7.66789 0.75 7.875V10.875C0.75 11.0821 0.917893 11.25 1.125 11.25H4.125C4.33211 11.25 4.5 11.4179 4.5 11.625C4.5 11.8321 4.33211 12 4.125 12H1.125C0.50368 12 0 11.4963 0 10.875V7.875C0 7.66789 0.167893 7.5 0.375 7.5ZM11.625 7.5C11.8321 7.5 12 7.66789 12 7.875V10.875C12 11.4963 11.4963 12 10.875 12H7.875C7.66789 12 7.5 11.8321 7.5 11.625C7.5 11.4179 7.66789 11.25 7.875 11.25H10.875C11.0821 11.25 11.25 11.0821 11.25 10.875V7.875C11.25 7.66789 11.4179 7.5 11.625 7.5Z" fill="black"/>
           </svg>
@@ -97,8 +97,19 @@ export default defineComponent({
       return store.getters.getThemeMode;
     });
 
+    const toggleFullScreen = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen()
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen()
+        }
+      }
+    }
+
     return {
       themeMode,
+      toggleFullScreen,
     };
   },
 });
