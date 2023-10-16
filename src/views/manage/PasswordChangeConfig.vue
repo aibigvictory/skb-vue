@@ -6,11 +6,11 @@
             <div class="info">로그인 시 자동으로 해당 주기에 따라 비밀번호 갱신을 체크합니다.</div>
             <div class="line"></div>
             <div class="radio-wrap">
-                <input @change="change_password_config($event, 3)" type="radio" id="password-change-every-3month">
+                <input @change="change_password_config($event, '3months')" type="radio" id="password-change-every-3month" :checked="config=='3months'">
                 <label for="password-change-every-3month">3개월 마다</label>
-                <input @change="change_password_config($event, 6)" type="radio" id="password-change-every-6month">
+                <input @change="change_password_config($event, '6months')" type="radio" id="password-change-every-6month" :checked="config=='6months'">
                 <label for="password-change-every-6month">6개월 마다</label>
-                <input @change="change_password_config($event, 0)" type="radio" id="password-change-every-none" checked>
+                <input @change="change_password_config($event, 'never')" type="radio" id="password-change-every-none" :checked="config=='never'">
                 <label for="password-change-every-none">사용안함</label>
             </div>
             <button @click="send_server_config" :class="{active: before_config != config}" class="btn-password-change">변경 설정하기</button>
@@ -19,10 +19,34 @@
 </template>
 
 <script setup lang="ts">
+import JwtService from "@/core/services/JwtService";
+import axios from "axios";
 import { ref, watch } from "vue";
 
-let before_config = 0
-let config = ref(0)
+let before_config = ref('never')
+let config = ref('never')
+
+const init = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const {data} = await axios.post('http://dev.peerline.net:9494/auth/getPasswordPolicy', {}, axios_config)
+    const pw_config = data.expiredDay == 180 ?'6months' : data.expiredDay == 90 ?'3months' :'never'
+
+    console.log(pw_config);
+    
+
+    before_config.value = pw_config
+    config.value = pw_config
+
+    console.log(before_config.value);
+    console.log(config.value);
+    
+    
+}
+
+init()
 
 const change_password_config = (e, config_value) => {
     e.target.parentNode.childNodes.forEach(element => {
@@ -33,8 +57,26 @@ const change_password_config = (e, config_value) => {
     config.value = config_value
 }
 const send_server_config = () => {
-    alert('complete')
-    before_config = config.value
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const data = {
+        policy: config.value,
+    }
+
+    axios.post('http://dev.peerline.net:9494/auth/updatePasswordPolicy', data, axios_config)
+    .then(() => {
+        before_config.value = config.value
+        console.log(before_config.value);
+        console.log(config.value);
+        
+        alert('비밀번호 주기 변경이 완료되었습니다.')
+    })
+    .catch((error) => {
+        alert('비밀번호 주기 변경에 실패했습니다.')
+    })
+    // alert('complete')
 }
 </script>
 

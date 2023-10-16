@@ -162,6 +162,8 @@ const sort_search_result = (e, type) => {
   
 }
 
+// let adjust = null
+
 class CustomTextEditor {
   constructor(props) {
     const el = document.createElement('textarea');
@@ -177,10 +179,15 @@ class CustomTextEditor {
   }
 
   getElement() {
+    console.log(this.el);
+    // adjust = this.el.value
+
     return this.el;
   }
 
   getValue() {
+    console.log(123213123);
+    
     // return this.el.value;
     return this.el.value.replace(/\n/g, '<br>');
     // return ' ' +  this.el.value + ' ';
@@ -204,7 +211,9 @@ class CustomTextEditor {
 //     return this.el.value.replace(/\n/g, '<br>');
 //   }
 //   //...
-// }
+// }\
+
+let toastArr: any = {}
 
 onMounted(async() => {
   await init()
@@ -212,7 +221,7 @@ onMounted(async() => {
   // console.log(sheet_list);
   // console.log(sheet_list);
 
-  // console.log();
+  console.log(files);
   files.forEach((file) => {
     console.log(file);
 
@@ -251,6 +260,7 @@ onMounted(async() => {
         scrollX: true,
         scrollY: false,
         rowHeight: 'auto',
+        // rowHeaders: ['rowNum'],
         header: {
           complexColumns,
         },
@@ -258,6 +268,8 @@ onMounted(async() => {
         data,
         contextMenu: null
       });
+
+      toastArr[name] = toast
     })
 
 
@@ -274,7 +286,44 @@ onMounted(async() => {
 })
 
 const save = () => {
-  axios.post('http://dev.peerline.net:80/excel')
+  let data = []
+
+  console.log(toastArr);
+
+  for (const key in toastArr) {
+    console.log(key);
+    console.log(toastArr[key].getData());
+
+    
+    
+    // const adjust = {
+    //   "fileId": 27,
+    //   "sheetName": "도봉강북_QAM",
+    //   "r": 6,
+    //   "c": 5,
+    //   "value": "수정 테스트"
+    // }
+  }
+  // toastArr.forEach((toast) => {
+  //   console.log(toast);
+    
+  //   console.log(toast.getCellClassName());
+  //   console.log(toast.getData());
+    
+  // })
+  
+
+  // const data = [
+    // {
+    //   "fileId": 27,
+    //   "sheetName": "도봉강북_QAM",
+    //   "r": 6,
+    //   "c": 5,
+    //   "value": "수정 테스트"
+    // },
+  // ]
+
+  // axios.post('http://dev.peerline.net:80/Excel/edit', data)
 }
 
 

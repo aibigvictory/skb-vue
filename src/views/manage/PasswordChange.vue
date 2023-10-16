@@ -16,11 +16,10 @@
             </div>
             <div class="info">비밀번호를 변경 해주세요.</div>
             <div class="input-wrap">
-                <!-- <input @keypress="next" type="password" placeholder="새로운 비밀번호"> -->
                 <Field
                 type="password"
                 name="password"
-                placeholder="새로운 비밀번호"
+                placeholder="기존 비밀번호"
                 @keypress="next"
                 />
                 <div class="fv-plugins-message-container">
@@ -28,15 +27,27 @@
                         <ErrorMessage name="password" />
                     </div>
                 </div>
+                <!-- <input @keypress="next" type="password" placeholder="새로운 비밀번호"> -->
                 <Field
                 type="password"
-                name="password_re"
+                name="changePassword"
+                placeholder="새로운 비밀번호"
+                @keypress="next"
+                />
+                <div class="fv-plugins-message-container">
+                    <div class="fv-help-block">
+                        <ErrorMessage name="changePassword" />
+                    </div>
+                </div>
+                <Field
+                type="password"
+                name="changePassword_re"
                 placeholder="새로운 비밀번호 확인"
                 />
                 <!--end::Input-->
                 <div class="fv-plugins-message-container">
                     <div class="fv-help-block">
-                        <ErrorMessage name="password_re" />
+                        <ErrorMessage name="changePassword_re" />
                     </div>
                 </div>
             </div>
@@ -50,8 +61,11 @@
 </template>
 
 <script setup lang="ts">
-import { ErrorMessage, Field, Form } from "vee-validate";
-import { ref } from "vue";
+import JwtService from "@/core/services/JwtService";
+import router from "@/router";
+import axios from "axios";
+import { useForm, ErrorMessage, Field, Form } from "vee-validate";
+import { computed, onMounted, ref } from "vue";
 import * as Yup from "yup";
 
 Yup.setLocale({
@@ -90,22 +104,45 @@ Yup.setLocale({
 
 const password_shape = Yup.object().shape({
     password: Yup.string().required().min(4).label("Password"),
-    password_re: Yup.string().required().min(4).label("Password"),
+    changePassword: Yup.string().required().min(4).label("ChangePassword"),
+    changePassword_re: Yup.string().required().min(4).oneOf([Yup.ref("changePassword"), null], "비밀번호가 일치하지 않습니다.").label("ChangePassword"),
 });
 
 const next = (e) => {
     if (e.key == 'Enter') {
         e.target.nextSibling.nextSibling.focus()
-    };
+    }
 }
+
+// const valid = computed(() => {
+//     password_shape.validate(values).then(function (value) {
+//         return true
+//     }).catch(function (err) {
+//         return false
+//     });
+// })
+
 // const enter = (e) => {
 //     if (e.key == 'Enter') {
 //         // change_password()
 //     };
 // }
-const change_password = () => {
+const change_password = (data) => {
+    console.log(data);
+    
 
-    alert('cahnge')
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    axios.post('http://dev.peerline.net:9494/auth/updatePassword', data, axios_config)
+    .then(() => {
+        alert('비밀번호 변경이 완료되었습니다.')
+        router.go(0)
+    })
+    .catch((error) => {
+        alert('비밀번호 변경에 실패했습니다.')
+    })
 }
 </script>
 

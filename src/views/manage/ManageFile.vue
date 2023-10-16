@@ -18,14 +18,14 @@
         </div>
         <div class="section">
             <div class="group">
-                <div class="no-group" v-if="!data.length">
+                <div class="no-group" v-if="!group.length">
                     <div class="no-group-img"><img src="@/assets/img/no-group-img.png" alt=""></div>
                     <div class="no-group-txt">등록된 관리파일 그룹이 없습니다.</div>
                 </div>
-                <draggable class="group-list" v-if="data.length" :list="data" @change="move"> 
-                    <li v-for="(group, idx) in data" :key="group">
+                <draggable class="group-list" v-if="group.length" :list="group" @change="move"> 
+                    <li v-for="group in group" :key="group">
                         <div>{{group.name}}<span>{{group.count}}</span></div>
-                        <svg @click="change_popup_state('delete', true, idx)" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <svg @click="change_popup_state('delete', true, group.id, group.name)" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <mask id="mask0_1006_6108" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="18">
                         <rect width="18" height="18" fill="#D9D9D9"/>
                         </mask>
@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    <Popup v-if="delete_popup_state" @accept="delete_group" @exit="change_popup_state('delete', false, null)" :content="`TITAN 그룹을 삭제하시겠습니까?`"/>
+    <Popup v-if="delete_popup_state" @accept="delete_group" @exit="change_popup_state('delete', false, null, null)" :content="`${delete_file_name} 그룹을 삭제하시겠습니까?`"/>
     <!-- <Popup v-if="accept_popup_state" @accept="accept_member" @exit="change_popup_state('accept', false)" :content="`${member_checked_list.length}명의 회원을 승인처리 하시겠습니까?`" /> -->
 </template> 
 
@@ -73,62 +73,96 @@ import Popup from '@/components/Popup.vue'
 import {VueDraggableNext as draggable} from "vue-draggable-next"
 
 import { ref } from "vue";
+import axios from 'axios';
+import store from '@/store';
 
-const data:any = ref([])
-data.value = [
-    {
-        id: 1,
-        name: 'HD방송',
-        count: 7
-    },
-    {
-        id: 2,
-        name: 'HD방송2',
-        count: 7
-    },
-]
+const group:any = ref([])
 
-const move = (e) => {
-    console.log(data.value);
+const init = async () => {
+    try{
+        const { data } = await axios.post('http://dev.peerline.net:9494/folder/list')
+
+        data.forEach(dat => dat.count = 7)
+
+        group.value = data
+    }
+    catch(error) {console.log(error);}
 }
 
-const save = () => {
-    console.log(data.value);
+init()
+
+const move = async (e) => {
+    console.log(group.value);
+}
+
+const save = async () => {
+    group.value.forEach(async (each_group, idx) => {
+        each_group.order = idx + 1
+
+        console.log(each_group);
+        
+
+        await axios.post('http://dev.peerline.net:9494/folder/update', {
+            id: each_group.id,
+            order: each_group.order,
+        })
+    })
+    console.log(group.value);
+
+    // await axios.post('http://dev.peerline.net:9494/folder/update', group.value)
 }
 
 const input_add_group = ref()
 
-const create = () => {
-    console.log(data.value);
-    data.value.push({
-        name: input_add_group.value.value,
-        count: 0
+const create = async () => {
+    if (!input_add_group.value.value) return alert('관리파일 그룹명을 입력하세요.')
+    console.log(group.value);
+    // group.value.push({
+    //     name: input_add_group.value.value,
+    //     count: 0
+    // })
+    await axios.post('http://dev.peerline.net:9494/folder/create', {
+        name: input_add_group.value.value
     })
+    init()
 }
 
 // const change_popup_state = (type) => {
 //     delete_popup_state
 
-//     data.value.splice(idx, 1)
+//     group.value.splice(idx, 1)
 // }
 
 // let accept_popup_state = ref(false)
 let delete_idx = null
+let delete_file_name = null
 let delete_popup_state = ref(false)
 
 // const accept_member = () => {
 //     // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
 // }
-const delete_group = () => {
-    data.value.splice(delete_idx, 1)
+const delete_group = async () => {
+    group.value.splice(delete_idx, 1)
+
+    await axios.post('http://dev.peerline.net:9494/folder/delete', {
+        id: delete_idx
+    })
 
     delete_idx = null
+    delete_file_name = null
+
+    setTimeout(() => {
+        store.state.upload++
+    }, 1000)
+
+    init()
 }
 
-const change_popup_state = (popup_type, state, idx) => {
+const change_popup_state = (popup_type, state, idx, file_name) => {
     if (popup_type == 'delete') delete_popup_state.value = state
     
     delete_idx = idx
+    delete_file_name = file_name
 }
 </script>
 

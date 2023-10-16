@@ -64,7 +64,7 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
     this.isAuthenticated = true;
     this.user = user;
     this.errors = {};
-    JwtService.saveToken(user.api_token);
+    JwtService.saveToken(user.accessToken);
   }
 
   @Mutation
@@ -87,7 +87,7 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
 
   @Action
   [Actions.LOGIN](credentials) {
-    return ApiService.post("login", credentials)
+    return ApiService.post("http://dev.peerline.net:9494/auth/login", credentials)
       .then(({ data }) => {
         this.context.commit(Mutations.SET_AUTH, data);
       })
@@ -103,9 +103,9 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
 
   @Action
   [Actions.REGISTER](credentials) {
-    return ApiService.post("register", credentials)
+    return ApiService.post("http://dev.peerline.net:9494/auth/signUp", credentials)
       .then(({ data }) => {
-        this.context.commit(Mutations.SET_AUTH, data);
+        // this.context.commit(Mutations.SET_AUTH, data);
       })
       .catch(({ response }) => {
         this.context.commit(Mutations.SET_ERROR, response.data.errors);
@@ -129,15 +129,15 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
     // console.log(token);
     // cookies.set('token', token, 30)
     if (JwtService.getToken()) {
-      ApiService.setHeader();
-      ApiService.post("verify_token", payload)
-        .then(({ data }) => {
-          this.context.commit(Mutations.SET_AUTH, data);
-        })
-        .catch(({ response }) => {
-          this.context.commit(Mutations.SET_ERROR, response.data.errors);
-          this.context.commit(Mutations.PURGE_AUTH);
-        });
+      this.context.commit(Mutations.SET_AUTH, {accessToken: JwtService.getToken()});
+      // ApiService.setHeader();
+      // ApiService.post("verify_token", payload)
+      //   .then(({ data }) => {
+      //   })
+      //   .catch(({ response }) => {
+      //     this.context.commit(Mutations.SET_ERROR, response.data.errors);
+      //     this.context.commit(Mutations.PURGE_AUTH);
+      //   });
     } else {
       this.context.commit(Mutations.PURGE_AUTH);
     }

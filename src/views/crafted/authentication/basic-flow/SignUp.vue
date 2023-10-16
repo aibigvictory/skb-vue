@@ -57,13 +57,13 @@
           tabindex="1"
           class="form-control form-control-lg form-control-solid"
           type="text"
-          name="team"
+          name="teamName"
           autocomplete="off"
         />
         <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
-            <ErrorMessage name="team" />
+            <ErrorMessage name="teamName" />
           </div>
         </div>
       </div>
@@ -190,7 +190,7 @@ Yup.setLocale({
     default: '사용할수 없는 값입니다.',
     required: (value) => {
       if (value.label == "Name") return '이름을 입력해주세요.'
-      if (value.label == "Team") return '팀명을 입력해주세요.'
+      if (value.label == "TeamName") return '팀명을 입력해주세요.'
       if (value.label == "Email") return '이메일을 입력해주세요.'
       if (value.label == "Password") return '비밀번호를 입력해주세요.'
       if (value.label == "Password Confirmation") return '비밀번호 확인을 입력해주세요.'
@@ -244,7 +244,7 @@ export default defineComponent({
 
     const registration = Yup.object().shape({
       name: Yup.string().required().matches(/^[가-힣a-zA-Z]+$/, '한글과 영문만 입력해주세요.').label("Name"),
-      team: Yup.string().required().matches(/^[가-힣a-zA-Z]+$/, '한글과 영문만 입력해주세요.').label("Team"),
+      teamName: Yup.string().required().matches(/^[가-힣a-zA-Z]+$/, '한글과 영문만 입력해주세요.').label("TeamName"),
       email: Yup.string().required().email().label("Email"),
       password: Yup.string().required().min(4).label("Password"),
       password_confirmation: Yup.string().min(4)
@@ -286,7 +286,7 @@ export default defineComponent({
           },
         }).then(function () {
           // Go to page after successfully login
-          router.push({ name: "dashboard" });
+          router.push({ name: "sign-in" });
         });
       } else {
         Swal.fire({

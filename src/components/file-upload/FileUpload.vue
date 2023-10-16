@@ -2,11 +2,11 @@
 <template>
     <div class="upload-wrap">
         <div class="category d-flex">
-            <div class="btn_category" v-for="category in categorys" :key="category" @click="change_category($event, category)">
+            <div class="btn_category" v-for="category in categorys" :key="category" @click="change_category($event, category.code)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M0.471955 3.38646L0.437344 2.625C0.437344 1.6585 1.22085 0.875 2.18734 0.875H5.39997C5.8641 0.875 6.30922 1.05937 6.63741 1.38756L7.36228 2.11244C7.69047 2.44063 8.13559 2.625 8.59972 2.625H12.0835C13.1126 2.625 13.9195 3.50861 13.8264 4.53344L13.2695 10.6584C13.1876 11.5598 12.4318 12.25 11.5267 12.25H2.47298C1.56787 12.25 0.812107 11.5598 0.730163 10.6584L0.173345 4.53344C0.134797 4.10941 0.250341 3.70955 0.471955 3.38646ZM1.91616 3.5C1.40163 3.5 0.998168 3.9418 1.04475 4.45422L1.60157 10.5792C1.64254 11.0299 2.02042 11.375 2.47298 11.375H11.5267C11.9793 11.375 12.3572 11.0299 12.3981 10.5792L12.9549 4.45422C13.0015 3.9418 12.5981 3.5 12.0835 3.5H1.91616ZM6.01869 2.00628C5.85459 1.84219 5.63203 1.75 5.39997 1.75H2.18734C1.70961 1.75 1.3213 2.13286 1.3125 2.60848L1.31801 2.72969C1.50421 2.66202 1.70553 2.625 1.91616 2.625H6.63741L6.01869 2.00628Z" fill="#B5B5C3"/>
                 </svg>
-                {{category}}
+                {{category.name}}
             </div>
         </div>
         <div id="dropzone" class="dropzone dropzone-multiple" ref="dropzone">
@@ -45,11 +45,24 @@ import store from "@/store";
 // 카테고리 시작---------------------------------------------
 
 // 관리파일 카테고리 목록
-const categorys = ref(['HD방송', 'CATV_SO', 'TITAN'])
+const categorys = ref([])
 const categorys_code = {'HD방송': '001/001', 'CATV_SO': '001/002', 'TITAN': '001/003'}
 
+const init = async () => {
+    try{
+        const { data } = await axios.post('http://dev.peerline.net:9494/folder/list')
+        console.log(data);
+
+        categorys.value = data
+        
+    }
+    catch(error) {console.log(error);}
+}
+
+init()
+
 // 카테고리 클릭시 이벤트
-const change_category = (e, selected_category) => {
+const change_category = (e, code) => {
     // 카테고리 클릭시 모든 html 요소에 active 클래스 제거하고 클릭한 요소에 active 클래스 추가
     e.target.parentNode.childNodes.forEach(element => {
         if (element.classList && element.classList.contains('active')) element.classList.remove('active')  
@@ -57,7 +70,7 @@ const change_category = (e, selected_category) => {
     e.target.classList.add('active')
     
     // 카테고리 클릭시 myDropzone option params 카테고리 변경
-    myDropzone.options.params.folderCd = categorys_code[selected_category]
+    myDropzone.options.params.folderCd = code
 }
 
 // 카테고리 종료---------------------------------------------
