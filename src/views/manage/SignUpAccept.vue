@@ -50,12 +50,12 @@
                     </li> -->
                     <li v-for="member in view_member" :key="member">
                         <input v-model="member_checked_list" :value="member.id" type="checkbox">
-                        <div>{{member.team}}</div>
+                        <div>{{member.teamName}}</div>
                         <div>{{member.name}}</div>
                         <div>{{member.email}}</div>
-                        <div><span class="accept-type">{{member.state}}</span></div>
-                        <div>{{member.acceptor}}</div>
-                        <div>{{member.date}}</div>
+                        <div><span class="accept-type">{{member.accepted ?"승인" :"승인요청"}}</span></div>
+                        <div>{{member.system}}</div>
+                        <div>{{member.createdAt.replace(/-/g, '.').replace(/T/, ' ').slice(0,16)}}</div>
                     </li>
                 </ul>
             </div>
@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import Popup from '@/components/Popup.vue'
+import JwtService from '@/core/services/JwtService'
 
 import axios from 'axios'
 import { ref, watch } from 'vue'
@@ -105,7 +106,8 @@ const enter = (e) => {
 
 const filter_member = (type, arr) => {
     if (type == '전체') return arr
-    return arr.filter((member) => member.state == type)
+    if (type == '승인') return arr.filter((member) => member.accepted == true)
+    if (type == '승인요청') return arr.filter((member) => member.accepted == false)
 }
 const search_member = (keyword, arr) => {
     if (!keyword) return arr
@@ -113,46 +115,24 @@ const search_member = (keyword, arr) => {
     return arr.filter((member) => new RegExp(keyword).test(member.name) || new RegExp(keyword).test(member.email))
 }
 
-const origin_member = [
-    {
-        id: 1,
-        team: 'CATV운용팀',
-        name: '홍길동',
-        email: 'test@test.com',
-        state: '승인요청',
-        acceptor: '신성우',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 2,
-        team: 'CATV운용팀',
-        name: '홍길동',
-        email: 'test@test.com',
-        state: '승인',
-        acceptor: '신성우',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 3,
-        team: 'CATV운용팀',
-        name: '홍길동',
-        email: 'test@test.com',
-        state: '승인요청',
-        acceptor: '신성우',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 4,
-        team: 'CATV운용팀',
-        name: '홍길동',
-        email: 'test@test.com',
-        state: '승인요청',
-        acceptor: '신성우',
-        date: '2023.07.10 14:11',
-    },
+let origin_member = []
+let view_member = ref(origin_member)
+
+const call_member = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const { data } = await axios.post('http://dev.peerline.net:9494/auth/getUserList', {}, axios_config)
+
+    console.log(data);
     
-]
-const view_member = ref(origin_member)
+
+    origin_member = data.users
+    view_member.value = data.users
+}
+
+call_member()
 
 let member_checked_list:any = ref([])
 const check_all_member = (e) => {
@@ -169,17 +149,34 @@ const check_all_member = (e) => {
 let accept_popup_state = ref(false)
 let delete_popup_state = ref(false)
 
-const accept_member = () => {
-    member_checked_list.value.forEach((member_id) => {
-    console.log(member_id);
-        // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
+const accept_member = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    await member_checked_list.value.forEach(async (member_id) => {
+        console.log(member_id);
+        await axios.post('http://dev.peerline.net:9494/auth/acceptUser', {id: member_id}, axios_config)
     })
+    
+    alert('승인처리가 완료되었습니다.')
+    member_checked_list.value = []
+    call_member()
+
 }
-const delete_member = () => {
-    member_checked_list.value.forEach((member_id) => {
-    console.log(member_id);
-        // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
+const delete_member = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    await member_checked_list.value.forEach(async (member_id) => {
+        console.log(member_id);
+        await axios.post('http://dev.peerline.net:9494/auth/deleteUser', {id: member_id}, axios_config)
     })
+    
+    alert('삭제가 완료되었습니다.')
+    member_checked_list.value = []
+    call_member()
 }
 
 const change_popup_state = (popup_type, state) => {

@@ -21,7 +21,7 @@
           신해철 
           <span class="company ms-3">SKB</span>
         </div>
-        <div class="two">{{date}}</div>
+        <div class="two">{{date.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')}}</div>
       </div>
       <!--end::Title-->
     </div>
@@ -31,8 +31,8 @@
     <div class="card-body d-flex align-items-end pt-0">
       <div class="content">
         <div class="title">{{file}}</div>
-        <div v-if="file!='다이렉트 HD방송_IPto8VSB_채널라인업'">ㅤ</div>
-        <div class="tag"><span class="badge bg-primary" v-if="file=='다이렉트 HD방송_IPto8VSB_채널라인업'">Today</span></div>
+        <div class="tag"><span class="badge bg-primary" v-if="date.slice(0,10) == new Date().toISOString().slice(0,10)">Today</span></div>
+        <div class="tag"><span class="badge bg-primary opacity" v-if="date.slice(0,10) != new Date().toISOString().slice(0,10)">Today</span></div>
       </div>
     </div>
     <!--end::Card body-->
@@ -49,7 +49,6 @@ export default defineComponent({
     className: { type: String, required: false },
     bgColor: { type: String, required: false, default: "#080655" },
     bgImage: { type: String, required: false },
-    description: { type: String, required: true },
     title: { type: String, required: false },
     user: { type: String, required: false },
     file: { type: String, required: false },
@@ -114,17 +113,19 @@ export default defineComponent({
   }
 }
 .content{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   .title{
+    display: flex;
+    align-items: center;
+
     color: var(--primary-text, #222);
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
     line-height: 140%; /* 22.4px */
-
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
   .tag{
     margin-top: 10px;
@@ -136,6 +137,9 @@ export default defineComponent({
       gap: 9.035px;
       border-radius: 4.518px;
       background: var(--data-bs-theme-light-bs-info, #7239EA) !important;
+      &.opacity{
+        opacity: 0;
+      }
     }
   }
 }

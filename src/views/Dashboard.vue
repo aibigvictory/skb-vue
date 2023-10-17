@@ -3,45 +3,16 @@
   <div class="row g-5 g-xl-10 mb-5 mt-1">
     <!--begin::Col-->
     <!-- <div class="row g-5 g-xl-10 mb-5"> -->
-      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
+      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5" v-for="(recent_upload_file, idx) in recent_upload_files" :key="recent_upload_file">
         <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px">최근 업로드 파일</h1> -->
         <Widget1
           className="h-md-90 mb-5 mt-3"
-          description="Active Projects"
           bgColor="#FFFFFF"
-          title="최근 업로드 파일"
-          file="다이렉트 HD방송_IPto8VSB_채널라인업"
-          date="2023년 8월 08일 15:47"
+          :title="`${!idx ?'최근 업로드 파일' :''}`"
+          :file="recent_upload_file.name"
+          :date="recent_upload_file.createdAt"
         />
 
-      </div>
-      <!--end::Col-->
-
-      <!--begin::Col-->
-      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
-        <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px"></h1> -->
-        <Widget1
-          className="h-md-90 mb-5 mt-3"
-          description="Active Projects"
-          bgColor="#FFFFFF"
-          title=""
-          file="다이렉트 HD방송_QAMto8VSB_채널라인업"
-          date="2023년 7월 14일 18:12"
-        />
-      </div>
-      <!--end::Col-->
-
-      <!--begin::Col-->
-      <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
-        <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px"></h1> -->
-        <Widget1
-          className="h-md-90 mb-5 mt-3"
-          description="Active Projects"
-          bgColor="#FFFFFF"
-          title=""
-          file="TITAN Live TC_230428_주요채널분산"
-          date="2023년 6월 23일 17:25"
-        />
       </div>
       <!--end::Col-->
 
@@ -227,6 +198,19 @@ import Widget1 from "@/components/dashboard-default-widgets/RecentUploadFile.vue
 import Widget2 from "@/components/dashboard-default-widgets/ConnectMember.vue";
 import FileUploadVue from '@/components/file-upload/FileUpload.vue'
 import { defineComponent, ref } from "vue";
+import axios from "axios";
+
+const recent_upload_files = ref([])
+
+const call_fileList = async () => {
+  const { data } = await axios.post('http://dev.peerline.net:9494/file/list')
+
+  console.log(data);
+  
+  recent_upload_files.value = data.slice(0,3)
+}
+
+call_fileList()
 
 // export default defineComponent({
 //   name: "main-dashboard",

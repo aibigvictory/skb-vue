@@ -1,23 +1,33 @@
 <template>
   <div class="warp">
     <div class="download-wrap">
-      <div class="nav-group nav-group-fluid">
-        <label>
-          <input type="radio" class="btn-check" name="type" value="has" checked>
-          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary"> 기본 </span>
-        </label>
-        <label>
-          <input type="radio" class="btn-check" name="type" value="users">
-          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> 123 </span>
-        </label>
-        <label>
-          <input type="radio" class="btn-check" name="type" value="orders">
-          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> ABC </span>
-        </label>
-        <label>
-          <input type="radio" class="btn-check" name="type" value="projects">
-          <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> 가나다 </span>
-        </label>
+      <div class="option-wrap">
+        정렬
+        <div class="nav-group nav-group-fluid">
+          <label>
+            <input type="radio" class="btn-check" name="type" value="has" checked>
+            <span class="btn btn-sm btn-color-muted btn-active btn-active-primary"> 기본 </span>
+          </label>
+          <label>
+            <input type="radio" class="btn-check" name="type" value="users">
+            <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> 123 </span>
+          </label>
+          <label>
+            <input type="radio" class="btn-check" name="type" value="orders">
+            <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> ABC </span>
+          </label>
+          <label>
+            <input type="radio" class="btn-check" name="type" value="projects">
+            <span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4"> 가나다 </span>
+          </label>
+        </div>
+        <div class="select-wrap">
+          검색구분
+          <input type="radio" id="radio-search-perfectly" value="perfectly" v-model="search_option">
+          <label for="radio-search-perfectly">일치항목 검색</label>
+          <input type="radio" id="radio-search-similarly" value="similarly" v-model="search_option">
+          <label for="radio-search-similarly">가중치 검색</label>
+        </div>
       </div>
       <!-- <div class="sort-btn">
         <button @click="sort_search_result($event,'default')" class="btn btn-primary">기본</button>
@@ -326,6 +336,16 @@ const save = () => {
   // axios.post('http://dev.peerline.net:80/Excel/edit', data)
 }
 
+const search_option = ref('perfectly')
+// // 카테고리 클릭시 이벤트
+// const change_category = (e, code) => {
+//     // 카테고리 클릭시 모든 html 요소에 active 클래스 제거하고 클릭한 요소에 active 클래스 추가
+//     e.target.parentNode.childNodes.forEach(element => {
+//         if (element.classList && element.classList.contains('active')) element.classList.remove('active')  
+//     })
+//     e.target.classList.add('active')
+// }
+
 
 // instance.resetData(newData); // Call API of instance's public method
 
@@ -341,11 +361,30 @@ li{list-style: none;}
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
-    .nav-group{
-      // padding: 0;
-      background: rgb(237,237,237);
-      .btn{
+    .option-wrap{
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      .nav-group{
+        // padding: 0;
+        margin-left: 20px;
         background: rgb(237,237,237);
+        .btn{
+          background: rgb(237,237,237);
+        }
+      }
+      .select-wrap{
+        display: flex;
+        align-items: center;
+        margin-left: 40px;
+        input{
+          margin-left: 15px;
+        }
+        label{
+          font-size: 14px;
+          opacity: 0.8;
+          margin-left: 4px;
+        }
       }
     }
     // .sort-btn{
