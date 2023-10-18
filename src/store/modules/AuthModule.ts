@@ -4,11 +4,6 @@ import { Actions, Mutations } from "@/store/enums/StoreEnums";
 import { Module, Action, Mutation, VuexModule } from "vuex-module-decorators";
 import { useCookies } from "vue3-cookies";
 
-const { cookies } = useCookies();
-
-cookies.set('test', '123', 30);
-cookies.get('test');
-
 export interface User {
   name: string;
   surname: string;
@@ -89,10 +84,14 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
   [Actions.LOGIN](credentials) {
     return ApiService.post("http://dev.peerline.net:9494/auth/login", credentials)
       .then(({ data }) => {
+        console.log(data);
+        
         this.context.commit(Mutations.SET_AUTH, data);
       })
       .catch(({ response }) => {
-        this.context.commit(Mutations.SET_ERROR, response.data.errors);
+        console.log(response);
+        
+        this.context.commit(Mutations.SET_ERROR, response.data);
       });
   }
 

@@ -167,7 +167,7 @@
             </div>
         </div>
     </div>
-    <Popup v-if="delete_popup_state" @accept="delete_member" @exit="change_popup_state('delete', false)" :content="`${member_checked_list.length}명의 사용자를 삭제 하시겠습니까?`" :danger="`삭제 후 복구가 불가능 합니다.`"/>
+    <Popup v-if="delete_popup_state" @accept="delete_member" @exit="change_popup_state('delete', false)" :content="[`${member_checked_list.length}명의 사용자를 삭제 하시겠습니까?`]" :danger="`삭제 후 복구가 불가능 합니다.`"/>
 </template>
 
 <script setup lang="ts">

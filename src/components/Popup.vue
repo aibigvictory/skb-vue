@@ -12,7 +12,9 @@
                 </svg>
             </div>
             <div class="popup-section">
-                <div class="content">{{content}}</div>
+                <div class="content">
+                    <p v-for="txt in content" :key="txt">{{txt}}</p>
+                </div>
                 <div v-if="danger" class="danger">{{danger}}</div>
             </div>
             <div class="popup-footer" v-if="btnCount == 2">
@@ -20,7 +22,7 @@
                 <button class="popup-btn" @click="emits('exit')">취소</button>
             </div>
             <div class="popup-footer" v-if="btnCount == 1">
-                <button class="popup-btn accept" @click="emits('exit')">확인</button>
+                <button class="popup-btn accept" @click="accept">확인</button>
             </div>
             <!-- <div class="popup-footer" v-if="btn == 1">
                 <button class="popup-btn accept">확인</button>
@@ -31,7 +33,7 @@
 
 <script setup lang="ts">
 const props = defineProps({
-    content: String,
+    content: Array,
     danger: String,
     btnCount: {
         type: Number,

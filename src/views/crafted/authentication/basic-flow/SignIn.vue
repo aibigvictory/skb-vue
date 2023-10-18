@@ -105,10 +105,13 @@
     </Form>
     <!--end::Form-->
   </div>
+  <Popup v-if="accept_state" @accept="go_signin" @exit="change_popup_state('complete', false)" :content="[`관리자 승인 후 사용 가능합니다.`, `담당자에게 문의 요청 바랍니다.`]" :btnCount="1"/>
+  <Popup v-if="id_pw_wrong_state" @accept="go_signin" @exit="change_popup_state('wrong', false)" :content="[`이메일 또는 비밀번호를 확인 후`, `다시 시도해주세요.`]" :btnCount="1"/>
   <!--end::Wrapper-->
 </template>
 
 <script lang="ts">
+import Popup from '@/components/Popup.vue'
 import { defineComponent, ref } from "vue";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import { Actions } from "@/store/enums/StoreEnums";
@@ -165,6 +168,7 @@ export default defineComponent({
     Field,
     Form,
     ErrorMessage,
+    Popup
   },
   setup() {
     const store = useStore();
@@ -178,22 +182,33 @@ export default defineComponent({
       password: Yup.string().required().label("Password"),
     });
 
+    const accept_state = ref(false)
+    const id_pw_wrong_state = ref(false)
+    const go_signin = () => router.push({ name: "sign-in" });
+    const change_popup_state = (popup_type, state) => {
+      if (popup_type == 'complete') accept_state.value = state
+      if (popup_type == 'wrong') id_pw_wrong_state.value = state
+    }
+
     //Form submit function
     const onSubmitLogin = async (values) => {
       // Clear existing errors
       store.dispatch(Actions.LOGOUT);
 
-      if (submitButton.value) {
+      // if (submitButton.value) {
         // eslint-disable-next-line
-        submitButton.value!.disabled = true;
+        // submitButton.value!.disabled = true;
         // Activate indicator
-        submitButton.value.setAttribute("data-kt-indicator", "on");
-      }
+        // submitButton.value.setAttribute("data-kt-indicator", "on");
+      // }
 
       // Send login request
       await store.dispatch(Actions.LOGIN, values);
       const [errorName] = Object.keys(store.getters.getErrors);
       const error = store.getters.getErrors[errorName];
+
+      console.log(error);
+      
 
       // if (!error) {
       //   Swal.fire({
@@ -209,15 +224,17 @@ export default defineComponent({
       //   });
       // } else
       if (error) {
-        Swal.fire({
-          text: `이메일 또는 비밀번호를 확인 후 다시 시도해 주세요.`,
-          icon: "error",
-          buttonsStyling: false,
-          confirmButtonText: "창 닫기",
-          customClass: {
-            confirmButton: "btn fw-semobold btn-light-danger",
-          },
-        });
+        if (error == 'wrong_id_or_password') id_pw_wrong_state.value = true
+        if (error == 'no_accepted') accept_state.value = true
+        // Swal.fire({
+        //   text: `이메일 또는 비밀번호를 확인 후 다시 시도해 주세요.`,
+        //   icon: "error",
+        //   buttonsStyling: false,
+        //   confirmButtonText: "창 닫기",
+        //   customClass: {
+        //     confirmButton: "btn fw-semobold btn-light-danger",
+        //   },
+        // });
       }
       // if (error) {
       //   Swal.fire({
@@ -246,6 +263,10 @@ export default defineComponent({
       onSubmitLogin,
       login,
       submitButton,
+      accept_state,
+      id_pw_wrong_state,
+      go_signin,
+      change_popup_state
     };
   },
 });

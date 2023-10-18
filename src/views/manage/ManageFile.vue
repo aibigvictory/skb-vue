@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    <Popup v-if="delete_popup_state" @accept="delete_group" @exit="change_popup_state('delete', false, null, null)" :content="`${delete_file_name} 그룹을 삭제하시겠습니까?`"/>
+    <Popup v-if="delete_popup_state" @accept="delete_group" @exit="change_popup_state('delete', false, null, null)" :content="[`${delete_file_name} 그룹을 삭제하시겠습니까?`]"/>
     <!-- <Popup v-if="accept_popup_state" @accept="accept_member" @exit="change_popup_state('accept', false)" :content="`${member_checked_list.length}명의 회원을 승인처리 하시겠습니까?`" /> -->
 </template> 
 
@@ -96,7 +96,7 @@ const move = async (e) => {
 }
 
 const save = async () => {
-    group.value.forEach(async (each_group, idx) => {
+    await group.value.forEach(async (each_group, idx) => {
         each_group.order = idx + 1
 
         console.log(each_group);
@@ -108,6 +108,8 @@ const save = async () => {
         })
     })
     console.log(group.value);
+
+    alert('순서저장이 완료되었습니다.')
 
     // await axios.post('http://dev.peerline.net:9494/folder/update', group.value)
 }

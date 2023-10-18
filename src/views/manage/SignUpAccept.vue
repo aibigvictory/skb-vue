@@ -61,8 +61,8 @@
             </div>
         </div>
     </div>
-    <Popup v-if="delete_popup_state" @accept="delete_member" @exit="change_popup_state('delete', false)" :content="`${member_checked_list.length}명의 회원을 삭제 하시겠습니까?`" :danger="`삭제 후 복구가 불가능 합니다.`"/>
-    <Popup v-if="accept_popup_state" @accept="accept_member" @exit="change_popup_state('accept', false)" :content="`${member_checked_list.length}명의 회원을 승인처리 하시겠습니까?`" />
+    <Popup v-if="delete_popup_state" @accept="delete_member" @exit="change_popup_state('delete', false)" :content="[`${member_checked_list.length}명의 회원을 삭제 하시겠습니까?`]" :danger="`삭제 후 복구가 불가능 합니다.`"/>
+    <Popup v-if="accept_popup_state" @accept="accept_member" @exit="change_popup_state('accept', false)" :content="[`${member_checked_list.length}명의 회원을 승인처리 하시겠습니까?`]" />
 </template>
 
 <script setup lang="ts">

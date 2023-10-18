@@ -58,7 +58,7 @@
         class="d-flex align-items-stretch justify-content-between flex-lg-grow-1"
         id="kt_app_header_wrapper"
       >
-        <KTHeaderMenu />
+        <KTHeaderMenu @display_search_popup="change_popup_state('searchExcel', true)"/>
         <KTHeaderNavbar />
       </div>
       <!--end::Header wrapper-->
@@ -66,10 +66,12 @@
     <!--end::Header container-->
   </div>
   <!--end::Header-->
+  <SearchExcel v-if="searchExcelPopup_state" @exit="change_popup_state('searchExcel', false)"/>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import SearchExcel from "@/components/search/SearchExcel.vue"
+import { defineComponent, ref } from "vue";
 import KTHeaderMenu from "@/layouts/main-layout/header/menu/Menu.vue";
 import KTHeaderNavbar from "@/layouts/main-layout/header/Navbar.vue";
 import {
@@ -79,19 +81,8 @@ import {
   headerDisplay,
 } from "@/core/helpers/config";
 
-export default defineComponent({
-  name: "layout-header",
-  components: {
-    KTHeaderMenu,
-    KTHeaderNavbar,
-  },
-  setup() {
-    return {
-      layout,
-      headerWidthFluid,
-      headerDisplay,
-      themeMode,
-    };
-  },
-});
+const searchExcelPopup_state = ref(false)
+const change_popup_state = (popup_type, state) => {
+    searchExcelPopup_state.value = state
+}
 </script>

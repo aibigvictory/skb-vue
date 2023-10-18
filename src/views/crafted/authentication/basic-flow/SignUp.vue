@@ -172,10 +172,12 @@
     </Form>
     <!--end::Form-->
   </div>
+  <Popup v-if="popup_state" @accept="go_signin" @exit="change_popup_state('complete', false)" :content="[`회원가입이 완료되었습니다.`, `관리자 승인 후 사용 가능합니다.`]" :btnCount="1"/>
   <!--end::Wrapper-->
 </template>
 
 <script lang="ts">
+import Popup from '@/components/Popup.vue'
 import { defineComponent, ref, onMounted, nextTick } from "vue";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as Yup from "yup";
@@ -235,6 +237,7 @@ export default defineComponent({
     Field,
     Form,
     ErrorMessage,
+    Popup,
   },
   setup() {
     const store = useStore();
@@ -259,15 +262,21 @@ export default defineComponent({
       });
     });
 
+    const popup_state = ref(false)
+    const go_signin = () => router.push({ name: "sign-in" });
+    const change_popup_state = (popup_type, state) => {
+      if (popup_type == 'complete') popup_state.value = state
+    }
+
     const onSubmitRegister = async (values) => {
       // Clear existing errors
       store.dispatch(Actions.LOGOUT);
 
       // eslint-disable-next-line
-      submitButton.value!.disabled = true;
+      // submitButton.value!.disabled = true;
 
       // Activate indicator
-      submitButton.value?.setAttribute("data-kt-indicator", "on");
+      // submitButton.value?.setAttribute("data-kt-indicator", "on");
 
       // Send login request
       await store.dispatch(Actions.REGISTER, values);
@@ -276,39 +285,42 @@ export default defineComponent({
       const error = store.getters.getErrors[errorName];
 
       if (!error) {
-        Swal.fire({
-          text: "You have successfully logged in!",
-          icon: "success",
-          buttonsStyling: false,
-          confirmButtonText: "Ok, got it!",
-          customClass: {
-            confirmButton: "btn fw-semobold btn-light-primary",
-          },
-        }).then(function () {
-          // Go to page after successfully login
-          router.push({ name: "sign-in" });
-        });
+        popup_state.value = true
+        // Swal.fire({
+        //   text: "You have successfully logged in!",
+        //   icon: "success",
+        //   buttonsStyling: false,
+        //   confirmButtonText: "Ok, got it!",
+        //   customClass: {
+        //     confirmButton: "btn fw-semobold btn-light-primary",
+        //   },
+        // }).then(function () {
+        //   // Go to page after successfully login
+        // });
       } else {
-        Swal.fire({
-          text: error[0],
-          icon: "error",
-          buttonsStyling: false,
-          confirmButtonText: "Try again!",
-          customClass: {
-            confirmButton: "btn fw-semobold btn-light-danger",
-          },
-        });
+        // Swal.fire({
+        //   text: error[0],
+        //   icon: "error",
+        //   buttonsStyling: false,
+        //   confirmButtonText: "Try again!",
+        //   customClass: {
+        //     confirmButton: "btn fw-semobold btn-light-danger",
+        //   },
+        // });
       }
 
-      submitButton.value?.removeAttribute("data-kt-indicator");
+      // submitButton.value?.removeAttribute("data-kt-indicator");
       // eslint-disable-next-line
-      submitButton.value!.disabled = false;
+      // submitButton.value!.disabled = false;
     };
 
     return {
       registration,
       onSubmitRegister,
       submitButton,
+      popup_state,
+      go_signin,
+      change_popup_state
     };
   },
 });
