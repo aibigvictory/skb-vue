@@ -470,7 +470,7 @@ export default defineComponent({
 
     const init = async () => {
       try{
-        const { data } = await axios.post('http://dev.peerline.net:9494/folder/list')
+        const { data } = await axios.post('/folder/list')
 
         category_list = data
       }
@@ -478,7 +478,7 @@ export default defineComponent({
 
 
       try{
-        const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
+        const { data } = await axios.post('/file/list', {
           type: 'manage'
         })
 
@@ -489,7 +489,7 @@ export default defineComponent({
       categorys_in_manageFiles.value = category_in_file(category_list, manageFile_list, 'code', 'folderCd')
 
       try{
-        const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
+        const { data } = await axios.post('/file/list', {
           type: 'etc'
         })
 
@@ -540,7 +540,7 @@ export default defineComponent({
     watch(() => store.state.upload, async (value) => {
       console.log(value);
       try{
-        const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
+        const { data } = await axios.post('/file/list', {
           type: 'manage'
         })
 
@@ -559,7 +559,7 @@ export default defineComponent({
       catch(error) {console.log(error);}
 
       try{
-        const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
+        const { data } = await axios.post('/file/list', {
           type: 'etc'
         })
 
@@ -602,7 +602,7 @@ export default defineComponent({
       console.log(drag_file);
       files_lock.value[drag_file.id] = drag_file
       delete files.value[drag_file.folderCd].files[drag_file.id]
-      axios.post('http://dev.peerline.net:9494/file/lock', {
+      axios.post('/file/lock', {
         id: drag_file.id
       })
 
@@ -613,7 +613,7 @@ export default defineComponent({
       console.log(files.value[drag_file.folderCd]);
       files.value[drag_file.folderCd].files[drag_file.id] = drag_file
       delete files_lock.value[drag_file.id]
-      axios.post('http://dev.peerline.net:9494/file/unlock', { 
+      axios.post('/file/unlock', { 
         id: drag_file.id
       })
 
@@ -670,7 +670,7 @@ export default defineComponent({
     const delete_file = () => {
       list_check_useless_file.value.forEach((file_id) => {
         // console.log(file_id);
-        axios.post('http://dev.peerline.net:9494/file/delete', {id: file_id})
+        axios.post('/file/delete', {id: file_id})
       })
 
       init()

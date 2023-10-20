@@ -82,7 +82,7 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
 
   @Action
   [Actions.LOGIN](credentials) {
-    return ApiService.post("http://dev.peerline.net:9494/auth/login", credentials)
+    return ApiService.post("/auth/login", credentials)
       .then(({ data }) => {
         console.log(data);
         
@@ -102,7 +102,7 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
 
   @Action
   [Actions.REGISTER](credentials) {
-    return ApiService.post("http://dev.peerline.net:9494/auth/signUp", credentials)
+    return ApiService.post("/auth/signUp", credentials)
       .then(({ data }) => {
         // this.context.commit(Mutations.SET_AUTH, data);
       })

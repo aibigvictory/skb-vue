@@ -170,7 +170,7 @@ const check_all_company = (e) => {
 const delete_company = () => {
     company_checked_list.value.forEach((company_id) => {
     console.log(company_id);
-        // axios.post('http://dev.peerline.net:9494/company/delete', {id: company_id})
+        // axios.post('/company/delete', {id: company_id})
     })
 }
 </script>

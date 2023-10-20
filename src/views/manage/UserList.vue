@@ -287,7 +287,7 @@ let delete_popup_state = ref(false)
 const delete_member = () => {
     member_checked_list.value.forEach((member_id) => {
     console.log(member_id);
-        // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
+        // axios.post('/member/delete', {id: member_id})
     })
 }
 

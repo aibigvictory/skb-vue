@@ -50,7 +50,7 @@ const categorys_code = {'HD방송': '001/001', 'CATV_SO': '001/002', 'TITAN': '0
 
 const init = async () => {
     try{
-        const { data } = await axios.post('http://dev.peerline.net:9494/folder/list')
+        const { data } = await axios.post('/folder/list')
         console.log(data);
 
         categorys.value = data
@@ -101,7 +101,7 @@ const fileUpload = async () => {
 onMounted(() => {
     try{
         myDropzone = new Dropzone(dropzone.value, {
-            url: 'http://dev.peerline.net:9494/file/upload',
+            url: '/file/upload',
             autoProcessQueue: false, 
             params: {
                 userId: '0',

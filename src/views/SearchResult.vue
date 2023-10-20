@@ -99,7 +99,7 @@ const folder_code = {
 }
 
 const init = async () => {
-  const { data } = await axios.get(`http://dev.peerline.net:9494/search?q=${search_keyword.value}`)
+  const { data } = await axios.get(`/search?q=${search_keyword.value}`)
   const { files, folders } = data
 
   folder_list.value = folders

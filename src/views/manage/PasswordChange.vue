@@ -135,7 +135,7 @@ const change_password = (data) => {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    axios.post('http://dev.peerline.net:9494/auth/updatePassword', data, axios_config)
+    axios.post('/auth/updatePassword', data, axios_config)
     .then(() => {
         alert('비밀번호 변경이 완료되었습니다.')
         router.go(0)

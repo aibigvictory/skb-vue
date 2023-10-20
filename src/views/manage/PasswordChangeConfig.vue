@@ -31,7 +31,7 @@ const init = async () => {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    const {data} = await axios.post('http://dev.peerline.net:9494/auth/getPasswordPolicy', {}, axios_config)
+    const {data} = await axios.post('/auth/getPasswordPolicy', {}, axios_config)
     const pw_config = data.expiredDay == 180 ?'6months' : data.expiredDay == 90 ?'3months' :'never'
 
     console.log(pw_config);
@@ -65,7 +65,7 @@ const send_server_config = () => {
         policy: config.value,
     }
 
-    axios.post('http://dev.peerline.net:9494/auth/updatePasswordPolicy', data, axios_config)
+    axios.post('/auth/updatePasswordPolicy', data, axios_config)
     .then(() => {
         before_config.value = config.value
         console.log(before_config.value);

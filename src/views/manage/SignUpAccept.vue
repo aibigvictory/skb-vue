@@ -123,7 +123,7 @@ const call_member = async () => {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    const { data } = await axios.post('http://dev.peerline.net:9494/auth/getUserList', {}, axios_config)
+    const { data } = await axios.post('/auth/getUserList', {}, axios_config)
 
     console.log(data);
     
@@ -156,7 +156,7 @@ const accept_member = async () => {
 
     await member_checked_list.value.forEach(async (member_id) => {
         console.log(member_id);
-        await axios.post('http://dev.peerline.net:9494/auth/acceptUser', {id: member_id}, axios_config)
+        await axios.post('/auth/acceptUser', {id: member_id}, axios_config)
     })
     
     alert('승인처리가 완료되었습니다.')
@@ -171,7 +171,7 @@ const delete_member = async () => {
 
     await member_checked_list.value.forEach(async (member_id) => {
         console.log(member_id);
-        await axios.post('http://dev.peerline.net:9494/auth/deleteUser', {id: member_id}, axios_config)
+        await axios.post('/auth/deleteUser', {id: member_id}, axios_config)
     })
     
     alert('삭제가 완료되었습니다.')

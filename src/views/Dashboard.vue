@@ -72,7 +72,7 @@ import axios from "axios";
 const recent_upload_files = ref([])
 
 const call_fileList = async () => {
-  const { data } = await axios.post('http://dev.peerline.net:9494/file/list')
+  const { data } = await axios.post('/file/list')
 
   console.log(data);
   

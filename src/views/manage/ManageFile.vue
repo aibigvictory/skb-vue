@@ -81,7 +81,7 @@ const group:any = ref([])
 
 const init = async () => {
     try{
-        const { data } = await axios.post('http://dev.peerline.net:9494/folder/list')
+        const { data } = await axios.post('/folder/list')
 
         data.forEach(dat => dat.count = 7)
 
@@ -103,7 +103,7 @@ const save = async () => {
         console.log(each_group);
         
 
-        await axios.post('http://dev.peerline.net:9494/folder/update', {
+        await axios.post('/folder/update', {
             id: each_group.id,
             order: each_group.order,
         })
@@ -112,7 +112,7 @@ const save = async () => {
 
     alert('순서저장이 완료되었습니다.')
 
-    // await axios.post('http://dev.peerline.net:9494/folder/update', group.value)
+    // await axios.post('/folder/update', group.value)
 }
 
 const input_add_group = ref()
@@ -124,7 +124,7 @@ const create = async () => {
     //     name: input_add_group.value.value,
     //     count: 0
     // })
-    await axios.post('http://dev.peerline.net:9494/folder/create', {
+    await axios.post('/folder/create', {
         name: input_add_group.value.value
     })
     init()
@@ -143,12 +143,12 @@ let delete_popup_state = ref(false)
 let notGroupName_state = ref(false)
 
 // const accept_member = () => {
-//     // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
+//     // axios.post('/member/delete', {id: member_id})
 // }
 const delete_group = async () => {
     group.value.splice(delete_idx, 1)
 
-    await axios.post('http://dev.peerline.net:9494/folder/delete', {
+    await axios.post('/folder/delete', {
         id: delete_idx
     })
 
