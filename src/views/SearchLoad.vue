@@ -179,27 +179,41 @@ class CustomTextEditor {
     const el = document.createElement('textarea');
     const { maxLength } = props.columnInfo.editor.options;
 
+    // console.log(props);
+    
+
     // el.type = 'text';
     // el.maxLength = maxLength;
     // el.value = String(props.value);
-    el.value = String(props.value).replace(/<br>/g, '\n');
+    el.value = String(props.value.value).replace(/<br>/g, '\n');
+    el.setAttribute('r', '6')
+    el.setAttribute('c', '6')
     // el.value =  ' ' + String(props.value) + ' ';
+    console.dir(el);
+    
 
     this.el = el;
   }
 
   getElement() {
-    console.log(this.el);
-    // adjust = this.el.value
+    console.log('getElement');
+    // adjust = this.el
 
     return this.el;
   }
 
   getValue() {
-    console.log(123213123);
+    console.log('getValue')
+    console.log(this.el.getAttribute('r'));
+    
     
     // return this.el.value;
-    return this.el.value.replace(/\n/g, '<br>');
+    return {
+      value: this.el.value,
+      r: Number(this.el.getAttribute('r')),
+      c: Number(this.el.getAttribute('c')),
+      adjust: true
+    }//.value.replace(/\n/g, '<br>');
     // return ' ' +  this.el.value + ' ';
   }
 
@@ -247,7 +261,10 @@ onMounted(async() => {
         "header": "시트"
       })
       data.forEach((item) => {
-        item["R1C0"] = name
+        item["R1C0"] = {
+          value: name,
+          sheetName: name
+        }
       })
   
       columns.forEach((item) => {
@@ -258,9 +275,35 @@ onMounted(async() => {
             maxLength: 100
           }
         }
+        item.formatter = (value) => {
+          if (value && value.value && value.value.value) return value.value.value;
+        }
       })
+
+      // for (let i = 0; i < data.length; i++) {
+      //     const row = data[i];
+      //     for (const key in row) {
+      //         if (Object.hasOwnProperty.call(row, key)) {
+      //             const element = row[key];
+      //             if (typeof element === 'object' && element !== null) {
+      //                 row[key] = element.value;
+      //             }
+      //         }
+      //     }
+      // }
+
+      // const result = data.map((row) => {
+      //   const newRow = {};
+      //   Object.keys(row).forEach((key) => {
+      //       newRow[key] = row[key].value;
+      //   });
+      //   return newRow;
+      // });
+
+      // console.log(result);
       
-      // console.log(data);
+
+      console.log(data);
       // console.log(columns);
       // console.log(complexColumns);
       
@@ -295,16 +338,36 @@ onMounted(async() => {
   })
 })
 
-const save = () => {
-  let data = []
+const save = async () => {
+  let adjustArr:any = []
 
-  console.log(toastArr);
+  // console.log(toastArr);
 
-  for (const key in toastArr) {
-    console.log(key);
-    console.log(toastArr[key].getData());
+  for (const sheetName in toastArr) {
+    const columnArr = toastArr[sheetName].getData()
+    // console.log(sheetName);
+    // console.log(toastArr[sheetName].el.id.replace('grid',''));
 
-    
+    for (let i = 0; i < columnArr.length; i++) {
+      const column = columnArr[i]
+
+      // console.log(column);
+      
+      for (const row in column) {
+        const item = column[row]
+
+        if (item.adjust) {
+          adjustArr.push({
+            fileId: Number(toastArr[sheetName].el.id.replace('grid','')),
+            sheetName: sheetName,
+            r: item.r,
+            c: item.c,
+            value: item.value
+          })
+        }
+          
+      }
+    }
     
     // const adjust = {
     //   "fileId": 27,
@@ -332,8 +395,12 @@ const save = () => {
     //   "value": "수정 테스트"
     // },
   // ]
+  console.log(adjustArr);
+  
 
-  // axios.post('http://dev.peerline.net:80/Excel/edit', data)
+  const adjustExcel = await axios.post('http://dev.peerline.net:80/Excel/edit', adjustArr)
+  console.log(adjustExcel);
+  
 }
 
 const search_option = ref('perfectly')

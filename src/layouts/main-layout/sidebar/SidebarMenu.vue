@@ -91,7 +91,7 @@
               </span>
                 <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
               <div class="menu-sub menu-sub-accordion">
-                <template v-for="(category, k) in files" :key="k">
+                <template v-for="(category, k) in categorys_in_manageFiles" :key="k">
                     <!-- v-if="category.name" -->
                   <div
                     class="menu-item menu-accordion"
@@ -452,6 +452,13 @@ export default defineComponent({
     const router = useRouter();
     const scrollElRef = (ref < null) | (HTMLElement > null);
 
+    let category_list = []
+    let manageFile_list = []
+    let etcFile_list = []
+
+    const categorys_in_manageFiles = ref([])
+    const categorys_in_etcFiles = ref([])
+
     // const categorys = ref({})
     const categorys_etc = ref({})
 
@@ -465,24 +472,7 @@ export default defineComponent({
       try{
         const { data } = await axios.post('http://dev.peerline.net:9494/folder/list')
 
-        for (let i = 0; i < data.length; i++) {
-          const { name, code } = data[i]
-
-          if (code.includes('/')) {
-            if (code.slice(0,3) == '001') files.value[code] = data[i]
-            if (code.slice(0,3) == '001') files.value[code]['files'] = {}
-          }
-
-          if (code.includes('/')) {
-            if (code.slice(0,3) == '002') files_etc.value[code] = data[i]
-          }
-
-          // 파일 카테고리 분류
-          // if ()
-
-        }
-        
-        console.log('files.value: ', files.value);
+        category_list = data
       }
       catch(error) {console.log(error);}
 
@@ -492,43 +482,57 @@ export default defineComponent({
           type: 'manage'
         })
 
-        for (let i = 0; i < data.length; i++) {
-          const { id, lock, folderCd } = data[i]
-
-          // lock 파일 (카테고리 분류 필요없음)
-          if (lock) files_lock.value[id] = data[i]
-          
-          // normal 파일 (카테고리 분류 필요)
-          else {
-            if (folderCd.includes('/')) files.value[folderCd].files[id] = data[i];
-          }
-        }
-
-        console.log('files.value: ', files.value);
-        console.log('files_lock.value: ', files_lock.value);
-
-        // files.value = excel_list.data
+        manageFile_list = data
       }
       catch(error) {console.log(error);}
+
+      categorys_in_manageFiles.value = category_in_file(category_list, manageFile_list, 'code', 'folderCd')
 
       try{
         const { data } = await axios.post('http://dev.peerline.net:9494/file/list', {
           type: 'etc'
         })
 
-        for (let i = 0; i < data.length; i++) {
-          const { lock } = data[i]
+        etcFile_list = data
 
-          if (lock) files_etc_lock.value[id] = data[i]
-          else files_etc.value[id] = data[i]
-        }
+        // for (let i = 0; i < data.length; i++) {
+        //   const { lock } = data[i]
 
-        console.log('files_etc.value: ', files_etc.value);
-        console.log('files_etc_lock.value: ', files_etc_lock.value);
+        //   if (lock) files_etc_lock.value[id] = data[i]
+        //   else files_etc.value[id] = data[i]
+        // }
+
+        // console.log('files_etc.value: ', files_etc.value);
+        // console.log('files_etc_lock.value: ', files_etc_lock.value);
 
         // files.value = excel_list.data
       }
       catch(error) {console.log(error);}
+      
+      categorys_in_etcFiles.value = category_in_file(category_list, etcFile_list, 'code', 'folderCd')
+    }
+
+
+    const category_in_file = (category_arr, file_arr, category_key, file_key) => {
+      let result = []
+
+      for (let i = 0; i < category_arr.length; i++) {
+        const category = category_arr[i]
+
+        result.push(category)
+
+        category.files = []
+
+        for (let j = 0; j < file_arr.length; j++) {
+          const file = file_arr[j]
+
+          if (category[category_key] == file[file_key]) {
+            category.files.push(file)
+          }
+        }
+      }
+
+      return result
     }
 
     init()
@@ -690,7 +694,8 @@ export default defineComponent({
       list_check_useless_file,
       check_all_useless_file,
       change_lock_state,
-      delete_file
+      delete_file,
+      categorys_in_manageFiles
     };
   },
 });

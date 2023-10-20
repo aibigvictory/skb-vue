@@ -65,6 +65,7 @@
         </div>
     </div>
     <Popup v-if="delete_popup_state" @accept="delete_group" @exit="change_popup_state('delete', false, null, null)" :content="[`${delete_file_name} 그룹을 삭제하시겠습니까?`]"/>
+    <Popup v-if="notGroupName_state" @exit="change_popup_state('notName', false)" :content="[`관리파일 그룹명을 입력하세요.`]" :btnCount="1"/>
     <!-- <Popup v-if="accept_popup_state" @accept="accept_member" @exit="change_popup_state('accept', false)" :content="`${member_checked_list.length}명의 회원을 승인처리 하시겠습니까?`" /> -->
 </template> 
 
@@ -117,7 +118,7 @@ const save = async () => {
 const input_add_group = ref()
 
 const create = async () => {
-    if (!input_add_group.value.value) return alert('관리파일 그룹명을 입력하세요.')
+    if (!input_add_group.value.value) return notGroupName_state.value = true
     console.log(group.value);
     // group.value.push({
     //     name: input_add_group.value.value,
@@ -139,6 +140,7 @@ const create = async () => {
 let delete_idx = null
 let delete_file_name = null
 let delete_popup_state = ref(false)
+let notGroupName_state = ref(false)
 
 // const accept_member = () => {
 //     // axios.post('http://dev.peerline.net:9494/member/delete', {id: member_id})
@@ -162,9 +164,10 @@ const delete_group = async () => {
 
 const change_popup_state = (popup_type, state, idx, file_name) => {
     if (popup_type == 'delete') delete_popup_state.value = state
+    if (popup_type == 'notName') notGroupName_state.value = state
     
-    delete_idx = idx
-    delete_file_name = file_name
+    if (popup_type == 'delete') delete_idx = idx
+    if (popup_type == 'delete') delete_file_name = file_name
 }
 </script>
 
