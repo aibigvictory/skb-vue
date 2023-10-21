@@ -134,7 +134,7 @@
                           data-kt-menu-sub="accordion"
                           data-kt-menu-trigger="click"
                         >
-                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.path, item2.name)">
+                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.path, item2.name, item2.uploader, item2.updatedAt, category.name)">
                             <span class="menu-bullet">
                               <div>
                                 <img src="@/assets/img/group32.svg" alt="">
@@ -582,10 +582,14 @@ export default defineComponent({
     //   init()
     // }, 1000);
 
-    const file_click = (path, name) => {
+    const file_click = (path, name, user, date, cate) => {
       // console.log(path, name);
       localStorage.setItem('path', path)
       localStorage.setItem('name', name)
+      localStorage.setItem('user', user)
+      localStorage.setItem('date', date)
+      localStorage.setItem('cate', cate)
+
 
       router.push({ name: "excel" });
     }
