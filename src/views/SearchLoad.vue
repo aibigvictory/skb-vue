@@ -86,6 +86,7 @@
 </template>
 
 <script setup lang="ts">
+import JwtService from '@/core/services/JwtService';
 import store from '@/store';
 import axios from 'axios';
 import Grid from 'tui-grid';
@@ -97,9 +98,9 @@ let sheet_list:any = []
 let files:any = []
 const search_result_list = ref({})
 const folder_name = {
-  '001/001' : 'HD방송',
-  '001/002' : 'CATV_SO',
-  '001/003' : 'TITAN',
+  '001' : 'HD방송',
+  '002' : 'CATV_SO',
+  '003' : 'TITAN',
 }
 
 const init = async () => {
@@ -245,9 +246,9 @@ onMounted(async() => {
   // console.log(sheet_list);
   // console.log(sheet_list);
 
-  console.log(files);
+  // console.log(files);
   files.forEach((file) => {
-    console.log(file);
+    // console.log(file);
 
     
 
@@ -303,7 +304,7 @@ onMounted(async() => {
       // console.log(result);
       
 
-      console.log(data);
+      // console.log(data);
       // console.log(columns);
       // console.log(complexColumns);
       
@@ -346,6 +347,8 @@ const save = async () => {
   for (const sheetName in toastArr) {
     const columnArr = toastArr[sheetName].getData()
     // console.log(sheetName);
+    // console.log(columnArr);
+    
     // console.log(toastArr[sheetName].el.id.replace('grid',''));
 
     for (let i = 0; i < columnArr.length; i++) {
@@ -355,8 +358,11 @@ const save = async () => {
       
       for (const row in column) {
         const item = column[row]
+        // console.log(item);
+        // console.log(item.adjust);
+        
 
-        if (item.adjust) {
+        if (item && item.adjust) {
           adjustArr.push({
             fileId: Number(toastArr[sheetName].el.id.replace('grid','')),
             sheetName: sheetName,
@@ -377,6 +383,13 @@ const save = async () => {
     //   "value": "수정 테스트"
     // }
   }
+
+  const axios_config = {
+    headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+  }
+
+  const { data } = await axios.post('/auth/info', {}, axios_config)
+  const { id } = data
   // toastArr.forEach((toast) => {
   //   console.log(toast);
     
@@ -398,7 +411,11 @@ const save = async () => {
   console.log(adjustArr);
   
 
-  const adjustExcel = await axios.post('http://dev.peerline.net:80/Excel/edit', adjustArr)
+  // const adjustExcel = await axios.post('http://dev.peerline.net:80/folder/list')
+  const adjustExcel = await axios.post('http://dev.peerline.net:5000/excel/edit', {
+    userId: id,
+    data: adjustArr
+  })
   console.log(adjustExcel);
   
 }

@@ -15,15 +15,12 @@
 
         <!--begin::Username-->
         <div class="d-flex flex-column px-5">
-          <div class="fw-bold d-flex align-items-center fs-5">
-            Max Smith
-            <!-- <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
-              >Pro</span
-            > -->
+          <div class="d-flex align-items-center fs-5">
+            {{userEmail}}
           </div>
-          <a href="#" class="fw-semobold text-muted text-hover-primary fs-7"
-            >max@kt.com</a
-          >
+          <div class="fw-semobold fs-5"
+            >{{userTeam}}
+          </div>
         </div>
         <!--end::Username-->
       </div>
@@ -196,11 +193,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { Actions } from "@/store/enums/StoreEnums";
+import axios from "axios";
+import JwtService from "@/core/services/JwtService";
 
 export default defineComponent({
   name: "kt-user-menu",
@@ -256,12 +255,34 @@ export default defineComponent({
       return countries[i18n.locale.value];
     });
 
+    const userName = ref('Name')
+    const userEmail = ref('Email')
+    const userTeam = ref('Team')
+
+    const callInfo = async () => {
+      const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+      }
+
+      const { data } = await axios.post('/auth/info', {}, axios_config)
+      const { name, email, teamName } = data
+      
+      userName.value = name
+      userEmail.value = email
+      userTeam.value = teamName
+    }
+
+    callInfo()
+
     return {
       signOut,
       setLang,
       currentLanguage,
       currentLangugeLocale,
       countries,
+      userName,
+      userEmail,
+      userTeam,
     };
   },
 });

@@ -88,7 +88,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 
 let search_keyword = ref('')
 let folder_list = ref([])
-let file_push = []
+let file_push: any = []
 
 search_keyword.value = store.state.search_keyword
 
@@ -102,26 +102,54 @@ const init = async () => {
   const { data } = await axios.get(`/search?q=${search_keyword.value}`)
   const { files, folders } = data
 
-  folder_list.value = folders
+  folder_list.value = category_in_file(folders, files, 'code', 'folderCd')
+  // folder_list.value = folders
 
-  files.forEach((item) => {
-    if (file_push.includes(item.id)) return
+  // files.forEach((item) => {
+  //   if (file_push.includes(item.id)) return
 
-    try{
-      for (let i = 0; i < folder_list.value.length; i++) {
-        if (!folder_list.value[i].files) folder_list.value[i].files = []
-        if (folder_list.value[i].name == folder_code[item.folderCd]) {
-          folder_list.value[i].files.push(item)
-          file_push.push(item.id)
-        }
-      }
-    }
-    catch(error) {console.log(error)};
+  //   try{
+  //     for (let i = 0; i < folder_list.value.length; i++) {
+  //       if (!folder_list.value[i].files) folder_list.value[i].files = []
+  //       if (folder_list.value[i].name == folder_code[item.folderCd]) {
+  //         folder_list.value[i].files.push(item)
+  //         file_push.push(item.id)
+  //       }
+  //     }
+  //   }
+  //   catch(error) {console.log(error)};
     
-  })
+  // })
 
   console.log(folder_list.value);
   
+}
+
+const category_in_file = (category_arr, file_arr, category_key, file_key) => {
+  let result: any = []
+
+  for (let i = 0; i < category_arr.length; i++) {
+    const category = category_arr[i]
+
+    result.push(category)
+
+    category.files = []
+
+    for (let j = 0; j < file_arr.length; j++) {
+      const file: any = file_arr[j]
+
+      if (!file_push.includes(file.id)) {
+        if (category[category_key] == file[file_key]) {
+          category.files.push(file)
+          file_push.push(file.id)
+        }
+      }
+    }
+  }
+
+  console.log(result);
+
+  return result
 }
 
 watch(() => store.state.search_keyword, async (value) => {

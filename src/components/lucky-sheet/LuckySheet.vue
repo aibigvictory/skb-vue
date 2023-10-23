@@ -25,7 +25,9 @@ import { isFunction } from '@/assets/utils/is.js'
 import LuckyExcel from 'luckyexcel'
 
 try{
-  LuckyExcel.transformExcelToLuckyByUrl(`${localStorage.getItem('path')}`, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
+  const url = `http://dev.peerline.net:9494/${localStorage.getItem('path')}`
+
+  LuckyExcel.transformExcelToLuckyByUrl(url, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
           // 예외처리
           return;
@@ -48,10 +50,13 @@ catch(error) {}
 let path = localStorage.getItem('path')
 setInterval(() => {
   if (path == localStorage.getItem('path')) return
+  path = localStorage.getItem('path')
 
   console.log('change');
-  path = localStorage.getItem('path')
-  LuckyExcel.transformExcelToLuckyByUrl(`${localStorage.getItem('path')}`, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
+
+  const url = `http://dev.peerline.net:9494/${localStorage.getItem('path')}`
+
+  LuckyExcel.transformExcelToLuckyByUrl(url, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
           // 예외처리
           return;

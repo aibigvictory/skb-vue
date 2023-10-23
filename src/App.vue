@@ -115,6 +115,9 @@ img{
 .luckysheet-sheet-area{
   // position: fixed;
 }
+.luckysheet_info_detail{
+  display: none !important;
+}
 
 // table{
 //   table-layout: fixed !important;

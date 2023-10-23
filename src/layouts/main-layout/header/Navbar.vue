@@ -50,7 +50,7 @@
         data-kt-menu-placement="bottom-end"
       >
         <!-- <img src="media/avatars/300-1.jpg" alt="user" /> -->
-        유저
+        {{userName}}
       </div>
       <KTUserMenu />
       <!--end::Menu wrapper-->
@@ -73,13 +73,15 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import KTSearch from "@/layouts/main-layout/search/Search.vue";
 import KTNotificationMenu from "@/layouts/main-layout/menus/NotificationsMenu.vue";
 import KTQuickLinksMenu from "@/layouts/main-layout/menus/QuickLinksMenu.vue";
 import KTUserMenu from "@/layouts/main-layout/menus/UserAccountMenu.vue";
 import KTThemeModeSwitcher from "@/layouts/main-layout/theme-mode/ThemeModeSwitcher.vue";
 import { useStore } from "vuex";
+import axios from "axios";
+import JwtService from "@/core/services/JwtService";
 
 export default defineComponent({
   name: "header-navbar",
@@ -107,9 +109,31 @@ export default defineComponent({
       }
     }
 
+    const userName = ref('Name')
+    const userEmail = ref('Email')
+    const userTeam = ref('Team')
+
+    const callInfo = async () => {
+      const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+      }
+
+      const { data } = await axios.post('/auth/info', {}, axios_config)
+      const { name, email, teamName } = data
+      
+      userName.value = name
+      userEmail.value = email
+      userTeam.value = teamName
+    }
+
+    callInfo()
+
     return {
       themeMode,
       toggleFullScreen,
+      userName,
+      userEmail,
+      userTeam,
     };
   },
 });

@@ -35,7 +35,8 @@
             </svg>
           </span> -->
           <select class="select-search" name="" id="">
-            <option value="">전체</option>
+            <option value="전체">전체</option>
+            <option v-for="folder in folderList" :key="folder" :value="folder.name">{{folder.name}}</option>
           </select>
           <span class="icon-search" @click="search_function">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -80,6 +81,7 @@ import { version } from "@/core/helpers/documentation";
 import { headerMenuDisplay } from "@/core/helpers/config";
 import router from "@/router";
 import store from "@/store";
+import axios from "axios";
 
 const emits = defineEmits([
   'display_search_popup',
@@ -101,7 +103,8 @@ const search_function = (e) => {
   // console.log(search_keyword.value);
   store.state.search_keyword = search_keyword.value
   
-  router.push('/search')
+  if (search_keyword.value == '') alert('검색어를 입력해주세요.')
+  if (search_keyword.value != '') router.push('/search')
 }
 
 const enter = (e) => {
@@ -109,6 +112,19 @@ const enter = (e) => {
     search_function(true)
   };
 }
+
+let folderList = ref([])
+
+const init = async () => {
+  const { data } = await axios.post('/folder/list')
+
+  folderList.value = data
+
+  console.log(folderList.value);
+  
+}
+
+init()
 </script>
 
 <style lang="scss" scoped>

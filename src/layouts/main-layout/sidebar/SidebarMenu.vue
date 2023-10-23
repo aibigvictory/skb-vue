@@ -468,7 +468,17 @@ export default defineComponent({
     const files_etc = ref({})
     const files_etc_lock = ref({})
 
+    const deepCopy = (target) => {
+      return JSON.parse(JSON.stringify(target))
+    }
+
+    // setInterval(() => {
+    //   console.log(categorys_in_manageFiles.value);
+    //   console.log(manageFile_list);
+    // }, 5000)
+
     const init = async () => {
+      console.log('init');
       try{
         const { data } = await axios.post('/folder/list')
 
@@ -486,34 +496,25 @@ export default defineComponent({
       }
       catch(error) {console.log(error);}
 
-      categorys_in_manageFiles.value = category_in_file(category_list, manageFile_list, 'code', 'folderCd')
-
       try{
         const { data } = await axios.post('/file/list', {
           type: 'etc'
         })
 
         etcFile_list = data
-
-        // for (let i = 0; i < data.length; i++) {
-        //   const { lock } = data[i]
-
-        //   if (lock) files_etc_lock.value[id] = data[i]
-        //   else files_etc.value[id] = data[i]
-        // }
-
-        // console.log('files_etc.value: ', files_etc.value);
-        // console.log('files_etc_lock.value: ', files_etc_lock.value);
-
-        // files.value = excel_list.data
       }
       catch(error) {console.log(error);}
-      
-      categorys_in_etcFiles.value = category_in_file(category_list, etcFile_list, 'code', 'folderCd')
+
+
+      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), manageFile_list, 'code', 'folderCd')
+      categorys_in_etcFiles.value = category_in_file(deepCopy(category_list), etcFile_list, 'code', 'folderCd')
     }
 
 
     const category_in_file = (category_arr, file_arr, category_key, file_key) => {
+      console.log('category in file');
+      console.log(category_arr);
+      console.log(file_arr);
       let result = []
 
       for (let i = 0; i < category_arr.length; i++) {
@@ -531,6 +532,8 @@ export default defineComponent({
           }
         }
       }
+
+      console.log(result);
 
       return result
     }

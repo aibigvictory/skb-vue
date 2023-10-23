@@ -83,9 +83,20 @@ const init = async () => {
     try{
         const { data } = await axios.post('/folder/list')
 
-        data.forEach(dat => dat.count = 7)
-
         group.value = data
+    }
+    catch(error) {console.log(error);}
+
+    try{
+        const { data } = await axios.post('/file/list')
+
+        group.value.forEach(category =>{
+            category.count = 0
+            
+            data.forEach(file => {
+                if (category.code == file.folderCd) category.count++
+            })
+        })
     }
     catch(error) {console.log(error);}
 }
@@ -137,7 +148,7 @@ const create = async () => {
 // }
 
 // let accept_popup_state = ref(false)
-let delete_idx = null
+let delete_idx: any = null
 let delete_file_name = null
 let delete_popup_state = ref(false)
 let notGroupName_state = ref(false)
@@ -146,6 +157,11 @@ let notGroupName_state = ref(false)
 //     // axios.post('/member/delete', {id: member_id})
 // }
 const delete_group = async () => {
+    // console.log(delete_idx);
+    // console.log(group.value[delete_idx - 1]);
+    
+    if (group.value[delete_idx - 1].count > 0) return alert('하나 이상의 파일이 존재합니다.')
+
     group.value.splice(delete_idx, 1)
 
     await axios.post('/folder/delete', {
