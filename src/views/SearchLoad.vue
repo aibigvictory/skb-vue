@@ -93,14 +93,35 @@ import Grid from 'tui-grid';
 import 'tui-grid/dist/tui-grid.css';
 import { onMounted, ref } from 'vue';
 
-// let search_result_list2: any = {}
 let sheet_list:any = []
-let files:any = []
+let file_list: any = []
 const search_result_list = ref({})
-const folder_name = {
-  '001' : 'HD방송',
-  '002' : 'CATV_SO',
-  '003' : 'TITAN',
+
+const category_in_file = (category_arr, file_arr, category_key, file_key) => {
+  console.log('category in file');
+  console.log(category_arr);
+  console.log(file_arr);
+  let result: any = []
+
+  for (let i = 0; i < category_arr.length; i++) {
+    const category = category_arr[i]
+
+    result.push(category)
+
+    category.files = []
+
+    for (let j = 0; j < file_arr.length; j++) {
+      const file = file_arr[j]
+
+      if (category[category_key] == file[file_key]) {
+        category.files.push(file)
+      }
+    }
+  }
+
+  console.log(result);
+
+  return result
 }
 
 const init = async () => {
@@ -112,55 +133,16 @@ const init = async () => {
     for (let key2 in store.state.search_result[key].files)
       file_id_list.push(key2)
   }
-
-  // console.log(store.state.search_keyword);
-  // console.log(file_id_list);
   
   const { data } = await axios.post('/search/detail', {
     "q": store.state.search_keyword,
     "id": file_id_list
   })
+  const { folders, files } = data
 
-  // console.log(data);
-  // console.log(data.files);
-  files = data.files
-  
-  data.files.forEach((item, index) => {
-    let { name, sheets, updatedAt } = item
-    let { columns, complexColumns, data } = sheets
+  search_result_list.value = category_in_file(folders, files, 'code', 'folderCd')
 
-    sheet_list.push(sheets)
-
-    // for (let item in data) {
-    //   data[item] = data[item].replace(/\n/g, '<br>');
-    // }
-    
-    if (!search_result_list.value[item.folderCd]) {
-      search_result_list.value[item.folderCd] = {}
-      search_result_list.value[item.folderCd]['name'] = folder_name[item.folderCd]
-    }
-    if (!search_result_list.value[item.folderCd]['files']) search_result_list.value[item.folderCd]['files'] = []
-
-    // console.log(search_result_list.value[item.folderCd].files);
-    
-    search_result_list.value[item.folderCd].files.push(item)
-
-    
-    // console.log(search_result_list.value);
-
-
-    // search_result_list.value[item.folderCd]['files'].push({
-    //   index, name, updatedAt, list: {
-    //     columns, complexColumns, data
-    //   }
-    // })
-    // search_result_list2[index] = {
-    //   columns, complexColumns, data, 
-    // }
-    
-  })
-  // console.log(search_result_list.value);
-  // console.log(search_result_list2);
+  file_list = files
 }
 
 const sort_search_result = (e, type) => {
@@ -247,7 +229,7 @@ onMounted(async() => {
   // console.log(sheet_list);
 
   // console.log(files);
-  files.forEach((file) => {
+  file_list.forEach((file) => {
     // console.log(file);
 
     
@@ -384,12 +366,21 @@ const save = async () => {
     // }
   }
 
-  const axios_config = {
-    headers: { Authorization: `Bearer ${JwtService.getToken()}` }
-  }
+  if (!adjustArr.length) return alert('수정 사항이 없습니다.')
 
-  const { data } = await axios.post('/auth/info', {}, axios_config)
-  const { id } = data
+  let userId = 1
+
+  try{
+    const axios_config = {
+      headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+  
+    const { data } = await axios.post('/auth/info', {}, axios_config)
+    userId = data.id
+  }
+  catch(error) {
+    alert('사용자 정보 조회에 실패하였습니다.')
+  }
   // toastArr.forEach((toast) => {
   //   console.log(toast);
     
@@ -412,7 +403,7 @@ const save = async () => {
   
   // const adjustExcel = await axios.post('http://dev.peerline.net:80/folder/list')
   const adjustExcel = await axios.post('/file/edit', {
-    userId: id,
+    userId,
     data: adjustArr
   })
   .then(() => {alert('엑셀 수정이 완료되었습니다.')})
