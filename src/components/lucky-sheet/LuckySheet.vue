@@ -25,7 +25,7 @@ import { isFunction } from '@/assets/utils/is.js'
 import LuckyExcel from 'luckyexcel'
 
 try{
-  const url = `http://dev.peerline.net:9494/${localStorage.getItem('path')}`
+  const url = `${process.env.VUE_APP_API_URL}/${localStorage.getItem('path')}`
 
   LuckyExcel.transformExcelToLuckyByUrl(url, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
@@ -54,7 +54,7 @@ setInterval(() => {
 
   console.log('change');
 
-  const url = `http://dev.peerline.net:9494/${localStorage.getItem('path')}`
+  const url = `${process.env.VUE_APP_API_URL}/${localStorage.getItem('path')}`
 
   LuckyExcel.transformExcelToLuckyByUrl(url, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
