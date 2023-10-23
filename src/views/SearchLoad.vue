@@ -410,12 +410,13 @@ const save = async () => {
   // ]
   console.log(adjustArr);
   
-
   // const adjustExcel = await axios.post('http://dev.peerline.net:80/folder/list')
-  const adjustExcel = await axios.post('http://dev.peerline.net:5000/excel/edit', {
+  const adjustExcel = await axios.post('/file/edit', {
     userId: id,
     data: adjustArr
   })
+  .then(() => {alert('엑셀 수정이 완료되었습니다.')})
+  .catch(() => {alert('엑셀 수정에 실패하였습니다.')})
   console.log(adjustExcel);
   
 }
