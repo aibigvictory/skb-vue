@@ -101,7 +101,7 @@ const fileUpload = async () => {
 onMounted(() => {
     try{
         myDropzone = new Dropzone(dropzone.value, {
-            url: '/file/upload',
+            url: `${process.env.VUE_APP_API_URL}/file/upload`,
             autoProcessQueue: false, 
             params: {
                 userId: '0',

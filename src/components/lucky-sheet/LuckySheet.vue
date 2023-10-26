@@ -32,6 +32,9 @@ try{
           // 예외처리
           return;
       }
+
+      console.log(exportJson);
+      console.log(luckysheetfile);
        
       // console.log(exportJson, luckysheetfile);    
       window.luckysheet.destroy();    
@@ -41,8 +44,13 @@ try{
           showinfobar:false,
           data:exportJson.sheets,
           title:exportJson.info.name,
-          userInfo:exportJson.info.name.creator
+          userInfo:exportJson.info.name.creator,
       });
+
+      console.log(window.luckysheet);
+      console.log(window.luckysheet.getSheet({name: 'Agg MUX'}));
+      console.log(window.luckysheet.getSheet({name: 'AD SCR'}));
+      
   });
 }
 catch(error) {}
