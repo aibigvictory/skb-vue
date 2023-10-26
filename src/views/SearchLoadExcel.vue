@@ -261,12 +261,15 @@ const sort_search_result = (target, option) => {
 
 // let adjust = null
 
+let edit_list: any = new Map()
+
 class CustomTextEditor {
   constructor(props) {
     const el = document.createElement('textarea');
     const { maxLength } = props.columnInfo.editor.options;
 
-    console.log(props);
+    console.log('props.value: ', props.value);
+    // console.log('getData: ', props.getData());
     
 
     // el.type = 'text';
@@ -275,33 +278,56 @@ class CustomTextEditor {
     el.value = String(props.value.value).replace(/<br>/g, '\n');
     el.setAttribute('r', props.value.r)
     el.setAttribute('c', props.value.c)
+    el.setAttribute('sheetName', props.value.sheetName)
+    el.setAttribute('fileId', props.value.fileId)
+    // el.setAttribute('c', props.value.c)
+    // el.setAttribute('c', props.value.c)
     // el.value =  ' ' + String(props.value) + ' ';
-    console.dir(el);
+    // console.dir(el);
     
 
     this.el = el;
   }
 
   getElement() {
-    console.log('getElement');
+    // console.log('getElement');
     // adjust = this.el
 
     return this.el;
   }
 
   getValue() {
-    console.log('getValue')
-    console.log(this.el.getAttribute('r'));
+    // console.log('getValue')
+    // console.log(this.el.getAttribute('r'));
     
-    
-    // return this.el.value;
+        console.dir(this.el);
+        
+        // return this.el.value;
+        console.log(`${this.el.id.replace('grid','')}_sheet_r${Number(this.el.getAttribute('r'))}c${Number(this.el.getAttribute('c'))}`);
+        
+    edit_list.set(`${this.el.id.replace('grid','')}_sheet_r${Number(this.el.getAttribute('r'))}c${Number(this.el.getAttribute('c'))}`, {
+      value: this.el.value,
+      r: Number(this.el.getAttribute('r')),
+      c: Number(this.el.getAttribute('c')),
+      sheetName: (this.el.getAttribute('sheetName')),
+      fileId: Number(this.el.getAttribute('fileId')),
+    })
+    // {
+    //     value: this.el.value,
+    //   r: Number(this.el.getAttribute('r')),
+    //   c: Number(this.el.getAttribute('c')),
+    //   adjust: true
+    // }) //.value.replace(/\n/g, '<br>');
+    // return ' ' +  this.el.value + ' ';
+    console.log('getvalue: ', [...edit_list.values()]);
+
     return {
       value: this.el.value,
       r: Number(this.el.getAttribute('r')),
       c: Number(this.el.getAttribute('c')),
       adjust: true
-    }//.value.replace(/\n/g, '<br>');
-    // return ' ' +  this.el.value + ' ';
+    }
+    
   }
 
   mounted() {
@@ -336,6 +362,17 @@ const create_toasrUiGrid = (file_list) => {
         }
       })
       data.forEach((item) => {
+        console.log(item);
+
+        for (let key in item) {
+            item[key].sheetName = name
+            item[key].fileId = file.id
+        }
+        
+        // item.forEach(cell => {
+        //     cell.sheetNmae = name
+        //     cell.fileId = file.id
+        // })
         item["R1C0"] = {
           value: name,
           sheetName: name,
@@ -389,47 +426,50 @@ const save = async () => {
 
   // console.log(toastArr);
 
-  for (const sheetName in toastArr) {
-    const columnArr = toastArr[sheetName].getData()
-    // console.log(sheetName);
-    // console.log(columnArr);
+//   for (const sheetName in toastArr) {
+//     const columnArr = toastArr[sheetName].getData()
+//     // console.log(sheetName);
+//     // console.log(columnArr);
     
-    // console.log(toastArr[sheetName].el.id.replace('grid',''));
+//     // console.log(toastArr[sheetName].el.id.replace('grid',''));
 
-    for (let i = 0; i < columnArr.length; i++) {
-      const column = columnArr[i]
+//     for (let i = 0; i < columnArr.length; i++) {
+//       const column = columnArr[i]
 
-      // console.log(column);
+//       // console.log(column);
       
-      for (const row in column) {
-        const item = column[row]
-        // console.log(item);
-        // console.log(item.adjust);
+//       for (const row in column) {
+//         const item = column[row]
+//         // console.log(item);
+//         // console.log(item.adjust);
         
 
-        if (item && item.adjust) {
-          adjustArr.push({
-            fileId: Number(toastArr[sheetName].el.id.replace('grid','')),
-            sheetName: sheetName,
-            r: item.r,
-            c: item.c,
-            value: item.value
-          })
-        }
+//         if (item && item.adjust) {
+//           adjustArr.push({
+//             fileId: Number(toastArr[sheetName].el.id.replace('grid','')),
+//             sheetName: sheetName,
+//             r: item.r,
+//             c: item.c,
+//             value: item.value
+//           })
+//         }
           
-      }
-    }
+//       }
+//     }
     
-    // const adjust = {
-    //   "fileId": 27,
-    //   "sheetName": "도봉강북_QAM",
-    //   "r": 6,
-    //   "c": 5,
-    //   "value": "수정 테스트"
-    // }
-  }
+//     // const adjust = {
+//     //   "fileId": 27,
+//     //   "sheetName": "도봉강북_QAM",
+//     //   "r": 6,
+//     //   "c": 5,
+//     //   "value": "수정 테스트"
+//     // }
+//   }
 
-  if (!adjustArr.length) return alert('수정 사항이 없습니다.')
+    console.log(edit_list);
+    
+
+  if (![...edit_list.values()].length) return alert('수정 사항이 없습니다.')
 
   let userId = 1
 
@@ -467,7 +507,7 @@ const save = async () => {
   // const adjustExcel = await axios.post('http://dev.peerline.net:80/folder/list')
   const adjustExcel = await axios.post('/excel/edit', {
     userId,
-    data: adjustArr
+    data: [...edit_list.values()]
   })
   .then(() => {alert('엑셀 수정이 완료되었습니다.')})
   .catch(() => {alert('엑셀 수정에 실패하였습니다.')})
