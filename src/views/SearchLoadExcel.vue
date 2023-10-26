@@ -314,17 +314,6 @@ const create_toasrUiGrid = (file_list) => {
     file.sheets.forEach((sheet) => {
       const { index, name, columns, complexColumns, data } = sheet
   
-      columns.unshift({
-        "name": "R1C0",
-        "header": "시트"
-      })
-      data.forEach((item) => {
-        item["R1C0"] = {
-          value: name,
-          sheetName: name
-        }
-      })
-  
       columns.forEach((item) => {
         item.width = 'auto'
         item.editor = {
@@ -335,6 +324,21 @@ const create_toasrUiGrid = (file_list) => {
         }
         item.formatter = (value) => {
           if (value && value.value && value.value.value) return value.value.value;
+        }
+      })
+
+      columns.unshift({
+        "name": "R1C0",
+        "header": "시트",
+        "width": 'auto',
+        "formatter": (value) => {
+          if (value && value.value && value.value.value) return value.value.value;
+        }
+      })
+      data.forEach((item) => {
+        item["R1C0"] = {
+          value: name,
+          sheetName: name,
         }
       })
 

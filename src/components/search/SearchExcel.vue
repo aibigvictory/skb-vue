@@ -2,7 +2,7 @@
     <div class="popup">
         <div class="popup-wrap">
             <div class="popup-header">
-                <div><span>"{{search_keyword}}"</span>로 검색된 파일 내역 (총 12건)</div>
+                <div><span>"{{props.keyword}}"</span>로 검색된 파일 내역 (총 {{count}}건)</div>
                 <svg @click="emits('exit')" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <mask id="mask0_584_41385" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                 <rect width="24" height="24" fill="#D9D9D9"/>
@@ -15,7 +15,7 @@
             <div class="popup-section">
                 <div class="content" v-for="folder in folder_list" :key="folder">
                     <div class="category">{{folder.name}}</div>
-                    <div class="file" v-for="file in folder" :key="file">
+                    <div class="file" v-for="file in folder.files" :key="file" @click="file_click(file.path, file.name, file.uploader, file.updatedAt, folder.name)">
                         <div class="img">
                             <svg xmlns="http://www.w3.org/2000/svg" width="21" height="24" viewBox="0 0 21 24" fill="none">
                             <rect x="4.02051" y="2.88965" width="16.8485" height="17.8544" rx="1" fill="white"/>
@@ -67,20 +67,43 @@
 </template>
 
 <script setup lang="ts">
+import router from "@/router";
 import store from "@/store";
 import axios from "axios";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
+
+const props = defineProps({
+    keyword: String
+})
+
+console.log(props);
+
 
 const emits = defineEmits([
     'exit',
 ])
 
-let search_keyword = ref(store.state.search_keyword)
+// let search_keyword = ref()
 let folder_list = ref([])
 let file_push: any = []
 
+let count = computed(() => {
+    let result = 0
+    try{
+        folder_list.value.forEach((folder) => {
+            const { files } = folder
+
+            result = result + files.length
+        })
+    }
+    catch(error) {console.log(error);}
+    
+
+    return result
+})
+
 const init = async () => {
-  const { data } = await axios.get(`/search?q=${search_keyword.value}`)
+  const { data } = await axios.get(`/search?q=${props.keyword}`)
   const { files, folders } = data
 
   folder_list.value = category_in_file(folders, files, 'code', 'folderCd')
@@ -115,13 +138,27 @@ const category_in_file = (category_arr, file_arr, category_key, file_key) => {
   return result
 }
 
-watch(() => store.state.search_keyword, async (value) => {
-  folder_list.value = []
-  file_push = []
+watch(() => props.keyword, async (value) => {
+    console.log(value);
+    
+//   folder_list.value = []
+//   file_push = []
 
-  search_keyword.value = store.state.search_keyword
-  await init()
+//   await init()
 })
+
+const file_click = (path, name, user, date, cate) => {
+    // console.log(path, name);
+    localStorage.setItem('path', path)
+    localStorage.setItem('name', name)
+    localStorage.setItem('user', user)
+    localStorage.setItem('date', date)
+    localStorage.setItem('cate', cate)
+
+
+    emits('exit')
+    router.push({ name: "excel" });
+}
 
 init()
 
@@ -177,6 +214,7 @@ init()
                     margin-bottom: 0;
                 }
                 .file{
+                    cursor: pointer;
                     display: flex;
                     padding: 8px 10px;
                     background: var(----bs-light, #F9F9F9);
