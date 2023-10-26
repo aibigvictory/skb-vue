@@ -2,7 +2,7 @@
     <div class="popup">
         <div class="popup-wrap">
             <div class="popup-header">
-                <div><span>"SRC1632"</span>로 검색된 파일 내역 (총 12건)</div>
+                <div><span>"{{search_keyword}}"</span>로 검색된 파일 내역 (총 12건)</div>
                 <svg @click="emits('exit')" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <mask id="mask0_584_41385" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                 <rect width="24" height="24" fill="#D9D9D9"/>
@@ -13,9 +13,9 @@
                 </svg>
             </div>
             <div class="popup-section">
-                <div class="content" v-for="tmp in 2" :key="tmp">
-                    <div class="category">HD방송</div>
-                    <div class="file" v-for="tmp in 3" :key="tmp">
+                <div class="content" v-for="folder in folder_list" :key="folder">
+                    <div class="category">{{folder.name}}</div>
+                    <div class="file" v-for="file in folder" :key="file">
                         <div class="img">
                             <svg xmlns="http://www.w3.org/2000/svg" width="21" height="24" viewBox="0 0 21 24" fill="none">
                             <rect x="4.02051" y="2.88965" width="16.8485" height="17.8544" rx="1" fill="white"/>
@@ -33,7 +33,7 @@
                             </svg>
                         </div>
                         <div class="file-info">
-                            <div class="file-name">SKB 신규 MUX_Titan SCR_장비별 채널 리스트1</div>
+                            <div class="file-name">{{file.name}}</div>
                             <div class="file-detail">
                                 <div class="time">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
@@ -41,7 +41,7 @@
                                     <path d="M6.5 1.3125C5.56469 1.3125 4.64381 1.54317 3.81893 1.98407C2.99406 2.42498 2.29065 3.06251 1.77102 3.84019C1.25138 4.61788 0.931565 5.51172 0.839889 6.44253C0.748212 7.37334 0.887507 8.31239 1.24544 9.17651C1.60337 10.0406 2.16888 10.8031 2.89189 11.3965C3.6149 11.9899 4.47308 12.3957 5.39043 12.5782C6.30777 12.7607 7.25595 12.7141 8.151 12.4426C9.04604 12.1711 9.8603 11.683 10.5217 11.0217L11.0962 11.5962C10.3403 12.352 9.40975 12.9098 8.38685 13.2201C7.36395 13.5304 6.28031 13.5836 5.23191 13.3751C4.18352 13.1666 3.20274 12.7027 2.37645 12.0246C1.55015 11.3464 0.903847 10.475 0.494785 9.48744C0.0857224 8.49988 -0.0734727 7.42667 0.0313009 6.36289C0.136075 5.2991 0.501583 4.27758 1.09545 3.38879C1.68932 2.50001 2.49321 1.7714 3.43592 1.26751C4.37864 0.763621 5.43107 0.5 6.5 0.5V1.3125Z" fill="#222222"/>
                                     <path d="M6.09375 2.9375C6.31812 2.9375 6.5 3.11938 6.5 3.34375V7.57674L9.13906 9.08478C9.33386 9.19609 9.40154 9.44425 9.29023 9.63906C9.17891 9.83386 8.93075 9.90154 8.73594 9.79022L5.8922 8.16522C5.76562 8.09289 5.6875 7.95829 5.6875 7.8125V3.34375C5.6875 3.11938 5.86939 2.9375 6.09375 2.9375Z" fill="#222222"/>
                                     </svg>
-                                    마지막 수정일자: 2023-07-05 15:16:57
+                                    {{file.updatedAt}}
                                 </div>
                                 <div class="person">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -67,10 +67,63 @@
 </template>
 
 <script setup lang="ts">
+import store from "@/store";
+import axios from "axios";
+import { ref, watch } from "vue";
+
 const emits = defineEmits([
     'exit',
 ])
 
+let search_keyword = ref(store.state.search_keyword)
+let folder_list = ref([])
+let file_push: any = []
+
+const init = async () => {
+  const { data } = await axios.get(`/search?q=${search_keyword.value}`)
+  const { files, folders } = data
+
+  folder_list.value = category_in_file(folders, files, 'code', 'folderCd')
+
+  console.log(folder_list.value);
+}
+
+const category_in_file = (category_arr, file_arr, category_key, file_key) => {
+  let result: any = []
+
+  for (let i = 0; i < category_arr.length; i++) {
+    const category = category_arr[i]
+
+    result.push(category)
+
+    category.files = []
+
+    for (let j = 0; j < file_arr.length; j++) {
+      const file: any = file_arr[j]
+
+      if (!file_push.includes(file.id)) {
+        if (category[category_key] == file[file_key]) {
+          category.files.push(file)
+          file_push.push(file.id)
+        }
+      }
+    }
+  }
+
+  console.log(result);
+
+  return result
+}
+
+watch(() => store.state.search_keyword, async (value) => {
+  folder_list.value = []
+  file_push = []
+
+  search_keyword.value = store.state.search_keyword
+  await init()
+})
+
+init()
 
 </script>
 
