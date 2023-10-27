@@ -299,19 +299,16 @@ class CustomTextEditor {
   getValue() {
     // console.log('getValue')
     // console.log(this.el.getAttribute('r'));
+    if (this.el.value && Number(this.el.getAttribute('r')) && Number(this.el.getAttribute('c')) && this.el.getAttribute('sheetName') && Number(this.el.getAttribute('fileId'))) {
+      edit_list.set(`${this.el.getAttribute('fileId')}_${this.el.getAttribute('sheetName')}_r${this.el.getAttribute('r')}c${this.el.getAttribute('c')}`, {
+        value: this.el.value,
+        r: Number(this.el.getAttribute('r')),
+        c: Number(this.el.getAttribute('c')),
+        sheetName: (this.el.getAttribute('sheetName')),
+        fileId: Number(this.el.getAttribute('fileId')),
+      })
+    }
     
-        console.dir(this.el);
-        
-        // return this.el.value;
-        console.log(`${this.el.id.replace('grid','')}_sheet_r${Number(this.el.getAttribute('r'))}c${Number(this.el.getAttribute('c'))}`);
-        
-    edit_list.set(`${this.el.id.replace('grid','')}_sheet_r${Number(this.el.getAttribute('r'))}c${Number(this.el.getAttribute('c'))}`, {
-      value: this.el.value,
-      r: Number(this.el.getAttribute('r')),
-      c: Number(this.el.getAttribute('c')),
-      sheetName: (this.el.getAttribute('sheetName')),
-      fileId: Number(this.el.getAttribute('fileId')),
-    })
     // {
     //     value: this.el.value,
     //   r: Number(this.el.getAttribute('r')),
@@ -325,7 +322,8 @@ class CustomTextEditor {
       value: this.el.value,
       r: Number(this.el.getAttribute('r')),
       c: Number(this.el.getAttribute('c')),
-      adjust: true
+      sheetName: (this.el.getAttribute('sheetName')),
+      fileId: Number(this.el.getAttribute('fileId')),
     }
     
   }
@@ -502,7 +500,7 @@ const save = async () => {
     //   "value": "수정 테스트"
     // },
   // ]
-  console.log(adjustArr);
+
   
   // const adjustExcel = await axios.post('http://dev.peerline.net:80/folder/list')
   const adjustExcel = await axios.post('/excel/edit', {
