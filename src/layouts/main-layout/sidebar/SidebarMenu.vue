@@ -141,8 +141,8 @@
                             </span>
                             <span class="menu-title" style="display: block">
                               <div class="badge-wrap d-flex">
-                                <div class="badge badge-primary">2023.08.22 16:44</div>
-                                <div class="badge badge-primary" style="background: #622CE1 !important; margin-left: 4px;">홍길동</div>
+                                <div class="badge badge-primary">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
+                                <div class="badge badge-primary" style="background: #622CE1 !important; margin-left: 4px;">{{item2.user.name}}</div>
                               </div>
                               <div>{{translate(item2.name)}}</div>
                             </span>
