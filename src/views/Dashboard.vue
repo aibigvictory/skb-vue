@@ -11,6 +11,8 @@
           :title="`${!idx ?'최근 업로드 파일' :''}`"
           :file="recent_upload_file.name"
           :date="recent_upload_file.createdAt"
+          :user="recent_upload_file.user.name"
+          :team="recent_upload_file.user.teamName"
         />
 
       </div>

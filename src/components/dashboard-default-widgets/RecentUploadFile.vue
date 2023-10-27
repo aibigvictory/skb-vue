@@ -18,8 +18,8 @@
 
       <div class="name-date">
         <div class="one d-flex align-items-center">
-          신해철 
-          <span class="company ms-3">SKB</span>
+          {{user}} 
+          <span class="company ms-3">{{team}}</span>
         </div>
         <div class="two">{{date.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')}}</div>
       </div>
@@ -53,6 +53,8 @@ export default defineComponent({
     user: { type: String, required: false },
     file: { type: String, required: false },
     date: { type: String, required: false },
+    name: { type: String, required: false },
+    team: { type: String, required: false },
   },
 });
 </script>
