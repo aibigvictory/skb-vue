@@ -58,7 +58,7 @@
         class="d-flex align-items-stretch justify-content-between flex-lg-grow-1"
         id="kt_app_header_wrapper"
       >
-        <KTHeaderMenu @display_search_popup="change_popup_state('searchExcel', true)" @search="change_search_keyword"/>
+        <KTHeaderMenu @display_search_popup="change_popup_state('searchExcel', true)" @search="change_search_keyword" @select="change_folder_code"/>
         <KTHeaderNavbar />
       </div>
       <!--end::Header wrapper-->
@@ -66,7 +66,7 @@
     <!--end::Header container-->
   </div>
   <!--end::Header-->
-  <SearchExcel v-if="searchExcelPopup_state" @exit="change_popup_state('searchExcel', false)" :keyword="search_keyword"/>
+  <SearchExcel v-if="searchExcelPopup_state" @exit="change_popup_state('searchExcel', false)" :keyword="search_keyword" :code="folder_code"/>
 </template>
 
 <script setup lang="ts">
@@ -85,6 +85,12 @@ const search_keyword = ref('')
 
 const change_search_keyword = (keyword) => {
   search_keyword.value = keyword
+}
+
+const folder_code = ref('')
+
+const change_folder_code = (code) => {
+  folder_code.value = code
 }
 
 const searchExcelPopup_state = ref(false)

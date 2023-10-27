@@ -34,9 +34,9 @@
               <path xmlns="http://www.w3.org/2000/svg" d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
             </svg>
           </span> -->
-          <select class="select-search" name="" id="">
-            <option value="전체">전체</option>
-            <option v-for="folder in folderList" :key="folder" :value="folder.name">{{folder.name}}</option>
+          <select class="select-search" v-model="folder_code">
+            <option value="">전체</option>
+            <option v-for="folder in folderList" :key="folder" :value="folder.code">{{folder.name}}</option>
           </select>
           <span class="icon-search" @click="search_function">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -45,7 +45,7 @@
           </span>
           <input id="hedaer-input-search" @keypress="enter" type="text" v-on:input="search_keyword_input" data-kt-subscription-table-filter="search" class="input-search" placeholder="통합검색">
         </div>
-        <button class="btn-search" @click="emits('display_search_popup')">
+        <button class="btn-search" @click="open_popup">
           <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <mask id="mask0_274_10051" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="16">
           <rect width="18" height="16" fill="#D9D9D9"/>
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import KTMenuPages from "@/layouts/main-layout/header/menu/MenuPages.vue";
 import { version } from "@/core/helpers/documentation";
 import { headerMenuDisplay } from "@/core/helpers/config";
@@ -86,6 +86,7 @@ import axios from "axios";
 const emits = defineEmits([
   'display_search_popup',
   'search',
+  'select',
 ])
 
 
@@ -94,14 +95,26 @@ const emits = defineEmits([
   
 // },2000)
 let search_keyword = ref('')
+let folder_code = ref('')
+
+const open_popup = () => {
+  if (search_keyword.value == '') return alert('검색어를 입력해주세요')
+
+  emits('display_search_popup')
+}
 
 const search_keyword_input = (e) => {
   search_keyword.value = e.target.value
   emits('search', e.target.value)
 }
 
+watch(folder_code, (value) => {
+  emits('select', value)
+})
+
 const search_function = (e) => {
   store.state.search_keyword = search_keyword.value
+  store.state.folder_code = folder_code.value
   // console.log(search_keyword.value);
   // store.state.search_keyword = search_keyword.value
   

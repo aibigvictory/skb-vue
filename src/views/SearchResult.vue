@@ -87,19 +87,21 @@ import axios from 'axios';
 import { computed, onMounted, ref, watch } from 'vue';
 
 let search_keyword = ref('')
+let folder_code = ref('')
 let folder_list = ref([])
 let file_push: any = []
 
+folder_code.value = store.state.folder_code
 search_keyword.value = store.state.search_keyword
 
-const folder_code = {
-  '001/001': 'HD방송',
-  '001/002': 'CATV_SO',
-  '001/003': 'TITAN',
-}
+// const folder_code = {
+//   '001/001': 'HD방송',
+//   '001/002': 'CATV_SO',
+//   '001/003': 'TITAN',
+// }
 
 const init = async () => {
-  const { data } = await axios.get(`/search?q=${search_keyword.value}`)
+  const { data } = await axios.get(`/search?q=${search_keyword.value}&folderCd=${folder_code.value}`)
   const { files, folders } = data
 
   folder_list.value = category_in_file(folders, files, 'code', 'folderCd')
