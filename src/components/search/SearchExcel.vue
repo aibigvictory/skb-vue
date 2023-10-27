@@ -15,7 +15,7 @@
             <div class="popup-section">
                 <div class="content" v-for="folder in folder_list" :key="folder">
                     <div class="category">{{folder.name}}</div>
-                    <div class="file" v-for="file in folder.files" :key="file" @click="file_click(file.path, file.name, file.uploader, file.updatedAt, folder.name)">
+                    <div class="file" v-for="file in folder.files" :key="file" @click="file_click(file.path, file.name, '공유', '피어라인개발팀', file.updatedAt, folder.name)">
                         <div class="img">
                             <svg xmlns="http://www.w3.org/2000/svg" width="21" height="24" viewBox="0 0 21 24" fill="none">
                             <rect x="4.02051" y="2.88965" width="16.8485" height="17.8544" rx="1" fill="white"/>
@@ -148,11 +148,12 @@ watch(() => props.keyword, async (value) => {
 //   await init()
 })
 
-const file_click = (path, name, user, date, cate) => {
+const file_click = (path, name, user, team, date, cate) => {
     // console.log(path, name);
     localStorage.setItem('path', path)
     localStorage.setItem('name', name)
     localStorage.setItem('user', user)
+    localStorage.setItem('team', team)
     localStorage.setItem('date', date)
     localStorage.setItem('cate', cate)
 
