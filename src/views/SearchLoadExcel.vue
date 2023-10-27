@@ -299,7 +299,7 @@ class CustomTextEditor {
   getValue() {
     // console.log('getValue')
     // console.log(this.el.getAttribute('r'));
-    if (this.el.value && Number(this.el.getAttribute('r')) && Number(this.el.getAttribute('c')) && this.el.getAttribute('sheetName') && Number(this.el.getAttribute('fileId'))) {
+    if (this.el.value && Number(this.el.getAttribute('r')) && Number(this.el.getAttribute('c')) && this.el.getAttribute('sheetName') && this.el.getAttribute('sheetName') != "undefined" && Number(this.el.getAttribute('fileId')) && Number(this.el.getAttribute('fileId')) != NaN) {
       edit_list.set(`${this.el.getAttribute('fileId')}_${this.el.getAttribute('sheetName')}_r${this.el.getAttribute('r')}c${this.el.getAttribute('c')}`, {
         value: this.el.value,
         r: Number(this.el.getAttribute('r')),
