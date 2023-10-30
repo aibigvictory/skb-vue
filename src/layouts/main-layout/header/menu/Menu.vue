@@ -1,6 +1,6 @@
 <template>
   <!--begin::Menu wrapper-->
-  <div
+  <!-- <div
     v-if="headerMenuDisplay"
     class="app-header-menu app-header-mobile-drawer align-items-stretch"
     data-kt-drawer="true"
@@ -13,6 +13,10 @@
     data-kt-swapper="true"
     data-kt-swapper-mode="{default: 'append', lg: 'prepend'}"
     data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}"
+  > -->
+  <div
+    v-if="headerMenuDisplay"
+    class="app-header-menu app-header-mobile-drawer align-items-stretch"
   >
     <!--begin::Menu-->
     <div
