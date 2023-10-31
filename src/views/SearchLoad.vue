@@ -54,7 +54,7 @@ import store from '@/store';
 import { onMounted, ref, watch } from 'vue';
 
 const sort_option = ref('default')
-const search_option = ref('false')
+const search_option = ref('true')
 
 
 </script>

@@ -70,7 +70,7 @@
 import router from "@/router";
 import store from "@/store";
 import axios from "axios";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 
 const props = defineProps({
     keyword: String,
@@ -164,6 +164,15 @@ const file_click = (path, name, user, team, date, cate) => {
 
 init()
 
+onMounted(() => {
+    const body = document.getElementsByTagName('body')[0];
+    body.style.overflow = "hidden"//classList.add('scrollLock');
+})
+
+onUnmounted(() => {
+    const body = document.getElementsByTagName('body')[0];
+    body.style.overflow = "scroll"//classList.add('scrollLock');
+})
 </script>
 
 
