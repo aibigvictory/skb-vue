@@ -23,9 +23,10 @@ import { exportExcel } from '@/assets/utils/export'
 // import { exportExcel } from '@/assets/utils/export.js'
 import { isFunction } from '@/assets/utils/is.js'
 import LuckyExcel from 'luckyexcel'
+import axios from 'axios'
 
 try{
-  const url = `${process.env.VUE_APP_API_URL}/${localStorage.getItem('path')}`
+  const url = `${process.env.VUE_APP_API_URL}/file/${localStorage.getItem('id')}/data`
 
   LuckyExcel.transformExcelToLuckyByUrl(url, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
@@ -55,20 +56,23 @@ try{
 }
 catch(error) {}
 
-let path = localStorage.getItem('path')
+let id = localStorage.getItem('id')
 setInterval(() => {
-  if (path == localStorage.getItem('path')) return
-  path = localStorage.getItem('path')
+  if (id == localStorage.getItem('id')) return
+  id = localStorage.getItem('id')
 
   console.log('change');
 
-  const url = `${process.env.VUE_APP_API_URL}/${localStorage.getItem('path')}`
+  const url = `${process.env.VUE_APP_API_URL}/file/${localStorage.getItem('id')}/data`
 
   LuckyExcel.transformExcelToLuckyByUrl(url, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
           // 예외처리
           return;
       }
+
+      console.log(exportJson);
+      console.log(luckysheetfile);
        
       // console.log(exportJson, luckysheetfile);    
       window.luckysheet.destroy();    
@@ -78,42 +82,42 @@ setInterval(() => {
           showinfobar:false,
           data:exportJson.sheets,
           title:exportJson.info.name,
-          userInfo:exportJson.info.name.creator
+          userInfo:exportJson.info.name.creator,
       });
+
+      console.log(window.luckysheet);
+      console.log(window.luckysheet.getSheet({name: 'Agg MUX'}));
+      console.log(window.luckysheet.getSheet({name: 'AD SCR'}));
+      
   });
+
+  // LuckyExcel.transformExcelToLuckyByUrl(url, localStorage.getItem('name'), function(exportJson, luckysheetfile){                    
+  //     if(exportJson.sheets==null || exportJson.sheets.length==0){
+  //         // 예외처리
+  //         return;
+  //     }
+       
+  //     // console.log(exportJson, luckysheetfile);    
+  //     window.luckysheet.destroy();    
+  //     // 뷰어
+  //     window.luckysheet.create({
+  //         container: 'luckysheet',
+  //         showinfobar:false,
+  //         data:exportJson.sheets,
+  //         title:exportJson.info.name,
+  //         userInfo:exportJson.info.name.creator
+  //     });
+  // });
 }, 100)
+
+// setInterval(() => {
+//   console.log(window.luckysheet.getAllSheets());
+// }, 10000)
 
 const isMaskShow = ref(false)
 const selected = ref('')
 const jsonData = ref({})
-const options = ref([
-  { text: 'Money Manager.xlsx', value: 'https://minio.cnbabylon.com/public/luckysheet/money-manager-2.xlsx' },
-  {
-    text: 'Activity costs tracker.xlsx',
-    value: 'https://minio.cnbabylon.com/public/luckysheet/Activity%20costs%20tracker.xlsx',
-  },
-  {
-    text: 'House cleaning checklist.xlsx',
-    value: 'https://minio.cnbabylon.com/public/luckysheet/House%20cleaning%20checklist.xlsx',
-  },
-  {
-    text: 'Student assignment planner.xlsx',
-    value: 'https://minio.cnbabylon.com/public/luckysheet/Student%20assignment%20planner.xlsx',
-  },
-  {
-    text: 'Credit card tracker.xlsx',
-    value: 'https://minio.cnbabylon.com/public/luckysheet/Credit%20card%20tracker.xlsx',
-  },
-  { text: 'Blue timesheet.xlsx', value: 'https://minio.cnbabylon.com/public/luckysheet/Blue%20timesheet.xlsx' },
-  {
-    text: 'Student calendar (Mon).xlsx',
-    value: 'https://minio.cnbabylon.com/public/luckysheet/Student%20calendar%20%28Mon%29.xlsx',
-  },
-  {
-    text: 'Blue mileage and expense report.xlsx',
-    value: 'https://minio.cnbabylon.com/public/luckysheet/Blue%20mileage%20and%20expense%20report.xlsx',
-  },
-])
+const options = ref([])
 
 const loadExcel = (evt) => {
   const files = evt.target.files
