@@ -474,6 +474,12 @@ const save = async () => {
 //   }
 
     console.log(edit_list);
+
+  for (let key in toastArr) {
+    const toast = toastArr[key]
+
+    toast.finishEditing();
+  }
     
 
   if (![...edit_list.values()].length) return alert('수정 사항이 없습니다.')
