@@ -109,7 +109,7 @@ onMounted(() => {
                 folderCd: '',
             },
             paramName: "files",
-            acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            acceptedFiles: null,
             maxFiles: 100,
             parallelUploads: 100,
             clickable: true,
@@ -130,7 +130,8 @@ onMounted(() => {
         });
     
         myDropzone.on("addedfile", function(file) {
-            if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
+            // if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
+            if (!file.name.endsWith('.xlsx')) {
                 myDropzone.removeFile(file); // 파일 제거
             }
         });
