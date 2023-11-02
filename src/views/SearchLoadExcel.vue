@@ -268,7 +268,7 @@ class CustomTextEditor {
     const el = document.createElement('textarea');
     const { maxLength } = props.columnInfo.editor.options;
 
-    console.log('props.value: ', props.value);
+    // console.log('props.value: ', props.value);
     // console.log('getData: ', props.getData());
     
 
@@ -284,6 +284,12 @@ class CustomTextEditor {
     // el.setAttribute('c', props.value.c)
     // el.value =  ' ' + String(props.value) + ' ';
     // console.dir(el);
+
+    for (let key in toastArr) {
+      const toast = toastArr[key]
+
+      if (key != props.value.sheetName) toast.finishEditing();
+    }
     
 
     this.el = el;
@@ -292,6 +298,7 @@ class CustomTextEditor {
   getElement() {
     // console.log('getElement');
     // adjust = this.el
+    
 
     return this.el;
   }
@@ -308,6 +315,8 @@ class CustomTextEditor {
         fileId: Number(this.el.getAttribute('fileId')),
       })
     }
+
+    
     
     // {
     //     value: this.el.value,
