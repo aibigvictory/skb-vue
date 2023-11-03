@@ -122,10 +122,16 @@ const init = async () => {
 
   let file_id_list:string[] = []
 
-  for (let key in props.fileList) {
-    for (let key2 in props.fileList[key].files)
-      file_id_list.push(key2)
-  }
+  // for (let key in props.fileList) {
+  //   for (let key2 in props.fileList[key].files)
+  //     file_id_list.push(key2)
+  // }
+  props.fileList.forEach((file) => {
+    file_id_list.push(file.id)
+  })
+
+  console.log(file_id_list);
+  
   
   const { data } = await axios.post('/search/detail', {
     "q": props.keyword,

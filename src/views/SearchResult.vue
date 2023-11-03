@@ -6,7 +6,40 @@
     </div>
     <div class="search-result-section d-flex">
       <div class="category">
-        <div class="category-title"><div class="text">전체</div></div>
+        <div class="category-title">
+          <div class="text">전체</div>
+          <svg version="1.0" @click="check_all_manageFile"
+          width="12.000000pt" height="12.000000pt" viewBox="0 0 512.000000 512.000000"
+          preserveAspectRatio="xMidYMid meet">
+
+          <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+          fill="#000000" stroke="none">
+          <path d="M1703 4311 c-12 -6 -204 -131 -427 -280 -223 -149 -408 -271 -411
+          -271 -3 0 -35 60 -71 133 -36 72 -76 143 -88 155 -96 106 -276 37 -276 -106 0
+          -55 223 -506 269 -545 36 -30 86 -42 134 -33 41 8 1034 671 1062 709 15 21 20
+          44 20 87 0 63 -16 95 -67 133 -30 22 -111 32 -145 18z"/>
+          <path d="M2495 4146 c-67 -29 -105 -106 -91 -181 9 -47 59 -102 104 -115 25
+          -8 401 -10 1194 -8 1150 3 1157 3 1184 24 53 39 69 71 69 134 0 63 -16 95 -69
+          134 -27 21 -33 21 -1194 23 -955 2 -1173 0 -1197 -11z"/>
+          <path d="M1685 3017 c-22 -13 -210 -137 -418 -276 -208 -139 -385 -255 -392
+          -258 -10 -3 -37 41 -89 144 -84 168 -100 185 -186 191 -45 3 -61 0 -89 -20
+          -48 -33 -70 -66 -77 -118 -6 -43 0 -58 122 -300 119 -235 132 -257 169 -278
+          31 -17 51 -22 88 -19 44 4 92 34 555 343 358 240 514 349 530 373 15 23 22 49
+          22 81 0 120 -133 198 -235 137z"/>
+          <path d="M2495 2706 c-67 -29 -105 -106 -91 -181 9 -47 59 -102 104 -115 25
+          -8 401 -10 1194 -8 1150 3 1157 3 1184 24 53 39 69 71 69 134 0 63 -16 95 -69
+          134 -27 21 -33 21 -1194 23 -955 2 -1173 0 -1197 -11z"/>
+          <path d="M1685 1737 c-22 -13 -210 -137 -418 -276 -208 -139 -385 -255 -392
+          -258 -10 -3 -37 41 -89 144 -84 168 -100 185 -186 191 -45 3 -61 0 -89 -20
+          -48 -33 -70 -66 -77 -118 -6 -43 0 -58 122 -300 119 -235 132 -257 169 -278
+          31 -17 51 -22 88 -19 44 4 92 34 555 343 358 240 514 349 530 373 15 23 22 49
+          22 81 0 120 -133 198 -235 137z"/>
+          <path d="M2495 1266 c-67 -29 -105 -106 -91 -181 9 -47 59 -102 104 -115 25
+          -8 401 -10 1194 -8 1150 3 1157 3 1184 24 53 39 69 71 69 134 0 63 -16 95 -69
+          134 -27 21 -33 21 -1194 23 -955 2 -1173 0 -1197 -11z"/>
+          </g>
+          </svg>
+        </div>
         <ul class="category-list nav">
           <li v-for="(folder, idx) in folder_list" :key="folder" @click="click_category" :class="{ active: !idx }" data-bs-toggle="tab" :href="`#kt_tab_pane_${idx + 1}${idx + 1}${idx + 1}`">{{folder.name}} ({{folder.files? folder.files.length :1}})</li>
         </ul>
@@ -16,13 +49,17 @@
           <div v-for="(folder, idx) in folder_list" :key="folder" class="tab-pane fade" :class="{ show: !idx, active: !idx }" :id="`kt_tab_pane_${idx + 1}${idx + 1}${idx + 1}`" role="tabpanel">
             <div class="search-result-item-button">
               <div class="btn-wrap d-flex">
-                <button @click="check_file_all('check', $event, folder)">전체선택</button>
-                <button @click="check_file_all('delete', $event, folder)">전체해제</button>
+                <button @click="check_file_all('check', folder)">전체선택</button>
+                <button @click="check_file_all('delete', folder)">전체해제</button>
               </div>
             </div>
             <!-- {{item}} -->
             <ul class="search-result-item-list d-flex align-items-center">
-              <li v-for="item in folder.files" :key="item" class="d-flex align-items-center"><input @change="check_file($event, folder, item)" type="checkbox" class="form-check-input" :id="`checkbox${item.id}`"><label :for="`checkbox${item.id}`">{{item.name}}</label></li>
+              <!-- <li v-for="item in folder.files" :key="item" class="d-flex align-items-center"><input @change="check_file($event, folder, item)" type="checkbox" class="form-check-input" :id="`checkbox${item.id}`"><label :for="`checkbox${item.id}`">{{item.name}}</label></li> -->
+              <li v-for="item in folder.files" :key="item" class="d-flex align-items-center">
+                <input v-model="checked_file_list" type="checkbox" class="form-check-input" :value="item" :id="`checkbox${item.id}`">
+                <label :for="`checkbox${item.id}`">{{item.name}}</label>
+              </li>
             </ul>
           </div>
           <!-- <div class="tab-pane fade show active" id="kt_tab_pane_111" role="tabpanel">
@@ -50,9 +87,9 @@
     <div class="search-result-section2">
       <div class="title">관리파일 리스트 <span>{{checked_file_sum}}건</span></div>
       <ul class="search-result-section2-wrap">
-        <li v-if="!Object.keys(checked_file_list).length">선택한 관리파일이 없습니다.</li>
-        <li v-for="item1 in checked_file_list" :key="item1" class="search-result-section2-folder">
-          <div class="folder d-flex align-items-center">
+        <li v-if="!checked_file_sum">선택한 관리파일이 없습니다.</li>
+        <li v-for="item1 in checked_file_list_view" :key="item1" class="search-result-section2-folder">
+          <div v-if="item1.files.length" class="folder d-flex align-items-center">
             <div class="img d-flex justify-content-center align-items-center">
               <img src="media/icons/duotune/art/art005.svg" alt="">
             </div>
@@ -89,46 +126,35 @@ import { computed, onMounted, ref, watch } from 'vue';
 let search_keyword = ref('')
 let folder_code = ref('')
 let folder_list = ref([])
-let file_push: any = []
+
+let origin_folder = []
 
 folder_code.value = store.state.folder_code
 search_keyword.value = store.state.search_keyword
 
-// const folder_code = {
-//   '001/001': 'HD방송',
-//   '001/002': 'CATV_SO',
-//   '001/003': 'TITAN',
-// }
+
 
 const init = async () => {
   const { data } = await axios.get(`/search?q=${search_keyword.value}&folderCd=${folder_code.value}`)
   const { files, folders } = data
 
-  folder_list.value = category_in_file(folders, files, 'code', 'folderCd')
-  // folder_list.value = folders
+  origin_folder = folders
 
-  // files.forEach((item) => {
-  //   if (file_push.includes(item.id)) return
-
-  //   try{
-  //     for (let i = 0; i < folder_list.value.length; i++) {
-  //       if (!folder_list.value[i].files) folder_list.value[i].files = []
-  //       if (folder_list.value[i].name == folder_code[item.folderCd]) {
-  //         folder_list.value[i].files.push(item)
-  //         file_push.push(item.id)
-  //       }
-  //     }
-  //   }
-  //   catch(error) {console.log(error)};
-    
-  // })
+  folder_list.value = category_in_file(deepCopy(folders), files, 'code', 'folderCd')
 
   console.log(folder_list.value);
-  
+}
+
+const deepCopy = (target) => {
+  return JSON.parse(JSON.stringify(target))
 }
 
 const category_in_file = (category_arr, file_arr, category_key, file_key) => {
   let result: any = []
+  let file_push: any = []
+
+  console.log(category_arr, file_arr);
+  
 
   for (let i = 0; i < category_arr.length; i++) {
     const category = category_arr[i]
@@ -149,14 +175,12 @@ const category_in_file = (category_arr, file_arr, category_key, file_key) => {
     }
   }
 
-  console.log(result);
-
   return result
 }
 
 watch(() => store.state.search_keyword, async (value) => {
   folder_list.value = []
-  file_push = []
+  // file_push = []
 
   search_keyword.value = store.state.search_keyword
   await init()
@@ -164,17 +188,17 @@ watch(() => store.state.search_keyword, async (value) => {
 
 init()
 
-let checked_file_id_list = []
-const checked_file_list = ref({})
-const checked_file_sum = computed(() => {
-  let count = 0
+let checked_file_list: any = ref([])
+let checked_file_sum = computed(() => checked_file_list.value.length)
+let checked_file_list_view = computed(() => category_in_file(deepCopy(origin_folder), checked_file_list.value, 'code', 'folderCd'))
 
-  for(let key in checked_file_list.value) {
-    count = count + Object.keys(checked_file_list.value[key].files).length
-  }
-
-  return count
-})
+// setInterval(() => {
+  
+//   console.log(checked_file_list.value);
+//   console.log(checked_file_list_view.value);
+  
+  
+// }, 2000)
 
 const change_file_sort = (e) => {
   const type = e.target.value
@@ -231,55 +255,37 @@ const change_file_sort = (e) => {
   
 }
 
-const check_file = (e, folder, file) => {
-  console.log(e.target.checked);
-  if (e.target.checked) {
-    if (!checked_file_list.value[folder.name]) checked_file_list.value[folder.name] = {}
-    if (!checked_file_list.value[folder.name]['name']) checked_file_list.value[folder.name]['name'] = folder.name
-    if (!checked_file_list.value[folder.name]['files']) checked_file_list.value[folder.name]['files'] = {}
-    checked_file_list.value[folder.name]['files'][file.id] = file
+let state_all_manageFile = true
+
+const check_all_manageFile = () => {
+  if (state_all_manageFile) {
+    folder_list.value.forEach(folder => {
+      check_file_all('check', folder)
+    })
   }
-  else{
-    delete checked_file_list.value[folder.name]['files'][file.id]
-    
-    if (!Object.keys(checked_file_list.value[folder.name]['files']).length) delete checked_file_list.value[folder.name]
+  else {
+    checked_file_list.value = []
   }
+  state_all_manageFile = !state_all_manageFile
 }
 
-const check_file_all = (type, e, folder) => {
+const check_file_all = (type, folder) => {
   if (type == 'check') {
-    if (!checked_file_list.value[folder.name]) checked_file_list.value[folder.name] = {}
-    if (!checked_file_list.value[folder.name]['name']) checked_file_list.value[folder.name]['name'] = folder.name
-    if (!checked_file_list.value[folder.name]['files']) checked_file_list.value[folder.name]['files'] = {}
-  
-    folder.files.forEach((item) => {
-      console.log(item);
-      if (!checked_file_list.value[folder.name]['files'][item.id]) checked_file_list.value[folder.name]['files'][item.id] = item
-      // e.target.checked = true
-      document.querySelector(`#checkbox${item.id}`).checked = true
+    folder.files.forEach((file) => {
+      if (!checked_file_list.value.includes(file)) {
+        checked_file_list.value = [...checked_file_list.value, file]
+      }
     })
   }
   
   if (type == 'delete') {
-    delete checked_file_list.value[folder.name]
-
-    folder.files.forEach((item) => {
-      document.querySelector(`#checkbox${item.id}`).checked = false
-    })
+    checked_file_list.value = checked_file_list.value.filter(file => file.folderCd != folder.code)
   }
 }
 
 const delete_checked_file = (folder_name, file_id) => {
-  delete checked_file_list.value[folder_name]['files'][file_id]
-
-  if (!Object.keys(checked_file_list.value[folder_name]['files']).length) delete checked_file_list.value[folder_name]
-  
-  document.querySelector(`#checkbox${file_id}`).checked = false
+  checked_file_list.value = checked_file_list.value.filter(file => file.id != file_id)
 }
-
-// store.state.search_keyword = undefined
-
-
 
 const click_category = (e) => {
   console.log(e.target);
@@ -291,13 +297,9 @@ const click_category = (e) => {
 // console.log(store.state.search_keyword);
 
 const load_search_result = () => {
-  if (!Object.keys(checked_file_list.value).length) return alert('엑셀파일을 선택해 주세요.')
+  if (!checked_file_list.value.length) return alert('엑셀파일을 선택해 주세요.')
 
   store.state.search_result = checked_file_list.value
-
-  // console.log(checked_file_list.value);
-  // console.log(Object.keys(checked_file_list.value).length);
-  
 
   router.push('/load')
 }
@@ -361,6 +363,9 @@ li{list-style: none;}
       padding-right: 16px;
       border-right: 1px solid #DCDFE6;
       .category-title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin: 0;
         padding: 22px 8px 9px 8px;
         .text{
@@ -372,6 +377,10 @@ li{list-style: none;}
           font-weight: 600;
           line-height: 100%; /* 16px */
           letter-spacing: 0.5px;
+        }
+        svg{
+          transform: translateY(-50%);
+          cursor: pointer;
         }
       }
       .category-list{
