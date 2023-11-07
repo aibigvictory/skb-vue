@@ -41,6 +41,7 @@ import 'dropzone/dist/dropzone.css';
 import axios from "axios";
 import { ca } from "element-plus/es/locale";
 import store from "@/store";
+import JwtService from "@/core/services/JwtService";
 
 // 카테고리 시작---------------------------------------------
 
@@ -103,8 +104,8 @@ onMounted(() => {
         myDropzone = new Dropzone(dropzone.value, {
             url: `${process.env.VUE_APP_API_URL}/file/upload`,
             autoProcessQueue: false, 
+            headers: { 'Authorization': 'Bearer ' + JwtService.getToken() },
             params: {
-                userId: '0',
                 type: 'manage',
                 folderCd: '',
             },
