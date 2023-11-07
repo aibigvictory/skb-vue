@@ -34,21 +34,36 @@
                 </div>
                 
             </div>
-            <div class="right"><div class="btn-save">저장하기</div></div>
+            <div class="right"><div class="btn-save" @click="save_excel">저장하기</div></div>
             <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
         </div>
-        <LuckySheet />    
+        <LuckySheet ref="child" :excelName="excelTitle" :excelId="excelId"/>    
     </div>
 </template>
 
 <script setup lang="ts">
 import LuckySheet from '@/components/lucky-sheet/LuckySheet.vue'
+import { ref } from 'vue'
 
-const excelTitle = localStorage.getItem('name')
-const excelUploader = localStorage.getItem('user')
-const excelUploaderTeam = localStorage.getItem('team')
-const excelUpdateddAt = localStorage.getItem('date')
-const categoryName = localStorage.getItem('cate')
+setInterval(() => {
+    if (excelId.value != Number(localStorage.getItem('id'))) {
+        excelId.value = Number(localStorage.getItem('id'))
+    }
+}, 100)
+
+const excelId = ref(Number(localStorage.getItem('id')))
+const excelTitle = ref(localStorage.getItem('name'))
+const excelUploader = ref(localStorage.getItem('user'))
+const excelUploaderTeam = ref(localStorage.getItem('team'))
+const excelUpdateddAt = ref(localStorage.getItem('date'))
+const categoryName = ref(localStorage.getItem('cate'))
+
+const child: any = ref(null)
+const save_excel = () => {
+    child.value.downloadExcel();
+}
+
+
 </script>
 
 <style lang="scss" scoped>
