@@ -541,48 +541,9 @@ export default defineComponent({
 
     watch(() => store.state.upload, async (value) => {
       console.log(value);
-      try{
-        const { data } = await axios.post('/file/list', {
-          type: 'manage'
-        })
 
-        for (let i = 0; i < data.length; i++) {
-          const { id, lock, folderCd } = data[i]
-
-          // lock 파일 (카테고리 분류 필요없음)
-          if (lock) files_lock.value[id] = data[i]
-          
-          // normal 파일 (카테고리 분류 필요)
-          else {
-            if (folderCd.includes('/')) files.value[folderCd].files[id] = data[i];
-          }
-        }
-      }
-      catch(error) {console.log(error);}
-
-      try{
-        const { data } = await axios.post('/file/list', {
-          type: 'etc'
-        })
-
-        for (let i = 0; i < data.length; i++) {
-          const { lock } = data[i]
-
-          if (lock) files_etc_lock.value[id] = data[i]
-          else files_etc.value[id] = data[i]
-        }
-
-        console.log('files_etc.value: ', files_etc.value);
-        console.log('files_etc_lock.value: ', files_etc_lock.value);
-
-        // files.value = excel_list.data
-      }
-      catch(error) {console.log(error);}
+      init()
     })
-
-    // setInterval(() => {
-    //   init()
-    // }, 1000);
 
     const file_click = (id, name, user, team, date, cate) => {
       // console.log(id, name);
