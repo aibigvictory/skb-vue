@@ -1,9 +1,10 @@
 // import { createCellPos } from './translateNumToLetter'
 import Excel from 'exceljs'
-
+import axios from 'axios'
+import JwtService from '@/core/services/JwtService';
 import FileSaver from 'file-saver'
 
-const exportExcel = function(luckysheet, value) {
+const exportExcel = function(luckysheet, value, id) {
   // 参数为luckysheet.getluckysheetfile()获取的对象
   // 1.创建工作簿，可以为工作簿添加属性
   const workbook = new Excel.Workbook()
@@ -31,9 +32,18 @@ const exportExcel = function(luckysheet, value) {
     const blob = new Blob([data], {
       type: 'application/vnd.ms-excel;charset=utf-8'
     })
-    console.log("导出成功！")
-    console.log(data);
-    FileSaver.saveAs(blob, `${value}.xlsx`)
+    // FileSaver.saveAs(blob, `${value}.xlsx`)
+
+    var formData = new FormData();
+    formData.append('file', blob);
+    formData.append('id', id);
+
+    axios.post('/file/save', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${JwtService.getToken()}`,
+      },
+    });
   })
   return buffer
 }

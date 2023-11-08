@@ -44,7 +44,23 @@ watch(() => props.excelId, (value) => {
 
 //엑셀 다운로드
 const downloadExcel = () => {
-  exportExcel(luckysheet.getAllSheets(), props.excelName)
+  // const formData = new FormData();
+  // formData.append('file', file);
+
+  // axios.post('/server/upload', formData, {
+  //   headers: {
+  //     'Content-Type': 'multipart/form-data'
+  //   }
+  // });
+  console.log(luckysheet.getAllSheets());
+  
+  try{
+    exportExcel(luckysheet.getAllSheets(), props.excelName, props.excelId)
+    .then(() => alert('수정이 완료되었습니다.'))
+  }
+  catch(error) {
+    alert('수정에 실패하였습니다.')
+  }
 }
 
 //엘리먼트 생성 후, 엑셀 파일 데이터 적용
