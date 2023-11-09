@@ -78,9 +78,7 @@ export default defineComponent({
 
   .company{
     display: flex;
-    width: 78px;
-    padding: 4px 0px;
-    margin: 0 12px;
+    padding: 4px 8px;
     justify-content: center;
     align-items: center;
     gap: 8px;
@@ -97,6 +95,9 @@ export default defineComponent({
   }
 
   .one{
+    display: flex;
+    justify-content: space-between;
+    width: 190px;
     color: var(--primary-text, #222);
     font-family: Pretendard;
     font-size: 16px;
@@ -115,22 +116,23 @@ export default defineComponent({
   }
 }
 .content{
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  width: 100%;
   .title{
-    display: flex;
-    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    // display: flex;
+    // align-items: center;
 
     color: var(--primary-text, #222);
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 140%; /* 22.4px */
   }
   .tag{
-    margin-top: 10px;
+    padding-top: 10px;
     .badge{
       display: inline-flex;
       padding: 6.777px 9.035px;

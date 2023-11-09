@@ -136,6 +136,18 @@ onMounted(() => {
                 myDropzone.removeFile(file); // 파일 제거
             }
         });
+
+        // myDropzone.on("complete", function(file) {
+        //     alert('업로드가 완료되었습니다.')
+        // });
+
+        myDropzone.on("success", function(file) {
+            alert('업로드가 완료되었습니다.')
+        });
+
+        myDropzone.on("error", function(file) {
+            alert('업로드가 실패하였습니다.')
+        });
     }
     catch(error) {
         console.log(error);
