@@ -4,7 +4,7 @@ import axios from 'axios'
 import JwtService from '@/core/services/JwtService';
 import FileSaver from 'file-saver'
 
-const exportExcel = function(luckysheet, value, id) {
+const saveExcelToServer = function(luckysheet, id) {
   // 参数为luckysheet.getluckysheetfile()获取的对象
   // 1.创建工作簿，可以为工作簿添加属性
   const workbook = new Excel.Workbook()
@@ -44,6 +44,40 @@ const exportExcel = function(luckysheet, value, id) {
         'Authorization': `Bearer ${JwtService.getToken()}`,
       },
     });
+  })
+  return buffer
+}
+
+const exportExcel = function(luckysheet, name) {
+  // 参数为luckysheet.getluckysheetfile()获取的对象
+  // 1.创建工作簿，可以为工作簿添加属性
+  const workbook = new Excel.Workbook()
+  // 2.创建表格，第二个参数可以配置创建什么样的工作表
+  if (Object.prototype.toString.call(luckysheet) === '[object Object]') {
+    luckysheet = [luckysheet]
+  }
+  luckysheet.forEach(function(table) {
+    if (table.data.length === 0) return  true
+    // ws.getCell('B2').fill = fills.
+    const worksheet = workbook.addWorksheet(table.name)
+    const merge = (table.config && table.config.merge) || {}
+    const borderInfo = (table.config && table.config.borderInfo) || {}
+    // 3.设置单元格合并,设置单元格边框,设置单元格样式,设置值
+    setStyleAndValue(table.data, worksheet)
+    setMerge(merge, worksheet)
+    setBorder(borderInfo, worksheet)
+    return true
+  })
+
+  // return
+  // 4.写入 buffer
+  const buffer = workbook.xlsx.writeBuffer().then(data => {
+    // console.log('data', data)
+    const blob = new Blob([data], {
+      type: 'application/vnd.ms-excel;charset=utf-8'
+    })
+    FileSaver.saveAs(blob, `${name}.xlsx`)
+
   })
   return buffer
 }
@@ -356,5 +390,5 @@ function createCellPos(n) {
 }
 
 export {
-  exportExcel
+  exportExcel, saveExcelToServer
 }

@@ -536,7 +536,7 @@ export default defineComponent({
         for (let j = 0; j < file_arr.length; j++) {
           const file = file_arr[j]
 
-          if (!file.lock && category[category_key] == file[file_key]) {
+          if (file.user != 'true' && category[category_key] == file[file_key]) {
             category.files.push(file)
           }
         }
@@ -553,7 +553,7 @@ export default defineComponent({
       for (let i = 0; i < file_arr.length; i++) {
         const file = file_arr[i]
 
-        if (file.lock) {
+        if (file.user == 'true') {
           result.push(file)
         }
       }
@@ -605,8 +605,9 @@ export default defineComponent({
 
       console.log(manageFile_list);
 
-      axios.post('/file/lock', {
-        id: drag_file.id
+      axios.post('/file/update', {
+        id: drag_file.id,
+        use: false
       })
 
       drag_file = null
@@ -619,8 +620,9 @@ export default defineComponent({
 
       categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
 
-      axios.post('/file/unlock', { 
-        id: drag_file.id
+      axios.post('/file/update', { 
+        id: drag_file.id,
+        use: true
       })
 
       drag_file = null
@@ -662,7 +664,7 @@ export default defineComponent({
           console.log(useless_manageFile_list.value);
           
           check_useless_manageFile_list.value.forEach(async (file_id) => {
-            await axios.post('/file/delete', {id: file_id})
+            await axios.post('/file/delete', {id: Number(file_id)})
             .then(() => alert('파일 삭제에 성공하였습니다.'))
             .catch(() => alert('파일 삭제에 실패하였습니다.'))
           })
@@ -671,7 +673,7 @@ export default defineComponent({
           console.log(check_useless_etcFile_list.value);
   
           check_useless_etcFile_list.value.forEach(async (file_id) => {
-            await axios.post('/file/delete', {id: file_id})
+            await axios.post('/file/delete', {id: Number(file_id)})
             .then(() => alert('파일 삭제에 성공하였습니다.'))
             .catch(() => alert('파일 삭제에 실패하였습니다.'))
           })

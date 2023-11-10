@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch, onUnmounted } from 'vue'
-import { exportExcel } from '@/assets/utils/export.js'
+import { exportExcel, saveExcelToServer } from '@/assets/utils/export.js'
 import { isFunction } from '@/assets/utils/is.js'
 import LuckyExcel from 'luckyexcel'
 import axios from 'axios'
@@ -44,18 +44,19 @@ watch(() => props.excelId, (value) => {
 
 //엑셀 다운로드
 const downloadExcel = () => {
-  // const formData = new FormData();
-  // formData.append('file', file);
-
-  // axios.post('/server/upload', formData, {
-  //   headers: {
-  //     'Content-Type': 'multipart/form-data'
-  //   }
-  // });
-  console.log(luckysheet.getAllSheets());
-  
   try{
-    exportExcel(luckysheet.getAllSheets(), props.excelName, props.excelId)
+    exportExcel(luckysheet.getAllSheets(), props.excelName)
+    .then(() => alert('다운로드가 완료되었습니다.'))
+  }
+  catch(error) {
+    alert('다운로드가 실패하였습니다.')
+  }
+}
+
+//엑셀 저장
+const saveExcel = () => {
+  try{
+    saveExcelToServer(luckysheet.getAllSheets(), props.excelId)
     .then(() => alert('수정이 완료되었습니다.'))
   }
   catch(error) {
@@ -75,7 +76,8 @@ onMounted(() => {
 
 //부모에게 함수 내보내기
 defineExpose({
-  downloadExcel
+  downloadExcel,
+  saveExcel
 })
 
 // setInterval(() => {

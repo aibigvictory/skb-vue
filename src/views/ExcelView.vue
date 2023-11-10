@@ -34,7 +34,10 @@
                 </div>
                 
             </div>
-            <div class="right"><div class="btn-save" @click="save_excel">저장하기</div></div>
+            <div class="right">
+                <div class="btn btn-save" @click="save_excel">저장하기</div>
+                <div class="btn btn-download" @click="download_excel">다운로드</div>
+            </div>
             <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
         </div>
         <LuckySheet ref="child" :excelName="excelTitle" :excelId="excelId"/>    
@@ -60,6 +63,9 @@ const categoryName = ref(localStorage.getItem('cate'))
 
 const child: any = ref(null)
 const save_excel = () => {
+    child.value.saveExcel();
+}
+const download_excel = () => {
     child.value.downloadExcel();
 }
 
@@ -120,7 +126,8 @@ const save_excel = () => {
             }
         }
         .right{
-            .btn-save{
+            display: flex;
+            .btn{
                 cursor: pointer;
                 display: flex;
                 justify-content: center;
@@ -129,10 +136,18 @@ const save_excel = () => {
                 width: 140px;
                 height: 38px;
                 border-radius: 6px;
-                background: var(--default-red, #DA1E28);
+                margin-left: 10px;
+                
                 color: #fff;
                 font-size: 14px;
                 font-weight: 700;
+
+                &.btn-save{
+                    background: var(--default-red, #DA1E28);
+                }
+                &.btn-download{
+                    background: var(--default-red, #0095e8);
+                }
             }
         }
     }
