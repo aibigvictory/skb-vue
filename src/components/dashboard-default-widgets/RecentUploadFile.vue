@@ -28,11 +28,12 @@
     <!--end::Header-->
 
     <!--begin::Card body-->
-    <div class="card-body d-flex align-items-end pt-0">
+    <div class="card-body">
       <div class="content">
         <div class="title">{{file}}</div>
-        <div class="tag"><span class="badge bg-primary" v-if="date.slice(0,10) == new Date().toISOString().slice(0,10)">Today</span></div>
-        <div class="tag"><span class="badge bg-primary opacity" v-if="date.slice(0,10) != new Date().toISOString().slice(0,10)">Today</span></div>
+        <div class="tag"><span class="badge bg-primary" v-if="true">Today</span></div>
+        <!-- <div class="tag"><span class="badge bg-primary" v-if="date.slice(0,10) == new Date().toISOString().slice(0,10)">Today</span></div>
+        <div class="tag"><span class="badge bg-primary opacity" v-if="date.slice(0,10) != new Date().toISOString().slice(0,10)">Today</span></div> -->
       </div>
     </div>
     <!--end::Card body-->
@@ -117,11 +118,19 @@ export default defineComponent({
 }
 .content{
   width: 100%;
+  height: 85px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  // margin-top: 30px;
   .title{
+    // padding-top: 20px;
     width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    // margin-top: 40px;
+    // height: 100px;
+    // overflow: hidden;
+    // white-space: nowrap;
+    // text-overflow: ellipsis;
     // display: flex;
     // align-items: center;
 
@@ -132,7 +141,7 @@ export default defineComponent({
     font-weight: 500;
   }
   .tag{
-    padding-top: 10px;
+    // padding-top: 10px;
     .badge{
       display: inline-flex;
       padding: 6.777px 9.035px;

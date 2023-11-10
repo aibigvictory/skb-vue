@@ -6,7 +6,7 @@
       <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5" v-for="(recent_upload_file, idx) in recent_upload_files" :key="recent_upload_file">
         <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px">최근 업로드 파일</h1> -->
         <Widget1
-          className="h-md-90 mb-5 mt-3"
+          className="h-md-80 mb-5 mt-3"
           bgColor="#FFFFFF"
           :title="`${!idx ?'최근 업로드 파일' :''}`"
           :file="recent_upload_file.name"
@@ -22,7 +22,7 @@
       <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5">
         <!-- <h1 class="d-flex text-dark fw-bold fs-3 align-items-center container-fluid h-35px">접속회원</h1> -->
         <Widget2
-          className="h-md-90 mb-5 mt-3"
+          className="h-md-80 mb-5 mt-3"
           description="Active Projects"
           bgColor="#FFFFFF"
           title="접속회원"

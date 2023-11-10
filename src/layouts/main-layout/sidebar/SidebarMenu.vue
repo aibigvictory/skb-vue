@@ -135,16 +135,16 @@
                           data-kt-menu-trigger="click"
                         >
                           <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id, item2.name, item2.user.name, item2.user.teamName, item2.updatedAt, category.name)"><span class="menu-bullet">
-                              <div>
-                                <img src="@/assets/img/group32.svg" alt="">
-                              </div>
                             </span>
                             <span class="menu-title" style="display: block">
                               <div class="badge-wrap d-flex">
                                 <div class="badge badge-primary">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
                                 <div class="badge badge-primary" style="background: #622CE1 !important; margin-left: 4px;">{{item2.user.name}}</div>
                               </div>
-                              <div>{{translate(item2.name)}}</div>
+                              <div class="icon-name d-flex align-items-start">
+                                <div class="img img-excel"><img src="@/assets/img/group32.svg" alt=""></div>
+                                <div class="name">{{translate(item2.name)}}</div>
+                              </div>
                             </span>
                           </span>
                           <div
@@ -348,7 +348,10 @@
               <!--  -->
               <div class="non-use-file">
                 <div class="menu nav">
-                  <div class="form-check">
+                  <div class="form-check" v-if="lock_state == 'manage'">
+                    <input @change="check_all_useless_file" class="form-check-input" type="checkbox" value="" id="all-check" />
+                  </div>
+                  <div class="form-check" v-if="lock_state == 'etc'">
                     <input @change="check_all_useless_file" class="form-check-input" type="checkbox" value="" id="all-check" />
                   </div>
                   <div class="non-use-file-category active" data-bs-toggle="tab" href="#kt_tab_pane_11" @click="change_lock_state('manage')">
@@ -379,12 +382,12 @@
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="kt_tab_pane_11" role="tabpanel">
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
-                      <div v-for="item2 in files_lock" :key="item2" class="d-flex">
+                      <div v-for="item2 in useless_manageFile_list" :key="item2" class="d-flex">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" v-model="list_check_useless_file" :value="item2.id" id="flexCheckDefault" />
+                          <input class="form-check-input" type="checkbox" v-model="check_useless_manageFile_list" :value="item2.id" id="flexCheckDefault" />
                           <!-- <input class="form-check-input" type="checkbox" v-model="list_check_useless_file" :value="item2.id" id="flexCheckDefault" /> -->
                         </div>
-                        <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
+                        <span class="useless-file menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
                           <span class="menu-bullet">
                             <div>
                               <img src="@/assets/img/group32.svg" alt="">
@@ -392,7 +395,7 @@
                           </span>
                           <span class="menu-title" style="display: block">
                             <!-- <div>dsadsadsadasd</div> -->
-                            <div>{{item2.name}}</div>
+                            <div class="useless-file-title">{{item2.name}}</div>
                           </span>
                         </span>
                       </div>
@@ -402,9 +405,9 @@
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
                       <div v-for="item2 in files_etc_lock" :key="item2" class="d-flex">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" v-model="list_check_useless_file" value="" id="flexCheckDefault" />
+                          <input class="form-check-input" type="checkbox" v-model="check_useless_etcFile_list" value="" id="flexCheckDefault" />
                         </div>
-                        <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
+                        <span class="useless-file menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
                           <span class="menu-bullet">
                             <div>
                               <img src="@/assets/img/group32.svg" alt="">
@@ -412,7 +415,7 @@
                           </span>
                           <span class="menu-title" style="display: block">
                             <!-- <div>dsadsadsadasd</div> -->
-                            <div>{{item2.name}}</div>
+                            <div class="useless-file-title">{{item2.name}}</div>
                           </span>
                         </span>
                       </div>
@@ -452,14 +455,18 @@ export default defineComponent({
     const scrollElRef = (ref < null) | (HTMLElement > null);
 
     let category_list = []
+
     let manageFile_list = []
     let etcFile_list = []
+
+    let useless_manageFile_list = ref([])
+    let useless_etcFile_list = ref([])
 
     const categorys_in_manageFiles = ref([])
     const categorys_in_etcFiles = ref([])
 
     // const categorys = ref({})
-    const categorys_etc = ref({})
+    // const categorys_etc = ref({})
 
     const files = ref({})
     const files_lock = ref({})
@@ -507,6 +514,9 @@ export default defineComponent({
 
       categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), manageFile_list, 'code', 'folderCd')
       categorys_in_etcFiles.value = category_in_file(deepCopy(category_list), etcFile_list, 'code', 'folderCd')
+
+      useless_manageFile_list.value = useless_in_file(manageFile_list)
+      useless_etcFile_list.value = useless_in_file(etcFile_list)
     }
 
 
@@ -526,7 +536,7 @@ export default defineComponent({
         for (let j = 0; j < file_arr.length; j++) {
           const file = file_arr[j]
 
-          if (category[category_key] == file[file_key]) {
+          if (!file.lock && category[category_key] == file[file_key]) {
             category.files.push(file)
           }
         }
@@ -535,6 +545,21 @@ export default defineComponent({
       console.log(result);
 
       return result
+    }
+
+    const useless_in_file = (file_arr) => {
+      let result = []
+
+      for (let i = 0; i < file_arr.length; i++) {
+        const file = file_arr[i]
+
+        if (file.lock) {
+          result.push(file)
+        }
+      }
+
+      return result
+
     }
 
     init()
@@ -566,10 +591,20 @@ export default defineComponent({
       drag_file = file
     }
 
+    const checkId = (arr, str) => {
+      return arr.some(e => e.id === str);
+    }
+
     const file_drag_drop_lock = () => {
-      console.log(drag_file);
-      files_lock.value[drag_file.id] = drag_file
-      delete files.value[drag_file.folderCd].files[drag_file.id]
+      
+      useless_manageFile_list.value.push(drag_file)
+
+      const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
+
+      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
+
+      console.log(manageFile_list);
+
       axios.post('/file/lock', {
         id: drag_file.id
       })
@@ -578,9 +613,12 @@ export default defineComponent({
     }
 
     const file_drag_drop_unlock = () => {
-      console.log(files.value[drag_file.folderCd]);
-      files.value[drag_file.folderCd].files[drag_file.id] = drag_file
-      delete files_lock.value[drag_file.id]
+      useless_manageFile_list.value = useless_manageFile_list.value.filter((con) => con.id != drag_file.id)
+
+      const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
+
+      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
+
       axios.post('/file/unlock', { 
         id: drag_file.id
       })
@@ -588,32 +626,61 @@ export default defineComponent({
       drag_file = null
     }
 
-    let lock_state = 'manage'
-    let list_check_useless_file = ref([])
-    const change_lock_state = (state) => {
-      document.querySelector('#all-check').checked = false
-      lock_state = state
-      list_check_useless_file.value = []
-    }
-    const check_all_useless_file = (e, id) => {
-      // console.log(list_check_useless_file.value);
-      // console.log(e.target.checked);
-      // console.log(id);
+    let check_useless_manageFile_list = ref([])
+    let check_useless_etcFile_list = ref([])
 
-      if(e.target.checked) {
-        if (lock_state == 'manage') {
-          for (const key in files_lock.value) {
-            list_check_useless_file.value.push(key)
-          }
-        }
-        if (lock_state == 'etc') {
-          for (const key in files_etc_lock.value) {
-            list_check_useless_file.value.push(key)
-          }
+    let lock_state = ref('manage')
+    // let list_check_useless_file = ref([])
+    const change_lock_state = (state) => {
+      // document.querySelector('#all-check').checked = false
+      lock_state.value = state
+    }
+    const check_all_useless_file = (e) => {
+      if (lock_state.value == 'manage') {
+        check_useless_manageFile_list.value = []
+
+        if (e.target.checked) {
+          useless_manageFile_list.value.forEach((file) => {
+            check_useless_manageFile_list.value.push(file.id)
+          })
         }
       }
-      else{
-        list_check_useless_file.value = []
+      if (lock_state.value == 'etc') {
+        check_useless_etcFile_list.value = []
+
+        if (e.target.checked) {
+          useless_etcFile_list.value.forEach((file) => {
+            check_useless_etcFile_list.value.push(file.id)
+          })
+        }
+      }
+    }
+
+    const delete_file = async () => {
+      try{
+        if (lock_state.value == 'manage') {
+          console.log(useless_manageFile_list.value);
+          
+          check_useless_manageFile_list.value.forEach(async (file_id) => {
+            await axios.post('/file/delete', {id: file_id})
+            .then(() => alert('파일 삭제에 성공하였습니다.'))
+            .catch(() => alert('파일 삭제에 실패하였습니다.'))
+          })
+        }
+        if (lock_state.value == 'etc') {
+          console.log(check_useless_etcFile_list.value);
+  
+          check_useless_etcFile_list.value.forEach(async (file_id) => {
+            await axios.post('/file/delete', {id: file_id})
+            .then(() => alert('파일 삭제에 성공하였습니다.'))
+            .catch(() => alert('파일 삭제에 실패하였습니다.'))
+          })
+        }
+        
+        init()
+      }
+      catch(error) {
+        
       }
     }
 
@@ -635,14 +702,7 @@ export default defineComponent({
       return route.path.indexOf(match) !== -1;
     };
 
-    const delete_file = () => {
-      list_check_useless_file.value.forEach((file_id) => {
-        // console.log(file_id);
-        axios.post('/file/delete', {id: file_id})
-      })
-
-      init()
-    }
+    
 
     return {
       hasActiveChildren,
@@ -654,16 +714,21 @@ export default defineComponent({
       files_etc,
       files_etc_lock,
       // categorys,
-      categorys_etc,
+      // categorys_etc,
       file_click,
       file_drag,
       file_drag_drop_lock,
       file_drag_drop_unlock,
-      list_check_useless_file,
+      // list_check_useless_file,
       check_all_useless_file,
+      lock_state,
       change_lock_state,
       delete_file,
-      categorys_in_manageFiles
+      categorys_in_manageFiles,
+      useless_manageFile_list,
+      useless_etcFile_list,
+      check_useless_manageFile_list,
+      check_useless_etcFile_list,
     };
   },
 });
@@ -673,6 +738,7 @@ export default defineComponent({
 .sub-menu-link{
   padding-top: 5px;
   padding-bottom: 5px;
+  flex-wrap: wrap;
 }
 .menu-item.menu-accordion{
   .svg{
@@ -692,6 +758,21 @@ export default defineComponent({
       width: 16px;height: 16px;
       background: url('@/assets/img/art005.svg');
     }
+  }
+}
+.useless-file{
+  flex-wrap: nowrap;
+}
+.icon-name{
+  margin-top: 4px;
+  .img-excel{
+    width: 16px;
+    // height: 2rem;
+    // font-size: 12px;
+    margin-right: 5px;
+  }
+  .name{
+    width: 100%;
   }
 }
 .menu-sub-accordion{

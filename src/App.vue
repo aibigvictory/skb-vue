@@ -105,6 +105,9 @@ img{
 .fw-900{
   font-weight: 900 !important;
 }
+.h-md-80{
+  height: 80% !important;
+}
 .h-md-90{
   height: 90% !important;
 }
