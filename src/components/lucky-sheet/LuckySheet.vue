@@ -128,18 +128,26 @@ defineExpose({
 
 </script>
 
-<style scoped>
+<style lang="scss">
 #luckysheet {
-  margin: 0px;
-  padding: 0px;
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 130px);
-  left: 0px;
-  top: 30px;
-  bottom: 0px;
-  overflow-x: hidden;
+  // margin: 0px;
+  // padding: 0px;
+  // position: relative;
+  // width: 100%;
+  // height: 1000vh;
+  height: calc(100vh - 300px);
+  // left: 0px;
+  // top: 30px;
+  // bottom: 0px;
+  // overflow-x: hidden;
 }
+// .luckysheet {
+//   height: calc(100vh - 320px) !important;
+//   overflow-y: scroll;
+// }
+// .luckysheet-scrollbars{
+//   height: calc(100vh - 420px) !important;
+// }
 
 #uploadBtn {
   font-size: 16px;

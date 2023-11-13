@@ -740,7 +740,7 @@ export default defineComponent({
 .sub-menu-link{
   padding-top: 5px;
   padding-bottom: 5px;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
 }
 .menu-item.menu-accordion{
   .svg{

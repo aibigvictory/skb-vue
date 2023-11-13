@@ -276,6 +276,8 @@ class CustomTextEditor {
 
     // console.log('props.value: ', props.value);
     // console.log('getData: ', props.getData());
+    console.log('props: ',props);
+    console.log('props.value: ',props.value);
     
 
     // el.type = 'text';
@@ -322,8 +324,20 @@ class CustomTextEditor {
       })
     }
 
+    // if ()
+
+    console.log('getValue(): ',this.el.value);
+
     
-    
+    // if (!this.el.value) {
+    //   return {
+    //     value: "",
+    //     r: Number(this.el.getAttribute('r')),
+    //     c: Number(this.el.getAttribute('c')),
+    //     sheetName: (this.el.getAttribute('sheetName')),
+    //     fileId: Number(this.el.getAttribute('fileId')),
+    //   }
+    // }
     // {
     //     value: this.el.value,
     //   r: Number(this.el.getAttribute('r')),
@@ -331,7 +345,7 @@ class CustomTextEditor {
     //   adjust: true
     // }) //.value.replace(/\n/g, '<br>');
     // return ' ' +  this.el.value + ' ';
-    console.log('getvalue: ', [...edit_list.values()]);
+    // console.log('getvalue: ', [...edit_list.values()]);
 
     return {
       value: this.el.value,
