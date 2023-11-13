@@ -536,7 +536,7 @@ export default defineComponent({
         for (let j = 0; j < file_arr.length; j++) {
           const file = file_arr[j]
 
-          if (!file.user && category[category_key] == file[file_key]) {
+          if (file.use && category[category_key] == file[file_key]) {
             category.files.push(file)
           }
         }
@@ -553,7 +553,7 @@ export default defineComponent({
       for (let i = 0; i < file_arr.length; i++) {
         const file = file_arr[i]
 
-        if (file.user) {
+        if (!file.use) {
           result.push(file)
         }
       }
