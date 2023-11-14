@@ -122,7 +122,9 @@ defineExpose({
 //     })
 //   })
 // }
-
+onUnmounted(() => {
+  window.luckysheet.destroy();
+})
 
 // !!! create luckysheet after mounted
 

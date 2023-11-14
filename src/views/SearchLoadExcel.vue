@@ -391,6 +391,7 @@ const create_toasrUiGrid = (file_list) => {
         "formatter": (value) => {
           if (value && value.value && value.value.value) return value.value.value;
           if (value && value.value) return value.value;
+          if (value) return value;
         }
       })
       data.forEach((item) => {
