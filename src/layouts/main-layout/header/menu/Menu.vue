@@ -181,12 +181,12 @@ init()
   border-right: 1px solid var(----el-border, #DCDFE6);
   background: #FFF;
 
-  font-weight: bold;
-  font-size: 16px;
-  option{
-    font-weight: bold;
-    font-size: 16px;
-  }
+  // font-weight: bold;
+  // font-size: 16px;
+  // option{
+  //   font-weight: bold;
+  //   font-size: 16px;
+  // }
 
   // -webkit-appearance:none; /* 크롬 화살표 없애기 */
   // -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
