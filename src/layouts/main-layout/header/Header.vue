@@ -98,9 +98,9 @@ const change_popup_state = (popup_type, state) => {
     searchExcelPopup_state.value = state
 }
 
-document.addEventListener('keydown', function(event) {
-  if (event.code === 'F2') {
-    document.getElementById('hedaer-input-search').focus();
-  }
-});
+// document.addEventListener('keydown', function(event) {
+//   if (event.code === 'F2') {
+//     document.getElementById('hedaer-input-search').focus();
+//   }
+// });
 </script>
