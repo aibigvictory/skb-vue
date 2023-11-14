@@ -39,7 +39,7 @@
             </svg>
           </span> -->
           <select class="select-search" v-model="folder_code">
-            <option value="">전체</option>
+            <option value="">관리파일</option>
             <option v-for="folder in folderList" :key="folder" :value="folder.code">{{folder.name}}</option>
           </select>
           <span class="icon-search" @click="search_function">
@@ -180,6 +180,13 @@ init()
   border-left: 1px solid var(----el-border, #DCDFE6);
   border-right: 1px solid var(----el-border, #DCDFE6);
   background: #FFF;
+
+  font-weight: bold;
+  font-size: 16px;
+  option{
+    font-weight: bold;
+    font-size: 16px;
+  }
 
   // -webkit-appearance:none; /* 크롬 화살표 없애기 */
   // -moz-appearance:none; /* 파이어폭스 화살표 없애기 */

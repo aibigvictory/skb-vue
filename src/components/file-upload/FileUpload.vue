@@ -116,7 +116,7 @@ onMounted(() => {
             clickable: true,
             addRemoveLinks: true,
             dictRemoveFile: '✘',
-            // uploadMultiple: true,
+            uploadMultiple: true,
             previewsContainer: dropzoneList.value,
             previewTemplate: 
             `<div class="dz-preview dz-file-preview">
@@ -142,25 +142,25 @@ onMounted(() => {
         //     alert('업로드가 완료되었습니다.')
         // });
 
-        // myDropzone.on("successmultiple", function(file) {
-        //     console.log(file);
-            
-        //     alert('업로드가 완료되었습니다.')
-        // });
-
-        myDropzone.on("success", function(file) {
+        myDropzone.on("successmultiple", function(file) {
             console.log(file);
             
             alert('업로드가 완료되었습니다.')
         });
 
-        // myDropzone.on("errormultiple", function(file) {
-        //     alert('업로드가 실패하였습니다.')
+        // myDropzone.on("success", function(file) {
+        //     console.log(file);
+            
+        //     alert('업로드가 완료되었습니다.')
         // });
 
-        myDropzone.on("error", function(file) {
+        myDropzone.on("errormultiple", function(file) {
             alert('업로드가 실패하였습니다.')
         });
+
+        // myDropzone.on("error", function(file) {
+        //     alert('업로드가 실패하였습니다.')
+        // });
     }
     catch(error) {
         console.log(error);
