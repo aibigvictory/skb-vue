@@ -796,10 +796,10 @@ export default defineComponent({
   }
 }
 .non-use-file{
-  margin: 12px 4px;
+  margin: 12px -10px;
   margin-top: 0;
-  background: #1A212A;
-  padding: 0 10px;
+  background: #112847;
+  padding: 10px calc(12px + 0.75rem) 0 calc(12px + 0.75rem);
   .lockfile-wrap{
     width: 100%;
     min-height: 200px;
