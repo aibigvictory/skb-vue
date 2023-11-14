@@ -102,7 +102,7 @@ let search_keyword = ref('')
 let folder_code = ref('')
 
 const open_popup = () => {
-  if (search_keyword.value == '') return alert('검색어를 입력해주세요')
+  if (search_keyword.value == '' || search_keyword.value.replace(/ /g, '') == '') return alert('검색어를 입력해주세요')
 
   emits('display_search_popup')
 }
@@ -122,8 +122,8 @@ const search_function = (e) => {
   // console.log(search_keyword.value);
   // store.state.search_keyword = search_keyword.value
   
-  if (search_keyword.value == '') alert('검색어를 입력해주세요.')
-  if (search_keyword.value != '') router.push('/search')
+  if (search_keyword.value == '' || search_keyword.value.replace(/ /g, '') == '') alert('검색어를 입력해주세요.')
+  if (search_keyword.value != '' && search_keyword.value.replace(/ /g, '') != '') router.push('/search')
 }
 
 const enter = (e) => {

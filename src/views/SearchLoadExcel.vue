@@ -31,7 +31,7 @@
               <span>({{file.history && file.history.length && file.history[file.history.length - 1] && file.history[file.history.length - 1].user? file.history[file.history.length - 1].user.teamName : "CATV 운용팀"}})</span>
             </div>
           </div>
-          <div class="grid" :id="`grid${file.id}`"></div>
+          <div @keypress="cancel_deleteKey" class="grid" :id="`grid${file.id}`"></div>
         </div>
       </li>
     <!-- <div v-for="sheet in file.sheets" :key="sheet" class="grid" :id="`grid${sheet.index}`"></div> -->
@@ -267,6 +267,10 @@ const sort_search_result = (target, option) => {
 
 // let adjust = null
 
+const cancel_deleteKey = () => {
+  alert('1')
+}
+
 let edit_list: any = new Map()
 
 class CustomTextEditor {
@@ -386,6 +390,7 @@ const create_toasrUiGrid = (file_list) => {
         "width": 'auto',
         "formatter": (value) => {
           if (value && value.value && value.value.value) return value.value.value;
+          if (value && value.value) return value.value;
         }
       })
       data.forEach((item) => {

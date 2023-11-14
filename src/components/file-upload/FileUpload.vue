@@ -116,6 +116,7 @@ onMounted(() => {
             clickable: true,
             addRemoveLinks: true,
             dictRemoveFile: '✘',
+            // uploadMultiple: true,
             previewsContainer: dropzoneList.value,
             previewTemplate: 
             `<div class="dz-preview dz-file-preview">
@@ -132,7 +133,7 @@ onMounted(() => {
     
         myDropzone.on("addedfile", function(file) {
             // if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
-            if (!file.name.endsWith('.xlsx')) {
+            if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
                 myDropzone.removeFile(file); // 파일 제거
             }
         });
@@ -141,9 +142,21 @@ onMounted(() => {
         //     alert('업로드가 완료되었습니다.')
         // });
 
+        // myDropzone.on("successmultiple", function(file) {
+        //     console.log(file);
+            
+        //     alert('업로드가 완료되었습니다.')
+        // });
+
         myDropzone.on("success", function(file) {
+            console.log(file);
+            
             alert('업로드가 완료되었습니다.')
         });
+
+        // myDropzone.on("errormultiple", function(file) {
+        //     alert('업로드가 실패하였습니다.')
+        // });
 
         myDropzone.on("error", function(file) {
             alert('업로드가 실패하였습니다.')
