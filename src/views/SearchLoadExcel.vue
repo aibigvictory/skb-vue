@@ -300,7 +300,7 @@ class CustomTextEditor {
     for (let key in toastArr) {
       const toast = toastArr[key]
 
-      if (key != props.value.sheetName) toast.finishEditing();
+      if (key != props.value.fileId) toast.finishEditing();
     }
     
 
@@ -369,7 +369,7 @@ class CustomTextEditor {
 const create_toasrUiGrid = (file_list) => {
   file_list.forEach((file) => {
     file.sheets.forEach((sheet) => {
-      const { index, name, columns, complexColumns, data } = sheet
+      const { columns, complexColumns, data } = sheet
   
       columns.forEach((item) => {
         item.width = 'auto'
@@ -396,9 +396,10 @@ const create_toasrUiGrid = (file_list) => {
       })
       data.forEach((item) => {
         console.log(item);
+        const sheetName = item["R1C0"].value;
 
         for (let key in item) {
-            item[key].sheetName = name
+            item[key].sheetName = sheetName
             item[key].fileId = file.id
         }
         
@@ -406,10 +407,6 @@ const create_toasrUiGrid = (file_list) => {
         //     cell.sheetNmae = name
         //     cell.fileId = file.id
         // })
-        item["R1C0"] = {
-          value: name,
-          sheetName: name,
-        }
       })
 
       const toast = new Grid({
@@ -426,7 +423,7 @@ const create_toasrUiGrid = (file_list) => {
         contextMenu: null
       });
 
-      toastArr[name] = toast
+      toastArr[file.id] = toast
     })
   })
 }
