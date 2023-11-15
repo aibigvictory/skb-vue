@@ -412,7 +412,7 @@ const create_toasrUiGrid = (file_list) => {
 
       const toast = new Grid({
         el: document.getElementById(`grid${file.id}`),
-        scrollX: false,
+        scrollX: true,
         scrollY: false,
         rowHeight: 'auto',
         // rowHeaders: ['rowNum'],
