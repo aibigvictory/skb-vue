@@ -34,6 +34,7 @@
       data-kt-toggle-state="active"
       data-kt-toggle-target="body"
       data-kt-toggle-name="app-sidebar-minimize"
+      @click="change_minimize"
     >
       <span class="svg-icon svg-icon-2 rotate-180">
         <inline-svg src="media/icons/duotune/arrows/arr079.svg" />
@@ -48,15 +49,23 @@
 import { defineComponent } from "vue";
 import { layout, themeMode } from "@/core/helpers/config";
 import { sidebarToggleDisplay } from "@/core/helpers/config";
+import store from '@/store';
 
 export default defineComponent({
   name: "sidebar-logo",
   components: {},
   setup() {
+    const change_minimize = () => {
+      setTimeout(() => {
+        store.state.minimize = !store.state.minimize
+      }, 500)
+    }
+
     return {
       layout,
       themeMode,
       sidebarToggleDisplay,
+      change_minimize,
     };
   },
 });

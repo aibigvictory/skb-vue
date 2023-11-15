@@ -19,7 +19,8 @@ const store = createStore({
   },
 
   state: {
-    upload: 0
+    upload: 0,
+    minimize: false
   }
 });
 

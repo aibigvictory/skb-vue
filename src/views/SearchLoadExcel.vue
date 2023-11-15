@@ -47,6 +47,7 @@ import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 import Grid from 'tui-grid';
 import 'tui-grid/dist/tui-grid.css';
+import store from '@/store';
 
 const props = defineProps({
     keyword: String,
@@ -423,10 +424,39 @@ const create_toasrUiGrid = (file_list) => {
         contextMenu: null
       });
 
+      // setTimeout(() => {
+      //   console.log(1231231231);
+      //   toast.setWidth('auto')
+      //   toast.refreshLayout()
+        
+      // }, 5000)
+      // toast
       toastArr[file.id] = toast
     })
   })
 }
+
+// document.querySelector('#kt_app_sidebar_toggle').addEventListener('click', () => {
+//     for (let key in toastArr) {
+//       const toast = toastArr[key]
+
+//       setTimeout(() => {
+//         toast.setWidth('auto')
+//         toast.refreshLayout()
+//       }, 500)
+      
+//     }
+//   })
+
+watch(() => store.state.minimize, (value) => {
+  console.log(value);
+  
+  for (let key in toastArr) {
+    const toast = toastArr[key]
+
+    toast.refreshLayout()
+  }
+})
 
 // class CustomTextEditor {
 //   constructor(props) {
