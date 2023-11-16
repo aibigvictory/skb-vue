@@ -299,9 +299,12 @@ class CustomTextEditor {
     // console.dir(el);
 
     for (let key in toastArr) {
-      const toast = toastArr[key]
+      const toast = toastArr[key];
 
-      if (key != props.value.fileId) toast.finishEditing();
+      // 현재 그리드 이외 모든 그리드들 편집 종료
+      if (props.grid.gridEl.dataset.gridId !== toast.gridEl.dataset.gridId) {
+        toast.finishEditing();
+      }
     }
     
 
@@ -369,7 +372,7 @@ class CustomTextEditor {
 
 const create_toasrUiGrid = (file_list) => {
   file_list.forEach((file) => {
-    file.sheets.forEach((sheet) => {
+    file.sheets.forEach((sheet, index) => {
       const { columns, complexColumns, data } = sheet
   
       columns.forEach((item) => {
@@ -453,7 +456,7 @@ const create_toasrUiGrid = (file_list) => {
         
       // }, 5000)
       // toast
-      toastArr[file.id] = toast
+      toastArr[`${file.id}_${index}`] = toast;
     })
   })
 }
