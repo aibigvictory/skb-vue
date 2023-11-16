@@ -597,9 +597,11 @@ export default defineComponent({
 
     const file_drag_drop_lock = () => {
       
-      useless_manageFile_list.value.push(drag_file)
+      if (!useless_manageFile_list.value.includes(drag_file)) useless_manageFile_list.value.push(drag_file)
 
       const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
+
+      console.log('new_manageFile_list: ',new_manageFile_list);
 
       categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
 
@@ -823,8 +825,8 @@ export default defineComponent({
   padding: 10px calc(12px + 0.75rem) 0 calc(12px + 0.75rem);
   .lockfile-wrap{
     width: 100%;
-    min-height: 200px;
-    max-height: 400px;
+    min-height: 100px;
+    max-height: 200px;
     overflow-x: hidden;
     overflow-y: scroll;
     font-size: 13px !important;

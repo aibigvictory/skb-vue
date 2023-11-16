@@ -31,7 +31,7 @@
               <span>({{file.history && file.history.length && file.history[file.history.length - 1] && file.history[file.history.length - 1].user? file.history[file.history.length - 1].user.teamName : "CATV 운용팀"}})</span>
             </div>
           </div>
-          <div @keypress="cancel_deleteKey" class="grid" :id="`grid${file.id}`"></div>
+          <div class="grid" :id="`grid${file.id}`"></div>
         </div>
       </li>
     <!-- <div v-for="sheet in file.sheets" :key="sheet" class="grid" :id="`grid${sheet.index}`"></div> -->
@@ -268,9 +268,9 @@ const sort_search_result = (target, option) => {
 
 // let adjust = null
 
-const cancel_deleteKey = () => {
-  alert('1')
-}
+// const cancel_deleteKey = () => {
+//   alert('1')
+// }
 
 let edit_list: any = new Map()
 
@@ -421,9 +421,31 @@ const create_toasrUiGrid = (file_list) => {
         },
         columns,
         data,
-        contextMenu: null
+        contextMenu: null,
+        editingEvent: 'dblclick'
       });
 
+      console.log('toast: ', toast);
+
+      toast.on('keydown', () => {
+        console.log(2321321123);
+        
+      });
+      toast.on('click', (ev) => {
+        console.log(ev);
+        
+      });
+
+      // console.log(toast.getFocusedCell());
+      
+      // setInterval(() => {
+        
+      // }, 2000)
+      // toast.startEditing()
+
+      // editor.on('keydown', function(event) {
+      //   console.log('Key downed:', event.data.keyCode);
+      // });
       // setTimeout(() => {
       //   console.log(1231231231);
       //   toast.setWidth('auto')
