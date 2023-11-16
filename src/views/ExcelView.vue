@@ -51,6 +51,12 @@ import { ref } from 'vue'
 setInterval(() => {
     if (excelId.value != Number(localStorage.getItem('id'))) {
         excelId.value = Number(localStorage.getItem('id'))
+
+        excelTitle.value = localStorage.getItem('name')
+        excelUploader.value = localStorage.getItem('user')
+        excelUploaderTeam.value = localStorage.getItem('team')
+        excelUpdateddAt.value = localStorage.getItem('date')
+        categoryName.value = localStorage.getItem('cate')
     }
 }, 100)
 
