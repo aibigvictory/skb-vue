@@ -68,8 +68,9 @@ import DashboardFavorites from "@/components/dashboard/DashboardFavorites.vue"
 import Widget1 from "@/components/dashboard-default-widgets/RecentUploadFile.vue";
 import Widget2 from "@/components/dashboard-default-widgets/ConnectMember.vue";
 import FileUploadVue from '@/components/file-upload/FileUpload.vue'
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import axios from "axios";
+import store from "@/store";
 
 const recent_upload_files = ref([])
 
@@ -89,6 +90,10 @@ let fileUpload = () => {
   FileUploadChildVue.value.fileUpload()
   
 }
+
+watch(() => store.state.upload, () => {
+  call_fileList()
+})
 </script>
 
 <style lang="scss" scoped>

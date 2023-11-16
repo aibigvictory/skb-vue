@@ -663,20 +663,41 @@ export default defineComponent({
         if (lock_state.value == 'manage') {
           console.log(useless_manageFile_list.value);
           
-          check_useless_manageFile_list.value.forEach(async (file_id) => {
-            await axios.post('/file/delete', {id: Number(file_id)})
-            .then(() => alert('파일 삭제에 성공하였습니다.'))
-            .catch(() => alert('파일 삭제에 실패하였습니다.'))
-          })
+          try{
+            check_useless_manageFile_list.value.forEach(async (file_id) => {
+              await axios.post('/file/delete', {id: Number(file_id)})
+              // .then(() => {
+              //   alert('파일 삭제에 성공하였습니다.')
+              // })
+              // .catch(() => alert('파일 삭제에 실패하였습니다.'))
+            })
+  
+            alert('파일 삭제에 성공하였습니다.')
+            store.state.upload++
+          }
+          catch(error) {
+            alert('파일 삭제에 실패하였습니다.')
+          }
         }
         if (lock_state.value == 'etc') {
           console.log(check_useless_etcFile_list.value);
   
-          check_useless_etcFile_list.value.forEach(async (file_id) => {
-            await axios.post('/file/delete', {id: Number(file_id)})
-            .then(() => alert('파일 삭제에 성공하였습니다.'))
-            .catch(() => alert('파일 삭제에 실패하였습니다.'))
-          })
+          try{
+            check_useless_etcFile_list.value.forEach(async (file_id) => {
+              await axios.post('/file/delete', {id: Number(file_id)})
+              // .then(() => {
+              //   alert('파일 삭제에 성공하였습니다.')
+              //   store.state.upload++
+              // })
+              // .catch(() => alert('파일 삭제에 실패하였습니다.'))
+            })
+
+            alert('파일 삭제에 성공하였습니다.')
+            store.state.upload++
+          }
+          catch(error) {
+            alert('파일 삭제에 실패하였습니다.')
+          }
         }
         
         init()
