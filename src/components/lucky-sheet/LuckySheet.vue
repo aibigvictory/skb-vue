@@ -31,7 +31,16 @@ const reload_excel = (url, excelName, luckysheet) => {
         data:exportJson.sheets,
         title:exportJson.info.name,
         userInfo:exportJson.info.name.creator,
-    });
+    })
+
+    // setInterval(() => {
+    //   console.log(luckysheet.getluckysheetfile());
+    // }, 5000)
+
+    
+    // luckysheet.getluckysheetfile().change = function (data) {
+    //   console.log("Data changed");
+    // };
   });
 }
 
@@ -70,8 +79,20 @@ onMounted(() => {
     const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
 
     reload_excel(url, props.excelName, window.luckysheet)
+
+    // window.luckysheet.getluckysheetfile().forEach((sheet) => {
+    //   console.log(sheet);
+    //   console.log(sheet.data);
+      
+    //   watch(sheet.data, (value) => {
+    //     console.log(value);
+        
+    //   })
+    // })
   }
   catch(error) {}
+
+  
 })
 
 //부모에게 함수 내보내기

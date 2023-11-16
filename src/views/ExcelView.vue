@@ -149,6 +149,10 @@ const download_excel = () => {
                 font-weight: 700;
 
                 &.btn-save{
+                    background: var(----el-color-info-light-8, #E9E9EB);
+                    color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
+                }
+                &.btn-save.active{
                     background: var(--default-red, #DA1E28);
                 }
                 &.btn-download{
