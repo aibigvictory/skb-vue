@@ -480,7 +480,7 @@ watch(() => store.state.minimize, (value) => {
     const toast = toastArr[key]
 
     setTimeout(() => {
-      toast.setWidth('auto');
+      // toast.setWidth('auto');
       toast.refreshLayout();
     }, 500);
   }
