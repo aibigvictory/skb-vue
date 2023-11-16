@@ -4,7 +4,7 @@
       <div class="title">검색결과 <span>"{{search_keyword}}"</span></div>
       <button class="load-btn" @click="load_search_result">불러오기</button>
     </div>
-    <div class="search-result-section d-flex">
+    <div class="search-result-section d-flex" v-if="data_count">
       <div class="category">
         <div class="category-title">
           <div class="text">전체</div>
@@ -84,6 +84,16 @@
         </select>
       </div>
     </div>
+    <div class="search-result-section d-flex" v-if="!data_count">
+      <div class="no-result">
+        <div class="top">
+          <div class="img"><img src="@/assets/img/no-group-img.png"></div>
+        </div>
+        <div class="bottom">
+          <div class="txt">검색 결과가 없습니다.</div>
+        </div>
+      </div>
+    </div>
     <div class="search-result-section2">
       <div class="title">관리파일 리스트 <span>{{checked_file_sum}}건</span></div>
       <ul class="search-result-section2-wrap">
@@ -126,6 +136,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 let search_keyword = ref('')
 let folder_code = ref('')
 let folder_list = ref([])
+let data_count = computed(() => folder_list.value.length)
 
 let origin_folder = []
 
@@ -142,7 +153,7 @@ const init = async () => {
 
   folder_list.value = category_in_file(deepCopy(folders), files, 'code', 'folderCd')
 
-  console.log(folder_list.value);
+  console.log("folder_list.value: ", folder_list.value.length);
 }
 
 const deepCopy = (target) => {
@@ -460,6 +471,43 @@ li{list-style: none;}
         width: 125px;
         height: 28px;
         padding: 0 0 0 12px;
+      }
+    }
+
+    .no-result{
+      width: 100%;
+      margin: 10px 0;
+      border-radius: 10px;
+      background: var(--root-data-theme-light-kt-light, #F5F8FA);
+      .top{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .img{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 80px;
+          height: 80px;
+          background: #fff;
+          border-radius: 50%;
+          margin: 20px 0;
+          // margin-right: 10px;
+          img{
+            width: 48px;
+            height: 48px;
+          }
+        }
+      }
+      .bottom{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .txt{
+          margin-bottom: 20px;
+          font-size: 14px;
+          font-weight: 500;
+        }
       }
     }
   }
