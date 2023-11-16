@@ -42,7 +42,7 @@
         </svg>
         통합검색결과 내려받기</button>
     </div>
-    <Excel :keyword="store.state.search_keyword" :fileList="store.state.search_result" :sort="sort_option" :searchType="search_option"/>
+    <Excel :keyword="state.search.keyword" :fileList="store.state.search_result" :sort="sort_option" :searchType="search_option"/>
   </div>
 </template>
 
@@ -52,6 +52,8 @@ import Excel from './SearchLoadExcel.vue'
 import JwtService from '@/core/services/JwtService';
 import store from '@/store';
 import { onMounted, ref, watch } from 'vue';
+
+const state = store.state
 
 const sort_option = ref('default')
 const search_option = ref('true')

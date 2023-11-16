@@ -266,7 +266,7 @@
                     <router-link
                       class="menu-link"
                       active-class="active"
-                      :to="item2.route"
+                      :to="item2.route" 
                     >
                       <span class="menu-bullet">
                         <span class="bullet bullet-dot"></span>
@@ -663,6 +663,8 @@ export default defineComponent({
     }
 
     const delete_file = async () => {
+      if (!check_useless_manageFile_list.value.length) return alert('선택된 미사용 파일이 없습니다')
+
       try{
         if (lock_state.value == 'manage') {
           console.log(useless_manageFile_list.value);

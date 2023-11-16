@@ -1,7 +1,7 @@
 <template>
   <div class="warp">
     <div class="search-result-header d-flex justify-content-between">
-      <div class="title">검색결과 <span>"{{search_keyword}}"</span></div>
+      <div class="title">검색결과 <span>"{{state.search.keyword}}"</span></div>
       <button class="load-btn" @click="load_search_result">불러오기</button>
     </div>
     <div class="search-result-section d-flex" v-if="data_count">
@@ -133,6 +133,8 @@ import store from '@/store';
 import axios from 'axios';
 import { computed, onMounted, ref, watch } from 'vue';
 
+const state = store.state
+
 let search_keyword = ref('')
 let folder_code = ref('')
 let folder_list = ref([])
@@ -140,13 +142,8 @@ let data_count = computed(() => folder_list.value.length)
 
 let origin_folder = []
 
-folder_code.value = store.state.folder_code
-search_keyword.value = store.state.search_keyword
-
-
-
 const init = async () => {
-  const { data } = await axios.get(`/search?q=${search_keyword.value}&folderCd=${folder_code.value}`)
+  const { data } = await axios.get(`/search?q=${state.search.keyword}&folderCd=${state.search.folderCd}`)
   const { files, folders } = data
 
   origin_folder = folders
@@ -189,11 +186,7 @@ const category_in_file = (category_arr, file_arr, category_key, file_key) => {
   return result
 }
 
-watch(() => store.state.search_keyword, async (value) => {
-  folder_list.value = []
-  // file_push = []
-
-  search_keyword.value = store.state.search_keyword
+watch(() => state.search.keyword, async (value) => {
   await init()
 })
 

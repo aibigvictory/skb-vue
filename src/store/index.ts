@@ -20,7 +20,15 @@ const store = createStore({
 
   state: {
     upload: 0,
-    minimize: false
+    minimize: false,
+    folderList: {
+      manage: [],
+      etc: [],
+    },
+    search: {
+      keyword: '',
+      folderCd: '',
+    }
   }
 });
 

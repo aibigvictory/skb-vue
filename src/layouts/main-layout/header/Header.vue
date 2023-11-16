@@ -81,17 +81,17 @@ import {
   headerDisplay,
 } from "@/core/helpers/config";
 
-const search_keyword = ref('')
+// const search_keyword = ref('')
 
-const change_search_keyword = (keyword) => {
-  search_keyword.value = keyword
-}
+// const change_search_keyword = (keyword) => {
+//   search_keyword.value = keyword
+// }
 
-const folder_code = ref('')
+// const folder_code = ref('')
 
-const change_folder_code = (code) => {
-  folder_code.value = code
-}
+// const change_folder_code = (code) => {
+//   folder_code.value = code
+// }
 
 const searchExcelPopup_state = ref(false)
 const change_popup_state = (popup_type, state) => {

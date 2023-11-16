@@ -13,7 +13,23 @@ import { Mutations, Actions } from "@/store/enums/StoreEnums";
 import { config, layout, themeMode } from "@/core/helpers/config";
 import { initializeComponents } from "@/core/plugins/keenthemes";
 
+import axios from "axios";
+
 const store = useStore();
+
+const init = async () => {
+  const { data } = await axios.post('/folder/list', {
+    type: 'manage'
+  })
+
+  // folderList.value = data
+
+  // console.log(folderList.value);
+
+  store.state.folderList.manage = data
+}
+
+init()
 
 onMounted(() => {
   config.value.sidebar.default.menu.iconType = "svg"

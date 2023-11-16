@@ -72,6 +72,8 @@ import store from "@/store";
 import axios from "axios";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 
+const state = store.state
+
 const props = defineProps({
     keyword: String,
     code: String,
@@ -104,7 +106,7 @@ let count = computed(() => {
 })
 
 const init = async () => {
-  const { data } = await axios.get(`/search?q=${props.keyword}&folderCd=${props.code}`)
+  const { data } = await axios.get(`/search?q=${state.search.keyword}&folderCd=${state.search.folderCd}`)
   const { files, folders } = data
 
   folder_list.value = category_in_file(folders, files, 'code', 'folderCd')
