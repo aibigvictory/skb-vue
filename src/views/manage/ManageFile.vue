@@ -87,7 +87,9 @@ const group:any = ref([])
 
 const init = async () => {
     try{
-        const { data } = await axios.post('/folder/list')
+        const { data } = await axios.post('/folder/list', {
+            type: 'manage'
+        })
 
         group.value = data
     }
@@ -149,7 +151,8 @@ const create = async () => {
     if (!input_add_group.value.value) return popup_state.value['noname'] = true
     
     await axios.post('/folder/create', {
-        name: input_add_group.value.value
+        name: input_add_group.value.value,
+        parent: '001'
     })
     
     init()

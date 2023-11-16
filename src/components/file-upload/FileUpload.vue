@@ -43,6 +43,13 @@ import { ca } from "element-plus/es/locale";
 import store from "@/store";
 import JwtService from "@/core/services/JwtService";
 
+const props = defineProps({
+    type: String
+})
+
+console.log('props: ', props);
+
+
 // 카테고리 시작---------------------------------------------
 
 // 관리파일 카테고리 목록
@@ -51,10 +58,15 @@ const categorys_code = {'HD방송': '001/001', 'CATV_SO': '001/002', 'TITAN': '0
 
 const init = async () => {
     try{
-        const { data } = await axios.post('/folder/list')
-        console.log(data);
+        if(props.type == 'manage') {
+            const { data } = await axios.post('/folder/list', {
+                type: props.type
+            })
+            console.log(data);
+    
+            categorys.value = data
+        }
 
-        categorys.value = data
         
     }
     catch(error) {console.log(error);}
@@ -107,7 +119,7 @@ onMounted(() => {
             headers: { 'Authorization': 'Bearer ' + JwtService.getToken() },
             params: {
                 type: 'manage',
-                folderCd: '',
+                folderCd: props.type == 'etc' ?'002' :'',
             },
             paramName: "files",
             acceptedFiles: null,

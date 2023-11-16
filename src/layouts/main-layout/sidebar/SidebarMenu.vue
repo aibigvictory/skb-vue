@@ -457,7 +457,7 @@ export default defineComponent({
     let category_list = []
 
     let manageFile_list = []
-    let etcFile_list = []
+    let etcFile_list = ref([])
 
     let useless_manageFile_list = ref([])
     let useless_etcFile_list = ref([])
@@ -486,7 +486,9 @@ export default defineComponent({
     const init = async () => {
       console.log('init');
       try{
-        const { data } = await axios.post('/folder/list')
+        const { data } = await axios.post('/folder/list', {
+          type: 'manage'
+        })
 
         category_list = data
       }
@@ -507,13 +509,13 @@ export default defineComponent({
           type: 'etc'
         })
 
-        etcFile_list = data
+        etcFile_list.value = data
       }
       catch(error) {console.log(error);}
 
 
       categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), manageFile_list, 'code', 'folderCd')
-      categorys_in_etcFiles.value = category_in_file(deepCopy(category_list), etcFile_list, 'code', 'folderCd')
+      // categorys_in_etcFiles.value = category_in_file(deepCopy(category_list), etcFile_list, 'code', 'folderCd')
 
       useless_manageFile_list.value = useless_in_file(manageFile_list)
       useless_etcFile_list.value = useless_in_file(etcFile_list)

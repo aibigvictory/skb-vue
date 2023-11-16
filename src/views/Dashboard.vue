@@ -52,7 +52,7 @@
     </div>
   </div>
   <div>
-    <FileUploadVue ref="FileUploadChildVue"/>
+    <FileUploadVue ref="FileUploadChildVue" :type="`manage`"/>
   </div>
 
   <DashboardRevision/>

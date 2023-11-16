@@ -41,7 +41,7 @@
 
           <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
-                  <FileUploadVue ref="FileUploadChildVue"/>
+                  <FileUploadVue ref="FileUploadChildVue" :type="`manage`"/>
 
                    <!--begin::Actions-->
                   <div class="d-flex flex-center flex-row-fluid pt-12">
@@ -58,7 +58,7 @@
                   <!--end::Actions-->
               </div>
               <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
-                  <FileUploadVue ref="FileUploadChildVue2"/>
+                  <FileUploadVue ref="FileUploadChildVue2" :type="`etc`"/>
 
                   <!--begin::Actions-->
                   <div class="d-flex flex-center flex-row-fluid pt-12">
