@@ -58,7 +58,7 @@
         class="d-flex align-items-stretch justify-content-between flex-lg-grow-1"
         id="kt_app_header_wrapper"
       >
-        <KTHeaderMenu @display_search_popup="change_popup_state('searchExcel', true)" @search="change_search_keyword" @select="change_folder_code"/>
+        <KTHeaderMenu @display_search_popup="change_popup_state('searchExcel', true)"/>
         <KTHeaderNavbar />
       </div>
       <!--end::Header wrapper-->

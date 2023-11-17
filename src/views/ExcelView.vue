@@ -154,6 +154,7 @@ const download_excel = () => {
                 }
                 &.btn-save.active{
                     background: var(--default-red, #DA1E28);
+                    color: #fff;
                 }
                 &.btn-download{
                     background: var(--default-red, #0095e8);
