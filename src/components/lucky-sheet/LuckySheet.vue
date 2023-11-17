@@ -2,7 +2,7 @@
   <div id="luckysheet"></div>
   <div v-show="isMaskShow" id="tip">
     <img src="@/assets/img/default-dark.png" alt="Metronic logo" />
-    <span>Loading ...</span>
+    <span>Loading<div id="loading"><div class="spinner"></div></div></span>
   </div>
 </template>
 
@@ -53,6 +53,7 @@ const reload_excel = (url, excelName, luckysheet) => {
 watch(() => props.excelId, (value) => {
   const url = `${process.env.VUE_APP_API_URL}/file/${value}/data`
 
+  document.querySelector('.btn-save')?.classList.remove('active')
   isMaskShow.value = true
   reload_excel(url, props.excelName, window.luckysheet)
 })
@@ -104,6 +105,8 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+
+
 #luckysheet {
   height: calc(100vh - 300px);
 }
@@ -128,18 +131,49 @@ onUnmounted(() => {
   flex-direction: column;
 
   img{
-    margin-left: calc(100vw - 100%);
     margin-bottom: 30px;
     height: 30px !important;
     width: auto;
   }
 
   span{
-    font-size: 16px;
+    margin-top: 20px;
+    position: relative;
+    font-size: 12px;
     color: #5E6278;
     transition: none !important;
     text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
+  }
+
+  #loading {
+    // display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+  }
+
+  @keyframes spinner {
+    from {transform: rotate(0deg); }
+    to {transform: rotate(360deg);}
+  }
+
+  #loading .spinner {
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    height: 64px;
+    margin-top: -32px;
+    margin-left: -32px;
+    border-radius: 50%;
+    border: 8px solid transparent;
+    border-top-color: #f19022;
+    border-bottom-color: #f19022;
+    animation: spinner .8s ease infinite;
   }
 }
 
