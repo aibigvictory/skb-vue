@@ -58,7 +58,7 @@ const reload_excel = (url, excelName, luckysheet) => {
               fileId: props.excelId,
               r: r + 1,
               c: c + 1,
-              value: newValue?.v ?? '',
+              value: String(newValue?.v) ?? '',
               sheetName
             });
           }
@@ -86,8 +86,22 @@ watch(() => store.state.minimize, (value) => {
 
 //엑셀 다운로드
 const downloadExcel = () => {
-  const url = `/excel/${props.excelId}/data`;
-  window.open(url);
+  const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`;
+  fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      // Blob 객체를 URL로 변환
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      // 파일 이름 지정
+      a.download = props.excelName ?? 'data.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(err => console.error('Error:', err));
 }
 
 // 정보 조회
@@ -101,7 +115,9 @@ const getUserData = async () => {
     return data;
   }
   catch(error) {
+    console.error(error);
     alert('사용자 정보 조회에 실패하였습니다.');
+    throw new Error('사용자 정보 조회에 실패하였습니다.');
   }
 }
 
@@ -112,12 +128,15 @@ const saveExcel = async () => {
     const result = await axios.post('/excel/edit', {
       userId: user.id,
       data: [...updateMap.values()]
-    })
-    saveExcelToServer(luckysheet.getAllSheets(), props.excelId)
-    .then(() => alert('수정이 완료되었습니다.'))
+    });
+    console.log(result);
+    if (result.status === 200) {
+      alert('수정이 완료되었습니다.');
+      return;
+    }
   }
   catch(error) {
-    alert('수정에 실패하였습니다.')
+    alert('수정에 실패하였습니다.');
   }
 }
 
