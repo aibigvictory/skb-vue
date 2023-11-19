@@ -12,6 +12,8 @@ import { exportExcel, saveExcelToServer } from '@/assets/utils/export.js'
 import { isFunction } from '@/assets/utils/is.js'
 import LuckyExcel from 'luckyexcel'
 import axios from 'axios'
+import store from '@/store';
+import JwtService from '@/core/services/JwtService';
 
 const props = defineProps({
   excelId: Number,
@@ -19,6 +21,7 @@ const props = defineProps({
 })
 
 const isMaskShow = ref(true)
+const updateMap = new Map();
 
 //엑셀 로드
 const reload_excel = (url, excelName, luckysheet) => {
@@ -43,6 +46,22 @@ const reload_excel = (url, excelName, luckysheet) => {
             console.log(operate);
             document.querySelector('.btn-save')?.classList.add('active')
           },
+          cellUpdateBefore: function (r, c, value) {
+            console.log('! cellUpdateBefore', {r, c, value});
+            return true;
+          },
+          cellUpdated: function (r, c, oldValue, newValue) {
+            const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+            console.log('! cellUpdated', {sheetName, r, c, oldValue, newValue});
+            const key = `${props.excelId}_${sheetIndex}_${r}_${c}`;
+            updateMap.set(key, {
+              fileId: props.excelId,
+              r: r + 1,
+              c: c + 1,
+              value: String(newValue?.v) ?? '',
+              sheetName
+            });
+          }
         }
     })
     isMaskShow.value = false
@@ -58,32 +77,73 @@ watch(() => props.excelId, (value) => {
   reload_excel(url, props.excelName, window.luckysheet)
 })
 
+// 사이드바 접으면 엑셀 리사이징
+watch(() => store.state.minimize, (value) => {  
+  setTimeout(() => {
+    luckysheet.resize();
+  }, 500);
+})
+
 //엑셀 다운로드
 const downloadExcel = () => {
+  const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`;
+  fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      // Blob 객체를 URL로 변환
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      // 파일 이름 지정
+      a.download = props.excelName ?? 'data.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(err => console.error('Error:', err));
+}
+
+// 정보 조회
+const getUserData = async () => {
   try{
-    exportExcel(luckysheet.getAllSheets(), props.excelName)
-    .then(() => alert('다운로드가 완료되었습니다.'))
+    const axios_config = {
+      headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+  
+    const { data } = await axios.post('/auth/info', {}, axios_config)
+    return data;
   }
   catch(error) {
-    alert('다운로드가 실패하였습니다.')
+    console.error(error);
+    alert('사용자 정보 조회에 실패하였습니다.');
+    throw new Error('사용자 정보 조회에 실패하였습니다.');
   }
 }
 
 //엑셀 저장
-const saveExcel = () => {
+const saveExcel = async () => {
   try{
-    saveExcelToServer(luckysheet.getAllSheets(), props.excelId)
-    .then(() => alert('수정이 완료되었습니다.'))
+    const user = await getUserData();
+    const result = await axios.post('/excel/edit', {
+      userId: user.id,
+      data: [...updateMap.values()]
+    });
+    console.log(result);
+    if (result.status === 200) {
+      alert('수정이 완료되었습니다.');
+      return;
+    }
   }
   catch(error) {
-    alert('수정에 실패하였습니다.')
+    alert('수정에 실패하였습니다.');
   }
 }
 
 //엘리먼트 생성 후, 엑셀 파일 데이터 적용
 onMounted(() => {
   try{
-    const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
+    const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`;
 
     reload_excel(url, props.excelName, window.luckysheet)
   }

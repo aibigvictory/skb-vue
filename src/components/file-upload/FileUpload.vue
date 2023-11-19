@@ -27,7 +27,7 @@
             </div>
             <button class="select btn btn btn-lg btn-dark fw-bold w-200px">파일선택</button>
             <p class="fs-4">파일을 업로드 하려면 드래그 하거나 파일을 선택해 주세요.</p>
-            <p class="text-danger">xlsx, xls 파일만 업로드 가능</p>
+            <p class="text-danger">xlsx 파일만 업로드 가능합니다.</p>
             <!-- <div @click="fileUpload">asdasdasd</div> -->
         </div>
         <div id="dropzone-list" class="scroll-y mt-10" ref="dropzoneList"></div>
@@ -145,7 +145,7 @@ onMounted(() => {
     
         myDropzone.on("addedfile", function(file) {
             // if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
-            if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
+            if (!file.name.endsWith('.xlsx')) {
                 myDropzone.removeFile(file); // 파일 제거
             }
         });
