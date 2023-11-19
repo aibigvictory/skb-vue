@@ -39,6 +39,10 @@
     <div class="save-wrap">
       <button class="save-btn" @click="save">저장하기</button>
     </div>
+    <div v-show="isMaskShow" id="tip">
+      <img src="@/assets/img/default-dark.png" alt="Metronic logo" />
+      <span>Loading<div id="loading"><div class="spinner"></div></div></span>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -58,7 +62,7 @@ const props = defineProps({
 
 console.log(new Date().getTime());
 
-
+const isMaskShow = ref(true)
 
 watch(() => props.searchType, async (value) => {
     await init()
@@ -461,6 +465,8 @@ const create_toasrUiGrid = (file_list) => {
       toastArr[`${file.id}_${index}`] = toast;
     })
   })
+
+  isMaskShow.value = false
 }
 
 // document.querySelector('#kt_app_sidebar_toggle').addEventListener('click', () => {
