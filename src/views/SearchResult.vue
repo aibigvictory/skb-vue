@@ -186,7 +186,7 @@ const category_in_file = (category_arr, file_arr, category_key, file_key) => {
   return result
 }
 
-watch(() => state.search.keyword, async (value) => {
+watch(() => state.search.reload, async (value) => {
   await init()
 })
 

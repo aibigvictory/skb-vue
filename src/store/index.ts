@@ -28,6 +28,7 @@ const store = createStore({
     search: {
       keyword: '',
       folderCd: '',
+      reload: 0,
     }
   }
 });

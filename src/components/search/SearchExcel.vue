@@ -1,8 +1,8 @@
 <template>
-    <div class="popup">
-        <div class="popup-wrap">
+    <div class="popup" @click="emits('exit')">
+        <div class="popup-wrap" @click="(e) => e.stopPropagation()">
             <div class="popup-header">
-                <div><span>"{{props.keyword}}"</span>로 검색된 파일 내역 (총 {{count}}건)</div>
+                <div><span>"{{state.search.keyword}}"</span>로 검색된 파일 내역 (총 {{count}}건)</div>
                 <svg @click="emits('exit')" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <mask id="mask0_584_41385" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                 <rect width="24" height="24" fill="#D9D9D9"/>
@@ -52,7 +52,7 @@
                                         <path d="M8.625 8.38813C7.90313 8.38813 7.28517 8.12434 6.77111 7.59676C6.25704 7.06917 6.00001 6.43494 6.00001 5.69408C6.00001 4.9532 6.25704 4.31897 6.77111 3.79139C7.28517 3.2638 7.90313 3 8.625 3C9.34686 3 9.96483 3.2638 10.4789 3.79139C10.993 4.31897 11.25 4.9532 11.25 5.69408C11.25 6.43494 10.993 7.06917 10.4789 7.59676C9.96483 8.12434 9.34686 8.38813 8.625 8.38813ZM13.1106 14.25H4.1394C3.82306 14.25 3.55408 14.1363 3.33246 13.9088C3.11082 13.6813 3 13.4053 3 13.0806V12.5388C3 12.1619 3.09976 11.8128 3.29929 11.4916C3.4988 11.1703 3.76538 10.9234 4.09903 10.7507C4.84039 10.3776 5.58823 10.0979 6.34255 9.91137C7.09688 9.72486 7.8577 9.63161 8.625 9.63161C9.3923 9.63161 10.1531 9.72486 10.9074 9.91137C11.6618 10.0979 12.4096 10.3776 13.151 10.7507C13.4846 10.9234 13.7512 11.1703 13.9507 11.4916C14.1502 11.8128 14.25 12.1619 14.25 12.5388V13.0806C14.25 13.4053 14.1392 13.6813 13.9175 13.9088C13.6959 14.1363 13.4269 14.25 13.1106 14.25ZM4.12498 13.0954H13.125V12.5388C13.125 12.3829 13.081 12.2386 12.993 12.1058C12.9051 11.9731 12.7856 11.8648 12.6346 11.7809C11.9885 11.4543 11.3296 11.2068 10.658 11.0386C9.98645 10.8703 9.30878 10.7862 8.625 10.7862C7.94122 10.7862 7.26355 10.8703 6.59197 11.0386C5.92039 11.2068 5.26153 11.4543 4.61537 11.7809C4.46441 11.8648 4.34494 11.9731 4.25697 12.1058C4.16898 12.2386 4.12498 12.3829 4.12498 12.5388V13.0954ZM8.625 7.23356C9.0375 7.23356 9.39063 7.08282 9.68438 6.78133C9.97813 6.47985 10.125 6.11743 10.125 5.69408C10.125 5.27072 9.97813 4.9083 9.68438 4.60682C9.39063 4.30533 9.0375 4.15459 8.625 4.15459C8.2125 4.15459 7.85937 4.30533 7.56562 4.60682C7.27187 4.9083 7.12499 5.27072 7.12499 5.69408C7.12499 6.11743 7.27187 6.47985 7.56562 6.78133C7.85937 7.08282 8.2125 7.23356 8.625 7.23356Z" fill="#222222"/>
                                     </g>
                                     </svg>
-                                    홍길동 SKB(CATV 운용팀)
+                                    {{file.uploader ?file.uploader == "1" ?'홍길동' :file.uploader :'홍길동'}} {{file.teamName ?file.teamName :'SKB(CATV 운용팀)'}}
                                 </div>
                             </div>
                         </div>
@@ -75,12 +75,9 @@ import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 const state = store.state
 
 const props = defineProps({
-    keyword: String,
-    code: String,
+    // keyword: String,
+    // code: String,
 })
-
-console.log(props);
-
 
 const emits = defineEmits([
     'exit',
@@ -141,14 +138,14 @@ const category_in_file = (category_arr, file_arr, category_key, file_key) => {
   return result
 }
 
-watch(() => props.keyword, async (value) => {
-    console.log(value);
+// watch(() => props.keyword, async (value) => {
+//     console.log(value);
     
-//   folder_list.value = []
-//   file_push = []
+// //   folder_list.value = []
+// //   file_push = []
 
-//   await init()
-})
+// //   await init()
+// })
 
 const file_click = (id, name, user, team, date, cate) => {
     // console.log(id, name);

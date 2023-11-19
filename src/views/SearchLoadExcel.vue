@@ -962,10 +962,14 @@ ul{
     }
   }
   .save-wrap{
-    margin-top: 48px;
+    // margin-top: 48px;
     display: flex;
     justify-content: end;
+    position: relative;
     .save-btn{
+      bottom: 30px;
+      right: 50px;
+      position: fixed;
       border: none;
       display: flex;
       width: 210px;
