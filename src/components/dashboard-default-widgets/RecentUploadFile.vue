@@ -30,7 +30,7 @@
     <!--begin::Card body-->
     <div class="card-body">
       <div class="content">
-        <div class="title">{{file}}</div>
+        <div class="title" @click="file_click(id, file, user, team, date, cate)">{{file}}</div>
         <div class="tag"><span class="badge bg-primary" v-if="true">Today</span></div>
         <!-- <div class="tag"><span class="badge bg-primary" v-if="date.slice(0,10) == new Date().toISOString().slice(0,10)">Today</span></div>
         <div class="tag"><span class="badge bg-primary opacity" v-if="date.slice(0,10) != new Date().toISOString().slice(0,10)">Today</span></div> -->
@@ -41,6 +41,7 @@
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -56,7 +57,25 @@ export default defineComponent({
     date: { type: String, required: false },
     name: { type: String, required: false },
     team: { type: String, required: false },
+    id: { type: Number, required: true },
   },
+  setup() {
+    const file_click = (id, name, user, team, date, cate) => {
+        // console.log(id, name, user, team, date, cate);
+        localStorage.setItem('id', id)
+        localStorage.setItem('name', name)
+        localStorage.setItem('user', user)
+        localStorage.setItem('team', team)
+        localStorage.setItem('date', date)
+        localStorage.setItem('cate', cate)
+
+        router.push({ name: "excel" });
+    }
+
+    return {
+      file_click
+    }
+  }
 });
 </script>
 
@@ -124,6 +143,7 @@ export default defineComponent({
   flex-direction: column;
   // margin-top: 30px;
   .title{
+    cursor: pointer;
     // padding-top: 20px;
     width: 100%;
     // margin-top: 40px;

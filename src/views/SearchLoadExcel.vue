@@ -16,7 +16,7 @@
               <path d="M6.5625 2.625C6.80413 2.625 7 2.82088 7 3.0625V7.62111L9.84206 9.24514C10.0519 9.36502 10.1247 9.63227 10.0049 9.84206C9.88498 10.0519 9.61773 10.1247 9.40794 10.0049L6.34544 8.25486C6.20913 8.17696 6.125 8.032 6.125 7.875V3.0625C6.125 2.82088 6.32088 2.625 6.5625 2.625Z" fill="black"/>
               </svg>
               마지막 수정일자:
-              <span>{{new Date(file.history[0].updatedAt).toISOString().slice(0,19).replace(/T/g, ' ')}}</span>
+              <span>{{new Date(new Date(file.history[0].updatedAt).getTime() + 9 * 60 * 60 * 1000).toISOString().slice(0,19).replace(/T/g, ' ')}}</span>
             </div>
             <div class="type">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -56,7 +56,9 @@ const props = defineProps({
     fileList: Object,
 })
 
-console.log(props);
+console.log(new Date().getTime());
+
+
 
 watch(() => props.searchType, async (value) => {
     await init()

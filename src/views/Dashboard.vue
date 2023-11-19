@@ -9,6 +9,7 @@
           className="h-md-80 mb-5 mt-3"
           bgColor="#FFFFFF"
           :title="`${!idx ?'최근 업로드 파일' :''}`"
+          :id="recent_upload_file.id"
           :file="recent_upload_file.name"
           :date="recent_upload_file.createdAt"
           :user="recent_upload_file.user.name"
@@ -72,13 +73,15 @@ import { defineComponent, ref, watch } from "vue";
 import axios from "axios";
 import store from "@/store";
 
+const state = store.state
+
 const recent_upload_files = ref([])
 
 const call_fileList = async () => {
   const { data } = await axios.post('/file/list')
 
   console.log(data);
-  
+
   recent_upload_files.value = data.slice(0,3)
 }
 
