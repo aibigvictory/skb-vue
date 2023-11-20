@@ -952,7 +952,7 @@ const save = async () => {
 
 <style>
 .edited-cell {
-    background-color: rgba(255, 255, 0, 1);
+    background-color: rgba(255, 255, 0, 1) !important;
   }
 </style>
 <style lang="scss" scoped>
