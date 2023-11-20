@@ -41,7 +41,7 @@
           </svg>
         </div>
         <ul class="category-list nav">
-          <li v-for="(folder, idx) in folder_list" :key="folder" @click="click_category" :class="{ active: !idx }" data-bs-toggle="tab" :href="`#kt_tab_pane_${idx + 1}${idx + 1}${idx + 1}`">{{folder.name}} ({{folder.files? folder.files.length :1}})</li>
+          <li v-for="(folder, idx) in folder_list" :key="folder" @click="click_category" :class="{ active: !idx }" data-bs-toggle="tab" :href="`#kt_tab_pane_${idx + 1}${idx + 1}${idx + 1}`">{{folder.name}} <span>{{folder.files? folder.files.length :1}}</span></li>
         </ul>
       </div>
       <div class="search-result-item">
@@ -105,7 +105,7 @@
             </div>
             <span>{{item1.name}}</span>
           </div>
-          <ul class="files d-flex">
+          <ul v-if="item1.files.length" class="files d-flex">
             <li v-for="item2 in item1.files" :key="item2" class="d-flex align-items-center">
               <img src="@/assets/img/group32.svg" alt="">
               <span>{{item2.name}}</span>
@@ -394,12 +394,20 @@ li{list-style: none;}
         font-weight: 500;
         line-height: 100%; /* 14px */
         li{
-          display: flex;
-          padding: 10px 24px 5px 8px;
+          width: 100%;
+          padding: 7px 8px;
           cursor: pointer;
           &.active{
+            border-radius: 6px;
             background: var(--root-data-theme-light-kt-light, #F5F8FA);
             color: rgba(0,158,247,1);
+          }
+          span{
+            margin-left: 3px;
+            padding: 2px 8px;
+            border-radius: 16px;
+            background: var(--data-bs-theme-light-bs-danger, #F1416C);
+            color: #fff;
           }
         }
       }
@@ -521,14 +529,19 @@ li{list-style: none;}
       border-radius: 10px;
       background: #FFF;
       .search-result-section2-folder{
-        margin-bottom: 24px;
-        &:last-child{
-          margin-bottom: 0;
-        }
+        // padding: 6px 0;
+        // margin-top: 24px;
+        // &:first-child{
+        //   padding: 0;
+        // }
         .folder{
+          padding-top: 6px;
           .img{
             width: 32px;
             height: 32px;
+            background: var(--root-data-theme-light-kt-light, #F5F8FA);
+            border-radius: 50%;
+            margin-right: 4px;
             img{
               width: 14px;
               height: 14px;
@@ -543,6 +556,7 @@ li{list-style: none;}
           }
         }
         .files{
+          padding-bottom: 6px;
           margin-top: 8px;
           border-radius: 6px;
           li{
