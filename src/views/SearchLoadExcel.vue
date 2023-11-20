@@ -299,6 +299,11 @@ class CustomTextEditor {
     el.setAttribute('c', props.value.c)
     el.setAttribute('sheetName', props.value.sheetName)
     el.setAttribute('fileId', props.value.fileId)
+    el.setAttribute('type', props.value.type)
+    // 수식이면 수정 불가
+    if (props.value?.type === 'formula') {
+      el.disabled = true;
+    }
     // el.setAttribute('c', props.value.c)
     // el.setAttribute('c', props.value.c)
     // el.value =  ' ' + String(props.value) + ' ';
@@ -367,6 +372,7 @@ class CustomTextEditor {
       c: Number(this.el.getAttribute('c')),
       sheetName: (this.el.getAttribute('sheetName')),
       fileId: Number(this.el.getAttribute('fileId')),
+      type: this.el.getAttribute('type'),
     }
     
   }
@@ -391,6 +397,19 @@ const create_toasrUiGrid = (file_list) => {
         }
         item.formatter = (value) => {
           if (value && value.value && value.value.value) return value.value.value;
+        }
+        item.renderer = {
+          // 수식이면 background 변경
+          styles: {
+            'background-color': (props) => {
+              return props.value?.type === 'formula' ? '#f9f9f9' : 'inherit';
+            }
+          },
+          attributes: {
+            cellType: (props) => {
+              return props.value?.type === 'formula' ? 'formula' : 'normal';
+            }
+          }
         }
       })
 
@@ -443,6 +462,37 @@ const create_toasrUiGrid = (file_list) => {
       toast.on('click', (ev) => {
         console.log(ev);
         
+      });
+
+      toast.on('dblclick', (ev) => {
+        // formula 체크
+        const rowKey = ev['rowKey'];
+        const columnName = ev['columnName'];
+        if (rowKey == undefined || columnName == undefined) {
+          return;
+        }
+
+        const instance = ev['instance'];
+        const dataArr = instance?.dataManager?.getOriginData() ?? [];
+        const data = dataArr[rowKey][columnName];
+
+        // 수식이면 이벤트 stop (수정 불가)
+        if (data.type === 'formula') {
+          ev.stop();
+        }
+      });
+
+      toast.on('afterChange', (ev) => {
+        console.log('afterChange', ev);
+        const changes = ev['changes'];
+        const rowKey = changes[0]?.rowKey;
+        const columnName = changes[0]?.columnName;
+        if (rowKey == undefined || columnName == undefined) {
+          return;
+        }
+
+        const instance = ev['instance'];
+        instance.addCellClassName(rowKey, columnName, 'edited-cell');
       });
 
       // console.log(toast.getFocusedCell());
@@ -900,6 +950,11 @@ const save = async () => {
 
 </script>
 
+<style>
+.edited-cell {
+    background-color: rgba(255, 255, 0, 1) !important;
+  }
+</style>
 <style lang="scss" scoped>
 ul{margin: 0;padding: 0;}
 li{list-style: none;}
