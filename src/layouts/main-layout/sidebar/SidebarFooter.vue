@@ -89,7 +89,7 @@
 <style lang="scss" scoped>
 .btn-upload{
   display: flex;
-  padding: 12px 28.5px;
+  padding: 5px 26.5px;
   justify-content: center;
   align-items: center;
   gap: 4px;
