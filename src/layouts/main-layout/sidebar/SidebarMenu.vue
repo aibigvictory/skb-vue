@@ -829,7 +829,7 @@ export default defineComponent({
   padding: 10px calc(12px + 0.75rem) 0 calc(12px + 0.75rem);
   .lockfile-wrap{
     width: 100%;
-    min-height: 100px;
+    min-height: 50px;
     max-height: 200px;
     overflow-x: hidden;
     overflow-y: scroll;
