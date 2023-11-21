@@ -98,7 +98,7 @@
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
                     style="color: #fff"
-                    @drop="file_drag_drop_unlock()" @dragenter.prevent @dragover.prevent
+                    @drop="file_drag_drop_unlock('manage')" @dragenter.prevent @dragover.prevent
                   >
                     
                     <span class="menu-link sub-menu-link">
@@ -231,6 +231,7 @@
               class="menu-item menu-accordion"
               data-kt-menu-sub="accordion"
               data-kt-menu-trigger="click"
+              @drop="file_drag_drop_unlock('etc')" @dragenter.prevent @dragover.prevent
             >
               <span class="menu-link">
                 <span
@@ -283,7 +284,7 @@
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
                   >
-                    <span class="menu-link sub-menu-link" @click="file_click(item2.path, item2.name)">
+                    <span class="menu-link sub-menu-link" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id, item2.name, item2.user.name, item2.user.teamName, item2.updatedAt, '기타파일')">
                       <span class="menu-bullet">
                         <img src="@/assets/img/group32.svg" alt="">
                       </span>
@@ -296,7 +297,7 @@
                     <div
                       class="menu-sub menu-sub-accordion"
                     >
-                      <template v-for="(item3, k) in item2.sub" :key="k">
+                      <!-- <template v-for="(item3, k) in item2.sub" :key="k">
                         <div v-if="item3.heading" class="menu-item">
                           <router-link
                             class="menu-link"
@@ -311,7 +312,7 @@
                             }}</span>
                           </router-link>
                         </div>
-                      </template>
+                      </template> -->
                     </div>
                   </div>
                 </template>
@@ -381,7 +382,7 @@
                 <!--begin::Plans-->
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="kt_tab_pane_11" role="tabpanel">
-                    <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
+                    <div class="lockfile-wrap" @drop="file_drag_drop_lock('manage')" @dragenter.prevent @dragover.prevent>
                       <div v-for="item2 in useless_manageFile_list" :key="item2" class="d-flex">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" v-model="check_useless_manageFile_list" :value="item2.id" id="flexCheckDefault" />
@@ -402,8 +403,8 @@
                     </div>
                   </div>
                   <div class="tab-pane fade" id="kt_tab_pane_22" role="tabpanel">
-                    <div class="lockfile-wrap" @drop="file_drag_drop_lock()" @dragenter.prevent @dragover.prevent>
-                      <div v-for="item2 in files_etc_lock" :key="item2" class="d-flex">
+                    <div class="lockfile-wrap" @drop="file_drag_drop_lock('etc')" @dragenter.prevent @dragover.prevent>
+                      <div v-for="item2 in useless_etcFile_list" :key="item2" class="d-flex">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" v-model="check_useless_etcFile_list" value="" id="flexCheckDefault" />
                         </div>
@@ -457,22 +458,17 @@ export default defineComponent({
     let category_list = []
 
     let manageFile_list = []
-    let etcFile_list = ref([])
+    let etcFile_list = []
 
     let useless_manageFile_list = ref([])
     let useless_etcFile_list = ref([])
 
     const categorys_in_manageFiles = ref([])
-    const categorys_in_etcFiles = ref([])
 
     // const categorys = ref({})
     // const categorys_etc = ref({})
 
-    const files = ref({})
-    const files_lock = ref({})
-
     const files_etc = ref({})
-    const files_etc_lock = ref({})
 
     const deepCopy = (target) => {
       return JSON.parse(JSON.stringify(target))
@@ -508,14 +504,17 @@ export default defineComponent({
         const { data } = await axios.post('/file/list', {
           type: 'etc'
         })
-
-        files_etc.value = data
+        etcFile_list = data
       }
       catch(error) {console.log(error);}
 
+console.log('deepCopy(category_list)');
+console.log(deepCopy(category_list));
+console.log('filter_fileUse(deepCopy(category_list))');
+console.log(filter_fileUse(deepCopy(category_list)));
 
-      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), manageFile_list, 'code', 'folderCd')
-      categorys_in_etcFiles.value = category_in_file(deepCopy(category_list), etcFile_list, 'code', 'folderCd')
+      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), filter_fileUse(manageFile_list), 'code', 'folderCd')
+      files_etc.value = filter_fileUse(etcFile_list)
 
       useless_manageFile_list.value = useless_in_file(manageFile_list)
       useless_etcFile_list.value = useless_in_file(etcFile_list)
@@ -523,9 +522,6 @@ export default defineComponent({
 
 
     const category_in_file = (category_arr, file_arr, category_key, file_key) => {
-      console.log('category in file');
-      console.log(category_arr);
-      console.log(file_arr);
       let result = []
 
       for (let i = 0; i < category_arr.length; i++) {
@@ -538,15 +534,17 @@ export default defineComponent({
         for (let j = 0; j < file_arr.length; j++) {
           const file = file_arr[j]
 
-          if (file.use && category[category_key] == file[file_key]) {
+          if (category[category_key] == file[file_key]) {
             category.files.push(file)
           }
         }
       }
 
-      console.log(result);
-
       return result
+    }
+
+    const filter_fileUse = (arr) => {
+      return arr.filter(file => file.use)
     }
 
     const useless_in_file = (file_arr) => {
@@ -573,7 +571,7 @@ export default defineComponent({
     })
 
     const file_click = (id, name, user, team, date, cate) => {
-      // console.log(id, name);
+      console.log(id, name);
       localStorage.setItem('id', id)
       localStorage.setItem('name', name)
       localStorage.setItem('user', user)
@@ -597,17 +595,32 @@ export default defineComponent({
       return arr.some(e => e.id === str);
     }
 
-    const file_drag_drop_lock = () => {
-      
-      if (!useless_manageFile_list.value.includes(drag_file)) useless_manageFile_list.value.push(drag_file)
+    const checkInArray = (arr, file) => {
+      return arr.some(e => e.id === file.id);
+    }
 
-      const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
+    const file_drag_drop_lock = (type) => {
+      console.log(type);
+      console.log(checkInArray(manageFile_list, drag_file));
+      console.log(checkInArray(etcFile_list, drag_file));
 
-      console.log('new_manageFile_list: ',new_manageFile_list);
+      if (type == 'manage' && checkInArray(manageFile_list, drag_file)) {
+        if (!useless_manageFile_list.value.includes(drag_file)) useless_manageFile_list.value.push(drag_file)
+  
+        const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
 
-      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
+        categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
+      } 
 
-      console.log(manageFile_list);
+      else if (type == 'etc' && checkInArray(etcFile_list, drag_file)) {
+        if (!useless_etcFile_list.value.includes(drag_file)) useless_etcFile_list.value.push(drag_file)
+
+        const new_etcFile_list = etcFile_list.filter((con) => !checkId(useless_etcFile_list.value, con.id))
+  
+        files_etc.value = new_etcFile_list
+      }
+
+      else return
 
       axios.post('/file/update', {
         id: drag_file.id,
@@ -617,12 +630,22 @@ export default defineComponent({
       drag_file = null
     }
 
-    const file_drag_drop_unlock = () => {
-      useless_manageFile_list.value = useless_manageFile_list.value.filter((con) => con.id != drag_file.id)
+    const file_drag_drop_unlock = (type) => {
+      if (type == 'manage') {
+        useless_manageFile_list.value = useless_manageFile_list.value.filter((con) => con.id != drag_file.id)
+  
+        const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
+  
+        categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
+      }
 
-      const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
-
-      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
+      if (type == 'etc') {
+        useless_etcFile_list.value = useless_etcFile_list.value.filter((con) => con.id != drag_file.id)
+  
+        const new_etcFile_list = etcFile_list.filter((con) => !checkId(useless_etcFile_list.value, con.id))
+  
+        files_etc.value = new_etcFile_list
+      }
 
       axios.post('/file/update', { 
         id: drag_file.id,
@@ -738,17 +761,12 @@ export default defineComponent({
       MainMenuConfig,
       sidebarMenuIcons,
       translate,
-      files,
-      files_lock,
+
       files_etc,
-      files_etc_lock,
-      // categorys,
-      // categorys_etc,
       file_click,
       file_drag,
       file_drag_drop_lock,
       file_drag_drop_unlock,
-      // list_check_useless_file,
       check_all_useless_file,
       lock_state,
       change_lock_state,
