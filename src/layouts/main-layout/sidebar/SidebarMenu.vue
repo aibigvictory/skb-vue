@@ -137,9 +137,9 @@
                           <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id, item2.name, item2.user.name, item2.user.teamName, item2.updatedAt, category.name)"><span class="menu-bullet">
                             </span>
                             <span class="menu-title" style="display: block">
-                              <div class="badge-wrap d-flex">
-                                <div class="badge badge-primary">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
-                                <div class="badge badge-primary" style="background: #622CE1 !important; margin-left: 4px;">{{item2.user.name}}</div>
+                              <div class="info-wrap d-flex">
+                                <div class="info-date">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
+                                <div class="info-user" style="background: #622CE1 !important; margin-left: 4px;">{{item2.user.name}}</div>
                               </div>
                               <div class="icon-name d-flex align-items-start">
                                 <div class="img img-excel"><img src="@/assets/img/group32.svg" alt=""></div>
@@ -377,7 +377,7 @@
                     </svg> -->
                     기타파일
                   </div>
-                  <div @click="delete_file" class="non-use-file-category">삭제</div>
+                  <div @click="delete_file" class="non-use-file-category delete"><div class="img"><img src="@/assets/img/trash.png" alt=""></div></div>
                 </div>
                 <!--begin::Plans-->
                 <div class="tab-content" id="myTabContent">
@@ -828,8 +828,27 @@ console.log(filter_fileUse(deepCopy(category_list)));
 .menu-sub-accordion{
   span.menu-title{
     word-break: break-all;
-    div{
+    .info-wrap{
       font-size: 12px !important;
+      font-weight: 500;
+      .info-date{
+        font-size: 10px;
+        display: flex;
+        font-weight: 600;
+        align-items: center;
+        padding: 3px 6px;
+        border-radius: 13px;
+        background: #3471DB;
+      }
+      .info-user{
+        font-size: 10px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        padding: 3px 6px;
+        border-radius: 13px;
+        background: #622CE1;
+      }
     }
   }
   .menu-item{
@@ -874,6 +893,15 @@ console.log(filter_fileUse(deepCopy(category_list)));
       &.active{
         background: #009EF7;
         border-color: transparent;
+      }
+      &.delete{
+        border: none;
+        margin-left: 0;
+      }
+
+      .img{
+        // width: 24px;
+        height: 25.5px;
       }
     }
   }
