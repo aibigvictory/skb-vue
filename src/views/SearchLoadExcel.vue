@@ -493,6 +493,8 @@ const create_toasrUiGrid = (file_list) => {
 
         const instance = ev['instance'];
         instance.addCellClassName(rowKey, columnName, 'edited-cell');
+
+        document.querySelector('.save-btn')?.classList.add('active')
       });
 
       // console.log(toast.getFocusedCell());
@@ -1043,6 +1045,10 @@ ul{
       gap: 8px;
       border-radius: 6px;
       background: var(--el-color-info-light-8, #E9E9EB);
+      &.active{
+        color: #fff;
+        background: var(--default-red, #DA1E28);;
+      }
     }
   }
 </style>
