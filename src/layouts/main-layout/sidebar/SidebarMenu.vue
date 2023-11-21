@@ -509,13 +509,13 @@ export default defineComponent({
           type: 'etc'
         })
 
-        etcFile_list.value = data
+        files_etc.value = data
       }
       catch(error) {console.log(error);}
 
 
       categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), manageFile_list, 'code', 'folderCd')
-      // categorys_in_etcFiles.value = category_in_file(deepCopy(category_list), etcFile_list, 'code', 'folderCd')
+      categorys_in_etcFiles.value = category_in_file(deepCopy(category_list), etcFile_list, 'code', 'folderCd')
 
       useless_manageFile_list.value = useless_in_file(manageFile_list)
       useless_etcFile_list.value = useless_in_file(etcFile_list)

@@ -118,7 +118,7 @@ onMounted(() => {
             autoProcessQueue: false, 
             headers: { 'Authorization': 'Bearer ' + JwtService.getToken() },
             params: {
-                type: 'manage',
+                type: props.type == 'etc' ?'etc' :'manage',
                 folderCd: props.type == 'etc' ?'002' :'',
             },
             paramName: "files",
