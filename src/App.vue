@@ -3,10 +3,13 @@
   <!--  -->
   <FileUploadVue/>
   <!--  -->
+  <Popup v-if="state.popup.toggle" @accept="state.popup.accept" @exit="state.popup.toggle = false" :content="state.popup.content" :btnCount="state.popup.btnCount"/>
 </template>
 
 <script setup lang="ts">
 import FileUploadVue from "@/components/modals/general/FileUploadModal.vue";
+import Popup from '@/components/Popup.vue'
+
 import { defineComponent, nextTick, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Mutations, Actions } from "@/store/enums/StoreEnums";
@@ -16,6 +19,7 @@ import { initializeComponents } from "@/core/plugins/keenthemes";
 import axios from "axios";
 
 const store = useStore();
+const state = store.state
 
 const init = async () => {
   const { data } = await axios.post('/folder/list', {

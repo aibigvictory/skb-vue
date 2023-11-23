@@ -450,6 +450,7 @@ export default defineComponent({
   name: "sidebar-menu",
   components: {},
   setup() {
+    const state = store.state
     const { t, te } = useI18n();
     const route = useRoute();
     const router = useRouter();
@@ -686,7 +687,12 @@ console.log(filter_fileUse(deepCopy(category_list)));
     }
 
     const delete_file = async () => {
-      if (!check_useless_manageFile_list.value.length) return alert('선택된 미사용 파일이 없습니다')
+      if (!check_useless_manageFile_list.value.length) {
+        state.popup.content = ['선택된 미사용 파일이 없습니다']
+        state.popup.toggle = true
+
+        return
+      }
 
       try{
         if (lock_state.value == 'manage') {
@@ -701,11 +707,14 @@ console.log(filter_fileUse(deepCopy(category_list)));
               // .catch(() => alert('파일 삭제에 실패하였습니다.'))
             })
   
-            alert('파일 삭제에 성공하였습니다.')
+            state.popup.content = ['파일 삭제에 성공하였습니다.']
+            state.popup.toggle = true
+
             store.state.upload++
           }
           catch(error) {
-            alert('파일 삭제에 실패하였습니다.')
+            state.popup.content = ['파일 삭제에 실패하였습니다.']
+            state.popup.toggle = true
           }
         }
         if (lock_state.value == 'etc') {
@@ -721,11 +730,14 @@ console.log(filter_fileUse(deepCopy(category_list)));
               // .catch(() => alert('파일 삭제에 실패하였습니다.'))
             })
 
-            alert('파일 삭제에 성공하였습니다.')
+            state.popup.content = ['파일 삭제에 성공하였습니다.']
+            state.popup.toggle = true
+
             store.state.upload++
           }
           catch(error) {
-            alert('파일 삭제에 실패하였습니다.')
+            state.popup.content = ['파일 삭제에 실패하였습니다.']
+            state.popup.toggle = true
           }
         }
         

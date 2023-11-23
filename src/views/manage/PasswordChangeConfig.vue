@@ -20,8 +20,11 @@
 
 <script setup lang="ts">
 import JwtService from "@/core/services/JwtService";
+import store from "@/store";
 import axios from "axios";
 import { ref, watch } from "vue";
+
+const state = store.state
 
 let before_config = ref('never')
 let config = ref('never')
@@ -71,12 +74,13 @@ const send_server_config = () => {
         console.log(before_config.value);
         console.log(config.value);
         
-        alert('비밀번호 주기 변경이 완료되었습니다.')
+        state.popup.content = ['비밀번호 주기 변경이 완료되었습니다.']
+        state.popup.toggle = true
     })
     .catch((error) => {
-        alert('비밀번호 주기 변경에 실패했습니다.')
+        state.popup.content = ['비밀번호 주기 변경에 실패했습니다.']
+        state.popup.toggle = true
     })
-    // alert('complete')
 }
 </script>
 

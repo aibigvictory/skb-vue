@@ -93,6 +93,7 @@
   justify-content: center;
   align-items: center;
   gap: 4px;
+  border: none;
   border-radius: 8px;
 background: var(--root-bs-green, #198754);
 

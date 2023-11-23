@@ -29,6 +29,12 @@ const store = createStore({
       keyword: '',
       folderCd: '',
       reload: 0,
+    },
+    popup: {
+      toggle: false,
+      accept: null,
+      content: [],
+      btnCount: 1
     }
   }
 });

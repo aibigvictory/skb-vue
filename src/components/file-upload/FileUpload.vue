@@ -35,6 +35,8 @@
 </template>
 
 <script setup lang="ts">
+import Popup from '@/components/Popup.vue'
+
 import { onMounted, ref } from "vue";
 import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css';
@@ -42,13 +44,14 @@ import axios from "axios";
 import { ca } from "element-plus/es/locale";
 import store from "@/store";
 import JwtService from "@/core/services/JwtService";
+import { change_popup_state } from '@/assets/utils/popup.js'
 
+const state = store.state
 const props = defineProps({
     type: String
 })
 
 console.log('props: ', props);
-
 
 // 카테고리 시작---------------------------------------------
 
@@ -102,8 +105,16 @@ const fileUpload = async () => {
     console.log(myDropzone.options.params);
     
     
-    if (!myDropzone.files.length) return alert('파일이 없습니다.')
-    if (!myDropzone.options.params.folderCd) return alert('카테고리를 선택해주세요.')
+    if (!myDropzone.files.length) {
+        state.popup.content = ['파일이 없습니다.']
+        state.popup.toggle = true
+        return
+    }
+    if (!myDropzone.options.params.folderCd) {
+        state.popup.content = ['카테고리를 선택해주세요.']
+        state.popup.toggle = true
+        return
+    }
 
     await myDropzone.processQueue()
     setTimeout(() => {
@@ -146,6 +157,9 @@ onMounted(() => {
         myDropzone.on("addedfile", function(file) {
             // if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
             if (!file.name.endsWith('.xlsx')) {
+                state.popup.content = [`XLSX 형식의 파일만 지원 가능합니다.`]
+                state.popup.toggle = true
+                
                 myDropzone.removeFile(file); // 파일 제거
             }
         });
@@ -157,7 +171,8 @@ onMounted(() => {
         myDropzone.on("successmultiple", function(file) {
             console.log(file);
             
-            alert('업로드가 완료되었습니다.')
+            state.popup.content = ['업로드가 완료되었습니다.']
+            state.popup.toggle = true
         });
 
         // myDropzone.on("success", function(file) {
@@ -167,7 +182,8 @@ onMounted(() => {
         // });
 
         myDropzone.on("errormultiple", function(file) {
-            alert('업로드가 실패하였습니다.')
+            state.popup.content = ['업로드가 실패하였습니다.']
+            state.popup.toggle = true
         });
 
         // myDropzone.on("error", function(file) {
@@ -202,6 +218,11 @@ defineExpose({
     width: 100%;
     padding: 30px 0 50px 0;
     margin-bottom: 10px;
+
+    svg{
+        width: 80px;
+        height: 80px;
+    }
 
     .select{
         margin-top: 27.11px;

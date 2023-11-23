@@ -69,8 +69,11 @@
 import Popup from '@/components/Popup.vue'
 import JwtService from '@/core/services/JwtService'
 
+import store from '@/store'
 import axios from 'axios'
 import { ref, watch } from 'vue'
+
+const state = store.state
 
 let accept_type = ref('전체')
 let search_keyword = ref('')
@@ -159,7 +162,9 @@ const accept_member = async () => {
         await axios.post('/auth/acceptUser', {id: member_id}, axios_config)
     })
     
-    alert('승인처리가 완료되었습니다.')
+    state.popup.content = ['승인처리가 완료되었습니다.']
+    state.popup.toggle = true
+
     member_checked_list.value = []
     call_member()
 
@@ -174,7 +179,9 @@ const delete_member = async () => {
         await axios.post('/auth/deleteUser', {id: member_id}, axios_config)
     })
     
-    alert('삭제가 완료되었습니다.')
+    state.popup.content = ['삭제처리가 완료되었습니다.']
+    state.popup.toggle = true
+
     member_checked_list.value = []
     call_member()
 }

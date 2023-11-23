@@ -53,6 +53,8 @@ import Grid from 'tui-grid';
 import 'tui-grid/dist/tui-grid.css';
 import store from '@/store';
 
+const state = store.state
+
 const props = defineProps({
     keyword: String,
     sort: String,
@@ -623,7 +625,12 @@ const save = async () => {
   }
     
 
-  if (![...edit_list.values()].length) return alert('수정 사항이 없습니다.')
+  if (![...edit_list.values()].length) {
+    state.popup.content = ['수정 사항이 없습니다.']
+    state.popup.toggle = true
+
+    return
+  }
 
   let userId = 1
 
@@ -636,7 +643,8 @@ const save = async () => {
     userId = data.id
   }
   catch(error) {
-    alert('사용자 정보 조회에 실패하였습니다.')
+    state.popup.content = ['사용자 정보 조회에 실패하였습니다.']
+    state.popup.toggle = true
   }
   // toastArr.forEach((toast) => {
   //   console.log(toast);
@@ -663,8 +671,14 @@ const save = async () => {
     userId,
     data: [...edit_list.values()]
   })
-  .then(() => {alert('엑셀 수정이 완료되었습니다.')})
-  .catch(() => {alert('엑셀 수정에 실패하였습니다.')})
+  .then(() => {
+    state.popup.content = ['엑셀 수정이 완료되었습니다.']
+    state.popup.toggle = true
+  })
+  .catch(() => {
+    state.popup.content = ['엑셀 수정에 실패하였습니다.']
+    state.popup.toggle = true
+  })
   console.log(adjustExcel);
   
 }

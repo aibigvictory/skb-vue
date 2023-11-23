@@ -32,6 +32,11 @@
 </template>
 
 <script setup lang="ts">
+import store from "@/store";
+import { onUnmounted } from "vue";
+
+const state = store.state
+
 const props = defineProps({
     content: Array,
     danger: String,
@@ -50,6 +55,14 @@ const accept = () => {
     emits('exit')
 }
 
+console.log(props.content);
+
+onUnmounted(() => {
+    // state.popup.content = []
+    state.popup.accept = null
+    // state.popup.btnCount = 1
+})
+
 </script>
 
 
@@ -60,7 +73,7 @@ const accept = () => {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 200;
+    z-index: 1500;
     background: rgba(0,0,0,0.2);
     display: flex;
     justify-content: center;

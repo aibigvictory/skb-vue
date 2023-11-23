@@ -15,6 +15,8 @@ import axios from 'axios'
 import store from '@/store';
 import JwtService from '@/core/services/JwtService';
 
+const state = store.state
+
 const props = defineProps({
   excelId: Number,
   excelName: String,
@@ -29,7 +31,10 @@ const reload_excel = (url, excelName, luckysheet) => {
     if(exportJson.sheets==null || exportJson.sheets.length==0){
         // 예외처리
         isMaskShow.value = false
-        return alert('엑셀 파일을 불러오지 못했습니다.');
+
+        state.popup.content = ['엑셀 파일을 불러오지 못했습니다.']
+        state.popup.toggle = true
+        return 
     }
     //초기화
     luckysheet.destroy();    
@@ -101,6 +106,10 @@ const downloadExcel = () => {
       a.click();
       window.URL.revokeObjectURL(url);
     })
+    .then(() => {
+      state.popup.content = ['엑셀 다운로드가 완료되었습니다.']
+      state.popup.toggle = true
+    })
     .catch(err => console.error('Error:', err));
 }
 
@@ -116,7 +125,9 @@ const getUserData = async () => {
   }
   catch(error) {
     console.error(error);
-    alert('사용자 정보 조회에 실패하였습니다.');
+    state.popup.content = ['사용자 정보 조회에 실패하였습니다.']
+    state.popup.toggle = true
+
     throw new Error('사용자 정보 조회에 실패하였습니다.');
   }
 }
@@ -131,12 +142,14 @@ const saveExcel = async () => {
     });
     console.log(result);
     if (result.status === 200) {
-      alert('수정이 완료되었습니다.');
+      state.popup.content = ['수정이 완료되었습니다.']
+      state.popup.toggle = true
       return;
     }
   }
   catch(error) {
-    alert('수정에 실패하였습니다.');
+    state.popup.content = ['수정에 실패하였습니다.']
+    state.popup.toggle = true
   }
 }
 

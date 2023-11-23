@@ -63,10 +63,13 @@
 <script setup lang="ts">
 import JwtService from "@/core/services/JwtService";
 import router from "@/router";
+import store from "@/store";
 import axios from "axios";
 import { useForm, ErrorMessage, Field, Form } from "vee-validate";
 import { computed, onMounted, ref } from "vue";
 import * as Yup from "yup";
+
+const state = store.state
 
 Yup.setLocale({
   mixed: {
@@ -137,11 +140,14 @@ const change_password = (data) => {
 
     axios.post('/auth/updatePassword', data, axios_config)
     .then(() => {
-        alert('비밀번호 변경이 완료되었습니다.')
+        state.popup.content = ['비밀번호 변경이 완료되었습니다.']
+        state.popup.toggle = true
+
         router.go(0)
     })
     .catch((error) => {
-        alert('비밀번호 변경에 실패했습니다.')
+        state.popup.content = ['비밀번호 변경에 실패했습니다.']
+        state.popup.toggle = true
     })
 }
 </script>

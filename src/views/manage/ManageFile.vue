@@ -83,6 +83,8 @@ import { guardReactiveProps, ref } from "vue";
 import axios from 'axios';
 import store from '@/store';
 
+const state = store.state
+
 const group:any = ref([])
 
 const init = async () => {
@@ -131,7 +133,8 @@ const save = async () => {
     })
     console.log(group.value);
 
-    alert('순서저장이 완료되었습니다.')
+    state.popup.content = ['순서저장이 완료되었습니다.']
+    state.popup.toggle = true
 
     // await axios.post('/folder/update', group.value)
 }
@@ -183,8 +186,14 @@ const rename_group = async () => {
 
 const delete_group = async () => {
     const group = group_data
+
     
-    if (group.count > 0) return alert('하나 이상의 파일이 존재합니다.')
+    if (group.count > 0) {
+        state.popup.content = ['하나 이상의 파일이 존재합니다.']
+        state.popup.toggle = true
+
+        return
+    }
 
     await axios.post('/folder/delete', {
         id: group.id

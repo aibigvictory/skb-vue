@@ -99,13 +99,23 @@ const emits = defineEmits([
 // let input_search: any = ref(null)
 
 const open_popup = () => {
-  if (state.search.keyword == '' || state.search.keyword.replace(/ /g, '') == '') return alert('검색어를 입력해주세요')
+  if (state.search.keyword == '' || state.search.keyword.replace(/ /g, '') == '') {
+    state.popup.content = ['검색어를 입력해주세요']
+    state.popup.toggle = true
+
+    return
+  }
 
   emits('display_search_popup')
 }
 
 const search_function = (e) => {
-  if (state.search.keyword == '' || state.search.keyword.replace(/ /g, '') == '') return alert('검색어를 입력해주세요.')
+  if (state.search.keyword == '' || state.search.keyword.replace(/ /g, '') == '') {
+    state.popup.content = ['검색어를 입력해주세요.']
+    state.popup.toggle = true
+
+    return
+  }
 
   state.search.reload++
 

@@ -301,7 +301,12 @@ const click_category = (e) => {
 // console.log(store.state.search_keyword);
 
 const load_search_result = () => {
-  if (!checked_file_list.value.length) return alert('엑셀파일을 선택해 주세요.')
+  if (!checked_file_list.value.length) {
+    state.popup.content = ['엑셀파일을 선택해 주세요.']
+    state.popup.toggle = true
+
+    return
+  }
 
   store.state.search_result = checked_file_list.value
 
