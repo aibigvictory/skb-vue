@@ -275,3 +275,9 @@ setTimeout(() => {
 }, 5000)
 
 </script>
+
+<style lang="scss" scoped>
+#kt_drawer_chat{
+  z-index: 1500;
+}
+</style>
