@@ -134,8 +134,8 @@
                           data-kt-menu-sub="accordion"
                           data-kt-menu-trigger="click"
                         >
-                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id, item2.name, item2.user.name, item2.user.teamName, item2.updatedAt, category.name)"><span class="menu-bullet">
-                            </span>
+                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id, item2.name, item2.user.name, item2.user.teamName, item2.updatedAt, category.name)">
+                            <!-- <span class="menu-bullet"></span> -->
                             <span class="menu-title" style="display: block">
                               <div class="info-wrap d-flex">
                                 <div class="info-date">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
