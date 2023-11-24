@@ -621,7 +621,12 @@ console.log(filter_fileUse(deepCopy(category_list)));
         files_etc.value = new_etcFile_list
       }
 
-      else return
+      else {
+        if (type == 'etc') state.popup.content = ['관리파일은 관리파일 카테고리 클릭 후 드래그 가능합니다.']
+        if (type == 'manage') state.popup.content = ['기타파일은 기타파일 카테고리 클릭 후 드래그 가능합니다.']
+
+        return state.popup.toggle = true
+      }
 
       axios.post('/file/update', {
         id: drag_file.id,
