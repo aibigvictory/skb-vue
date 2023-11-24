@@ -1049,6 +1049,7 @@ ul{
       bottom: 30px;
       right: 50px;
       position: fixed;
+      z-index: 500;
       border: none;
       display: flex;
       width: 210px;
