@@ -181,8 +181,15 @@ onMounted(() => {
         //     alert('업로드가 완료되었습니다.')
         // });
 
-        myDropzone.on("errormultiple", function(file) {
-            state.popup.content = ['업로드가 실패하였습니다.']
+        myDropzone.on("errormultiple", function(fileList, data) {
+            let fileNameList: any = []
+            
+            fileList.forEach((file) => {
+                fileNameList.push(file.name)
+            })
+
+            if (data.message == 'Conflict') state.popup.content = ['아래 파일은 파일명이 중복되었습니다.', ...fileNameList]
+            else                            state.popup.content = ['아래 파일에 대해 업로드가 실패하였습니다.', ...fileNameList]
             state.popup.toggle = true
         });
 

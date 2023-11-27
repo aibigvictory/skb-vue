@@ -80,7 +80,7 @@ const download_excel = () => {
 
 <style lang="scss" scoped>
 .wrap{
-    margin: 48px 0;
+    margin: 18px 0;
     padding: 0 30px;
     background: #fff;
     .header{

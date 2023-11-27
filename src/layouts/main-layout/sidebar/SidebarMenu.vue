@@ -406,7 +406,7 @@
                     <div class="lockfile-wrap" @drop="file_drag_drop_lock('etc')" @dragenter.prevent @dragover.prevent>
                       <div v-for="item2 in useless_etcFile_list" :key="item2" class="d-flex">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" v-model="check_useless_etcFile_list" value="" id="flexCheckDefault" />
+                          <input class="form-check-input" type="checkbox" v-model="check_useless_etcFile_list" :value="item2.id" id="flexCheckDefault" />
                         </div>
                         <span class="useless-file menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
                           <span class="menu-bullet">
@@ -692,11 +692,21 @@ console.log(filter_fileUse(deepCopy(category_list)));
     }
 
     const delete_file = async () => {
-      if (!check_useless_manageFile_list.value.length) {
-        state.popup.content = ['선택된 미사용 파일이 없습니다']
-        state.popup.toggle = true
-
-        return
+      if (lock_state.value == 'manage') {
+        if (!check_useless_manageFile_list.value.length) {
+          state.popup.content = ['선택된 미사용 파일이 없습니다']
+          state.popup.toggle = true
+  
+          return
+        }
+      }
+      if (lock_state.value == 'etc') {
+        if (!check_useless_etcFile_list.value.length) {
+          state.popup.content = ['선택된 미사용 파일이 없습니다']
+          state.popup.toggle = true
+  
+          return
+        }
       }
 
       try{
