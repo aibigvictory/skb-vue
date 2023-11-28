@@ -29,10 +29,10 @@
                         <div class="search-detail-wrap" v-if="search_detail">
                             <div class="title">상세검색</div>
                             <div class="content">
-                                <label for="">구분</label>
+                                <!-- <label for="">구분</label>
                                 <select id=""></select>
                                 <label for="">시스템 / 서비스</label>
-                                <select id=""></select>
+                                <select id=""></select> -->
                                 <label for="">업체 / 개발사</label>
                                 <select id=""></select>
                             </div>
@@ -56,8 +56,8 @@
                     <ul class="info">
                         <li>
                             <input @change="check_all_member" type="checkbox">
-                            <div>구분</div>
-                            <div>시스템/서비스</div>
+                            <!-- <div>구분</div> -->
+                            <!-- <div>시스템/서비스</div> -->
                             <div>업체/개발사</div>
                             <div>담당</div>
                             <div>성명</div>
@@ -73,8 +73,8 @@
                     <ul class="member">
                         <li v-for="member in view_member" :key="member">
                             <input v-model="member_checked_list" :value="member.id" type="checkbox">
-                            <div>{{member.type}}</div>
-                            <div>{{member.system}}</div>
+                            <!-- <div>{{member.type}}</div> -->
+                            <!-- <div>{{member.system}}</div> -->
                             <div>{{member.company}}</div>
                             <div>{{member.manage}}</div>
                             <div>{{member.name}}</div>
@@ -108,7 +108,7 @@
         <div class="user-add" v-if="user_add">
             <div class="title">사용자 등록</div>
             <div class="section">
-                <div class="line">
+                <!-- <div class="line">
                     <div class="item">
                         <label for="">구분</label>
                         <input type="text" placeholder="입력해주세요.">
@@ -117,7 +117,7 @@
                         <label for="">시스템/서비스</label>
                         <input type="text" placeholder="입력해주세요.">
                     </div>
-                </div>
+                </div> -->
                 <div class="line">
                     <div class="item">
                         <label for="">업체 개발사<span> *</span></label>
