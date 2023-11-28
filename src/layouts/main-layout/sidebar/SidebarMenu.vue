@@ -4,7 +4,7 @@
     <!--begin::Menu wrapper-->
     <div
       id="kt_app_sidebar_menu_wrapper"
-      class="app-sidebar-wrapper hover-scroll-overlay-y my-5"
+      class="app-sidebar-wrapper hover-scroll-overlay-y overflow-scroll my-5"
       data-kt-scroll="true"
       data-kt-scroll-activate="true"
       data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
@@ -888,7 +888,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
   }
 }
 .non-use-file-wrap{
-  margin-top: 200px;
+  margin-top: 80px;
   position: sticky;
   bottom: 0;
   > .menu-link{
