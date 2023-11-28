@@ -73,6 +73,8 @@ const reload_excel = (url, excelName, luckysheet) => {
           }
         }
     })
+    // luckysheet.setSheetColor("#ff0000")
+
     isMaskShow.value = false
   });
 }
