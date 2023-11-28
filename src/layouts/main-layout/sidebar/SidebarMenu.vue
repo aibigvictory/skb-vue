@@ -933,7 +933,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
         }
   
         .img{
-          // width: 24px;
+          width: 25.5px;
           height: 25.5px;
         }
       }
