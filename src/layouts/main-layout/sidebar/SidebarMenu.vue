@@ -811,6 +811,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
 <style lang="scss" scoped>
 #kt_app_sidebar_menu_wrapper{
   height: calc(100vh - 69px - 152px);
+  &::-webkit-scrollbar-thumb {background-color: #fff !important;}
 }
 .sub-menu-link{
   padding-top: 5px;
