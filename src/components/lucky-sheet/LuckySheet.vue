@@ -47,8 +47,10 @@ const reload_excel = (url, excelName, luckysheet) => {
         userInfo:exportJson.info.name.creator,
         // loading: false,
         hook: {
-          updated: (operate) => {
-            console.log(operate);
+          updated: (operate,data) => {
+            console.log('operate: ',operate);
+            console.log('data: ', data);
+            
             document.querySelector('.btn-save')?.classList.add('active')
           },
           cellUpdateBefore: function (r, c, value) {
@@ -66,6 +68,8 @@ const reload_excel = (url, excelName, luckysheet) => {
               value: String(newValue?.v) ?? '',
               sheetName
             });
+
+            luckysheet.setCellFormat(r, c, 'bg', '#fff000')
           }
         }
     })

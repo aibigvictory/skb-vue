@@ -888,6 +888,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
   }
 }
 .non-use-file-wrap{
+  margin-top: 200px;
   position: sticky;
   bottom: 0;
   > .menu-link{
@@ -900,7 +901,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
     padding: 10px calc(12px + 0.75rem) 0 calc(12px + 0.75rem);
     .lockfile-wrap{
       width: 100%;
-      min-height: 50px;
+      min-height: 150px;
       max-height: 150px;
       overflow-x: hidden;
       overflow-y: scroll;
