@@ -24,7 +24,6 @@
                     <input @change="change_type($event, '승인요청')" type="checkbox" name="" id="search-check-wait-accept">
                     <label for="search-check-wait-accept">승인요청</label>
                 </div>
-                <!-- <div class="search-input"></div> -->
             </div>
             <div class="accept">
                 <ul class="info">
@@ -38,7 +37,8 @@
                         <div>등록일자</div>
                     </li>
                 </ul>
-                <ul class="member">
+                <div class="no-member" v-if="!wait_count">승인 요청내역이 없습니다.</div>
+                <ul class="member" v-if="wait_count">
                     <!-- <li>
                         <input type="checkbox">
                         <div>CATV운용팀</div>
@@ -71,12 +71,13 @@ import JwtService from '@/core/services/JwtService'
 
 import store from '@/store'
 import axios from 'axios'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const state = store.state
 
 let accept_type = ref('전체')
 let search_keyword = ref('')
+let wait_count = computed(() => filter_member('승인요청', view_member.value).length)
 
 watch(accept_type, (type) => {
     view_member.value = search_member(search_keyword.value, origin_member)
@@ -304,6 +305,12 @@ li{list-style: none;}
                         margin-left: 4px;
                     }
                 }
+            }
+            .no-member{
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             .member{
                 color: var(--primary-text, #222);
