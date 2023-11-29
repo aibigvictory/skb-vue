@@ -8,6 +8,7 @@ import router from "./router";
 import store from "./store";
 import ElementPlus from "element-plus";
 import i18n from "@/core/plugins/i18n";
+import '@fortawesome/fontawesome-free/js/all.js'
 
 //imports for app initialization
 import ApiService from "@/core/services/ApiService";
