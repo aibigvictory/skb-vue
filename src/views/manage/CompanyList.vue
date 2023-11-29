@@ -44,9 +44,9 @@
                             <input v-model="company_checked_list" :value="company.id" type="checkbox" :id="`check${company.id}`">
                             <label :for="`check${company.id}`">
                                 <div>{{company.name}}</div>
-                                <div>{{company.landline}}</div>
-                                <div>{{company.manage}}</div>
-                                <div>{{company.date}}</div>
+                                <div>{{company.phone}}</div>
+                                <div>{{company.memo}}</div>
+                                <div>{{new Date(company.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
                             </label>
                         </li>
                         <!-- <li>
@@ -64,14 +64,14 @@
             <div class="title">업체/개발사 등록</div>
             <div class="section">
                 <label for="">구분<span>(필수)</span></label>
-                <input type="text" placeholder="입력해주세요.">
+                <input v-model="input_company.name" type="text" placeholder="입력해주세요.">
                 <label for="">유선전화</label>
-                <input type="text" placeholder="입력해주세요.">
+                <input v-model="input_company.phone" type="text" placeholder="입력해주세요.">
                 <label for="">비고</label>
-                <textarea id="" placeholder="내용을 입력해주세요."></textarea>
+                <textarea id="" v-model="input_company.memo" placeholder="내용을 입력해주세요."></textarea>
             </div>
             <div class="btn-wrap">
-                <div class="btn btn-primary" @click="company_add = false">업체등록</div>
+                <div class="btn btn-primary" @click="create_company">업체등록</div>
                 <div class="btn btn-secondary" @click="company_add = false">리스트</div>
             </div>
         </div>
@@ -79,7 +79,12 @@
 </template>
 
 <script setup lang="ts">
+import JwtService from '@/core/services/JwtService'
+import store from '@/store'
+import axios from 'axios'
 import { ref, watch } from 'vue'
+
+const state = store.state
 
 const company_add = ref(false)
 
@@ -123,38 +128,58 @@ const search_company = (keyword, arr) => {
     return arr.filter((company) => new RegExp(keyword).test(company.name) || new RegExp(keyword).test(company.manage))
 }
 
-const origin_company = [
+const deepCopy = (target) => {
+  return JSON.parse(JSON.stringify(target))
+}
+
+let origin_company = [
     {
         id: 1,
         name: '네스테크놀리지',
-        landline: '02-1231-1231',
-        manage: '담당',
-        date: '2023.07.10 14:11',
+        phone: '02-1231-1231',
+        memo: '담당',
+        createdAt: '2023.07.10 14:11',
     },
-    {
-        id: 2,
-        name: '네스테크놀리지',
-        landline: '02-1231-1231',
-        manage: '담당',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 3,
-        name: '네스테크놀리지',
-        landline: '02-1231-1231',
-        manage: '담당',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 4,
-        name: '네스테크놀리지',
-        landline: '02-1231-1231',
-        manage: '담당',
-        date: '2023.07.10 14:11',
-    },
-    
 ]
-const view_company = ref(origin_company)
+let view_company = ref(origin_company)
+
+const load_companyList = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const { data } = await axios.get('/company/list', axios_config)
+
+    origin_company = data
+    view_company.value = deepCopy(origin_company)
+}
+
+load_companyList()
+
+let input_company = ref(
+    {
+        name: '',
+        phone: '',
+        memo: '',
+        // createdAt: '2023.07.10 14:11',
+    },
+)
+
+const create_company = () => {
+    console.log(input_company.value);
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    axios.post('/company/create', input_company.value, axios_config)
+
+    state.popup.content = ['업체/개발사 등록이 완료되었습니다.']
+    state.popup.toggle = true
+
+    company_add.value = false
+
+    load_companyList()
+}
 
 let company_checked_list:any = ref([])
 const check_all_company = (e) => {
@@ -167,10 +192,15 @@ const check_all_company = (e) => {
         company_checked_list.value = []
     }
 }
+
 const delete_company = () => {
     company_checked_list.value.forEach((company_id) => {
     console.log(company_id);
-        // axios.post('/company/delete', {id: company_id})
+        const axios_config = {
+            headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+        }
+
+        axios.post('/company/delete', {id: company_id}, axios_config)
     })
 }
 </script>
