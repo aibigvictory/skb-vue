@@ -165,13 +165,13 @@ let input_company = ref(
     },
 )
 
-const create_company = () => {
+const create_company = async () => {
     console.log(input_company.value);
     const axios_config = {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    axios.post('/company/create', input_company.value, axios_config)
+    await axios.post('/company/create', input_company.value, axios_config)
 
     state.popup.content = ['업체/개발사 등록이 완료되었습니다.']
     state.popup.toggle = true
@@ -193,15 +193,14 @@ const check_all_company = (e) => {
     }
 }
 
-const delete_company = () => {
-    company_checked_list.value.forEach((company_id) => {
-    console.log(company_id);
-        const axios_config = {
-            headers: { Authorization: `Bearer ${JwtService.getToken()}` }
-        }
+const delete_company = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
 
-        axios.post('/company/delete', {id: company_id}, axios_config)
-    })
+    await axios.post('/company/delete', {idArr: company_checked_list.value}, axios_config)
+    
+    load_companyList()
 }
 </script>
 

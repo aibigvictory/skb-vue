@@ -1,11 +1,12 @@
 <template>
     <div class="wrap">
-        <div class="user-list" v-if="!user_add">
+        <div class="user-list" v-if="!user_add && !user_adjust">
             <div class="header">
                 <div class="title">사용자 리스트</div>
                 <div class="btn-wrap">
                     <div class="btn btn-danger" @click="change_popup_state('delete', true)">삭제</div>
-                    <div class="btn btn-primary" @click="user_add = true">사용자 등록</div>
+                    <div class="btn btn-primary" @click="user_add = true" v-if="member_checked_list.length != 1">사용자 등록</div>
+                    <div class="btn btn-primary" @click="user_adjust = true" v-if="member_checked_list.length == 1">사용자 수정</div>
                 </div>
             </div>
             <div class="section">
@@ -75,16 +76,16 @@
                             <input v-model="member_checked_list" :value="member.id" type="checkbox">
                             <!-- <div>{{member.type}}</div> -->
                             <!-- <div>{{member.system}}</div> -->
-                            <div>{{member.company}}</div>
-                            <div>{{member.manage}}</div>
+                            <div>{{view_company.find((company => company.id == member.companyId))?.name}}</div>
+                            <div>{{member.role}}</div>
                             <div>{{member.name}}</div>
                             <div>{{member.position}}</div>
-                            <div>{{member.depart}}</div>
+                            <div>{{member.department}}</div>
+                            <div>{{member.mobile}}</div>
                             <div>{{member.phone}}</div>
-                            <div>{{member.landline}}</div>
                             <div>{{member.email}}</div>
-                            <div>{{member.note}}</div>
-                            <div>{{member.date}}</div>
+                            <div>{{member.memo}}</div>
+                            <div>{{new Date(member.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
                         </li>
                         <!-- <li>
                             <input type="checkbox">
@@ -105,7 +106,7 @@
                 </div>
             </div>
         </div>
-        <div class="user-add" v-if="user_add">
+        <div class="user-add" v-if="user_add ">
             <div class="title">사용자 등록</div>
             <div class="section">
                 <!-- <div class="line">
@@ -121,49 +122,119 @@
                 <div class="line">
                     <div class="item">
                         <label for="">업체 개발사<span> *</span></label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <select v-model="input_add_user.companyId">
+                            <option value="null" disabled>업체/개발사를 선택해주세요</option>
+                            <option :value="company.id" v-for="company in view_company" :key="company">{{company.name}}</option>
+                        </select>
+                        <!-- <input v-model="input_add_user.companyId" type="number" placeholder="입력해주세요."> -->
                     </div>
                     <div class="item">
                         <label for="">담당</label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.role" type="text" placeholder="입력해주세요.">
                     </div>
                 </div>
                 <div class="line">
                     <div class="item">
                         <label for="">성명<span> *</span></label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.name" type="text" placeholder="입력해주세요.">
                     </div>
                     <div class="item">
                         <label for="">직위</label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.position" type="text" placeholder="입력해주세요.">
                     </div>
                 </div>
                 <div class="line">
                     <div class="item">
                         <label for="">부서</label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.department" type="text" placeholder="입력해주세요.">
                     </div>
                     <div class="item">
                         <label for="">휴대전화</label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.mobile" type="text" placeholder="입력해주세요.">
                     </div>
                 </div>
                 <div class="line">
                     <div class="item">
                         <label for="">유선전화</label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.phone" type="text" placeholder="입력해주세요.">
                     </div>
                     <div class="item">
                         <label for="">이메일<span> *</span></label>
-                        <input type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.email" type="text" placeholder="입력해주세요.">
                     </div>
                 </div>
                 <label for="">비고</label>
-                <textarea id="" placeholder="내용을 입력해주세요."></textarea>
+                <textarea v-model="input_add_user.memo" placeholder="내용을 입력해주세요."></textarea>
             </div>
             <div class="btn-wrap">
-                <div class="btn btn-primary" @click="user_add = false">등록</div>
+                <div class="btn btn-primary" @click="create_user">등록</div>
                 <div class="btn btn-secondary" @click="user_add = false">사용자리스트</div>
+            </div>
+        </div>
+
+        <div class="user-add" v-if="user_adjust">
+            <div class="title">사용자 수정</div>
+            <div class="section">
+                <!-- <div class="line">
+                    <div class="item">
+                        <label for="">구분</label>
+                        <input type="text" placeholder="입력해주세요.">
+                    </div>
+                    <div class="item">
+                        <label for="">시스템/서비스</label>
+                        <input type="text" placeholder="입력해주세요.">
+                    </div>
+                </div> -->
+                <div class="line">
+                    <div class="item">
+                        <label for="">업체 개발사<span> *</span></label>
+                        <select v-model="input_adjust_user.companyId">
+                            <option value="null">업체/개발사를 선택해주세요</option>
+                            <option :value="company.id" v-for="company in view_company" :key="company">{{company.name}}</option>
+                        </select>
+                        <!-- <input v-model="input_adjust_user.companyId" type="number" placeholder="입력해주세요."> -->
+                    </div>
+                    <div class="item">
+                        <label for="">담당</label>
+                        <input v-model="input_adjust_user.role" type="text" placeholder="입력해주세요.">
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">성명<span> *</span></label>
+                        <input v-model="input_adjust_user.name" type="text" placeholder="입력해주세요.">
+                    </div>
+                    <div class="item">
+                        <label for="">직위</label>
+                        <input v-model="input_adjust_user.position" type="text" placeholder="입력해주세요.">
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">부서</label>
+                        <input v-model="input_adjust_user.department" type="text" placeholder="입력해주세요.">
+                    </div>
+                    <div class="item">
+                        <label for="">휴대전화</label>
+                        <input v-model="input_adjust_user.mobile" type="text" placeholder="입력해주세요.">
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">유선전화</label>
+                        <input v-model="input_adjust_user.phone" type="text" placeholder="입력해주세요.">
+                    </div>
+                    <div class="item">
+                        <label for="">이메일<span> *</span></label>
+                        <input v-model="input_adjust_user.email" type="text" placeholder="입력해주세요.">
+                    </div>
+                </div>
+                <label for="">비고</label>
+                <textarea v-model="input_adjust_user.memo" placeholder="내용을 입력해주세요."></textarea>
+            </div>
+            <div class="btn-wrap">
+                <div class="btn btn-primary" @click="update_user">수정</div>
+                <div class="btn btn-secondary" @click="user_adjust = false">사용자리스트</div>
             </div>
         </div>
     </div>
@@ -172,15 +243,46 @@
 
 <script setup lang="ts">
 import Popup from '@/components/Popup.vue'
+import JwtService from '@/core/services/JwtService'
+import store from '@/store'
+import axios from 'axios'
 
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+
+const state = store.state
 
 const user_add = ref(false)
+const user_adjust = ref(false)
 const search_detail = ref(false)
 
 //---------------------------------
 
 let search_keyword = ref('')
+
+let input_add_user = ref({
+    companyId: null,
+    role: null,
+    name: null,
+    position: null,
+    department: null,
+    email: null,
+    mobile: null,
+    phone: null,
+    memo: null,
+    teamName: 'test',
+})
+
+let input_adjust_user = computed(() => {
+    if (member_checked_list.value.length != 1) return {}
+    if (member_checked_list.value.length == 1) {
+        let result: any = origin_member.find(member => member.id == member_checked_list.value[0])
+        delete result.accepted
+
+        return result
+    }
+})
+
+setInterval(() => console.log(input_adjust_user.value), 2000)
 
 watch(search_keyword, (keyword) => {
     view_member.value = search_member(search_keyword.value, origin_member)
@@ -204,70 +306,71 @@ const search_member = (keyword, arr) => {
     return arr.filter((member) => new RegExp(keyword).test(member.type) || new RegExp(keyword).test(member.system) || new RegExp(keyword).test(member.company))
 }
 
-const origin_member = [
-    {
-        id: 1,
-        type: 'MCR',
-        system: '멀티뷰어',
-        company: '삼성전자',
-        manage: '담당',
-        name: '홍길동',
-        position: '부장',
-        depart: '-',
-        email: 'test@test.com',
-        phone: '010-1231-1231',
-        landline: '02-1231-1231',
-        note: '비고',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 2,
-        type: 'MCR',
-        system: '멀티뷰어',
-        company: '삼성전자',
-        manage: '담당',
-        name: '홍길동',
-        position: '부장',
-        depart: '-',
-        email: 'test@test.com',
-        phone: '010-1231-1231',
-        landline: '02-1231-1231',
-        note: '비고',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 3,
-        type: 'MCR',
-        system: '멀티뷰어',
-        company: '삼성전자',
-        manage: '담당',
-        name: '홍길동',
-        position: '부장',
-        depart: '-',
-        email: 'test@test.com',
-        phone: '010-1231-1231',
-        landline: '02-1231-1231',
-        note: '비고',
-        date: '2023.07.10 14:11',
-    },
-    {
-        id: 4,
-        type: 'MCR',
-        system: '멀티뷰어',
-        company: '삼성전자',
-        manage: '담당',
-        name: '홍길동',
-        position: '부장',
-        depart: '-',
-        email: 'test@test.com',
-        phone: '010-1231-1231',
-        landline: '02-1231-1231',
-        note: '비고',
-        date: '2023.07.10 14:11',
-    },
+const load_companyList = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const { data } = await axios.get('/company/list', axios_config)
+
+    view_company.value = data
+}
+
+load_companyList()
+
+const load_memberList = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const { data } = await axios.post('/auth/getUserList', {}, axios_config)
+    const { counts, users } = data
+
+    origin_member = users
+    view_member.value = deepCopy(origin_member)
+
     
-]
+}
+
+load_memberList()
+
+const deepCopy = (target) => {
+  return JSON.parse(JSON.stringify(target))
+}
+
+let origin_member = []
 const view_member = ref(origin_member)
+const view_company = ref({})
+
+const create_user = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    await axios.post('/auth/createUser', input_add_user.value, axios_config)
+
+    state.popup.content = ['사용자 등록이 완료되었습니다.']
+    state.popup.toggle = true
+
+    user_add.value = false
+
+    load_memberList()
+}
+
+const update_user = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    await axios.post('/auth/updateUser', input_adjust_user.value, axios_config)
+
+    state.popup.content = ['사용자 수정이 완료되었습니다.']
+    state.popup.toggle = true
+
+    user_adjust.value = false
+
+    load_memberList()
+}
 
 let member_checked_list:any = ref([])
 const check_all_member = (e) => {
@@ -567,7 +670,7 @@ li{list-style: none;}
                             font-weight: 400;
                         }
                     }
-                    input{
+                    select, input{
                         display: block;
                         height: 40px;
                         padding: 0 12px;
