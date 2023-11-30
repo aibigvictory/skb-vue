@@ -13,7 +13,7 @@
                 </ul>
             </div>
             <div class="table-body">
-                <ul v-for="ul in data" :key="ul">
+                <ul v-for="ul in favorite_data" :key="ul">
                     <!-- <li v-for="li in ul" :key="li">{{li}}</li> -->
                     <li>
                         <span>
@@ -21,18 +21,18 @@
                             <path d="M3.61224 15.9427C3.2258 16.1413 2.78823 15.7942 2.86603 15.3508L3.69576 10.6213L0.173428 7.26462C-0.155753 6.95092 0.0146475 6.37737 0.455637 6.31472L5.35411 5.61885L7.53823 1.2923C7.73498 0.902565 8.26795 0.902565 8.4647 1.2923L10.6488 5.61885L15.5473 6.31472C15.9883 6.37737 16.1587 6.95092 15.8295 7.26462L12.3072 10.6213L13.1369 15.3508C13.2147 15.7942 12.7771 16.1413 12.3907 15.9427L8.00146 13.6868L3.61224 15.9427Z" fill="#FFC700"/>
                             </svg>
                         </span>
-                        {{ul.filename}}
+                        {{ul.fileName}}
                     </li>
-                    <li><span>{{ul.sheet}}</span></li>
-                    <li><span class="purson">{{ul.registor}}</span> <span class="depart" v-if="ul.registor_depart">{{ul.registor_depart}}</span></li>
+                    <li><span>{{ul.sheetName}}</span></li>
+                    <li><span class="purson">{{ul.file && ul.file.user ?ul.file.user.name: ''}}</span> <span class="depart" v-if="ul.file && ul.file.user && ul.file.user.department">{{ul.file.user.department}}</span></li>
                     <li><div>
-                        <div>{{ul.register_date.slice(0,10)}}</div>
-                        <div>{{ul.register_date.slice(10,20)}}</div>
+                        <div>{{ul.createdAt ?ul.createdAt.slice(0,10) :''}}</div>
+                        <div>{{ul.createdAt ?ul.createdAt.slice(10,20) :''}}</div>
                     </div></li>
-                    <li><span class="purson">{{ul.editor ?ul.editor :'-'}}</span> <span class="depart" v-if="ul.editor_depart">{{ul.editor_depart}}</span></li>
+                    <li><span class="purson">{{ul.user ?ul.user.name : ''}}</span> <span class="depart" v-if="ul.user && ul.user.department">{{ul.user.department}}</span></li>
                     <li><div>
-                        <div>{{ul.edit_date.slice(0,10)}}</div>
-                        <div>{{ul.edit_date.slice(10,20)}}</div>
+                        <div>{{ul.updatedAt ?ul.updatedAt.slice(0,10) :''}}</div>
+                        <div>{{ul.updatedAt ?ul.updatedAt.slice(10,20) :''}}</div>
                     </div></li>
                 </ul>
             </div>
@@ -41,10 +41,12 @@
 </template> 
 
 <script setup lang="ts">
+import JwtService from "@/core/services/JwtService";
+import axios from "axios";
 import { ref } from "vue";
 
-const data:any = ref([])
-data.value = [
+const favorite_data:any = ref([])
+favorite_data.value = [
     {
         filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
         sheet: '도봉강북_IP',
@@ -55,107 +57,19 @@ data.value = [
         editor_depart: 'SKB',
         edit_date: '2023.06.26 12:23:35'
     },
-    {
-        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
-        sheet: '수원',
-        registor: '안보현',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '유재석',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: 'SD ReENC_MUX',
-        registor: '장원영',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
-        sheet: '수원_QAM',
-        registor: '이효리',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '공유',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
-        sheet: '수원_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '보아',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
 ]
+
+const init = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const { data } = await axios.post('/file/history', {}, axios_config)
+
+    favorite_data.value = data
+}
+
+init()
 </script>
 
 <style lang="scss" scoped>
