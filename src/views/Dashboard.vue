@@ -45,7 +45,7 @@
           </ul>
         </div>
         <div class="d-flex align-items-center gap-2 gap-lg-3">
-          <button class="btn-upload btn btn-primary" @click="fileUpload">
+          <button class="dashboard-btn-upload btn-upload btn btn-primary" @click="fileUpload">
             업로드
           </button>
         </div>
@@ -112,9 +112,9 @@ li{list-style: none;}
   gap: 9.035px;
   flex-shrink: 0;
   border-radius: 6.777px;
-  background: var(--data-bs-theme-light-bs-red, #DC3545) !important;
+  background: var(--data-bs-theme-light-bs-red, #e9e9e9) !important;
 
-  color: #FFF;
+  color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
   text-align: center;
   font-family: Pretendard;
   font-size: 18.071px;
@@ -122,8 +122,9 @@ li{list-style: none;}
   font-weight: 700;
   line-height: 100%; /* 18.071px */
 
-  &:hover:not(.btn-active){
-    background: var(--data-bs-theme-light-bs-red, #a01c2a) !important;
+  &.active{
+    background: var(--data-bs-theme-light-bs-red, #DC3545) !important;
+    color: #fff;
   }
 }
 .container-fluid{

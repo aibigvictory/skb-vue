@@ -162,6 +162,20 @@ onMounted(() => {
                 
                 myDropzone.removeFile(file); // 파일 제거
             }
+            else{
+                document.querySelector('.dashboard-btn-upload')?.classList.add('active')
+            }
+        });
+
+        myDropzone.on("removedfile", function(file, data) {
+            console.log(file);
+            console.log(data);
+            
+            console.log(myDropzone.files.length);
+            if (!myDropzone.files.length) {
+                document.querySelector('.dashboard-btn-upload')?.classList.remove('active')
+            }
+            
         });
 
         // myDropzone.on("complete", function(file) {
