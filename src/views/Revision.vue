@@ -15,19 +15,19 @@
                 </ul>
             </div>
             <div class="table-body">
-                <ul v-for="ul in data" :key="ul">
+                <ul v-for="ul in revision_data" :key="ul">
                     <!-- <li v-for="li in ul" :key="li">{{li}}</li> -->
-                    <li>{{ul.filename}}</li>
-                    <li><span>{{ul.sheet}}</span></li>
-                    <li><span class="purson">{{ul.registor}}</span> <span class="depart" v-if="ul.registor_depart">{{ul.registor_depart}}</span></li>
+                    <li>{{ul.fileName}}</li>
+                    <li><span>{{ul.sheetName}}</span></li>
+                    <li><span class="purson">{{ul.file && ul.file.user ?ul.file.user.name: ''}}</span> <span class="depart" v-if="ul.file && ul.file.user && ul.file.user.department">{{ul.file.user.department}}</span></li>
                     <li><div>
-                        <div>{{ul.register_date.slice(0,10)}}</div>
-                        <div>{{ul.register_date.slice(10,20)}}</div>
+                        <div>{{ul.createdAt ?ul.createdAt.slice(0,10) :''}}</div>
+                        <div>{{ul.createdAt ?ul.createdAt.slice(10,20) :''}}</div>
                     </div></li>
-                    <li><span class="purson">{{ul.editor ?ul.editor :'-'}}</span> <span class="depart" v-if="ul.editor_depart">{{ul.editor_depart}}</span></li>
+                    <li><span class="purson">{{ul.user ?ul.user.name : ''}}</span> <span class="depart" v-if="ul.user && ul.user.department">{{ul.user.department}}</span></li>
                     <li><div>
-                        <div>{{ul.edit_date.slice(0,10)}}</div>
-                        <div>{{ul.edit_date.slice(10,20)}}</div>
+                        <div>{{ul.updatedAt ?ul.updatedAt.slice(0,10) :''}}</div>
+                        <div>{{ul.updatedAt ?ul.updatedAt.slice(10,20) :''}}</div>
                     </div></li>
                 </ul>
             </div>
@@ -36,123 +36,37 @@
 </template> 
 
 <script setup lang="ts">
+import JwtService from "@/core/services/JwtService";
+import axios from "axios";
 import { ref } from "vue";
 
 const more = ref(false)
 
-const data:any = ref([])
-data.value = [
+const revision_data:any = ref([])
+revision_data.value = [
     {
-        filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
+        fileName: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
         sheet: '도봉강북_IP',
         registor: '공유',
         registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
+        createAt: '2023.06.26 12:23:35',
         editor: '공유',
         editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
-        sheet: '수원',
-        registor: '안보현',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '유재석',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: 'SD ReENC_MUX',
-        registor: '장원영',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: '2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216',
-        sheet: '수원_QAM',
-        registor: '이효리',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '공유',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: '2023_SKB_CATV_SO채널라인업_230320_수원 주파수 재이동',
-        sheet: '수원_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '보아',
-        editor_depart: 'SKB',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
-        edit_date: '2023.06.26 12:23:35'
-    },
-    {
-        filename: 'CATV관리문서_MUX_SCR_230428',
-        sheet: '낙동,동남, 북부산_QAM',
-        registor: '화사',
-        registor_depart: 'SKB',
-        register_date: '2023.06.26 12:23:35',
-        editor: '',
-        editor_depart: '',
         edit_date: '2023.06.26 12:23:35'
     },
 ]
+
+const init = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const { data } = await axios.post('/file/history', {}, axios_config)
+
+    revision_data.value = data
+}
+
+init()
 </script>
 
 <style lang="scss" scoped>
