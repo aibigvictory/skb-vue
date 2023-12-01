@@ -714,8 +714,10 @@ console.log(filter_fileUse(deepCopy(category_list)));
           console.log(useless_manageFile_list.value);
           
           try{
-            check_useless_manageFile_list.value.forEach(async (file_id) => {
+            check_useless_manageFile_list.value.forEach(async (file_id, idx) => {
               await axios.post('/file/delete', {id: Number(file_id)})
+
+              if (idx == check_useless_manageFile_list.value.length - 1) state.upload++
               // .then(() => {
               //   alert('파일 삭제에 성공하였습니다.')
               // })
@@ -736,19 +738,15 @@ console.log(filter_fileUse(deepCopy(category_list)));
           console.log(check_useless_etcFile_list.value);
   
           try{
-            check_useless_etcFile_list.value.forEach(async (file_id) => {
+            check_useless_etcFile_list.value.forEach(async (file_id, idx) => {
               await axios.post('/file/delete', {id: Number(file_id)})
-              // .then(() => {
-              //   alert('파일 삭제에 성공하였습니다.')
-              //   store.state.upload++
-              // })
-              // .catch(() => alert('파일 삭제에 실패하였습니다.'))
+
+              if (idx == check_useless_etcFile_list.value.length - 1) state.upload++
             })
 
             state.popup.content = ['파일 삭제에 성공하였습니다.']
             state.popup.toggle = true
-
-            store.state.upload++
+            
           }
           catch(error) {
             state.popup.content = ['파일 삭제에 실패하였습니다.']

@@ -95,6 +95,8 @@ let fileUpload = () => {
 }
 
 watch(() => store.state.upload, () => {
+  console.log('reload');
+  
   call_fileList()
 })
 </script>
