@@ -27,7 +27,7 @@
             </ul>
         </div>
         <div class="table-body">
-        <ul>
+        <!-- <ul>
           <li>HD방송</li>
           <li>2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216 > 도봉강북_IP</li>
           <li>
@@ -48,20 +48,35 @@
               </svg>
             </span>
           </li>
-        </ul>
-        <ul>
-          <li>HD방송</li>
-          <li>2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216 > 도봉강북_IP</li>
+        </ul> -->
+        <!-- <ul v-for="ul in revision_data" :key="ul">
+            <li>{{ul.fileName}}</li>
+            <li><span>{{ul.sheetName}}</span></li>
+            <li><span class="purson">{{ul.file && ul.file.user ?ul.file.user.name: ''}}</span> <span class="depart" v-if="ul.file && ul.file.user && ul.file.user.department">{{ul.file.user.department}}</span></li>
+            <li><div>
+                <div>{{ul.createdAt ?ul.createdAt.slice(0,10) :''}}</div>
+                <div>{{ul.createdAt ?ul.createdAt.slice(10,20) :''}}</div>
+            </div></li>
+            <li><span class="purson">{{ul.user ?ul.user.name : ''}}</span> <span class="depart" v-if="ul.user && ul.user.department">{{ul.user.department}}</span></li>
+            <li><div>
+                <div>{{ul.updatedAt ?ul.updatedAt.slice(0,10) :''}}</div>
+                <div>{{ul.updatedAt ?ul.updatedAt.slice(10,20) :''}}</div>
+            </div></li>
+        </ul> -->
+        <ul v-for="ul in revision_data" :key="ul">
+          <li>{{group_name(group_data, ul.file.folderCd)}}</li>
+          <li>{{ul.fileName}} > {{ul.sheetName}}</li>
           <li>
-            <div>홍길동</div>
-            <div><span class="company">SKB</span></div>
+            <div>{{ul.file && ul.file.user ?ul.file.user.name: ''}}</div>
+            <!-- <div><span class="company">{{company_data}}</span></div> -->
+            <div><span class="company">{{company_name(company_data, ul.user.companyId)}}</span></div>
           </li>
-          <li>2023.06.26 12:23:35</li>
+          <li>{{ul.createdAt ?ul.createdAt.slice(0,10) :''}} {{ul.createdAt ?ul.createdAt.slice(11,19) :''}}</li>
           <li>
-            <div>홍길동</div>
-            <div><span class="company">SKB</span></div>
+            <div>{{ul.user ?ul.user.name : ''}}</div>
+            <div><span class="company">{{ul.user && ul.user.department ?ul.user.department :'SKB'}}</span></div>
           </li>
-          <li>2023.06.26 12:23:35</li>
+          <li>{{ul.updatedAt ?ul.updatedAt.slice(0,10) :''}} {{ul.updatedAt ?ul.updatedAt.slice(11,19) :''}}</li>
           <li>
             <span class="adjust">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
@@ -79,6 +94,8 @@
 
 <script setup lang="ts">
 import DashboardRevisionPopup from "@/components/dashboard/DashboardRevisionPopup.vue"
+import JwtService from "@/core/services/JwtService"
+import axios from "axios"
 import { ref } from "vue"
 
 const popup_state = ref(false)
@@ -86,6 +103,52 @@ const popup_state = ref(false)
 const change_popup_state = (popup_type, state) => {
     popup_state.value = state
 }
+
+const revision_data = ref([])
+const company_data =ref([])
+const group_data =ref([])
+
+const company_name = (company_list, companyId) => {
+  if (!companyId || !company_list.length) return 'SKB'
+  else {
+    const result = company_list.find(company => company.id == companyId)
+    return result.name
+  }
+}
+
+const group_name = (group_list, folderCd) => {
+  const result = group_list.find(group => group.code == folderCd)
+  return result.name
+}
+
+const init = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+    try {
+      const { data } = await axios.get('/company/list', axios_config)
+  
+      company_data.value = data
+    }
+    catch(error) {}
+
+    try {
+      const { data } = await axios.post('/folder/list', {}, axios_config)
+  
+      group_data.value = data
+    }
+    catch(error) {}
+
+    try {
+      const { data } = await axios.post('/file/history', {}, axios_config)
+  
+      revision_data.value = data.slice(0,2)
+    }
+    catch(error) {}
+
+}
+
+init()
 </script>
 
 <style lang="scss" scoped>

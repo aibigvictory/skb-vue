@@ -21,18 +21,18 @@
                             <path d="M3.61224 15.9427C3.2258 16.1413 2.78823 15.7942 2.86603 15.3508L3.69576 10.6213L0.173428 7.26462C-0.155753 6.95092 0.0146475 6.37737 0.455637 6.31472L5.35411 5.61885L7.53823 1.2923C7.73498 0.902565 8.26795 0.902565 8.4647 1.2923L10.6488 5.61885L15.5473 6.31472C15.9883 6.37737 16.1587 6.95092 15.8295 7.26462L12.3072 10.6213L13.1369 15.3508C13.2147 15.7942 12.7771 16.1413 12.3907 15.9427L8.00146 13.6868L3.61224 15.9427Z" fill="#FFC700"/>
                             </svg>
                         </span>
-                        {{ul.fileName}}
+                        {{ul.file.name}}
                     </li>
-                    <li><span>{{ul.sheetName}}</span></li>
+                    <li><span>{{ul.file.history[0].sheetName}}</span></li>
                     <li><span class="purson">{{ul.file && ul.file.user ?ul.file.user.name: ''}}</span> <span class="depart" v-if="ul.file && ul.file.user && ul.file.user.department">{{ul.file.user.department}}</span></li>
                     <li><div>
-                        <div>{{ul.createdAt ?ul.createdAt.slice(0,10) :''}}</div>
-                        <div>{{ul.createdAt ?ul.createdAt.slice(10,20) :''}}</div>
+                        <div>{{ul.file && ul.file.createdAt ?ul.file.createdAt.slice(0,10) :''}}</div>
+                        <div>{{ul.file && ul.file.createdAt ?ul.file.createdAt.slice(11,19) :''}}</div>
                     </div></li>
-                    <li><span class="purson">{{ul.user ?ul.user.name : ''}}</span> <span class="depart" v-if="ul.user && ul.user.department">{{ul.user.department}}</span></li>
+                    <li><span class="purson">{{ul.file.history[0].user ?ul.file.history[0].user.name : ''}}</span> <span class="depart" v-if="ul.file.history[0].user && ul.file.history[0].user.department">{{ul.file.history[0].user.department}}</span></li>
                     <li><div>
-                        <div>{{ul.updatedAt ?ul.updatedAt.slice(0,10) :''}}</div>
-                        <div>{{ul.updatedAt ?ul.updatedAt.slice(10,20) :''}}</div>
+                        <div>{{ul.file.history[0].updatedAt ?ul.file.history[0].updatedAt.slice(0,10) :''}}</div>
+                        <div>{{ul.file.history[0].updatedAt ?ul.file.history[0].updatedAt.slice(11,19) :''}}</div>
                     </div></li>
                 </ul>
             </div>
@@ -64,7 +64,7 @@ const init = async () => {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    const { data } = await axios.post('/file/history', {}, axios_config)
+    const { data } = await axios.get('/bookmark/list', axios_config)
 
     favorite_data.value = data
 }
