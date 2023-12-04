@@ -16,13 +16,13 @@
             <div class="content">
                 <div class="file-name">[HD방송] 2022_다이렉트 HD방송_IPto8VSB_채널라인업_20230216 </div>
                 <ul class="revision-list">
-                    <li v-for="tmp in 100" :key="tmp">
+                    <li v-for="tmp in props.history" :key="tmp">
                         <div class="circle"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
                         <circle cx="5.5" cy="5" r="5" fill="#F1416C"/>
                         </svg></div>
-                        <div class="name">김건모</div>
-                        <div class="company">SKB</div>
-                        <div class="date">2023년 8월 22일 07:22</div>
+                        <div class="name">{{tmp.user.name}}</div>
+                        <div class="company">{{tmp.user.companyId ?tmp.user.companyId :'SKB'}}</div>
+                        <div class="date">{{new Date(tmp.updatedAt).toISOString().slice(0,19).replace(/T/, ' ')}}</div>
                     </li>
                 </ul>
             </div>
@@ -31,9 +31,13 @@
 </template>
 
 <script setup lang="ts">
+const props = defineProps ({
+    history: Array
+})
 const emits = defineEmits([
     'exit',
 ])
+console.log(props.history);
 
 </script>
 
