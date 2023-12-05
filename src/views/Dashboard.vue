@@ -80,7 +80,7 @@ const recent_upload_files = ref([])
 const call_fileList = async () => {
   const { data } = await axios.post('/file/list')
 
-  console.log(data);
+  // console.log(data);
 
   recent_upload_files.value = data.slice(0,3)
 }

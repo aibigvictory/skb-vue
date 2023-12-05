@@ -31,9 +31,9 @@
     <div class="card-body">
       <div class="content">
         <div class="title" @click="file_click(id, file, user, team, date, cate)">{{file}}</div>
-        <div class="tag"><span class="badge bg-primary" v-if="true">Today</span></div>
-        <!-- <div class="tag"><span class="badge bg-primary" v-if="date.slice(0,10) == new Date().toISOString().slice(0,10)">Today</span></div>
-        <div class="tag"><span class="badge bg-primary opacity" v-if="date.slice(0,10) != new Date().toISOString().slice(0,10)">Today</span></div> -->
+        <!-- <div class="tag"><span class="badge bg-primary" v-if="true">Today</span></div> -->
+        <div class="tag"><span class="badge bg-primary" v-if="date.slice(0,10) == new Date().toISOString().slice(0,10)">Today</span></div>
+        <div class="tag"><span class="badge bg-primary opacity" v-if="date.slice(0,10) != new Date().toISOString().slice(0,10)">Today</span></div>
       </div>
     </div>
     <!--end::Card body-->

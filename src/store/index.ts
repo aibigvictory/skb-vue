@@ -6,6 +6,7 @@ import BodyModule from "@/store/modules/BodyModule";
 import BreadcrumbsModule from "@/store/modules/BreadcrumbsModule";
 import ConfigModule from "@/store/modules/ConfigModule";
 import ThemeModeModule from "@/store/modules/ThemeModeModule";
+import DataModule from "@/store/modules/DataModule";
 
 config.rawError = true;
 
@@ -16,6 +17,7 @@ const store = createStore({
     BreadcrumbsModule,
     ConfigModule,
     ThemeModeModule,
+    DataModule,
   },
 
   state: {

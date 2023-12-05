@@ -35,6 +35,16 @@ const init = async () => {
 
 init()
 
+store.dispatch(Actions.GET_DATA_TO_SERVER, {
+  name: 'company',
+  url: '/company/list',
+})
+
+store.dispatch(Actions.POST_DATA_TO_SERVER, {
+  name: 'folder',
+  url: '/folder/list',
+})
+
 onMounted(() => {
   config.value.sidebar.default.menu.iconType = "svg"
 

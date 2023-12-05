@@ -13,6 +13,8 @@ enum Actions {
   FORGOT_PASSWORD = "forgotPassword",
   SET_BREADCRUMB_ACTION = "setBreadcrumbAction",
   SET_THEME_MODE_ACTION = "setThemeModeAction",
+  GET_DATA_TO_SERVER = 'getDataToSever',
+  POST_DATA_TO_SERVER = 'postDataToSever',
 }
 
 enum Mutations {
@@ -29,6 +31,7 @@ enum Mutations {
   OVERRIDE_LAYOUT_CONFIG = "overrideLayoutConfig",
   OVERRIDE_PAGE_LAYOUT_CONFIG = "overridePageLayoutConfig",
   SET_THEME_MODE_MUTATION = "setThemeModeMutation",
+  SET_DATA = "setData"
 }
 
 export { Actions, Mutations };

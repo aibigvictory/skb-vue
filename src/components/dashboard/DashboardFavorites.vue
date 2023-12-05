@@ -38,7 +38,7 @@
           <li>
             <div>{{ul.file && ul.file.user ?ul.file.user.name: ''}}</div>
             <!-- <div><span class="company">{{company_data}}</span></div> -->
-            <div><span class="company">{{company_name(company_data, ul.file.history[0].user.companyId)}}</span></div>
+            <div><span class="company">{{company_name(company_data, ul.file.user.companyId)}}</span></div>
           </li>
           <li>{{ul.file.createdAt ?ul.file.createdAt.slice(0,10) :''}} {{ul.file.createdAt ?ul.file.createdAt.slice(11,19) :''}}</li>
           <li>
@@ -52,7 +52,7 @@
               </g>
               </svg>
             </div>
-            <div><span class="company">{{ul.user && ul.user.department ?ul.user.department :'SKB'}}</span></div>
+            <div><span class="company">{{company_name(company_data, ul.file.history[0].user.companyId)}}</span></div>
           </li>
           <li>{{ul.file.history[0].updatedAt ?ul.file.history[0].updatedAt.slice(0,10) :''}} {{ul.file.history[0].updatedAt ?ul.file.history[0].updatedAt.slice(11,19) :''}}</li>
           <li>
@@ -131,6 +131,7 @@ import JwtService from "@/core/services/JwtService"
 import router from "@/router"
 import axios from "axios"
 import { ref } from "vue"
+import store from "@/store";
 
 const popup_state = ref(false)
 
@@ -141,7 +142,7 @@ const change_popup_state = (popup_type, state, history_data) => {
 }
 
 const favorite_data = ref([])
-const company_data =ref([])
+const company_data = store.getters.getData('company')
 const group_data =ref([])
 const history = ref([])
 

@@ -21,7 +21,7 @@
                         <circle cx="5.5" cy="5" r="5" fill="#F1416C"/>
                         </svg></div>
                         <div class="name">{{tmp.user.name}}</div>
-                        <div class="company">{{tmp.user.companyId ?tmp.user.companyId :'SKB'}}</div>
+                        <div class="company">{{company.find(con => con.id == tmp.user.companyId).name}}</div>
                         <div class="date">{{new Date(tmp.updatedAt).toISOString().slice(0,19).replace(/T/, ' ')}}</div>
                         <!-- <div class="date">2023년 8월 22일 07:22</div> -->
                     </li>
@@ -32,6 +32,10 @@
 </template>
 
 <script setup lang="ts">
+import store from "@/store";
+
+const company = store.getters.getData('company')
+
 const props = defineProps ({
     history: Array
 })
