@@ -76,7 +76,7 @@
                             <input v-model="member_checked_list" :value="member.id" type="checkbox">
                             <!-- <div>{{member.type}}</div> -->
                             <!-- <div>{{member.system}}</div> -->
-                            <div>{{view_company.find((company => company.id == member.companyId))?.name}}</div>
+                            <div>{{store.getters.getData('company').find((company => company.id == member.companyId))?.name}}</div>
                             <div>{{member.role}}</div>
                             <div>{{member.name}}</div>
                             <div>{{member.position}}</div>
@@ -124,7 +124,7 @@
                         <label for="">업체 개발사<span> *</span></label>
                         <select v-model="input_add_user.companyId">
                             <option value="null" disabled>업체/개발사를 선택해주세요</option>
-                            <option :value="company.id" v-for="company in view_company" :key="company">{{company.name}}</option>
+                            <option :value="company.id" v-for="company in store.getters.getData('company')" :key="company">{{company.name}}</option>
                         </select>
                         <!-- <input v-model="input_add_user.companyId" type="number" placeholder="입력해주세요."> -->
                     </div>
@@ -190,7 +190,7 @@
                         <label for="">업체 개발사<span> *</span></label>
                         <select v-model="input_adjust_user.companyId">
                             <option value="null">업체/개발사를 선택해주세요</option>
-                            <option :value="company.id" v-for="company in view_company" :key="company">{{company.name}}</option>
+                            <option :value="company.id" v-for="company in store.getters.getData('company')" :key="company">{{company.name}}</option>
                         </select>
                         <!-- <input v-model="input_adjust_user.companyId" type="number" placeholder="입력해주세요."> -->
                     </div>
@@ -306,18 +306,6 @@ const search_member = (keyword, arr) => {
     return arr.filter((member) => new RegExp(keyword).test(member.type) || new RegExp(keyword).test(member.system) || new RegExp(keyword).test(member.company))
 }
 
-const load_companyList = async () => {
-    const axios_config = {
-        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
-    }
-
-    const { data } = await axios.get('/company/list', axios_config)
-
-    view_company.value = data
-}
-
-load_companyList()
-
 const load_memberList = async () => {
     const axios_config = {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
@@ -340,7 +328,6 @@ const deepCopy = (target) => {
 
 let origin_member = []
 const view_member = ref(origin_member)
-const view_company = ref({})
 
 const create_user = async () => {
     const axios_config = {

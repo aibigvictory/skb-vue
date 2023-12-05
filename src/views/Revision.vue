@@ -7,7 +7,7 @@
             <div class="table-header">
                 <ul>
                     <li>파일명</li>
-                    <li>시트</li>
+                    <!-- <li>시트</li> -->
                     <li>최초등록</li>
                     <li>등록일시</li>
                     <li>수정자</li>
@@ -18,7 +18,7 @@
                 <ul v-for="ul in revision_data" :key="ul">
                     <!-- <li v-for="li in ul" :key="li">{{li}}</li> -->
                     <li>{{ul.fileName}}</li>
-                    <li><span>{{ul.sheetName}}</span></li>
+                    <!-- <li><span>{{ul.sheetName}}</span></li> -->
                     <li><span class="purson">{{ul.file && ul.file.user ?ul.file.user.name: ''}}</span> <span class="depart" v-if="ul.file && ul.file.user && ul.file.user.department">{{ul.file.user.department}}</span></li>
                     <li><div>
                         <div>{{ul.createdAt ?ul.createdAt.slice(0,10) :''}}</div>

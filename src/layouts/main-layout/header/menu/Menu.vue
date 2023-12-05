@@ -40,7 +40,7 @@
           </span> -->
           <select class="select-search" v-model="state.search.folderCd">
             <option value="">관리파일</option>
-            <option v-for="folder in state.folderList.manage" :key="folder" :value="folder.code">{{folder.name}}</option>
+            <option v-for="folder in store.getters.getData('folder_manage')" :key="folder" :value="folder.code">{{folder.name}}</option>
           </select>
           <span class="icon-search" @click="search_function">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">

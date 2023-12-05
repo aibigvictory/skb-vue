@@ -5,14 +5,14 @@
             <div class="table-header">
                 <ul>
                     <li>파일명</li>
-                    <li>시트</li>
+                    <!-- <li>시트</li> -->
                     <li>최초등록</li>
                     <li>등록일시</li>
                     <li>수정자</li>
                     <li>수정일시</li>
                 </ul>
             </div>
-            <div class="table-body">
+            <div class="table-body" v-if="favorite_data.length">
                 <ul v-for="ul in favorite_data" :key="ul">
                     <!-- <li v-for="li in ul" :key="li">{{li}}</li> -->
                     <li>
@@ -23,7 +23,7 @@
                         </span>
                         {{ul?.file?.name}}
                     </li>
-                    <li><span>{{ul.file ?ul.file.history[0].sheetName :''}}</span></li>
+                    <!-- <li><span>{{ul.file ?ul.file.history[0].sheetName :''}}</span></li> -->
                     <li><span class="purson">{{ul.file && ul.file.user ?ul.file.user.name: ''}}</span> <span class="depart" v-if="ul.file && ul.file.user && ul.file.user.department">{{ul.file.user.department}}</span></li>
                     <li><div>
                         <div>{{ul.file && ul.file.createdAt ?ul.file.createdAt.slice(0,10) :''}}</div>
@@ -35,6 +35,9 @@
                         <div>{{ul.file && ul.file.history[0].updatedAt ?ul.file.history[0].updatedAt.slice(11,19) :''}}</div>
                     </div></li>
                 </ul>
+            </div>
+            <div class="table-body d-flex justify-content-center" v-if="!favorite_data.length">
+                <ul class="justify-content-center">즐겨찾기가 없습니다.</ul>
             </div>
         </div>
     </div>

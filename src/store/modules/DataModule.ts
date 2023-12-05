@@ -5,7 +5,9 @@ import ApiService from "@/core/services/ApiService";
 export interface DataInfo {
   data: {
     company: Array<any>;
-    folder: Array<any>;
+    folder_manage: Array<any>;
+    folder_etc: Array<any>;
+    folder_all: Array<any>;
   };
 }
 
@@ -13,7 +15,9 @@ export interface DataInfo {
 export default class DataModule extends VuexModule implements DataInfo {
   data = {
     company: [],
-    folder: [],
+    folder_manage: [],
+    folder_etc: [],
+    folder_all: [],
   };
 
   /**

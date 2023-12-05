@@ -576,6 +576,23 @@ router.beforeEach(() => {
   setTimeout(() => {
     window.scrollTo(0, 0);
   }, 100);
+
+  // call new data
+  store.dispatch(Actions.GET_DATA_TO_SERVER, {
+    name: 'company',
+    url: '/company/list',
+  })
+  
+  store.dispatch(Actions.POST_DATA_TO_SERVER, {
+    name: 'folder_all',
+    url: '/folder/list',
+  })
+
+  store.dispatch(Actions.POST_DATA_TO_SERVER, {
+    name: 'folder_manage',
+    url: '/folder/list',
+    pay: {type: 'manage'}
+  })
 });
 
 export default router;
