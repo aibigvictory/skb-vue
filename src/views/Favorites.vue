@@ -16,7 +16,7 @@
                 <ul v-for="ul in favorite_data" :key="ul">
                     <!-- <li v-for="li in ul" :key="li">{{li}}</li> -->
                     <li>
-                        <span>
+                        <span class="star" :class="{disactive: ul.disactive}" @click="toggle_favorite(ul)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
                             <path d="M3.61224 15.9427C3.2258 16.1413 2.78823 15.7942 2.86603 15.3508L3.69576 10.6213L0.173428 7.26462C-0.155753 6.95092 0.0146475 6.37737 0.455637 6.31472L5.35411 5.61885L7.53823 1.2923C7.73498 0.902565 8.26795 0.902565 8.4647 1.2923L10.6488 5.61885L15.5473 6.31472C15.9883 6.37737 16.1587 6.95092 15.8295 7.26462L12.3072 10.6213L13.1369 15.3508C13.2147 15.7942 12.7771 16.1413 12.3907 15.9427L8.00146 13.6868L3.61224 15.9427Z" fill="#FFC700"/>
                             </svg>
@@ -44,6 +44,9 @@
 import JwtService from "@/core/services/JwtService";
 import axios from "axios";
 import { ref } from "vue";
+import { Mutations, Actions } from "@/store/enums/StoreEnums";
+import store from "@/store";
+
 
 const favorite_data:any = ref([])
 favorite_data.value = [
@@ -70,6 +73,23 @@ const init = async () => {
 }
 
 init()
+
+const toggle_favorite = async (ul) => {
+    if (!ul.disactive) {
+        await store.dispatch(Actions.POST_DATA_TO_SERVER, {
+            url: '/bookmark/delete',
+            pay: {fileId: ul.fileId}
+        })
+        return ul.disactive = true
+    }
+    if (ul.disactive) {
+        await store.dispatch(Actions.POST_DATA_TO_SERVER, {
+            url: '/bookmark/create',
+            pay: {fileId: ul.fileId}
+        })
+        return ul.disactive = false
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -161,6 +181,17 @@ p{margin: 0;padding: 0;}
                     line-height: 100%; /* 14px */
 
                     word-wrap: keep-all;
+
+                    span.star{
+                        cursor: pointer;
+                        &.disactive{
+                            svg{
+                                path{
+                                    fill: #EFF2F5
+                                }
+                            }
+                        }
+                    }
 
                     span.purson{
                         // height: 38px;

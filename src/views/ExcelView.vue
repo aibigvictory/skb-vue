@@ -46,6 +46,8 @@
 
 <script setup lang="ts">
 import LuckySheet from '@/components/lucky-sheet/LuckySheet.vue'
+import store from '@/store'
+import { Actions } from '@/store/enums/StoreEnums'
 import { ref } from 'vue'
 
 setInterval(() => {
@@ -74,6 +76,25 @@ const save_excel = () => {
 const download_excel = () => {
     child.value.downloadExcel();
 }
+
+// const favorite = ref(true)
+
+// const toggle_favorite = async (ul) => {
+//     if (!ul.disactive) {
+//         await store.dispatch(Actions.POST_DATA_TO_SERVER, {
+//             url: '/bookmark/delete',
+//             pay: {fileId: ul.fileId}
+//         })
+//         return ul.disactive = true
+//     }
+//     if (ul.disactive) {
+//         await store.dispatch(Actions.POST_DATA_TO_SERVER, {
+//             url: '/bookmark/create',
+//             pay: {fileId: ul.fileId}
+//         })
+//         return ul.disactive = false
+//     }
+// }
 
 
 </script>
@@ -105,6 +126,9 @@ const download_excel = () => {
                     font-size: 13px;
                     font-weight: 500;
                     color: var(--default-white, #FFF);
+                }
+                svg{
+
                 }
             }
             .info{
