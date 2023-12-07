@@ -52,6 +52,18 @@ import { onMounted, ref, watch, defineExpose } from 'vue';
 import Grid from 'tui-grid';
 import 'tui-grid/dist/tui-grid.css';
 import store from '@/store';
+interface Merge {
+  // The interface of xlsx library.
+  // s: start, e: end, r: row, c: column
+  s: {
+    r: number;
+    c: number;
+  };
+  e: {
+    r: number;
+    c: number;
+  };
+}
 
 const state = store.state
 
@@ -624,48 +636,99 @@ function getMergeRelationship(complexColumnHeaderData: string[][], rowOffset: nu
   return merges;
 }
 
+const isEmptyArray = (arr: any[]) => {
+  return arr.every(element => element === '');
+};
+
+const extractNumber = (str) => {
+  let result = str.match(/\d+/g);
+  return result ? parseInt(result.join('')) : null;
+};
+
+const extractColValue = (name: string): number => {
+  const c = name.split('C')[1];
+  return parseInt(c, 10);
+};
+
+const extractRowValue = (name: string) => {
+  let match = name.match(/R(\d+)C/);
+  return match ? parseInt(match[1]) : null;
+}
+
+function groupByRow(arr) {
+  let grouped = arr.reduce((acc, obj) => {
+    let key = extractRowValue(obj.name) ?? 0;
+    
+    acc[key] = acc[key] || [];
+    acc[key].push(obj);
+    return acc;
+  }, {});
+
+  return Object.values(grouped);
+}
+
 const exportExcel = () => {
   console.log(file_list);
-  // const fileName = `통합검색결과_${Intl.DateTimeFormat('ko-KR').format(new Date())}`;
-  // const workbook = XLSX.utils.book_new();
-  // workbook.SheetNames.push('Sheet 1');
-  const dataArr: string[][] = [];
+  const fileName = `통합검색결과_${Intl.DateTimeFormat('ko-KR').format(new Date())}`;
+  const workbook = XLSX.utils.book_new();
+  const sheet = XLSX.utils.aoa_to_sheet([[]]);
+  let dataArr: string[][] = [];
 
-  // 1. 데이터를 한 번에 모음.
+  const onAfterExport = (headers: any[][], data: any[][], merges: Merge[] | null, fileId: number | null) => {
+    const fileInfo = file_list.find((file) => file.id === fileId);
+    // 파일 정보 추가
+    dataArr.push([fileInfo.name]);
+    dataArr.push([`마지막 수정일자: ${fileInfo.history[0].createdAt} | 유저: ${fileInfo.history[0].user.name} (${fileInfo.history[0].user.teamName})`])
+    // 병합 데이터가 있으면
+    if (merges) {
+      // 지금까지 추가한 row 수 만큼 더함
+      merges.forEach((merge) => {
+        merge.s.r += dataArr.length;
+        merge.e.r += dataArr.length;
+      });
+      // 병합 데이터 추가
+      if (sheet['!merges']) {
+        sheet['!merges'] = [...sheet['!merges'], merges];
+      } else {
+        sheet['!merges'] = merges;
+      }
+      // 헤더 행 추가
+      headers?.forEach((row) => {
+        dataArr.push(row);
+      });
+    }
+    // 각 행 추가
+    data.forEach((row) => {
+      if (!isEmptyArray(row)) {
+        const _row = row.map((x) => x?.value ?? x);
+        dataArr.push(_row);
+      }
+    });
+    // 마지막 행 한 줄 띄우기 위해 추가
+    dataArr.push(['']);
+  };
   
 
   for (let key in toastArr) {
     const toast = toastArr[key]
 
-    toast.on('beforeExport', ev => {
-      ev.stop();
+    toast.on('afterExport', ev => {
+      let { data, complexHeaderData, merges, instance } = ev;
+      const fileId = extractNumber(instance.el.id);
 
-      let { exportFn, data } = ev;
-
-      console.log('beforeExport', data);
+      onAfterExport(complexHeaderData, data, merges, fileId);
     });
 
-    console.log(toast);
-    console.log(toast.dataManager.getOriginData());
     toast.export('xlsx', {
       onlyFiltered: false,
     });
 
-    const {
-      data: { rawData },
-      column,
-    } = toast.store;
-
-    // const a = [];
-    // toast.store.column.allColumns.forEach((col) => a.push(col.header))
-    // toast.store.column.allColumns.forEach((col) => a.push(col.name))
-    // let complexHeaderData: string[][] | null = null;
-    // if (column.complexColumnHeaders.length > 0) {
-    //   complexHeaderData = getHeaderDataFromComplexColumn(column, columnNames);
-    // } else {
-    //   targetData.unshift(columnHeaders);
-    // }
+    toast.off('afterExport');
   }
+
+  XLSX.utils.book_append_sheet(workbook, sheet);
+  XLSX.utils.sheet_add_aoa(sheet, dataArr);
+  XLSX.writeFile(workbook, `${fileName}.xlsx`);
 }
 defineExpose({
   exportExcel
