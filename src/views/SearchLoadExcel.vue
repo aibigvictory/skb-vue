@@ -688,7 +688,7 @@ const exportExcel = () => {
       });
       // 병합 데이터 추가
       if (sheet['!merges']) {
-        sheet['!merges'] = [...sheet['!merges'], merges];
+        sheet['!merges'] = sheet['!merges'].concat(merges);
       } else {
         sheet['!merges'] = merges;
       }
