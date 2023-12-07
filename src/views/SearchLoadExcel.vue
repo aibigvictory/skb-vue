@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import JwtService from '@/core/services/JwtService';
 import axios from 'axios';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, defineExpose } from 'vue';
 import Grid from 'tui-grid';
 import 'tui-grid/dist/tui-grid.css';
 import store from '@/store';
@@ -570,6 +570,106 @@ onMounted(async() => {
 
   create_toasrUiGrid(file_list)
 })
+
+function getMergeRelationship(complexColumnHeaderData: string[][], rowOffset: number) {
+  interface Merge {
+    // The interface of xlsx library.
+    // s: start, e: end, r: row, c: column
+    s: {
+      r: number;
+      c: number;
+    };
+    e: {
+      r: number;
+      c: number;
+    };
+  };
+  const merges: Merge[] = [];
+  const numOfRow = complexColumnHeaderData.length;
+  const numOfColumn = complexColumnHeaderData[0].length;
+
+  complexColumnHeaderData.forEach((row, rowIndex) => {
+    row.forEach((currentName, colIndex) => {
+      if (currentName) {
+        const merge: Merge = { s: { r: rowIndex, c: colIndex }, e: { r: rowIndex, c: colIndex } };
+        let mergeRowNum, mergeColNum;
+
+        for (mergeRowNum = rowIndex + 1; mergeRowNum < numOfRow; mergeRowNum += 1) {
+          if (complexColumnHeaderData[mergeRowNum][colIndex] === currentName) {
+            complexColumnHeaderData[mergeRowNum][colIndex] = '';
+            merge.e.r += 1;
+          } else {
+            break;
+          }
+        }
+
+        for (mergeColNum = colIndex + 1; mergeColNum < numOfColumn; mergeColNum += 1) {
+          if (complexColumnHeaderData[mergeRowNum - 1][mergeColNum] === currentName) {
+            complexColumnHeaderData[mergeRowNum - 1][mergeColNum] = '';
+            merge.e.c += 1;
+          } else {
+            break;
+          }
+        }
+
+        complexColumnHeaderData[rowIndex][colIndex] = '';
+
+        if (merge.s.r !== merge.e.r || merge.s.c !== merge.e.c) {
+          merges.push(merge);
+        }
+      }
+    });
+  });
+
+  return merges;
+}
+
+const exportExcel = () => {
+  console.log(file_list);
+  // const fileName = `통합검색결과_${Intl.DateTimeFormat('ko-KR').format(new Date())}`;
+  // const workbook = XLSX.utils.book_new();
+  // workbook.SheetNames.push('Sheet 1');
+  const dataArr: string[][] = [];
+
+  // 1. 데이터를 한 번에 모음.
+  
+
+  for (let key in toastArr) {
+    const toast = toastArr[key]
+
+    toast.on('beforeExport', ev => {
+      ev.stop();
+
+      let { exportFn, data } = ev;
+
+      console.log('beforeExport', data);
+    });
+
+    console.log(toast);
+    console.log(toast.dataManager.getOriginData());
+    toast.export('xlsx', {
+      onlyFiltered: false,
+    });
+
+    const {
+      data: { rawData },
+      column,
+    } = toast.store;
+
+    // const a = [];
+    // toast.store.column.allColumns.forEach((col) => a.push(col.header))
+    // toast.store.column.allColumns.forEach((col) => a.push(col.name))
+    // let complexHeaderData: string[][] | null = null;
+    // if (column.complexColumnHeaders.length > 0) {
+    //   complexHeaderData = getHeaderDataFromComplexColumn(column, columnNames);
+    // } else {
+    //   targetData.unshift(columnHeaders);
+    // }
+  }
+}
+defineExpose({
+  exportExcel
+});
 
 const save = async () => {
   let adjustArr:any = []
