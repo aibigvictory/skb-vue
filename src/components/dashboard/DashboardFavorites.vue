@@ -55,7 +55,7 @@
             </li>
             <li>{{ul.file.history[0].updatedAt ?ul.file.history[0].updatedAt.slice(0,10) :''}} {{ul.file.history[0].updatedAt ?ul.file.history[0].updatedAt.slice(11,19) :''}}</li>
             <li>
-              <span class="adjust" @click="file_click(ul.fileId, ul.file.name, ul.file.user.name, ul.file.user.teamName, ul.file.createdAt, group_name(store.getters.getData('folder'), ul.file.folderCd))">
+              <span class="adjust" @click="file_click(ul.fileId)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
                 <path opacity="0.3" d="M13.5668 5.06844L12.1274 6.50709L8.29011 2.66975L9.72878 1.23039C9.98331 0.975908 10.3285 0.833008 10.6884 0.833008C11.0484 0.833008 11.3936 0.975908 11.6481 1.23039L13.5668 3.14909C13.8212 3.40363 13.9642 3.74879 13.9642 4.10872C13.9642 4.46865 13.8212 4.8139 13.5668 5.06844ZM1.7581 14.1211L5.89144 12.7431L2.0541 8.90576L0.676104 13.0391C0.625544 13.19 0.61813 13.3522 0.654704 13.5072C0.69127 13.6622 0.770377 13.8038 0.883104 13.9163C0.995837 14.0287 1.13772 14.1074 1.29278 14.1436C1.44783 14.1798 1.60991 14.172 1.76077 14.1211H1.7581Z" fill="#009EF7"/>
                 <path d="M3.01573 13.6997L1.76107 14.1183C1.61034 14.1685 1.44863 14.1757 1.29403 14.1393C1.13943 14.1027 0.998025 14.0239 0.885665 13.9116C0.773305 13.7993 0.694412 13.658 0.657805 13.5034C0.621198 13.3488 0.628325 13.1871 0.678392 13.0364L1.09707 11.781L3.01573 13.6997ZM2.05639 8.90301L5.89373 12.7403L12.1297 6.50434L8.2924 2.66699L2.05639 8.90301Z" fill="#009EF7"/>
@@ -178,13 +178,13 @@ const init = async () => {
 init()
 
 const file_click = (id, name, user, team, date, cate) => {
-  console.log(id, name);
+  // console.log(id, name);
   localStorage.setItem('id', id)
-  localStorage.setItem('name', name)
-  localStorage.setItem('user', user)
-  localStorage.setItem('team', team)
-  localStorage.setItem('date', date)
-  localStorage.setItem('cate', cate)
+  // localStorage.setItem('name', name)
+  // localStorage.setItem('user', user)
+  // localStorage.setItem('team', team)
+  // localStorage.setItem('date', date)
+  // localStorage.setItem('cate', cate)
 
   router.push({ name: "excel" });
 }

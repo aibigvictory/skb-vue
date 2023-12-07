@@ -3,8 +3,8 @@
         <div class="header">
             <div class="left">
                 <div class="title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M4.51542 19.3034C4.03237 19.5517 3.48541 19.1178 3.58266 18.5634L4.61982 12.6516L0.216907 8.45578C-0.194569 8.06366 0.0184315 7.34671 0.569668 7.2684L6.69276 6.39856L9.42291 0.990381C9.66885 0.503206 10.3351 0.503206 10.581 0.990381L13.3111 6.39856L19.4342 7.2684C19.9855 7.34671 20.1985 8.06366 19.787 8.45578L15.3841 12.6516L16.4212 18.5634C16.5185 19.1178 15.9715 19.5517 15.4885 19.3034L10.002 16.4835L4.51542 19.3034Z" fill="#FFC700"/>
+                    <svg :class="{active: excelBookmark}" @click="toggle_favorite" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4.51542 19.3034C4.03237 19.5517 3.48541 19.1178 3.58266 18.5634L4.61982 12.6516L0.216907 8.45578C-0.194569 8.06366 0.0184315 7.34671 0.569668 7.2684L6.69276 6.39856L9.42291 0.990381C9.66885 0.503206 10.3351 0.503206 10.581 0.990381L13.3111 6.39856L19.4342 7.2684C19.9855 7.34671 20.1985 8.06366 19.787 8.45578L15.3841 12.6516L16.4212 18.5634C16.5185 19.1178 15.9715 19.5517 15.4885 19.3034L10.002 16.4835L4.51542 19.3034Z" fill="#EFF2F5"/>
                     </svg>
                     <span>{{categoryName}}</span>
                     {{excelTitle}}
@@ -18,7 +18,7 @@
                         <path d="M7.5 3C7.77614 3 8 3.22386 8 3.5V8.70984L11.2481 10.5659C11.4878 10.7029 11.5711 11.0083 11.4341 11.2481C11.2971 11.4878 10.9917 11.5711 10.7519 11.4341L7.25193 9.43412C7.09615 9.3451 7 9.17943 7 9V3.5C7 3.22386 7.22386 3 7.5 3Z" fill="white"/>
                         </svg>
                         마지막 수정일자:
-                        <span>{{excelUpdateddAt.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')}}</span>
+                        <span>{{excelUpdatedAt.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')}}</span>
                     </div>
                     <div class="user">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -29,7 +29,7 @@
                             <path d="M9.5835 9.32006C8.78142 9.32006 8.0948 9.02696 7.52361 8.44076C6.95243 7.85455 6.66684 7.14985 6.66684 6.32667C6.66684 5.50347 6.95243 4.79878 7.52361 4.21257C8.0948 3.62636 8.78142 3.33325 9.5835 3.33325C10.3856 3.33325 11.0722 3.62636 11.6434 4.21257C12.2146 4.79878 12.5002 5.50347 12.5002 6.32667C12.5002 7.14985 12.2146 7.85455 11.6434 8.44076C11.0722 9.02696 10.3856 9.32006 9.5835 9.32006ZM14.5675 15.8333H4.5995C4.24801 15.8333 3.94914 15.7069 3.70289 15.4541C3.45663 15.2014 3.3335 14.8947 3.3335 14.5339V13.9319C3.3335 13.5131 3.44434 13.1252 3.66604 12.7683C3.88772 12.4114 4.18392 12.137 4.55465 11.9451C5.37837 11.5306 6.2093 11.2198 7.04745 11.0126C7.88559 10.8053 8.73094 10.7017 9.5835 10.7017C10.4361 10.7017 11.2814 10.8053 12.1195 11.0126C12.9577 11.2198 13.7886 11.5306 14.6123 11.9451C14.9831 12.137 15.2793 12.4114 15.501 12.7683C15.7226 13.1252 15.8335 13.5131 15.8335 13.9319V14.5339C15.8335 14.8947 15.7104 15.2014 15.4641 15.4541C15.2178 15.7069 14.919 15.8333 14.5675 15.8333ZM4.58348 14.5504H14.5835V13.9319C14.5835 13.7587 14.5346 13.5983 14.4369 13.4509C14.3391 13.3034 14.2064 13.183 14.0386 13.0898C13.3207 12.7269 12.5886 12.4519 11.8424 12.265C11.0962 12.078 10.3432 11.9846 9.5835 11.9846C8.82374 11.9846 8.07077 12.078 7.32457 12.265C6.57837 12.4519 5.8463 12.7269 5.12836 13.0898C4.96062 13.183 4.82788 13.3034 4.73013 13.4509C4.63236 13.5983 4.58348 13.7587 4.58348 13.9319V14.5504ZM9.5835 8.03721C10.0418 8.03721 10.4342 7.86972 10.7606 7.53474C11.087 7.19976 11.2502 6.79707 11.2502 6.32667C11.2502 5.85627 11.087 5.45358 10.7606 5.1186C10.4342 4.78362 10.0418 4.61613 9.5835 4.61613C9.12516 4.61613 8.7328 4.78362 8.40641 5.1186C8.08002 5.45358 7.91682 5.85627 7.91682 6.32667C7.91682 6.79707 8.08002 7.19976 8.40641 7.53474C8.7328 7.86972 9.12516 8.03721 9.5835 8.03721Z" fill="#F1FAFF"/>
                         </g>
                         </svg>
-                        <span>{{excelUploader}}({{excelUploaderTeam}})</span>
+                        <span>{{excelUploader}} {{excelUploaderCompanyName}} ({{excelUploaderTeam}})</span>
                     </div>
                 </div>
                 
@@ -48,26 +48,31 @@
 import LuckySheet from '@/components/lucky-sheet/LuckySheet.vue'
 import store from '@/store'
 import { Actions } from '@/store/enums/StoreEnums'
-import { ref } from 'vue'
+import axios from 'axios'
+import { computed, ref, watch } from 'vue'
 
 setInterval(() => {
     if (excelId.value != Number(localStorage.getItem('id'))) {
         excelId.value = Number(localStorage.getItem('id'))
 
-        excelTitle.value = localStorage.getItem('name')
-        excelUploader.value = localStorage.getItem('user')
-        excelUploaderTeam.value = localStorage.getItem('team')
-        excelUpdateddAt.value = localStorage.getItem('date')
-        categoryName.value = localStorage.getItem('cate')
+        init()
     }
 }, 100)
 
 const excelId = ref(Number(localStorage.getItem('id')))
-const excelTitle = ref(localStorage.getItem('name'))
-const excelUploader = ref(localStorage.getItem('user'))
-const excelUploaderTeam = ref(localStorage.getItem('team'))
-const excelUpdateddAt = ref(localStorage.getItem('date'))
-const categoryName = ref(localStorage.getItem('cate'))
+const excelTitle = ref('')
+const excelUploader = ref('')
+const excelUploaderTeam = ref('')
+const excelUpdatedAt = ref('')
+const categoryName = ref('')
+const excelUploaderCompanyId = ref('')
+const excelUploaderCompanyName = computed(() => {
+    if (excelUploaderCompanyId.value == '') return ''
+    else {
+        return store.getters.getData('company').find(con => con.id == excelUploaderCompanyId.value).name
+    }
+})
+const excelBookmark = ref(0)
 
 const child: any = ref(null)
 const save_excel = () => {
@@ -75,6 +80,38 @@ const save_excel = () => {
 }
 const download_excel = () => {
     child.value.downloadExcel();
+}
+
+const init = async () => {
+    const { data } = await axios.get(`/file/${localStorage.getItem('id')}`)
+    const { name, user, folder, bookmark } = data
+
+    excelTitle.value = name
+    excelUploader.value = user.name
+    excelUploaderTeam.value = user.teamName
+    excelUpdatedAt.value = user.updatedAt
+    categoryName.value = folder.name
+    excelUploaderCompanyId.value = user.companyId
+    excelBookmark.value = bookmark.length
+}
+
+init()
+
+const toggle_favorite = async () => {
+    if (excelBookmark.value) {
+        await store.dispatch(Actions.POST_DATA_TO_SERVER, {
+            url: '/bookmark/delete',
+            pay: {fileId: excelId.value}
+        })
+        return excelBookmark.value = 0
+    }
+    if (!excelBookmark.value) {
+        await store.dispatch(Actions.POST_DATA_TO_SERVER, {
+            url: '/bookmark/create',
+            pay: {fileId: excelId.value}
+        })
+        return excelBookmark.value = 1
+    }
 }
 
 // const favorite = ref(true)
@@ -128,7 +165,12 @@ const download_excel = () => {
                     color: var(--default-white, #FFF);
                 }
                 svg{
-
+                    cursor: pointer;
+                    &.active{
+                        path{
+                            fill: #FFC700
+                        }
+                    }
                 }
             }
             .info{

@@ -30,7 +30,7 @@
     <!--begin::Card body-->
     <div class="card-body">
       <div class="content">
-        <div class="title" @click="file_click(id, file, user, team, date, cate)">{{file}}</div>
+        <div class="title" @click="file_click(id)">{{file}}</div>
         <!-- <div class="tag"><span class="badge bg-primary" v-if="true">Today</span></div> -->
         <div class="tag"><span class="badge bg-primary" v-if="date.slice(0,10) == new Date().toISOString().slice(0,10)">Today</span></div>
         <div class="tag"><span class="badge bg-primary opacity" v-if="date.slice(0,10) != new Date().toISOString().slice(0,10)">Today</span></div>
@@ -63,11 +63,11 @@ export default defineComponent({
     const file_click = (id, name, user, team, date, cate) => {
         // console.log(id, name, user, team, date, cate);
         localStorage.setItem('id', id)
-        localStorage.setItem('name', name)
-        localStorage.setItem('user', user)
-        localStorage.setItem('team', team)
-        localStorage.setItem('date', date)
-        localStorage.setItem('cate', cate)
+        // localStorage.setItem('name', name)
+        // localStorage.setItem('user', user)
+        // localStorage.setItem('team', team)
+        // localStorage.setItem('date', date)
+        // localStorage.setItem('cate', cate)
 
         router.push({ name: "excel" });
     }

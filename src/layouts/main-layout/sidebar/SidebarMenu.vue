@@ -134,7 +134,7 @@
                           data-kt-menu-sub="accordion"
                           data-kt-menu-trigger="click"
                         >
-                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id, item2.name, item2.user.name, item2.user.teamName, item2.updatedAt, category.name)">
+                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id)">
                             <!-- <span class="menu-bullet"></span> -->
                             <span class="menu-title" style="display: block">
                               <div class="info-wrap d-flex">
@@ -572,13 +572,12 @@ console.log(filter_fileUse(deepCopy(category_list)));
     })
 
     const file_click = (id, name, user, team, date, cate) => {
-      console.log(id, name);
       localStorage.setItem('id', id)
-      localStorage.setItem('name', name)
-      localStorage.setItem('user', user)
-      localStorage.setItem('team', team)
-      localStorage.setItem('date', date)
-      localStorage.setItem('cate', cate)
+      // localStorage.setItem('name', name)
+      // localStorage.setItem('user', user)
+      // localStorage.setItem('team', team)
+      // localStorage.setItem('date', date)
+      // localStorage.setItem('cate', cate)
 
 
       router.push({ name: "excel" });
