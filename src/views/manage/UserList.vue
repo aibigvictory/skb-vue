@@ -277,6 +277,7 @@ let input_adjust_user = computed(() => {
     if (member_checked_list.value.length == 1) {
         let result: any = origin_member.find(member => member.id == member_checked_list.value[0])
         delete result.accepted
+        delete result.type
 
         return result
     }
@@ -375,10 +376,17 @@ let accept_popup_state = ref(false)
 let delete_popup_state = ref(false)
 
 const delete_member = () => {
-    member_checked_list.value.forEach((member_id) => {
-    console.log(member_id);
-        // axios.post('/member/delete', {id: member_id})
+    member_checked_list.value.forEach(async (member_id, idx) => {
+        await axios.post('/auth/deleteUser', {id: member_id})
+
+        if (idx == member_checked_list.value.length - 1) {
+            state.popup.content = ['사용자 삭제가 완료되었습니다.']
+            state.popup.toggle = true
+
+            load_memberList()
+        }
     })
+    // axios.post('/auth/deleteUser', {id: member_checked_list.value})
 }
 
 const change_popup_state = (popup_type, state) => {
