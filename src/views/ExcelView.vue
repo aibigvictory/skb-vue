@@ -67,7 +67,7 @@ const excelUpdatedAt = ref('')
 const categoryName = ref('')
 const excelUploaderCompanyId = ref('')
 const excelUploaderCompanyName = computed(() => {
-    if (excelUploaderCompanyId.value == '') return ''
+    if (excelUploaderCompanyId.value == '' || !store.getters.getData('company').length) return ''
     else {
         return store.getters.getData('company').find(con => con.id == excelUploaderCompanyId.value).name
     }
