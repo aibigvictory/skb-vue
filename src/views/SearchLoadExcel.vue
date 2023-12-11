@@ -790,6 +790,7 @@ const save = async () => {
 
   if (![...edit_list.values()].length) {
     state.popup.content = ['수정 사항이 없습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     return
@@ -807,6 +808,7 @@ const save = async () => {
   }
   catch(error) {
     state.popup.content = ['사용자 정보 조회에 실패하였습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
   }
   // toastArr.forEach((toast) => {
@@ -835,10 +837,12 @@ const save = async () => {
   })
   .then(() => {
     state.popup.content = ['엑셀 수정이 완료되었습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
   })
   .catch(() => {
     state.popup.content = ['엑셀 수정에 실패하였습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
   })
   console.log(adjustExcel);

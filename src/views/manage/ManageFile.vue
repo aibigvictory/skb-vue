@@ -134,6 +134,7 @@ const save = async () => {
     console.log(group.value);
 
     state.popup.content = ['순서저장이 완료되었습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     // await axios.post('/folder/update', group.value)
@@ -190,6 +191,7 @@ const delete_group = async () => {
     
     if (group.count > 0) {
         state.popup.content = ['하나 이상의 파일이 존재합니다.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
 
         return

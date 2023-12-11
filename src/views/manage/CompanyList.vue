@@ -4,7 +4,7 @@
             <div class="header">
                 <div class="title">개발사 리스트</div>
                 <div class="btn-wrap">
-                    <div class="btn btn-danger" @click="delete_company">삭제</div>
+                    <div class="btn btn-danger" @click="click_delete">삭제</div>
                     <div class="btn btn-primary" @click="company_add = true">업체등록</div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M11.7422 10.3439C12.5329 9.2673 13 7.9382 13 6.5C13 2.91015 10.0899 0 6.5 0C2.91015 0 0 2.91015 0 6.5C0 10.0899 2.91015 13 6.5 13C7.93858 13 9.26801 12.5327 10.3448 11.7415L10.3439 11.7422C10.3734 11.7822 10.4062 11.8204 10.4424 11.8566L14.2929 15.7071C14.6834 16.0976 15.3166 16.0976 15.7071 15.7071C16.0976 15.3166 16.0976 14.6834 15.7071 14.2929L11.8566 10.4424C11.8204 10.4062 11.7822 10.3734 11.7422 10.3439ZM12 6.5C12 9.53757 9.53757 12 6.5 12C3.46243 12 1 9.53757 1 6.5C1 3.46243 3.46243 1 6.5 1C9.53757 1 12 3.46243 12 6.5Z" fill="#A1A5B7"/>
                             </svg>
-                            <input @keypress="enter" ref="search_input" class="search-input" type="text" placeholder="이름/이메일 검색">
+                            <input @keypress="enter" ref="search_input" class="search-input" type="text" placeholder="업체/개발사 검색">
                         </div>
                         <button @click="search" class="search-btn">검색</button>
                     </div>
@@ -174,6 +174,7 @@ const create_company = async () => {
     await axios.post('/company/create', input_company.value, axios_config)
 
     state.popup.content = ['업체/개발사 등록이 완료되었습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     company_add.value = false
@@ -191,6 +192,13 @@ const check_all_company = (e) => {
     else{
         company_checked_list.value = []
     }
+}
+
+const click_delete = () => {
+    state.popup.content = ['선택한 업체를 삭제하시겠습니까?']
+    state.popup.btnCount = 2
+    state.popup.accept = delete_company
+    state.popup.toggle = true
 }
 
 const delete_company = async () => {

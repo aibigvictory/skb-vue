@@ -75,10 +75,12 @@ const send_server_config = () => {
         console.log(config.value);
         
         state.popup.content = ['비밀번호 주기 변경이 완료되었습니다.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
     })
     .catch((error) => {
         state.popup.content = ['비밀번호 주기 변경에 실패했습니다.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
     })
 }

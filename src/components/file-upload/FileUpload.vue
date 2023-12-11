@@ -92,11 +92,13 @@ const fileUpload = async () => {
     
     if (!myDropzone.files.length) {
         state.popup.content = ['파일이 없습니다.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
         return
     }
     if (!myDropzone.options.params.folderCd) {
         state.popup.content = ['카테고리를 선택해주세요.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
         return
     }
@@ -143,6 +145,7 @@ onMounted(() => {
             // if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { // xlsx 파일이 아닌 경우
             if (!file.name.endsWith('.xlsx')) {
                 state.popup.content = [`XLSX 형식의 파일만 지원 가능합니다.`]
+                state.popup.btnCount = 1
                 state.popup.toggle = true
                 
                 myDropzone.removeFile(file); // 파일 제거
@@ -171,6 +174,7 @@ onMounted(() => {
             console.log(file);
             
             state.popup.content = ['업로드가 완료되었습니다.']
+            state.popup.btnCount = 1
             state.popup.toggle = true
         });
 
@@ -189,6 +193,7 @@ onMounted(() => {
 
             if (data.message == 'Conflict') state.popup.content = ['아래 파일은 파일명이 중복되었습니다.', ...fileNameList]
             else                            state.popup.content = ['아래 파일에 대해 업로드가 실패하였습니다.', ...fileNameList]
+            state.popup.btnCount = 1
             state.popup.toggle = true
         });
 

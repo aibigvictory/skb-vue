@@ -623,6 +623,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
       else {
         if (type == 'etc') state.popup.content = ['관리파일은 관리파일 카테고리 클릭 후 드래그 가능합니다.']
         if (type == 'manage') state.popup.content = ['기타파일은 기타파일 카테고리 클릭 후 드래그 가능합니다.']
+        state.popup.btnCount = 1
 
         return state.popup.toggle = true
       }
@@ -694,6 +695,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
       if (lock_state.value == 'manage') {
         if (!check_useless_manageFile_list.value.length) {
           state.popup.content = ['선택된 미사용 파일이 없습니다']
+          state.popup.btnCount = 1
           state.popup.toggle = true
   
           return
@@ -702,6 +704,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
       if (lock_state.value == 'etc') {
         if (!check_useless_etcFile_list.value.length) {
           state.popup.content = ['선택된 미사용 파일이 없습니다']
+          state.popup.btnCount = 1
           state.popup.toggle = true
   
           return
@@ -724,12 +727,14 @@ console.log(filter_fileUse(deepCopy(category_list)));
             })
   
             state.popup.content = ['파일 삭제에 성공하였습니다.']
+            state.popup.btnCount = 1
             state.popup.toggle = true
 
             store.state.upload++
           }
           catch(error) {
             state.popup.content = ['파일 삭제에 실패하였습니다.']
+            state.popup.btnCount = 1
             state.popup.toggle = true
           }
         }
@@ -744,11 +749,13 @@ console.log(filter_fileUse(deepCopy(category_list)));
             })
 
             state.popup.content = ['파일 삭제에 성공하였습니다.']
+            state.popup.btnCount = 1
             state.popup.toggle = true
             
           }
           catch(error) {
             state.popup.content = ['파일 삭제에 실패하였습니다.']
+            state.popup.btnCount = 1
             state.popup.toggle = true
           }
         }

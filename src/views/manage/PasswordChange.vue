@@ -141,12 +141,14 @@ const change_password = (data) => {
     axios.post('/auth/updatePassword', data, axios_config)
     .then(() => {
         state.popup.content = ['비밀번호 변경이 완료되었습니다.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
 
         router.go(0)
     })
     .catch((error) => {
         state.popup.content = ['비밀번호 변경에 실패했습니다.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
     })
 }

@@ -33,6 +33,7 @@ const reload_excel = (url, excelName, luckysheet) => {
         isMaskShow.value = false
 
         state.popup.content = ['엑셀 파일을 불러오지 못했습니다.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
         return 
     }
@@ -114,6 +115,7 @@ const downloadExcel = () => {
     })
     .then(() => {
       state.popup.content = ['엑셀 다운로드가 완료되었습니다.']
+      state.popup.btnCount = 1
       state.popup.toggle = true
     })
     .catch(err => console.error('Error:', err));
@@ -132,6 +134,7 @@ const getUserData = async () => {
   catch(error) {
     console.error(error);
     state.popup.content = ['사용자 정보 조회에 실패하였습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     throw new Error('사용자 정보 조회에 실패하였습니다.');
@@ -149,12 +152,14 @@ const saveExcel = async () => {
     console.log(result);
     if (result.status === 200) {
       state.popup.content = ['수정이 완료되었습니다.']
+      state.popup.btnCount = 1
       state.popup.toggle = true
       return;
     }
   }
   catch(error) {
     state.popup.content = ['수정에 실패하였습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
   }
 }

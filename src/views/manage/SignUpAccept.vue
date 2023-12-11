@@ -164,6 +164,7 @@ const accept_member = async () => {
     })
     
     state.popup.content = ['승인처리가 완료되었습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     member_checked_list.value = []
@@ -181,6 +182,7 @@ const delete_member = async () => {
     })
     
     state.popup.content = ['삭제처리가 완료되었습니다.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     member_checked_list.value = []
@@ -190,6 +192,7 @@ const delete_member = async () => {
 const change_popup_state = (popup_type, status) => {
     if (!member_checked_list.value.length) {
         state.popup.content = ['회원을 1명 이상 선택해주세요.']
+        state.popup.btnCount = 1
         state.popup.toggle = true
         return
     }

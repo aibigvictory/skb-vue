@@ -303,6 +303,7 @@ const click_category = (e) => {
 const load_search_result = () => {
   if (!checked_file_list.value.length) {
     state.popup.content = ['엑셀파일을 선택해 주세요.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     return

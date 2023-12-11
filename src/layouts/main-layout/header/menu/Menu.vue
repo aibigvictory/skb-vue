@@ -112,6 +112,7 @@ const open_popup = () => {
 const search_function = (e) => {
   if (state.search.keyword == '' || state.search.keyword.replace(/ /g, '') == '') {
     state.popup.content = ['검색어를 입력해주세요.']
+    state.popup.btnCount = 1
     state.popup.toggle = true
 
     return
