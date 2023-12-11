@@ -20,7 +20,16 @@
                         </div>
                         <button @click="search($event)" class="search-btn">검색</button>
                     </div>
-                    <div class="search-detail" @click.capture="search_detail = !search_detail">
+                    <div class="only-skb-view">
+                        <button @click="only_skb" class="btn-only-skb-view">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                            <path d="M16.5 8C16.5 8 13.5 2.5 8.5 2.5C3.5 2.5 0.5 8 0.5 8C0.5 8 3.5 13.5 8.5 13.5C13.5 13.5 16.5 8 16.5 8ZM1.6727 8C1.72963 7.91321 1.79454 7.81677 1.86727 7.71242C2.20216 7.23193 2.69631 6.5929 3.33211 5.95711C4.62103 4.66818 6.38062 3.5 8.5 3.5C10.6194 3.5 12.379 4.66818 13.6679 5.95711C14.3037 6.5929 14.7978 7.23193 15.1327 7.71242C15.2055 7.81677 15.2704 7.91321 15.3273 8C15.2704 8.08679 15.2055 8.18323 15.1327 8.28758C14.7978 8.76807 14.3037 9.4071 13.6679 10.0429C12.379 11.3318 10.6194 12.5 8.5 12.5C6.38062 12.5 4.62103 11.3318 3.33211 10.0429C2.69631 9.4071 2.20216 8.76807 1.86727 8.28758C1.79454 8.18323 1.72963 8.08679 1.6727 8Z" fill="#58595D"/>
+                            <path d="M8.5 5.5C7.11929 5.5 6 6.61929 6 8C6 9.38071 7.11929 10.5 8.5 10.5C9.88071 10.5 11 9.38071 11 8C11 6.61929 9.88071 5.5 8.5 5.5Z" fill="#58595D"/>
+                            </svg>
+                            SKB 직원만 보기
+                        </button>
+                    </div>
+                    <!-- <div class="search-detail" @click.capture="search_detail = !search_detail">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                         <path d="M4 0H1C0.447715 0 0 0.447715 0 1V4C0 4.55228 0.447715 5 1 5H4C4.55228 5 5 4.55228 5 4V1C5 0.447715 4.55228 0 4 0Z" fill="#3E97FF"/>
                         <path d="M13 0H10C9.44772 0 9 0.447715 9 1V4C9 4.55228 9.44772 5 10 5H13C13.5523 5 14 4.55228 14 4V1C14 0.447715 13.5523 0 13 0Z" fill="#C5E0FF"/>
@@ -30,10 +39,6 @@
                         <div class="search-detail-wrap" v-if="search_detail">
                             <div class="title">상세검색</div>
                             <div class="content">
-                                <!-- <label for="">구분</label>
-                                <select id=""></select>
-                                <label for="">시스템 / 서비스</label>
-                                <select id=""></select> -->
                                 <label for="">업체 / 개발사</label>
                                 <select id=""></select>
                             </div>
@@ -42,7 +47,7 @@
                                 <div class="btn btn-secondary">초기화</div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="only-skb-view">
                         <button class="btn-only-skb-view">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
@@ -106,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div class="user-add" v-if="user_add ">
+        <form class="user-add" v-if="user_add " @submit="create_user">
             <div class="title">사용자 등록</div>
             <div class="section">
                 <!-- <div class="line">
@@ -122,8 +127,8 @@
                 <div class="line">
                     <div class="item">
                         <label for="">업체 개발사<span> *</span></label>
-                        <select v-model="input_add_user.companyId">
-                            <option value="null" disabled>업체/개발사를 선택해주세요</option>
+                        <select v-model="input_add_user.companyId" required>
+                            <option value="" disabled>업체/개발사를 선택해주세요</option>
                             <option :value="company.id" v-for="company in store.getters.getData('company')" :key="company">{{company.name}}</option>
                         </select>
                         <!-- <input v-model="input_add_user.companyId" type="number" placeholder="입력해주세요."> -->
@@ -136,7 +141,7 @@
                 <div class="line">
                     <div class="item">
                         <label for="">성명<span> *</span></label>
-                        <input v-model="input_add_user.name" type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.name" type="text" placeholder="입력해주세요." required>
                     </div>
                     <div class="item">
                         <label for="">직위</label>
@@ -160,17 +165,17 @@
                     </div>
                     <div class="item">
                         <label for="">이메일<span> *</span></label>
-                        <input v-model="input_add_user.email" type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.email" type="email" placeholder="입력해주세요." required>
                     </div>
                 </div>
                 <label for="">비고</label>
                 <textarea v-model="input_add_user.memo" placeholder="내용을 입력해주세요."></textarea>
             </div>
             <div class="btn-wrap">
-                <div class="btn btn-primary" @click="create_user">등록</div>
+                <input type="submit" class="btn btn-primary" value="등록">
                 <div class="btn btn-secondary" @click="user_add = false">사용자리스트</div>
             </div>
-        </div>
+        </form>
 
         <div class="user-add" v-if="user_adjust">
             <div class="title">사용자 수정</div>
@@ -202,7 +207,7 @@
                 <div class="line">
                     <div class="item">
                         <label for="">성명<span> *</span></label>
-                        <input v-model="input_adjust_user.name" type="text" placeholder="입력해주세요.">
+                        <input v-model="input_adjust_user.name" type="text" placeholder="입력해주세요." required>
                     </div>
                     <div class="item">
                         <label for="">직위</label>
@@ -226,7 +231,7 @@
                     </div>
                     <div class="item">
                         <label for="">이메일<span> *</span></label>
-                        <input v-model="input_adjust_user.email" type="text" placeholder="입력해주세요.">
+                        <input v-model="input_adjust_user.email" type="text" placeholder="입력해주세요." required>
                     </div>
                 </div>
                 <label for="">비고</label>
@@ -260,7 +265,7 @@ const search_detail = ref(false)
 let search_keyword = ref('')
 
 let input_add_user = ref({
-    companyId: null,
+    companyId: "",
     role: null,
     name: null,
     position: null,
@@ -283,8 +288,6 @@ let input_adjust_user = computed(() => {
     }
 })
 
-setInterval(() => console.log(input_adjust_user.value), 2000)
-
 watch(search_keyword, (keyword) => {
     view_member.value = search_member(search_keyword.value, origin_member)
 })
@@ -304,7 +307,7 @@ const enter = (e) => {
 const search_member = (keyword, arr) => {
     if (!keyword) return arr
     // return arr.filter((member) => member.name == keyword || member.email == keyword)
-    return arr.filter((member) => new RegExp(keyword).test(member.type) || new RegExp(keyword).test(member.system) || new RegExp(keyword).test(member.company))
+    return arr.filter((member) => new RegExp(keyword).test(store.getters.getData('company').find((company => company.id == member.companyId))?.name))
 }
 
 const load_memberList = async () => {
@@ -384,6 +387,8 @@ const delete_member = () => {
             state.popup.toggle = true
 
             load_memberList()
+
+            member_checked_list.value = []
         }
     })
     // axios.post('/auth/deleteUser', {id: member_checked_list.value})
@@ -392,6 +397,20 @@ const delete_member = () => {
 const change_popup_state = (popup_type, state) => {
     if (popup_type == 'delete') delete_popup_state.value = state
     if (popup_type == 'accept') accept_popup_state.value = state
+}
+
+let only_state = ref(false)
+const only_skb = (e) => {
+    if (only_state.value) {
+        e.target.classList.remove('active')
+        only_state.value = false
+        view_member.value = search_member('', origin_member)
+    }
+    else{
+        e.target.classList.add('active')
+        only_state.value = true
+        view_member.value = search_member('SKB', origin_member)
+    }
 }
 </script>
 
@@ -566,6 +585,15 @@ li{list-style: none;}
                         letter-spacing: 0.5px;
                         svg{
                             margin-right: 6px;
+                        }
+                        &.active{
+                            background: #009EF7;
+                            color: #fff;
+                            svg{
+                                path{
+                                    fill: #fff;
+                                }
+                            }
                         }
                     }
                 }

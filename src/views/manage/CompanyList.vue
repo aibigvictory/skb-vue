@@ -19,7 +19,7 @@
                         </div>
                         <button @click="search" class="search-btn">검색</button>
                     </div>
-                    <div class="only-skb-view">
+                    <!-- <div class="only-skb-view">
                         <button @click="only_skb" class="btn-only-skb-view">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
                             <path d="M16.5 8C16.5 8 13.5 2.5 8.5 2.5C3.5 2.5 0.5 8 0.5 8C0.5 8 3.5 13.5 8.5 13.5C13.5 13.5 16.5 8 16.5 8ZM1.6727 8C1.72963 7.91321 1.79454 7.81677 1.86727 7.71242C2.20216 7.23193 2.69631 6.5929 3.33211 5.95711C4.62103 4.66818 6.38062 3.5 8.5 3.5C10.6194 3.5 12.379 4.66818 13.6679 5.95711C14.3037 6.5929 14.7978 7.23193 15.1327 7.71242C15.2055 7.81677 15.2704 7.91321 15.3273 8C15.2704 8.08679 15.2055 8.18323 15.1327 8.28758C14.7978 8.76807 14.3037 9.4071 13.6679 10.0429C12.379 11.3318 10.6194 12.5 8.5 12.5C6.38062 12.5 4.62103 11.3318 3.33211 10.0429C2.69631 9.4071 2.20216 8.76807 1.86727 8.28758C1.79454 8.18323 1.72963 8.08679 1.6727 8Z" fill="#58595D"/>
@@ -27,7 +27,7 @@
                             </svg>
                             SKB 직원만 보기
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="accept">
                     <ul class="info">
@@ -60,21 +60,21 @@
                 </div>
             </div>
         </div>
-        <div class="company-add" v-if="company_add">
+        <form class="company-add" v-if="company_add" @submit="create_company">
             <div class="title">업체/개발사 등록</div>
             <div class="section">
                 <label for="">구분<span>(필수)</span></label>
-                <input v-model="input_company.name" type="text" placeholder="입력해주세요.">
+                <input v-model="input_company.name" type="text" placeholder="입력해주세요." required>
                 <label for="">유선전화</label>
                 <input v-model="input_company.phone" type="text" placeholder="입력해주세요.">
                 <label for="">비고</label>
                 <textarea id="" v-model="input_company.memo" placeholder="내용을 입력해주세요."></textarea>
             </div>
             <div class="btn-wrap">
-                <div class="btn btn-primary" @click="create_company">업체등록</div>
+                <input type="submit" class="btn btn-primary" value="업체등록">
                 <div class="btn btn-secondary" @click="company_add = false">리스트</div>
             </div>
-        </div>
+        </form>
     </div>
 </template>
 
@@ -89,18 +89,18 @@ const state = store.state
 const company_add = ref(false)
 
 let only_state = ref(false)
-const only_skb = (e) => {
-    if (only_state.value) {
-        e.target.classList.remove('active')
-        only_state.value = false
-        view_company.value = search_company(search_keyword.value, origin_company)  
-    }
-    else{
-        e.target.classList.add('active')
-        only_state.value = true
-        view_company.value = search_company('SKB', origin_company)
-    }
-}
+// const only_skb = (e) => {
+//     if (only_state.value) {
+//         e.target.classList.remove('active')
+//         only_state.value = false
+//         view_company.value = search_company(search_keyword.value, origin_company)  
+//     }
+//     else{
+//         e.target.classList.add('active')
+//         only_state.value = true
+//         view_company.value = search_company('SKB', origin_company)
+//     }
+// }
 
 //-------------------------------
 
@@ -295,35 +295,35 @@ li{list-style: none;}
                         }
                     }
                 }
-                .only-skb-view{
-                    .btn-only-skb-view{
-                        display: flex;
-                        align-items: center;
+                // .only-skb-view{
+                //     .btn-only-skb-view{
+                //         display: flex;
+                //         align-items: center;
     
-                        width: 140px;
-                        padding: 8px 13px;
-                        border-radius: 38px;
-                        border: 1px solid var(----el-color-info-light-8, #E9E9EB);
-                        background: #FFF;
+                //         width: 140px;
+                //         padding: 8px 13px;
+                //         border-radius: 38px;
+                //         border: 1px solid var(----el-color-info-light-8, #E9E9EB);
+                //         background: #FFF;
     
-                        color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
-                        font-size: 12px;
-                        font-weight: 500;
-                        letter-spacing: 0.5px;
-                        svg{
-                            margin-right: 6px;
-                        }
-                        &.active{
-                            background: #009EF7;
-                            color: #fff;
-                            svg{
-                                path{
-                                    fill: #fff;
-                                }
-                            }
-                        }
-                    }
-                }
+                //         color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
+                //         font-size: 12px;
+                //         font-weight: 500;
+                //         letter-spacing: 0.5px;
+                //         svg{
+                //             margin-right: 6px;
+                //         }
+                //         &.active{
+                //             background: #009EF7;
+                //             color: #fff;
+                //             svg{
+                //                 path{
+                //                     fill: #fff;
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
             }
             .accept{
                 padding-bottom: 24px;

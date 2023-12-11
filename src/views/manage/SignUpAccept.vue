@@ -187,9 +187,15 @@ const delete_member = async () => {
     call_member()
 }
 
-const change_popup_state = (popup_type, state) => {
-    if (popup_type == 'delete') delete_popup_state.value = state
-    if (popup_type == 'accept') accept_popup_state.value = state
+const change_popup_state = (popup_type, status) => {
+    if (!member_checked_list.value.length) {
+        state.popup.content = ['회원을 1명 이상 선택해주세요.']
+        state.popup.toggle = true
+        return
+    }
+
+    if (popup_type == 'delete') delete_popup_state.value = status
+    if (popup_type == 'accept') accept_popup_state.value = status
 }
 
 </script>

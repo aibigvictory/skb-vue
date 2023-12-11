@@ -8,6 +8,7 @@ export interface DataInfo {
     folder_manage: Array<any>;
     folder_etc: Array<any>;
     folder_all: Array<any>;
+    connect_user: Array<any>
   };
 }
 
@@ -18,6 +19,7 @@ export default class DataModule extends VuexModule implements DataInfo {
     folder_manage: [],
     folder_etc: [],
     folder_all: [],
+    connect_user: [],
   };
 
   /**
