@@ -41,7 +41,7 @@
                     </ul>
                     <ul class="company">
                         <li v-for="company in view_company" :key="company">
-                            <input v-model="company_checked_list" :value="company.id" type="checkbox" :id="`check${company.id}`">
+                            <input v-model="company_checked_list" :value="company" type="checkbox" :id="`check${company.id}`">
                             <label :for="`check${company.id}`">
                                 <div>{{company.name}}</div>
                                 <div>{{company.phone}}</div>
@@ -186,7 +186,7 @@ let company_checked_list:any = ref([])
 const check_all_company = (e) => {
     if(e.target.checked) {
         view_company.value.forEach((company) => {
-            company_checked_list.value.push(company.id)
+            company_checked_list.value.push(company)
         })
     }
     else{
@@ -202,11 +202,31 @@ const click_delete = () => {
 }
 
 const delete_company = async () => {
+    let idArr: any = []
+    let haveUserList: any = []
+    let sumCount: any = 0
+
+    for (let i = 0; i < company_checked_list.value.length; i++) {
+        const company = company_checked_list.value[i]
+
+        idArr.push(company.id)
+        haveUserList.push(company.name)
+        sumCount = sumCount + company._count.User
+    }
+
+    if (sumCount > 0) {
+        state.popup.content = ['다음 업체에 등록된 사용자가 있습니다.', ...haveUserList]
+        state.popup.btnCount = 1
+        setTimeout(() => state.popup.toggle = true, 1)
+
+        return 
+    }
+
     const axios_config = {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    await axios.post('/company/delete', {idArr: company_checked_list.value}, axios_config)
+    await axios.post('/company/delete', {idArr}, axios_config)
     
     load_companyList()
 }
