@@ -5,7 +5,8 @@
       <!--begin::User-->
       <div class="d-flex align-items-center">
         <div class="h-100 d-flex align-items-center">
-          <i class="fa fa-circle" :class="status" aria-hidden="true"></i>
+          <i class="fa fa-circle being" aria-hidden="true"></i>
+          <!-- <i class="fa fa-circle" :class="status" aria-hidden="true"></i> -->
         </div>
         <!--begin::Details-->
         <div class="name w-60px fw-bold text-left ms-3" :class="status">

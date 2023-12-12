@@ -63,8 +63,8 @@
             <Member
               :status="item.status"
               :name="item.name"
-              :company="item.company"
-              :time="item.time"
+              :company="item.companyId ?store.getters.getData('company').find(con => con.id == item.companyId).name :''"
+              :time="item.timestamp.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')"
             ></Member>
           </template>
         </div>
@@ -82,13 +82,16 @@
 import { defineComponent, reactive, ref } from "vue";
 import Member from "@/components/connect-member/EachConnectMember.vue";
 import { io } from "socket.io-client";
+import axios from "axios";
+import store from "@/store";
 
-interface KTMessage {
-  name?: string;
-  company: string;
-  time: string;
-  status: string;
-}
+
+// interface KTMessage {
+//   name?: string;
+//   company: string;
+//   time: string;
+//   status: string;
+// }
 
 const state = reactive({
   connected: false,
@@ -115,164 +118,72 @@ const state = reactive({
 // });
 
 
-function randomTime() {
-  // 현재 날짜와 시간을 가져오는 객체
-  var date = new Date();
-  
-  // 랜덤 연도를 생성하기 위해 2020~2025 사이의 정수 난수를 생성
-  var year = Math.floor(Math.random() * 6) + 2020;
-  
-  // 랜덤 월을 생성하기 위해 1~12 사이의 정수 난수를 생성
-  var month = Math.floor(Math.random() * 12) + 1;
-  
-  // 랜덤 일을 생성하기 위해 해당 월의 마지막 일자를 구하고, 1~마지막 일자 사이의 정수 난수를 생성
-  var lastDay = new Date(year, month, 0).getDate();
-  var day = Math.floor(Math.random() * lastDay) + 1;
-  
-  // 랜덤 시간을 생성하기 위해 0~23 사이의 정수 난수를 생성
-  var hour = Math.floor(Math.random() * 24);
-  
-  // 랜덤 분을 생성하기 위해 0~59 사이의 정수 난수를 생성
-  var minute = Math.floor(Math.random() * 60);
-  
-  // 랜덤 시간을 문자열로 변환하고 반환
-  return year + "년 " + month + "월 " + day + "일 " + hour + ":" + minute;
-}
-
-const messages = ref<Array<KTMessage>>([
+const messages = ref([
   {
     name: "홍애리",
     company: "SKB",
-    time: randomTime(),
+    time: '',
     status: "being",
   },
-  // {
-  //   name: "홍애리",
-  //   company: "NS 쇼핑",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "SKB",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "NS 쇼핑",
-  //   time: randomTime(),
-  //   status: "out",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "SKB",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "NS 쇼핑",
-  //   time: randomTime(),
-  //   status: "out",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "SKB",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "SKB",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "NS 쇼핑",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "SKB",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "NS 쇼핑",
-  //   time: randomTime(),
-  //   status: "out",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "SKB",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "NS 쇼핑",
-  //   time: randomTime(),
-  //   status: "out",
-  // },
-  // {
-  //   name: "홍애리",
-  //   company: "SKB",
-  //   time: randomTime(),
-  //   status: "being",
-  // },
 ]);
 
-setTimeout(() => {
+const load_connect = async () => {
+  const { data } = await axios.get('/online')
+
+  console.log(data);
+  messages.value = data
+}
+
+load_connect()
+setInterval(() => load_connect(), 5000)
+
+// setTimeout(() => {
   
-  messages.value = [
-    {
-      name: "아이유",
-      company: "SKB",
-      time: randomTime(),
-      status: "being",
-    },
-    {
-      name: "아이유",
-      company: "NS 쇼핑",
-      time: randomTime(),
-      status: "being",
-    },
-    {
-      name: "아이유",
-      company: "SKB",
-      time: randomTime(),
-      status: "being",
-    },
-    {
-      name: "아이유",
-      company: "NS 쇼핑",
-      time: randomTime(),
-      status: "out",
-    },
-    {
-      name: "아이유",
-      company: "SKB",
-      time: randomTime(),
-      status: "being",
-    },
-    {
-      name: "아이유",
-      company: "NS 쇼핑",
-      time: randomTime(),
-      status: "out",
-    },
-    {
-      name: "아이유",
-      company: "SKB",
-      time: randomTime(),
-      status: "being",
-    },
-  ]
-}, 5000)
+//   messages.value = [
+//     {
+//       name: "아이유",
+//       company: "SKB",
+//       time: randomTime(),
+//       status: "being",
+//     },
+//     {
+//       name: "아이유",
+//       company: "NS 쇼핑",
+//       time: randomTime(),
+//       status: "being",
+//     },
+//     {
+//       name: "아이유",
+//       company: "SKB",
+//       time: randomTime(),
+//       status: "being",
+//     },
+//     {
+//       name: "아이유",
+//       company: "NS 쇼핑",
+//       time: randomTime(),
+//       status: "out",
+//     },
+//     {
+//       name: "아이유",
+//       company: "SKB",
+//       time: randomTime(),
+//       status: "being",
+//     },
+//     {
+//       name: "아이유",
+//       company: "NS 쇼핑",
+//       time: randomTime(),
+//       status: "out",
+//     },
+//     {
+//       name: "아이유",
+//       company: "SKB",
+//       time: randomTime(),
+//       status: "being",
+//     },
+//   ]
+// }, 5000)
 
 </script>
 
