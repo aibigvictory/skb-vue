@@ -7,18 +7,22 @@
   >
     <div class="wrap">
       <ul>
-        <li v-for="member in members" :class="{off: !member.state}" :key="member">
+        <li v-for="member in members" :key="member">
+        <!-- <li v-for="member in members" :class="{off: !member.state}" :key="member"> -->
           <div class="circle">
-            <svg v-if="member.state" xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+            <!-- <svg v-if="member.state" xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
               <circle cx="5.5" cy="5" r="5" fill="#F1416C"/>
             </svg>
             <svg v-if="!member.state" xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
               <circle cx="5.5" cy="5" r="5" fill="#B5B5C3"/>
+            </svg> -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+              <circle cx="5.5" cy="5" r="5" fill="#F1416C"/>
             </svg>
           </div>
           <div class="name">{{member.name}}</div>
-          <div class="company">{{member.company}}</div>
-          <div class="date">{{member.date}}</div>
+          <div class="company">{{member.companyId ?store.getters.getData('company').find(con => con.id == member.companyId).name :''}}</div>
+          <div class="date">{{member.timestamp? member.timestamp.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5') :''}}</div>
         </li>
       </ul>
     </div>
@@ -26,6 +30,8 @@
 </template>
 
 <script lang="ts">
+import store from "@/store";
+import axios from "axios";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -44,32 +50,24 @@ export default defineComponent({
   setup() {
     const members = ref([
       {
-        state: true,
-        name: '아이유',
-        company: 'SKB',
-        date: '2023.05.30 12:23:35'
-      },
-      {
-        state: true,
-        name: '손석구',
-        company: 'SKB',
-        date: '2023.05.30 12:23:35'
-      },
-      {
-        state: true,
-        name: '지아',
-        company: 'SKB',
-        date: '2023.05.30 12:23:35'
-      },
-      {
-        state: false,
-        name: '선우정아',
-        company: 'NS 쇼핑',
-        date: '2023.05.30 12:23:35'
+        name: "홍애리",
+        company: "SKB",
+        timestamp: '',
+        status: "being",
       },
     ])
 
-    return {members}
+    const load_connect = async () => {
+      const { data } = await axios.get('/online')
+
+      console.log(data);
+      members.value = data
+    }
+
+    load_connect()
+    setInterval(() => load_connect(), 5000)
+
+    return {members, store}
   }
 
 });

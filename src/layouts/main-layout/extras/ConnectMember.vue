@@ -64,7 +64,7 @@
               :status="item.status"
               :name="item.name"
               :company="item.companyId ?store.getters.getData('company').find(con => con.id == item.companyId).name :''"
-              :time="item.timestamp.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')"
+              :time="item.timestamp? item.timestamp.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5') :''"
             ></Member>
           </template>
         </div>
