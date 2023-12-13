@@ -22,12 +22,12 @@
                     <li><span class="purson">{{ul.file && ul.file.user ?ul.file.user.name: ''}}</span> <span class="depart" v-if="ul.file && ul.file.user && ul.file.user.department">{{ul.file.user.department}}</span></li>
                     <li><div>
                         <div>{{ul.createdAt ?ul.createdAt.slice(0,10) :''}}</div>
-                        <div>{{ul.createdAt ?ul.createdAt.slice(10,20) :''}}</div>
+                        <div>{{ul.createdAt ?ul.createdAt.slice(11,19) :''}}</div>
                     </div></li>
                     <li><span class="purson">{{ul.user ?ul.user.name : ''}}</span> <span class="depart" v-if="ul.user && ul.user.department">{{ul.user.department}}</span></li>
                     <li><div>
                         <div>{{ul.updatedAt ?ul.updatedAt.slice(0,10) :''}}</div>
-                        <div>{{ul.updatedAt ?ul.updatedAt.slice(10,20) :''}}</div>
+                        <div>{{ul.updatedAt ?ul.updatedAt.slice(11,19) :''}}</div>
                     </div></li>
                 </ul>
             </div>
@@ -147,6 +147,11 @@ p{margin: 0;padding: 0;}
                             width: 120px;
                         }
                     }
+                    &:nth-child(4){
+                        span{
+                            width: 120px;
+                        }
+                    }
                     padding: 10px 0;
                     width: 190px;
                     display: flex;
@@ -168,14 +173,14 @@ p{margin: 0;padding: 0;}
                     }
 
                     span.depart{
-                        width: 66px;
+                        // min-width: 66px;
+                        // max-width: 120px;
                         height: 21px;
                         display: flex;
                         padding: 4px 20px;
                         margin-top: 8px;
                         justify-content: center;
                         align-items: center;
-                        gap: 8px;
                         border-radius: 21px;
                         background: #FFF5F8;
                     }

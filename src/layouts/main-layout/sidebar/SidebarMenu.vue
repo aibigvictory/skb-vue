@@ -814,7 +814,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
 
 <style lang="scss" scoped>
 #kt_app_sidebar_menu_wrapper{
-  height: calc(100vh - 69px - 152px);
+  height: calc(100vh - 10px - 152px);
   &::-webkit-scrollbar-thumb {background-color: #fff !important;}
 }
 .sub-menu-link{
@@ -892,7 +892,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
   }
 }
 .non-use-file-wrap{
-  margin-top: 140px;
+  margin-top: 190px;
   position: sticky;
   bottom: 0;
   > .menu-link{
