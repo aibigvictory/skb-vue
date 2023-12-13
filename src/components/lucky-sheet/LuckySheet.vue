@@ -43,6 +43,7 @@ const reload_excel = (url, excelName, luckysheet) => {
     luckysheet.create({
         container: 'luckysheet',
         showinfobar: false,
+        showtoolbar: false,
         data:exportJson.sheets,
         title:exportJson.info.name,
         userInfo:exportJson.info.name.creator,
