@@ -145,20 +145,28 @@ const getUserData = async () => {
 //엑셀 저장
 const saveExcel = async () => {
   try{
+    const revision = localStorage.getItem('revision') ?? '[]';
     const user = await getUserData();
-    const result = await axios.post('/excel/edit', {
+    const result = await axios.post('/file/edit', {
       userId: user.id,
-      data: [...updateMap.values()]
+      data: [...updateMap.values()],
+      revision: JSON.parse(revision),
     });
     console.log(result);
-    if (result.status === 200) {
+    if (result.status === 201) {
       state.popup.content = ['수정이 완료되었습니다.']
       state.popup.btnCount = 1
       state.popup.toggle = true
       return;
     }
   }
-  catch(error) {
+  catch(error: any) {
+    if (error?.response?.status === 409) {
+      state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
+      state.popup.btnCount = 1
+      state.popup.toggle = true
+      return;
+    }
     state.popup.content = ['수정에 실패하였습니다.']
     state.popup.btnCount = 1
     state.popup.toggle = true

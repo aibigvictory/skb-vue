@@ -84,7 +84,7 @@ const download_excel = () => {
 
 const init = async () => {
     const { data } = await axios.get(`/file/${localStorage.getItem('id')}`)
-    const { name, user, folder, bookmark } = data
+    const { name, user, folder, bookmark, revision } = data
 
     excelTitle.value = name
     excelUploader.value = user.name
@@ -93,6 +93,7 @@ const init = async () => {
     categoryName.value = folder.name
     excelUploaderCompanyId.value = user.companyId
     excelBookmark.value = bookmark.length
+    localStorage.setItem('revision', JSON.stringify(revision));
 }
 
 init()
