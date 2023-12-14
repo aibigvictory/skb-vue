@@ -17,9 +17,27 @@ import { config, layout, themeMode } from "@/core/helpers/config";
 import { initializeComponents } from "@/core/plugins/keenthemes";
 
 import axios from "axios";
+import JwtService from "./core/services/JwtService";
+import router from "./router";
 
 const store = useStore();
 const state = store.state
+
+const checkTokenExp = () => {
+  const decode = JwtService.decode(JwtService.getToken())
+  const now = new Date()
+  const exp = new Date(Number(decode.exp + '000'))
+
+  if (now > exp) {
+    router.push({name: "sign-in"})
+    JwtService.destroyToken()
+  }
+  else{
+    console.log('clear');
+  }
+}
+
+setInterval(() => checkTokenExp, 5000)
 
 const init = async () => {
   const { data } = await axios.post('/folder/list', {
