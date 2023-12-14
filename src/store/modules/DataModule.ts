@@ -1,6 +1,8 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { Actions, Mutations } from "@/store/enums/StoreEnums";
 import ApiService from "@/core/services/ApiService";
+import router from "@/router";
+import JwtService from "@/core/services/JwtService";
 
 export interface DataInfo {
   data: {
@@ -60,6 +62,8 @@ export default class DataModule extends VuexModule implements DataInfo {
       })
       .catch(({ response }) => {
         console.log(response);
+        router.push({name: "sign-in"})
+        JwtService.destroyToken()
       });
 
   }
@@ -77,6 +81,8 @@ export default class DataModule extends VuexModule implements DataInfo {
       })
       .catch(({ response }) => {
         console.log(response);
+        router.push({name: "sign-in"})
+        JwtService.destroyToken()
       });
 
   }

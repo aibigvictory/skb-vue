@@ -901,6 +901,8 @@ console.log(filter_fileUse(deepCopy(category_list)));
   // position: sticky;
   position: absolute;
   bottom: 0;
+  right: 0;
+  left: 0;
   overflow-x: hidden;
   > .menu-link{
     background: #1e1e2d;

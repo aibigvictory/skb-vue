@@ -130,7 +130,7 @@ const messages = ref([
 const load_connect = async () => {
   const { data } = await axios.get('/online')
 
-  console.log(data);
+  // console.log(data);
   messages.value = data
 }
 
