@@ -22,7 +22,7 @@
           </div>
           <div class="name">{{member.name}}</div>
           <div class="company">{{member.companyId ?store.getters.getData('company').find(con => con.id == member.companyId).name :''}}</div>
-          <div class="date">{{member.timestamp? member.timestamp.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5') :''}}</div>
+          <div class="date">{{member.timestamp? member.timestamp.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5') :'2023년 00월 00일 00:00'}}</div>
         </li>
       </ul>
     </div>

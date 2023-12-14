@@ -4,18 +4,18 @@
     <!--begin::Menu wrapper-->
     <div
       id="kt_app_sidebar_menu_wrapper"
-      class="app-sidebar-wrapper hover-scroll-overlay-y overflow-scroll my-5"
+      class="app-sidebar-wrapper hover-scroll-overlay-y my-5"
       data-kt-scroll="true"
       data-kt-scroll-activate="true"
       data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
-      data-kt-scroll-wrappers="#kt_app_sidebar_menu"
+      data-kt-scroll-wrappers="kt_app_sidebar_menu"
       data-kt-scroll-offset="5px"
       data-kt-scroll-save-state="true"
     >
       <!--begin::Menu-->
       <div
-        id="#kt_app_sidebar_menu"
-        class="menu menu-column menu-rounded menu-sub-indention px-3"
+        id="kt_app_sidebar_menu"
+        class="menu menu-column menu-rounded menu-sub-indention"
         data-kt-menu="true"
       >
         <template v-for="(item, i) in MainMenuConfig" :key="i">
@@ -816,6 +816,11 @@ console.log(filter_fileUse(deepCopy(category_list)));
 #kt_app_sidebar_menu_wrapper{
   height: calc(100vh - 10px - 152px);
   &::-webkit-scrollbar-thumb {background-color: #fff !important;}
+
+}
+#kt_app_sidebar_menu{
+  overflow-y: scroll;
+  height: calc(100% - 260px);
 }
 .sub-menu-link{
   padding-top: 5px;
@@ -892,14 +897,15 @@ console.log(filter_fileUse(deepCopy(category_list)));
   }
 }
 .non-use-file-wrap{
-  margin-top: 190px;
-  position: sticky;
+  // margin-top: 190px;
+  // position: sticky;
+  position: absolute;
   bottom: 0;
+  overflow-x: hidden;
   > .menu-link{
     background: #1e1e2d;
   }
   .non-use-file{
-    margin: -5px -10px;
     margin-top: 0;
     background: #112847;
     padding: 10px calc(12px + 0.75rem) 0 calc(12px + 0.75rem);
