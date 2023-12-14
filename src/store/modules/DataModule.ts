@@ -62,8 +62,8 @@ export default class DataModule extends VuexModule implements DataInfo {
       })
       .catch(({ response }) => {
         console.log(response);
-        router.push({name: "sign-in"})
-        JwtService.destroyToken()
+        // router.push({name: "sign-in"})
+        // JwtService.destroyToken()
       });
 
   }
@@ -81,8 +81,8 @@ export default class DataModule extends VuexModule implements DataInfo {
       })
       .catch(({ response }) => {
         console.log(response);
-        router.push({name: "sign-in"})
-        JwtService.destroyToken()
+        // router.push({name: "sign-in"})
+        // JwtService.destroyToken()
       });
 
   }
