@@ -167,6 +167,11 @@
       </router-link>
     </div>
     <div class="menu-item px-5 my-1">
+      <router-link to="/notice" class="menu-link px-5">
+        공지사항
+      </router-link>
+    </div>
+    <div class="menu-item px-5 my-1">
       <router-link to="/signup/accept" class="menu-link px-5">
         회원가입 승인
       </router-link>
