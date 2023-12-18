@@ -109,6 +109,7 @@ watch(() => props.sort, (value) => {
 
 let sheet_list:any = []
 let file_list: any = []
+let revisionArr: any[] = [];
 const search_result_list = ref({})
 
 const category_in_file = (category_arr, file_arr, category_key, file_key) => {
@@ -159,11 +160,12 @@ const init = async () => {
     "id": file_id_list,
     "match": props.searchType
   })
-  const { folders, files } = data
+  const { folders, files, revision } = data
 
   search_result_list.value = category_in_file(folders, files, 'code', 'folderCd')
 
   file_list = files
+  revisionArr = revision;
 }
 
 const sort_search_result = (target, option) => {
@@ -831,16 +833,24 @@ const save = async () => {
   // ]
 
   
-  const adjustExcel = await axios.post('/excel/edit', {
+  const adjustExcel = await axios.post('/file/edit', {
     userId,
-    data: [...edit_list.values()]
+    data: [...edit_list.values()],
+    revision: revisionArr,
   })
   .then(() => {
     state.popup.content = ['엑셀 수정이 완료되었습니다.']
     state.popup.btnCount = 1
     state.popup.toggle = true
   })
-  .catch(() => {
+  .catch((error) => {
+    if (error?.response?.status === 409) {
+      state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
+      state.popup.btnCount = 1
+      state.popup.toggle = true
+      return;
+    }
+
     state.popup.content = ['엑셀 수정에 실패하였습니다.']
     state.popup.btnCount = 1
     state.popup.toggle = true
