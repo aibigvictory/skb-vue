@@ -14,6 +14,7 @@ import LuckyExcel from 'luckyexcel'
 import axios from 'axios'
 import store from '@/store';
 import JwtService from '@/core/services/JwtService';
+import router from '@/router'
 
 const state = store.state
 
@@ -72,7 +73,7 @@ const reload_excel = (url, excelName, luckysheet) => {
                     fileId: props.excelId,
                     r: 0,
                     c: parseInt(key),
-                    value: String(value),
+                    value: String(Math.round(value)),
                     sheetName
                   });
                 }
@@ -186,6 +187,7 @@ const saveExcel = async () => {
       state.popup.content = ['수정이 완료되었습니다.']
       state.popup.btnCount = 1
       state.popup.toggle = true
+      router.go(0);
       return;
     }
   }
