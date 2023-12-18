@@ -53,7 +53,35 @@ const reload_excel = (url, excelName, luckysheet) => {
             console.log('operate: ',operate);
             console.log('data: ', data);
             
-            document.querySelector('.btn-save')?.classList.add('active')
+            /**
+             * ctrlType: "resizeC"
+             * ctrlValue: "columnlen"
+             */
+            const { ctrlType, config, curconfig } = operate;
+            if (ctrlType === 'resizeC') {
+              const prevColumnLengthObj = config.columnlen;
+              const currentColumnLengthObj = curconfig.columnlen;
+              // 변경된 부분만 추가
+              for (const [key, value] of Object.entries(currentColumnLengthObj)) {
+                const prevLength = prevColumnLengthObj[key];
+                if (!prevLength) continue;
+                if (prevLength !== value) {
+                  const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+                  updateMap.set(`resizeColumn_${props.excelId}_${sheetIndex}_${key}`, {
+                    action: 'resizeColumn',
+                    fileId: props.excelId,
+                    r: 0,
+                    c: parseInt(key),
+                    value: String(value),
+                    sheetName
+                  });
+                }
+              }
+            }
+            
+            if (updateMap.size > 0) {
+              document.querySelector('.btn-save')?.classList.add('active')
+            }
           },
           cellUpdateBefore: function (r, c, value) {
             console.log('! cellUpdateBefore', {r, c, value});
@@ -62,8 +90,9 @@ const reload_excel = (url, excelName, luckysheet) => {
           cellUpdated: function (r, c, oldValue, newValue) {
             const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
             console.log('! cellUpdated', {sheetName, r, c, oldValue, newValue});
-            const key = `${props.excelId}_${sheetIndex}_${r}_${c}`;
+            const key = `editCell_${props.excelId}_${sheetIndex}_${r}_${c}`;
             updateMap.set(key, {
+              action: 'editCell',
               fileId: props.excelId,
               r: r + 1,
               c: c + 1,
