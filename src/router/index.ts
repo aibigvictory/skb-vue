@@ -65,6 +65,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/notice",
+        name: "notice",
+        component: () => import("@/views/Notice.vue"),
+        meta: {
+          pageTitle: "공지사항",
+          breadcrumbs: ["공지사항"],
+        },
+      },
+      {
         path: "/excel",
         name: "excel",
         component: () => import("@/views/ExcelView.vue"),

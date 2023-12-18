@@ -201,7 +201,7 @@ p{margin: 0;padding: 0;}
                     }
 
                     span.depart{
-                        width: 66px;
+                        width: 120px;
                         height: 21px;
                         display: flex;
                         padding: 4px 20px;
