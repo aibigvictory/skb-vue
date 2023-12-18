@@ -58,8 +58,9 @@ const reload_excel = (url, excelName, luckysheet) => {
              * ctrlType: "resizeC"
              * ctrlValue: "columnlen"
              */
-            const { ctrlType, config, curconfig } = operate;
+            const { ctrlType } = operate;
             if (ctrlType === 'resizeC') {
+              const { config, curconfig } = operate;
               const prevColumnLengthObj = config.columnlen;
               const currentColumnLengthObj = curconfig.columnlen;
               // 변경된 부분만 추가
