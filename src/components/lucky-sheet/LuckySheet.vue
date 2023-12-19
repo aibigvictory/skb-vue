@@ -58,7 +58,7 @@ const reload_excel = (url, excelName, luckysheet) => {
              * ctrlType: "resizeC"
              * ctrlValue: "columnlen"
              */
-            const { ctrlType } = operate;
+            const { type, ctrlType } = operate;
             if (ctrlType === 'resizeC') {
               const { config, curconfig } = operate;
               const prevColumnLengthObj = config.columnlen;
@@ -79,6 +79,18 @@ const reload_excel = (url, excelName, luckysheet) => {
                   });
                 }
               }
+            }
+            if (type === 'zoomChange') {
+              const { zoomRatio, curZoomRatio } = operate;
+              const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+              updateMap.set(`zoomChange_${props.excelId}_${sheetIndex}`, {
+                action: 'zoomChange',
+                fileId: props.excelId,
+                r: 0,
+                c: 0,
+                value: String(Math.round(curZoomRatio * 100)),
+                sheetName
+              });
             }
             
             if (updateMap.size > 0) {
