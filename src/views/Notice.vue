@@ -28,7 +28,7 @@
                             <div>{{member.title}}</div>
                             <div>{{new Date(member.startDt).toISOString().slice(0,10).replace(/T/g, ' ').replace(/-/g, '.')}} ~ {{new Date(member.endDt).toISOString().slice(0,10).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
                             <div>{{member.use? '사용' : '미사용'}}</div>
-                            <div>{{member.creator}}</div>
+                            <div>{{member.user.name}}</div>
                             <div>{{new Date(member.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
                         </li>
                         <!-- <li>
@@ -50,13 +50,25 @@
                 </div>
             </div>
         </div>
-        <form class="user-add" v-if="user_add " @submit="create_user">
+        <form class="user-add" v-if="user_add" @submit="create_user">
             <div class="title">사용자 등록</div>
             <div class="section">
                 <div class="line">
                     <div class="item">
                         <label for="">제목</label>
                         <input v-model="input_add_user.title" type="text" placeholder="입력해주세요.">
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item2">
+                        <label for="">노출기간</label>
+                        <div>
+                            <input v-model="startDt" type="date" placeholder="입력해주세요.">
+                            <div>~</div>
+                            <input v-model="endDt" type="date" placeholder="입력해주세요.">
+                            <input v-model="input_add_user.isAlways" type="checkbox" placeholder="입력해주세요." id="isAlways">
+                            <label for="isAlways">항시노출</label>
+                        </div>
                     </div>
                 </div>
                 <label for="">내용</label>
@@ -89,13 +101,15 @@ const search_detail = ref(false)
 
 let search_keyword = ref('')
 
+let startDt = ref(new Date().toISOString().slice(0,10))
+let endDt = ref(new Date().toISOString().slice(0,10))
 let input_add_user = ref({
     title: null,
     use: true,
     isAlways: false,
     contents: null,
-    startDt: new Date(),
-    endDt: new Date(),
+    startDt: computed(() => new Date(startDt.value)),
+    endDt: computed(() => new Date(new Date(endDt.value).getTime() + 24 * 60 * 60 * 1000 - 1)),
 })
 
 let input_adjust_user = computed(() => {
@@ -167,21 +181,21 @@ const create_user = async () => {
     load_memberList()
 }
 
-// const update_user = async () => {
-//     const axios_config = {
-//         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
-//     }
+const update_user = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
 
-//     await axios.post('/auth/updateUser', input_adjust_user.value, axios_config)
+    await axios.post('/notice/update', input_adjust_user.value, axios_config)
 
-//     state.popup.content = ['사용자 수정이 완료되었습니다.']
-//     state.popup.btnCount = 1
-//     state.popup.toggle = true
+    state.popup.content = ['공지 수정이 완료되었습니다.']
+    state.popup.btnCount = 1
+    state.popup.toggle = true
 
-//     user_adjust.value = false
+    user_adjust.value = false
 
-//     load_memberList()
-// }
+    load_memberList()
+}
 
 let member_checked_list:any = ref([])
 const check_all_member = (e) => {
@@ -195,30 +209,30 @@ const check_all_member = (e) => {
     }
 }
 
-// let accept_popup_state = ref(false)
-// let delete_popup_state = ref(false)
+let accept_popup_state = ref(false)
+let delete_popup_state = ref(false)
 
-// const delete_member = () => {
-//     member_checked_list.value.forEach(async (member_id, idx) => {
-//         await axios.post('/auth/deleteUser', {id: member_id})
+const delete_member = () => {
+    member_checked_list.value.forEach(async (member_id, idx) => {
+        await axios.post('/notice/delete', {id: member_id})
 
-//         if (idx == member_checked_list.value.length - 1) {
-//             state.popup.content = ['사용자 삭제가 완료되었습니다.']
-//             state.popup.btnCount = 1
-//             state.popup.toggle = true
+        if (idx == member_checked_list.value.length - 1) {
+            state.popup.content = ['공지 삭제가 완료되었습니다.']
+            state.popup.btnCount = 1
+            state.popup.toggle = true
 
-//             load_memberList()
+            load_memberList()
 
-//             member_checked_list.value = []
-//         }
-//     })
-//     // axios.post('/auth/deleteUser', {id: member_checked_list.value})
-// }
+            member_checked_list.value = []
+        }
+    })
+    // axios.post('/auth/deleteUser', {id: member_checked_list.value})
+}
 
-// const change_popup_state = (popup_type, state) => {
-//     if (popup_type == 'delete') delete_popup_state.value = state
-//     if (popup_type == 'accept') accept_popup_state.value = state
-// }
+const change_popup_state = (popup_type, state) => {
+    if (popup_type == 'delete') delete_popup_state.value = state
+    if (popup_type == 'accept') accept_popup_state.value = state
+}
 
 </script>
 
@@ -482,6 +496,39 @@ li{list-style: none;}
                         border-radius: 10px;
                         border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
                         background: #FFF;
+                    }
+                }
+                .item2{
+                    margin-bottom: 16px;
+                    label{
+                        display: block;
+                        color: var(--primary-text, #222);
+                        font-size: 14px;
+                        font-weight: 500;
+                        user-select: none;
+                    }
+                    > label{
+                        margin-bottom: 10px;
+                    }
+                    > div{
+                        display: flex;
+                        align-items: center;
+
+                        > div{
+                            margin: 0 10px;
+                        }
+                    
+                        input{
+                            height: 40px;
+                            padding: 0 12px;
+                            border-radius: 10px;
+                            border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+                            background: #FFF;
+                            &[type="checkbox"]{
+                                margin-left: 15px;
+                                margin-right: 5px;
+                            }
+                        }
                     }
                 }
             }
