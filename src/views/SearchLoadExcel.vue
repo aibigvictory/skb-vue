@@ -74,6 +74,8 @@ const props = defineProps({
     fileList: Object,
 })
 
+let focusedGrid = '';
+
 console.log(new Date().getTime());
 
 const isMaskShow = ref(true)
@@ -471,10 +473,19 @@ const create_toasrUiGrid = (file_list) => {
 
       console.log('toast: ', toast);
 
-      toast.on('keydown', () => {
-        console.log(2321321123);
-        
+      toast.on('focusChange', (ev) => {
+        const instance = ev['instance'];
+        focusedGrid = `${instance?.el?.id}_${index}`;
       });
+      document.getElementById(`grid${file.id}`)?.addEventListener('keydown', (ev) => {
+        // console.log('keydown', ev);
+        if (ev.key === 'F2' && focusedGrid === `grid${file.id}_${index}`) {
+          const { rowKey, columnName } = toast.getFocusedCell();
+          if (rowKey == null || columnName == null) return;
+          toast.startEditing(rowKey, columnName);
+        }
+      });
+
       toast.on('click', (ev) => {
         console.log(ev);
         
