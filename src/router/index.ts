@@ -74,6 +74,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/queton",
+        name: "queton",
+        component: () => import("@/views/manage/Queton.vue"),
+        meta: {
+          pageTitle: "공지사항",
+          breadcrumbs: ["공지사항"],
+        },
+      },
+      {
         path: "/excel",
         name: "excel",
         component: () => import("@/views/ExcelView.vue"),
