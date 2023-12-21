@@ -34,7 +34,7 @@
             </div>
         </div>
         <form class="user-add" v-if="addMode" @submit="createQuetone">
-            <div class="title">사용자 등록</div>
+            <div class="title">관리 항목 추가</div>
             <div class="section">
                 <!-- nToneId, ChName, PsipSrcNo, ChNumber, Chlink -->
                 <div class="line">
@@ -44,25 +44,25 @@
                     </div>
                 </div>
                 <div class="line">
-                    <div class="item2">
+                    <div class="item">
                         <label for="">ChName</label>
                         <input v-model="quetoneModel.chName" type="text" placeholder="" required>
                     </div>
                 </div>
                 <div class="line">
-                    <div class="item3">
+                    <div class="item">
                         <label for="">PsipSrcNo</label>
                         <input v-model="quetoneModel.psipSrcNo" type="text" placeholder="" required>
                     </div>
                 </div>
                 <div class="line">
-                    <div class="item4">
+                    <div class="item">
                         <label for="">ChNumber</label>
                         <input v-model="quetoneModel.chNumber" type="text" placeholder="" required>
                     </div>
                 </div>
                 <div class="line">
-                    <div class="item5">
+                    <div class="item">
                         <label for="">Chlink</label>
                         <input v-model="quetoneModel.chLink" type="text" placeholder="">
                     </div>
@@ -276,30 +276,125 @@ li{list-style: none;}
     }
 
     .user-add{
-        input{
-            display: block;
-            height: 40px;
-            padding: 0 12px;
-            width: 100%;
-            margin-bottom: 16px;
-            border-radius: 10px;
-            border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
-            background: #FFF;
-        }
-        textarea{
-            padding: 12px;
-            width: 100%;
-            height: 100px;
-            margin-bottom: 16px;
-            border-radius: 10px;
-            border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
-            background: #FFF;
-        }
+        // input{
+        //     display: block;
+        //     height: 40px;
+        //     padding: 0 12px;
+        //     width: 100%;
+        //     margin-bottom: 16px;
+        //     border-radius: 10px;
+        //     border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+        //     background: #FFF;
+        // }
+        // textarea{
+        //     padding: 12px;
+        //     width: 100%;
+        //     height: 100px;
+        //     margin-bottom: 16px;
+        //     border-radius: 10px;
+        //     border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+        //     background: #FFF;
+        // }
 
-        .text{
+        // .text{
+        //     color: var(--primary-text, #222);
+        //     font-size: 14px;
+        //     font-weight: 500;
+        // }
+        width: 800px;
+        padding: 32px;
+        background: #fff;
+        .title{
             color: var(--primary-text, #222);
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .section{
+            margin: 24px 0;
+            .line{
+                display: flex;
+                justify-content: space-between;
+                .item{
+                    width: calc(50% - 6px);
+                    label{
+                        display: block;
+                        color: var(--primary-text, #222);
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-bottom: 10px;
+                        span{
+                            color: var(--data-bs-theme-light-bs-red, #DC3545);
+                            font-size: 10px;
+                            font-weight: 400;
+                        }
+                    }
+                    select, input{
+                        display: block;
+                        height: 40px;
+                        padding: 0 12px;
+                        width: 100%;
+                        margin-bottom: 16px;
+                        border-radius: 10px;
+                        border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+                        background: #FFF;
+                    }
+                }
+                .item2{
+                    margin-bottom: 16px;
+                    label{
+                        display: block;
+                        color: var(--primary-text, #222);
+                        font-size: 14px;
+                        font-weight: 500;
+                        user-select: none;
+                    }
+                    > label{
+                        margin-bottom: 10px;
+                    }
+                    > div{
+                        display: flex;
+                        align-items: center;
+
+                        > div{
+                            margin: 0 10px;
+                        }
+                    
+                        input{
+                            height: 40px;
+                            padding: 0 12px;
+                            border-radius: 10px;
+                            border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+                            background: #FFF;
+                            &[type="checkbox"]{
+                                margin-left: 15px;
+                                margin-right: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+            textarea{
+                padding: 12px;
+                width: 100%;
+                height: 100px;
+                margin-bottom: 16px;
+                border-radius: 10px;
+                border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+                background: #FFF;
+            }
+        }
+        .btn-wrap{
+            display: flex;
+            justify-content: center;
+            .btn{
+                &:nth-child(1) {
+                    margin-right: 4px;
+                }
+                &:nth-child(2) {
+                    margin-left: 4px;
+                }
+            }
         }
     }
 }
