@@ -2,7 +2,7 @@
     <div class="wrap">
         <div v-if="!addMode">
             <div class="header">
-                <div class="title">큐톤 관리 항목</div>
+                <div class="title">큐톤 모니터링</div>
                 <div class="btn-wrap">
                     <div class="btn btn-danger">관리 항목 삭제</div>
                     <div class="btn btn-primary" @click="addMode = true">관리 항목 추가</div>

@@ -78,8 +78,17 @@ const routes: Array<RouteRecordRaw> = [
         name: "queton",
         component: () => import("@/views/manage/Queton.vue"),
         meta: {
-          pageTitle: "공지사항",
-          breadcrumbs: ["공지사항"],
+          pageTitle: "큐톤 관리 항목",
+          breadcrumbs: ["큐톤 관리 항목"],
+        },
+      },
+      {
+        path: "/quetoneView",
+        name: "quetoneView",
+        component: () => import("@/views/QuetoneView.vue"),
+        meta: {
+          pageTitle: "큐톤 모니터링",
+          breadcrumbs: ["큐톤 모니터링"],
         },
       },
       {
