@@ -197,6 +197,72 @@ textarea{
         .section{
             background: #fff;
             padding: 0 24px;
+            
+            .quetoneList{
+                padding-top: 20px;
+                padding-bottom: 24px;
+                .info{
+                    color: var(--primary-text, #222);
+                    font-size: 14px;
+                    font-weight: 700;
+                    background: var(----bs-gray-100, #F9F9F9);
+                    li{
+                        height: 68px;
+                        display: flex;
+                        align-items: center;
+                        // border-top: 1px solid #eee;
+                        // border: 1px solid #000;
+                        div{
+                            display: flex;
+                            align-items: center;
+                            width: 180px;
+                            // &:nth-child(1) {
+                            // }
+                        }
+                        input{
+                            margin-right: 16px;
+                            margin-left: 4px;
+                        }
+                    }
+                }
+                .queton{
+                    color: var(--primary-text, #222);
+                    font-size: 14px;
+                    font-weight: 400;
+                    li{
+                        height: 54px;
+                        display: flex;
+                        border-top: 1px solid #eee;
+                        div{
+                            display: flex;
+                            align-items: center;
+                            width: 180px;
+                            // &:nth-child(1) {
+                            // }
+                            .accept-type{
+                                display: flex;
+                                padding: 4px 16px;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 8px;
+                                border-radius: 21px;
+                                background: var(--data-bs-theme-light-bs-info-light, #F8F5FF);
+    
+                                color: var(--data-bs-theme-light-bs-info, #7239EA);
+                                text-align: center;
+                                font-size: 13px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 100%; /* 13px */
+                            }
+                        }
+                        input{
+                            margin-right: 16px;
+                            margin-left: 4px;
+                        }
+                    }
+                }
+            }
         }
     }
 }

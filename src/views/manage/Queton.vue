@@ -4,7 +4,7 @@
             <div class="header">
                 <div class="title">큐톤 관리 항목</div>
                 <div class="btn-wrap">
-                    <div class="btn btn-danger">관리 항목 삭제</div>
+                    <div class="btn btn-danger" @click="delete_quetone">관리 항목 삭제</div>
                     <div class="btn btn-primary" @click="addMode = true">관리 항목 추가</div>
                 </div>
             </div>
@@ -12,7 +12,7 @@
                 <div class="quetoneList">
                     <ul class="info">
                         <li>
-                            <!-- <input @change="check_all_member" type="checkbox"> -->
+                            <input @change="check_all_quetone" type="checkbox">
                             <div>nToneId</div>
                             <div>ChName</div>
                             <div>PsipSrcNo</div>
@@ -22,7 +22,7 @@
                     </ul>
                     <ul class="quetone">
                         <li v-for="item in quetoneList" :key="item">
-                            <!-- <input v-model="member_checked_list" :value="member.id" type="checkbox"> -->
+                            <input v-model="quetone_checked_list" :value="item.id" type="checkbox">
                             <div>{{item.nToneId}}</div>
                             <div>{{item.chName}}</div>
                             <div>{{item.psipSrcNo}}</div>
@@ -84,6 +84,7 @@ import axios from 'axios'
 
 import { computed, Ref, ref, watch } from 'vue'
 type Quetone = {
+    id: Number;
     chLink: string;
     chName: string;
     chNumber: string;
@@ -95,6 +96,7 @@ const state = store.state
 
 const addMode = ref(false)
 let quetoneModel: Ref<Quetone> = ref({
+    id: 0,
     chLink: '',
     chName: '',
     chNumber: '',
@@ -136,6 +138,39 @@ const createQuetone = async () => {
     await getQuetoneList();
 }
 
+let quetone_checked_list:Ref<Number[]> = ref([])
+const check_all_quetone = (e) => {
+    if(e.target.checked) {
+        quetoneList.value.forEach((quetone) => {
+            console.log(quetone.id);
+            
+            quetone_checked_list.value.push(quetone.id)
+        })
+    }
+    else{
+        quetone_checked_list.value = []
+    }
+}
+
+const delete_quetone = async () => {
+    await axios.post('/quetone/delete', {id: quetone_checked_list.value})
+
+    state.popup.content = ['큐톤 삭제가 완료되었습니다.']
+    state.popup.btnCount = 1
+    state.popup.toggle = true
+
+    await getQuetoneList();
+    // quetone_checked_list.value.forEach(async (quetone_id, idx) => {
+
+    //     if (idx == quetone_checked_list.value.length - 1) {
+
+
+    //         quetone_checked_list.value = []
+    //     }
+    // })
+    // // axios.post('/auth/deleteUser', {id: member_checked_list.value})
+}
+
 
 // start
 getQuetoneList();
@@ -144,32 +179,6 @@ getQuetoneList();
 <style lang="scss" scoped>
 ul{margin: 0;padding: 0;}
 li{list-style: none;}
-
-input{
-    display: block;
-    height: 40px;
-    padding: 0 12px;
-    width: 100%;
-    margin-bottom: 16px;
-    border-radius: 10px;
-    border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
-    background: #FFF;
-}
-textarea{
-    padding: 12px;
-    width: 100%;
-    height: 100px;
-    margin-bottom: 16px;
-    border-radius: 10px;
-    border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
-    background: #FFF;
-}
-
-.text{
-    color: var(--primary-text, #222);
-    font-size: 14px;
-    font-weight: 500;
-}
 
 .wrap{
     margin: 48px 30px;
@@ -197,6 +206,100 @@ textarea{
         .section{
             background: #fff;
             padding: 0 24px;
+
+            .quetoneList{
+                padding-top: 20px;
+                padding-bottom: 24px;
+                .info{
+                    color: var(--primary-text, #222);
+                    font-size: 14px;
+                    font-weight: 700;
+                    background: var(----bs-gray-100, #F9F9F9);
+                    li{
+                        height: 68px;
+                        display: flex;
+                        align-items: center;
+                        // border-top: 1px solid #eee;
+                        // border: 1px solid #000;
+                        div{
+                            display: flex;
+                            align-items: center;
+                            width: 180px;
+                            // &:nth-child(1) {
+                            // }
+                        }
+                        input{
+                            margin-right: 16px;
+                            margin-left: 4px;
+                        }
+                    }
+                }
+                .quetone{
+                    color: var(--primary-text, #222);
+                    font-size: 14px;
+                    font-weight: 400;
+                    li{
+                        height: 54px;
+                        display: flex;
+                        border-top: 1px solid #eee;
+                        div{
+                            display: flex;
+                            align-items: center;
+                            width: 180px;
+                            // &:nth-child(1) {
+                            // }
+                            .accept-type{
+                                display: flex;
+                                padding: 4px 16px;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 8px;
+                                border-radius: 21px;
+                                background: var(--data-bs-theme-light-bs-info-light, #F8F5FF);
+    
+                                color: var(--data-bs-theme-light-bs-info, #7239EA);
+                                text-align: center;
+                                font-size: 13px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 100%; /* 13px */
+                            }
+                        }
+                        input{
+                            margin-right: 16px;
+                            margin-left: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .user-add{
+        input{
+            display: block;
+            height: 40px;
+            padding: 0 12px;
+            width: 100%;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+            background: #FFF;
+        }
+        textarea{
+            padding: 12px;
+            width: 100%;
+            height: 100px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
+            background: #FFF;
+        }
+
+        .text{
+            color: var(--primary-text, #222);
+            font-size: 14px;
+            font-weight: 500;
         }
     }
 }

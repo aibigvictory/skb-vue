@@ -28,7 +28,11 @@ const checkTokenExp = () => {
   const now = new Date()
   const exp = new Date(Number(decode.exp + '000'))
 
-  if (now > exp) {
+  console.log('decode');
+  console.log(decode);
+  
+
+  if (!decode && now > exp) {
     router.push({name: "sign-in"})
     JwtService.destroyToken()
   }
@@ -38,6 +42,7 @@ const checkTokenExp = () => {
 }
 
 setInterval(() => checkTokenExp, 5000)
+checkTokenExp()
 
 const init = async () => {
   const { data } = await axios.post('/folder/list', {
