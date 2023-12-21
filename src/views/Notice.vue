@@ -56,7 +56,7 @@
                 <div class="line">
                     <div class="item">
                         <label for="">제목</label>
-                        <input v-model="input_add_user.title" type="text" placeholder="입력해주세요.">
+                        <input v-model="input_add_user.title" type="text" placeholder="입력해주세요." required>
                     </div>
                 </div>
                 <div class="line">
@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <label for="">내용</label>
-                <textarea v-model="input_add_user.contents" placeholder="공지사항 내용을 입력해주세요."></textarea>
+                <textarea v-model="input_add_user.contents" placeholder="공지사항 내용을 입력해주세요." required></textarea>
             </div>
             <div class="btn-wrap">
                 <input type="submit" class="btn btn-primary" value="등록">

@@ -187,6 +187,8 @@ const getUserData = async () => {
 
 //엑셀 저장
 const saveExcel = async () => {
+  isMaskShow.value = true
+
   try{
     const revision = localStorage.getItem('revision') ?? '[]';
     const user = await getUserData();
@@ -200,8 +202,11 @@ const saveExcel = async () => {
       state.popup.content = ['수정이 완료되었습니다.']
       state.popup.btnCount = 1
       state.popup.toggle = true
-      router.go(0);
-      return;
+      
+      const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
+      document.querySelector('.btn-save')?.classList.remove('active')
+      isMaskShow.value = true
+      reload_excel(url, props.excelName, window.luckysheet)
     }
   }
   catch(error: any) {
@@ -209,11 +214,12 @@ const saveExcel = async () => {
       state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
       state.popup.btnCount = 1
       state.popup.toggle = true
-      return;
+      return isMaskShow.value = false;
     }
     state.popup.content = ['수정에 실패하였습니다.']
     state.popup.btnCount = 1
     state.popup.toggle = true
+    return isMaskShow.value = false;
   }
 }
 

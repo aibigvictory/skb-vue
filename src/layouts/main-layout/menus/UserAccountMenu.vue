@@ -172,6 +172,11 @@
       </router-link>
     </div>
     <div class="menu-item px-5 my-1">
+      <router-link to="/queton" class="menu-link px-5">
+        큐톤
+      </router-link>
+    </div>
+    <div class="menu-item px-5 my-1">
       <router-link to="/signup/accept" class="menu-link px-5">
         회원가입 승인
       </router-link>
