@@ -20,12 +20,15 @@ body {
     width: 100%;
     padding: 10px;
     column-gap: 20px;
+    flex-direction: column;
+}
+.log_container {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    column-gap: 20px;
 }
 
 table {
     text-align: center;
-}
-
-.log_view {
-    flex-grow: 1;
 }

@@ -1,17 +1,24 @@
-const API_URL = 'https://sawfish-robust-closely.ngrok-free.app/api';
+// const API_URL = 'http://192.168.213.200/api';
+const API_URL = 'http://localhost:9494';
 
 function timeToMinutes(timeString) {
-    // 분과 시간을 나눠 배열에 저장
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    try {
+        // 분과 시간을 나눠 배열에 저장
+        const [hours, minutes, seconds] = timeString.split(':').map(Number);
+        // 시간을 분 단위로 변환
+        const totalMinutes = hours * 60 + minutes;
 
-    // 시간을 분 단위로 변환
-    const totalMinutes = hours * 60 + minutes;
-
-    return totalMinutes;
+        return totalMinutes;
+    } catch (e) {
+        console.error(`${e} => timeString: (${timeString})`);
+    }
 };
 function minutesToTime(minutes) {
     if (typeof minutes !== 'number' || minutes < 0) {
-        return null; // 유효하지 않은 입력에 대해 null 반환
+        return 'N/A';
+    }
+    if (isNaN(minutes)) {
+        return 'N/A';
     }
 
     const hours = Math.floor(minutes / 60);
@@ -70,46 +77,67 @@ function createLogTr({
     cueM,
     cueB
 }) {
-    // 미수신기간 계산
-    let isNonReceive = false;
-    // cueM, B 값 다른지 여부
-    const differentCue = cueM !== cueB;
-    const receiveMinutes = timeToMinutes(chrReceiveTime);
-    const nonReceiveMinutes = minutesFromMidnight() - receiveMinutes;
-    // 만약 미수신 시간 4시간보다 크면 오류 빨간색 표시
-    if (nonReceiveMinutes > 240) {
-        isNonReceive = true;
-    }
-    const nonReceiveTime = minutesToTime(minutes);
+    try {
+        // 미수신기간 계산
+        let isNonReceive = false;
+        // cueM, B 값 다른지 여부
+        const differentCue = cueM !== cueB;
+        const receiveMinutes = timeToMinutes(chrReceiveTime);
+        const nonReceiveMinutes = minutesFromMidnight() - receiveMinutes;
+        // 만약 미수신 시간 4시간보다 크면 오류 빨간색 표시
+        if (nonReceiveMinutes > 240) {
+            isNonReceive = true;
+        }
+        const nonReceiveTime = minutesToTime(nonReceiveMinutes);
 
-    const tr = `
+        const tr = `
 <tr>
     <th scope="row">${no}</th>
-    <td><a href="${chLink}" target="_blank">${chName}</a></td>
-    <td><a href="${chLink}" target="_blank">${chNumber}</a></td>
-    <td><a href="${chLink}" target="_blank">${psipSrcNo}</a></td>
-    <td>${nCTModuleID}</td>
-    <td>${nCTPortID}</td>
-    <td>${chrReceiveDate}</td>
-    <td ${isNonReceive ? ' style="font-color: red"' : ''}>${chrReceiveTime}</td>
-    <td ${isNonReceive ? ' style="font-color: red"' : ''}>${nonReceiveTime}</td>
-    <td ${differentCue ? ' style="font-color: red"' : ''}>${cueM}</td>
-    <td ${differentCue ? ' style="font-color: red"' : ''}>${cueB}</td>
+    <td><a href="${chLink}" target="_blank">${chName ?? 'N/A'}</a></td>
+    <td>${chNumber ?? 'N/A'}</td>
+    <td>${psipSrcNo ?? 'N/A'}</td>
+    <td>${nCTModuleID ?? 'N/A'}</td>
+    <td>${nCTPortID ?? 'N/A'}</td>
+    <td>${chrReceiveDate?.substring(5) ?? 'N/A'}</td>
+    <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${chrReceiveTime?.slice(0, -3) ?? 'N/A'}</td>
+    <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${nonReceiveTime ?? 'N/A'}</td>
+    <td ${differentCue ? ' style="color: red; font-weight: bold;"' : ''}>${cueM ?? 'N/A'}</td>
+    <td ${differentCue ? ' style="color: red; font-weight: bold;"' : ''}>${cueB ?? 'N/A'}</td>
 </tr>
 `;
+        return tr;
+    } catch (e) {
+        console.error(e);
+    }
+}
 
-    return tr;
+function createClipTr({
+    no, vchrTitle, dtCreateDate, dtModiFyDate
+}) {
+    try {
+        const tr = `
+<tr>
+    <th scope="row">${no}</th>
+    <td>${vchrTitle}</td>
+    <td>${dtCreateDate}</td>
+    <td>${dtModiFyDate}</td>
+</tr>
+`;
+        return tr;
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 const logObserver = window.SWR(`${API_URL}/quetone/logs`, fetcher, options);
 const logWatcher = logObserver.watch(({ data, error }) => {
     // data - data for given key resolved by fetcher
     // error - error thrown by fetcher
-    console.table(data);
+    console.log(data.data);
     // 데이터
-    const logs = data.map((v, i, arr) => {
+    const logs = data.data.map((v, i, arr) => {
         return createLogTr({
-            no: i,
+            no: i + 1,
             ...v
         });
     });
@@ -127,5 +155,24 @@ const logWatcher = logObserver.watch(({ data, error }) => {
     const table3 = document.getElementById('log3');
     if (table3 && table3.tBodies.length > 0) {
         table3.tBodies[0].innerHTML = log3.join('');
+    }
+});
+
+const clipObserver = window.SWR(`${API_URL}/quetone/clips`, fetcher, options);
+const clipWatcher = clipObserver.watch(({ data, error }) => {
+    // data - data for given key resolved by fetcher
+    // error - error thrown by fetcher
+    console.log(data.data);
+    // 데이터
+    const clips = data.data.map((v, i, arr) => {
+        return createClipTr({
+            no: i + 1,
+            ...v
+        });
+    });
+
+    const table1 = document.getElementById('clip');
+    if (table1 && table1.tBodies.length > 0) {
+        table1.tBodies[0].innerHTML = clips.join('');
     }
 });

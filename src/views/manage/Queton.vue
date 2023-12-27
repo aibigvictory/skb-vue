@@ -13,21 +13,25 @@
                     <ul class="info">
                         <li>
                             <input @change="check_all_quetone" type="checkbox">
+                            <div>No</div>
                             <div>nToneId</div>
                             <div>ChName</div>
                             <div>PsipSrcNo</div>
                             <div>ChNumber</div>
+                            <div>nCTPortId</div>
                             <div>Chlink</div>
                         </li>
                     </ul>
                     <ul class="quetone">
-                        <li v-for="item in quetoneList" :key="item">
+                        <li v-for="(item, index) in quetoneList" :key="item.id">
                             <input v-model="quetone_checked_list" :value="item.id" type="checkbox">
+                            <div>{{ index + 1 }}</div>
                             <div>{{item.nToneId}}</div>
                             <div>{{item.chName}}</div>
                             <div>{{item.psipSrcNo}}</div>
                             <div>{{item.chNumber}}</div>
-                            <div>{{item.chLink}}</div>
+                            <div>{{item.nCTPortId ?? ''}}</div>
+                            <div>{{item.chLink ?? ''}}</div>
                         </li>
                     </ul>
                 </div>
@@ -63,6 +67,12 @@
                 </div>
                 <div class="line">
                     <div class="item">
+                        <label for="">nCTPortId</label>
+                        <input v-model="quetoneModel.nCTPortId" type="text" placeholder="">
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
                         <label for="">Chlink</label>
                         <input v-model="quetoneModel.chLink" type="text" placeholder="">
                     </div>
@@ -84,12 +94,13 @@ import axios from 'axios'
 
 import { computed, Ref, ref, watch } from 'vue'
 type Quetone = {
-    id: Number;
-    chLink: string;
+    id: number;
+    chLink?: string | null;
     chName: string;
     chNumber: string;
     nToneId: string;
     psipSrcNo: string;
+    nCTPortId?: string | null;
 }
 
 const state = store.state
@@ -97,11 +108,12 @@ const state = store.state
 const addMode = ref(false)
 let quetoneModel: Ref<Quetone> = ref({
     id: 0,
-    chLink: '',
     chName: '',
     chNumber: '',
     nToneId: '',
     psipSrcNo: '',
+    nCTPortId: null,
+    chLink: null,
 });
 const quetoneList: Ref<Quetone[]> = ref([]);
 
