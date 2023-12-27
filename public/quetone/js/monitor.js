@@ -1,5 +1,5 @@
-// const API_URL = 'http://192.168.213.200/api';
-const API_URL = 'http://localhost:9494';
+const API_URL = 'http://192.168.213.200/api';
+// const API_URL = 'http://localhost:9494';
 
 function timeToMinutes(timeString) {
     try {
@@ -112,7 +112,7 @@ function createLogTr({
 }
 
 function createClipTr({
-    no, vchrTitle, dtCreateDate, dtModiFyDate
+    no, vchrTitle, dtCreateDate, dtModifyDate
 }) {
     try {
         const tr = `
@@ -120,7 +120,7 @@ function createClipTr({
     <th scope="row">${no}</th>
     <td>${vchrTitle}</td>
     <td>${dtCreateDate}</td>
-    <td>${dtModiFyDate}</td>
+    <td>${dtModifyDate}</td>
 </tr>
 `;
         return tr;
@@ -162,9 +162,9 @@ const clipObserver = window.SWR(`${API_URL}/quetone/clips`, fetcher, options);
 const clipWatcher = clipObserver.watch(({ data, error }) => {
     // data - data for given key resolved by fetcher
     // error - error thrown by fetcher
-    console.log(data.data);
+    console.log(data);
     // 데이터
-    const clips = data.data.map((v, i, arr) => {
+    const clips = data.map((v, i, arr) => {
         return createClipTr({
             no: i + 1,
             ...v
