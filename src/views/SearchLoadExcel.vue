@@ -469,7 +469,12 @@ const create_toasrUiGrid = (file_list) => {
         columns,
         data,
         contextMenu: null,
-        editingEvent: 'dblclick'
+        editingEvent: 'dblclick',
+        copyOptions: {
+          customValue: (value, rowAttrs, column) => {
+            return value?.value;
+          }
+        }
       });
 
       console.log('toast: ', toast);
