@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <div v-if="!addMode">
+        <div v-if="!addMode && !adjustMode">
             <div class="header">
                 <div class="title">큐톤 관리 항목</div>
                 <div class="btn-wrap">
@@ -14,6 +14,7 @@
                         <li>
                             <input @change="check_all_quetone" type="checkbox">
                             <div>nToneId</div>
+                            <div>nCTPortId</div>
                             <div>ChName</div>
                             <div>PsipSrcNo</div>
                             <div>ChNumber</div>
@@ -21,9 +22,10 @@
                         </li>
                     </ul>
                     <ul class="quetone">
-                        <li v-for="item in quetoneList" :key="item">
+                        <li v-for="item in quetoneList" :key="item" @click="adjustMode = true; selectQuetoneModel = item;">
                             <input v-model="quetone_checked_list" :value="item.id" type="checkbox">
                             <div>{{item.nToneId}}</div>
+                            <div>{{item.nCTPortId}}</div>
                             <div>{{item.chName}}</div>
                             <div>{{item.psipSrcNo}}</div>
                             <div>{{item.chNumber}}</div>
@@ -41,6 +43,12 @@
                     <div class="item">
                         <label for="">nToneId</label>
                         <input v-model="quetoneModel.nToneId" type="text" placeholder="" required>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">nCTPortId</label>
+                        <input v-model="quetoneModel.nCTPortId" type="text" placeholder="" required>
                     </div>
                 </div>
                 <div class="line">
@@ -73,6 +81,53 @@
                 <div class="btn btn-secondary" @click="addMode = false">목록</div>
             </div>
         </form>
+
+        <form class="user-add" v-if="adjustMode" @submit="updateQuetone">
+            <div class="title">관리 항목 수정</div>
+            <div class="section">
+                <!-- nToneId, ChName, PsipSrcNo, ChNumber, Chlink -->
+                <div class="line">
+                    <div class="item">
+                        <label for="">nToneId</label>
+                        <input v-model="selectQuetoneModel.nToneId" type="text" placeholder="" required>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">nCTPortId</label>
+                        <input v-model="selectQuetoneModel.nCTPortId" type="text" placeholder="" required>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">ChName</label>
+                        <input v-model="selectQuetoneModel.chName" type="text" placeholder="" required>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">PsipSrcNo</label>
+                        <input v-model="selectQuetoneModel.psipSrcNo" type="text" placeholder="" required>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">ChNumber</label>
+                        <input v-model="selectQuetoneModel.chNumber" type="text" placeholder="" required>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">Chlink</label>
+                        <input v-model="selectQuetoneModel.chLink" type="text" placeholder="">
+                    </div>
+                </div>
+            </div>
+            <div class="btn-wrap">
+                <input type="submit" class="btn btn-primary" value="수정">
+                <div class="btn btn-secondary" @click="adjustMode = false">목록</div>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -89,18 +144,30 @@ type Quetone = {
     chName: string;
     chNumber: string;
     nToneId: string;
+    nCTPortId: string;
     psipSrcNo: string;
 }
 
 const state = store.state
 
 const addMode = ref(false)
+const adjustMode = ref(false)
 let quetoneModel: Ref<Quetone> = ref({
     id: 0,
     chLink: '',
     chName: '',
     chNumber: '',
     nToneId: '',
+    nCTPortId: '',
+    psipSrcNo: '',
+});
+let selectQuetoneModel: Ref<Quetone> = ref({
+    id: 0,
+    chLink: '',
+    chName: '',
+    chNumber: '',
+    nToneId: '',
+    nCTPortId: '',
     psipSrcNo: '',
 });
 const quetoneList: Ref<Quetone[]> = ref([]);
@@ -134,6 +201,30 @@ const createQuetone = async () => {
     
 
     addMode.value = false;
+
+    await getQuetoneList();
+}
+
+const updateQuetone = async () => {
+    const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+
+    const { data, status } = await axios.post('/quetone/update', selectQuetoneModel.value, axios_config);
+
+    if (status === 201) {
+        state.popup.content = ['큐톤 관리 항목 수정이 완료되었습니다.']
+        state.popup.btnCount = 1
+        state.popup.toggle = true
+    } else {
+        state.popup.content = ['내부 오류가 발생했습니다. 관리자에게 문의해주세요.']
+        state.popup.btnCount = 1
+        state.popup.toggle = true
+    }
+
+    
+
+    adjustMode.value = false;
 
     await getQuetoneList();
 }

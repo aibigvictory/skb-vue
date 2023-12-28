@@ -1,18 +1,18 @@
 <template>
     <div class="wrap">
-        <div class="user-list" v-if="!user_add && !user_adjust">
+        <div class="notice-list" v-if="!notice_add && !notice_adjust">
             <div class="header">
                 <div class="title">공지사항</div>
                 <div class="btn-wrap">
                     <div class="btn btn-danger" @click="change_popup_state('delete', true)">삭제</div>
-                    <div class="btn btn-primary" @click="user_add = true">공지등록</div>
+                    <div class="btn btn-primary" @click="notice_add = true">공지등록</div>
                 </div>
             </div>
             <div class="section">
                 <div class="accept">
                     <ul class="info">
                         <li>
-                            <input @change="check_all_member" type="checkbox">
+                            <input @change="check_all_notice" type="checkbox">
                             <!-- <div>구분</div> -->
                             <div>제목</div>
                             <div>노출기간</div>
@@ -21,15 +21,15 @@
                             <div>등록일자</div>
                         </li>
                     </ul>
-                    <ul class="member">
-                        <li v-for="member in view_member" :key="member">
-                            <input v-model="member_checked_list" :value="member.id" type="checkbox">
-                            <!-- <div>{{member.department}}</div> -->
-                            <div>{{member.title}}</div>
-                            <div>{{new Date(member.startDt).toISOString().slice(0,10).replace(/T/g, ' ').replace(/-/g, '.')}} ~ {{new Date(member.endDt).toISOString().slice(0,10).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
-                            <div>{{member.use? '사용' : '미사용'}}</div>
-                            <div>{{member.user.name}}</div>
-                            <div>{{new Date(member.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
+                    <ul class="notice">
+                        <li v-for="notice in view_notice" :key="notice" @click="notice_adjust = true; startDt2 = new Date(notice.startDt).toISOString().slice(0,10); endDt2 = new Date(notice.endDt).toISOString().slice(0,10); input_adjust_notice.title = notice.title; input_adjust_notice.isAlways = notice.isAlways; input_adjust_notice.contents = notice.contents; input_adjust_notice.id = notice.id">
+                            <input v-model="notice_checked_list" :value="notice.id" type="checkbox">
+                            <!-- <div>{{notice.department}}</div> -->
+                            <div>{{notice.title}}</div>
+                            <div>{{new Date(notice.startDt).toISOString().slice(0,10).replace(/T/g, ' ').replace(/-/g, '.')}} ~ {{new Date(notice.endDt).toISOString().slice(0,10).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
+                            <div>{{notice.use? '사용' : '미사용'}}</div>
+                            <div>{{notice.user.name}}</div>
+                            <div>{{new Date(notice.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
                         </li>
                         <!-- <li>
                             <input type="checkbox">
@@ -50,13 +50,13 @@
                 </div>
             </div>
         </div>
-        <form class="user-add" v-if="user_add" @submit="create_user">
+        <form class="notice-add" v-if="notice_add" @submit="create_notice">
             <div class="title">사용자 등록</div>
             <div class="section">
                 <div class="line">
                     <div class="item">
                         <label for="">제목</label>
-                        <input v-model="input_add_user.title" type="text" placeholder="입력해주세요." required>
+                        <input v-model="input_add_notice.title" type="text" placeholder="입력해주세요." required>
                     </div>
                 </div>
                 <div class="line">
@@ -66,21 +66,51 @@
                             <input v-model="startDt" type="date" placeholder="입력해주세요.">
                             <div>~</div>
                             <input v-model="endDt" type="date" placeholder="입력해주세요.">
-                            <input v-model="input_add_user.isAlways" type="checkbox" placeholder="입력해주세요." id="isAlways">
+                            <input v-model="input_add_notice.isAlways" type="checkbox" placeholder="입력해주세요." id="isAlways">
                             <label for="isAlways">항시노출</label>
                         </div>
                     </div>
                 </div>
                 <label for="">내용</label>
-                <textarea v-model="input_add_user.contents" placeholder="공지사항 내용을 입력해주세요." required></textarea>
+                <textarea v-model="input_add_notice.contents" placeholder="공지사항 내용을 입력해주세요." required></textarea>
             </div>
             <div class="btn-wrap">
                 <input type="submit" class="btn btn-primary" value="등록">
-                <div class="btn btn-secondary" @click="user_add = false">사용자리스트</div>
+                <div class="btn btn-secondary" @click="notice_add = false">사용자리스트</div>
+            </div>
+        </form>
+
+        <form class="notice-add" v-if="notice_adjust" @submit="update_notice">
+            <div class="title">사용자 수정</div>
+            <div class="section">
+                <div class="line">
+                    <div class="item">
+                        <label for="">제목</label>
+                        <input v-model="input_adjust_notice.title" type="text" placeholder="입력해주세요." required>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="item2">
+                        <label for="">노출기간</label>
+                        <div>
+                            <input v-model="startDt2" type="date" placeholder="입력해주세요.">
+                            <div>~</div>
+                            <input v-model="endDt2" type="date" placeholder="입력해주세요.">
+                            <input v-model="input_adjust_notice.isAlways" type="checkbox" placeholder="입력해주세요." id="isAlways">
+                            <label for="isAlways">항시노출</label>
+                        </div>
+                    </div>
+                </div>
+                <label for="">내용</label>
+                <textarea v-model="input_adjust_notice.contents" placeholder="공지사항 내용을 입력해주세요." required></textarea>
+            </div>
+            <div class="btn-wrap">
+                <input type="submit" class="btn btn-primary" value="수정">
+                <div class="btn btn-secondary" @click="notice_adjust = false">사용자리스트</div>
             </div>
         </form>
     </div>
-    <Popup v-if="delete_popup_state" @accept="delete_member" @exit="change_popup_state('delete', false)" :content="[`${member_checked_list.length}명의 사용자를 삭제 하시겠습니까?`]" :danger="`삭제 후 복구가 불가능 합니다.`"/>
+    <Popup v-if="delete_popup_state" @accept="delete_notice" @exit="change_popup_state('delete', false)" :content="[`${notice_checked_list.length}명의 사용자를 삭제 하시겠습니까?`]" :danger="`삭제 후 복구가 불가능 합니다.`"/>
 </template>
 
 <script setup lang="ts">
@@ -93,8 +123,8 @@ import { computed, ref, watch } from 'vue'
 
 const state = store.state
 
-const user_add = ref(false)
-const user_adjust = ref(false)
+const notice_add = ref(false)
+const notice_adjust = ref(false)
 const search_detail = ref(false)
 
 //---------------------------------
@@ -103,7 +133,8 @@ let search_keyword = ref('')
 
 let startDt = ref(new Date().toISOString().slice(0,10))
 let endDt = ref(new Date().toISOString().slice(0,10))
-let input_add_user = ref({
+
+let input_add_notice = ref({
     title: null,
     use: true,
     isAlways: false,
@@ -112,19 +143,21 @@ let input_add_user = ref({
     endDt: computed(() => new Date(new Date(endDt.value).getTime() + 24 * 60 * 60 * 1000 - 1)),
 })
 
-let input_adjust_user = computed(() => {
-    if (member_checked_list.value.length != 1) return {}
-    if (member_checked_list.value.length == 1) {
-        let result: any = origin_member.find(member => member.id == member_checked_list.value[0])
-        delete result.accepted
-        delete result.type
+let startDt2 = ref(new Date().toISOString().slice(0,10))
+let endDt2 = ref(new Date().toISOString().slice(0,10))
 
-        return result
-    }
+let input_adjust_notice = ref({
+    id: 0,
+    title: null,
+    use: true,
+    isAlways: false,
+    contents: null,
+    startDt: computed(() => new Date(startDt2.value)),
+    endDt: computed(() => new Date(new Date(endDt2.value).getTime() + 24 * 60 * 60 * 1000 - 1)),
 })
 
 watch(search_keyword, (keyword) => {
-    view_member.value = search_member(search_keyword.value, origin_member)
+    view_notice.value = search_notice(search_keyword.value, origin_notice)
 })
 
 const search_input = ref()
@@ -139,94 +172,94 @@ const enter = (e) => {
     };
 }
 
-const search_member = (keyword, arr) => {
+const search_notice = (keyword, arr) => {
     if (!keyword) return arr
-    // return arr.filter((member) => member.name == keyword || member.email == keyword)
-    return arr.filter((member) => new RegExp(keyword).test(store.getters.getData('company').find((company => company.id == member.companyId))?.name) || new RegExp(keyword).test(member.name))
+    // return arr.filter((notice) => notice.name == keyword || notice.email == keyword)
+    return arr.filter((notice) => new RegExp(keyword).test(store.getters.getData('company').find((company => company.id == notice.companyId))?.name) || new RegExp(keyword).test(notice.name))
 }
 
-const load_memberList = async () => {
+const load_noticeList = async () => {
     const axios_config = {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
     const { data } = await axios.get('/notice/list', axios_config)
 
-    origin_member = data
-    view_member.value = deepCopy(origin_member)
+    origin_notice = data
+    view_notice.value = deepCopy(origin_notice)
 }
 
-load_memberList()
+load_noticeList()
 
 const deepCopy = (target) => {
   return JSON.parse(JSON.stringify(target))
 }
 
-let origin_member = []
-const view_member = ref(origin_member)
+let origin_notice = []
+const view_notice = ref(origin_notice)
 
-const create_user = async () => {
+const create_notice = async () => {
     const axios_config = {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    await axios.post('/notice/create', input_add_user.value, axios_config)
+    await axios.post('/notice/create', input_add_notice.value, axios_config)
 
     state.popup.content = ['공지 등록이 완료되었습니다.']
     state.popup.btnCount = 1
     state.popup.toggle = true
 
-    user_add.value = false
+    notice_add.value = false
 
-    load_memberList()
+    load_noticeList()
 }
 
-const update_user = async () => {
+const update_notice = async () => {
     const axios_config = {
         headers: { Authorization: `Bearer ${JwtService.getToken()}` }
     }
 
-    await axios.post('/notice/update', input_adjust_user.value, axios_config)
+    await axios.post('/notice/update', input_adjust_notice.value, axios_config)
 
     state.popup.content = ['공지 수정이 완료되었습니다.']
     state.popup.btnCount = 1
     state.popup.toggle = true
 
-    user_adjust.value = false
+    notice_adjust.value = false
 
-    load_memberList()
+    load_noticeList()
 }
 
-let member_checked_list:any = ref([])
-const check_all_member = (e) => {
+let notice_checked_list:any = ref([])
+const check_all_notice = (e) => {
     if(e.target.checked) {
-        view_member.value.forEach((member) => {
-            member_checked_list.value.push(member.id)
+        view_notice.value.forEach((notice) => {
+            notice_checked_list.value.push(notice.id)
         })
     }
     else{
-        member_checked_list.value = []
+        notice_checked_list.value = []
     }
 }
 
 let accept_popup_state = ref(false)
 let delete_popup_state = ref(false)
 
-const delete_member = () => {
-    member_checked_list.value.forEach(async (member_id, idx) => {
-        await axios.post('/notice/delete', {id: member_id})
+const delete_notice = () => {
+    notice_checked_list.value.forEach(async (notice_id, idx) => {
+        await axios.post('/notice/delete', {id: notice_id})
 
-        if (idx == member_checked_list.value.length - 1) {
+        if (idx == notice_checked_list.value.length - 1) {
             state.popup.content = ['공지 삭제가 완료되었습니다.']
             state.popup.btnCount = 1
             state.popup.toggle = true
 
-            load_memberList()
+            load_noticeList()
 
-            member_checked_list.value = []
+            notice_checked_list.value = []
         }
     })
-    // axios.post('/auth/deleteUser', {id: member_checked_list.value})
+    // axios.post('/auth/deletenotice', {id: notice_checked_list.value})
 }
 
 const change_popup_state = (popup_type, state) => {
@@ -242,7 +275,7 @@ li{list-style: none;}
 
 .wrap{
     margin: 48px 30px;
-    .user-list{
+    .notice-list{
         .header{
             display: flex;
             justify-content: space-between;
@@ -418,7 +451,7 @@ li{list-style: none;}
                         }
                     }
                 }
-                .member{
+                .notice{
                     color: var(--primary-text, #222);
                     font-size: 14px;
                     font-weight: 400;
@@ -458,7 +491,7 @@ li{list-style: none;}
             }
         }
     }
-    .user-add{
+    .notice-add{
         width: 800px;
         padding: 32px;
         background: #fff;
@@ -505,7 +538,7 @@ li{list-style: none;}
                         color: var(--primary-text, #222);
                         font-size: 14px;
                         font-weight: 500;
-                        user-select: none;
+                        notice-select: none;
                     }
                     > label{
                         margin-bottom: 10px;
