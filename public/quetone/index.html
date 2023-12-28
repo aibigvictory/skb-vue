@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.svg">
+    <link href="/quetone/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Quetone Monitoring</title>
+</head>
+<body>
+    <link rel="stylesheet" href="/quetone/css/style.css">
+    <header>
+        <div id="logo">
+            <img src="/media/logos/default-dark.png">
+        </div>
+    </header>
+    <div id="container">
+        <div class="log_container">
+            <div class="log_view">
+                <table id="log1" class="table table-sm table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">CH</th>
+                        <th scope="col">Psip</th>
+                        <th scope="col">CCM</th>
+                        <th scope="col">Port</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">GAP</th>
+                        <th scope="col">Cue(M)</th>
+                        <th scope="col">Cue(B)</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+            </div>
+            <div class="log_view">
+                <table id="log2" class="table table-sm table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">CH</th>
+                        <th scope="col">Psip</th>
+                        <th scope="col">CCM</th>
+                        <th scope="col">Port</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">GAP</th>
+                        <th scope="col">Cue(M)</th>
+                        <th scope="col">Cue(B)</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+            </div>
+            <div class="log_view">
+                <table id="log3" class="table table-sm table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">CH</th>
+                        <th scope="col">Psip</th>
+                        <th scope="col">CCM</th>
+                        <th scope="col">Port</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">GAP</th>
+                        <th scope="col">Cue(M)</th>
+                        <th scope="col">Cue(B)</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="clip_view">
+            <table id="clip" class="table table-sm table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">금일 등록 컨텐츠</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">변경일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">${no}</th>
+                        <td>${vchrTitle}</td>
+                        <td>${dtCreateDate}</td>
+                        <td>${dtModiFyDate}</td>
+                    </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    <script src="/quetone/js/vanilla-swr.min.js"></script>
+    <script src="/quetone/js/monitor.js"></script>
+    <script src="/quetone/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
