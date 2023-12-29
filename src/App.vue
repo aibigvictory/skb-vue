@@ -4,13 +4,15 @@
   <FileUploadVue/>
   <!--  -->
   <Popup v-if="state.popup.toggle" @accept="state.popup.accept" @exit="state.popup.toggle = false" :content="state.popup.content" :btnCount="state.popup.btnCount"/>
+  <Notice v-if="notice_state" @exit="notice_state = false"/>
 </template>
 
 <script setup lang="ts">
 import FileUploadVue from "@/components/modals/general/FileUploadModal.vue";
 import Popup from '@/components/Popup.vue'
+import Notice from '@/components/Notice.vue'
 
-import { defineComponent, nextTick, onMounted } from "vue";
+import { defineComponent, nextTick, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { Mutations, Actions } from "@/store/enums/StoreEnums";
 import { config, layout, themeMode } from "@/core/helpers/config";
@@ -22,6 +24,8 @@ import router from "./router";
 
 const store = useStore();
 const state = store.state
+
+const notice_state = ref(true)
 
 const checkTokenExp = () => {
   const decode = JwtService.decode(JwtService.getToken())
