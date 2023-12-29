@@ -72,6 +72,7 @@ const props = defineProps({
     sort: String,
     searchType: String,
     fileList: Object,
+    adjust: Boolean,
 })
 
 let focusedGrid = '';
@@ -498,6 +499,11 @@ const create_toasrUiGrid = (file_list) => {
       });
 
       toast.on('dblclick', (ev) => {
+        // 수정모드 off 면 이벤트 stop (수정 불가)
+        if (!props.adjust) {
+          ev.stop();
+        }
+
         // formula 체크
         const rowKey = ev['rowKey'];
         const columnName = ev['columnName'];
