@@ -40,12 +40,13 @@
             </div>
             <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
         </div>
-        <LuckySheet ref="child" :excelName="excelTitle" :excelId="excelId"/>    
+        <LuckySheetHeader ref="child" :excelName="excelTitle" :excelId="excelId"/>    
     </div>
 </template>
 
 <script setup lang="ts">
 import LuckySheet from '@/components/lucky-sheet/LuckySheet.vue'
+import LuckySheetHeader from '@/components/lucky-sheet/LuckySheetHeader.vue'
 import store from '@/store'
 import { Actions } from '@/store/enums/StoreEnums'
 import axios from 'axios'
