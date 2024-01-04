@@ -176,6 +176,7 @@ onMounted(() => {
             state.popup.content = ['업로드가 완료되었습니다.']
             state.popup.btnCount = 1
             state.popup.toggle = true
+            state.luckysheet.modal.toggle = true
         });
 
         // myDropzone.on("success", function(file) {

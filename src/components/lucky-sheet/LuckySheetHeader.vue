@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <!-- <div>
     <button @click="onClickPrevButton">이전</button>
     <button @click="onClickNextButton">다음</button>
     <button @click="onClickSaveButton">헤더 저장</button>
-  </div>
+  </div> -->
   <div id="luckysheet"></div>
   <div v-show="isMaskShow" id="tip">
     <img src="@/assets/img/default-dark.png" alt="Metronic logo" />
@@ -184,47 +184,6 @@ const reload_excel = (url, excelName, luckysheet) => {
   });
 }
 
-//사이드바에서 다른 엑셀 파일 클릭시 엑셀시트 뷰 변경
-watch(() => props.excelId, (value) => {
-  const url = `${process.env.VUE_APP_API_URL}/file/${value}/data`
-
-  document.querySelector('.btn-save')?.classList.remove('active')
-  isMaskShow.value = true
-  reload_excel(url, props.excelName, window.luckysheet)
-})
-
-// 사이드바 접으면 엑셀 리사이징
-watch(() => store.state.minimize, (value) => {  
-  setTimeout(() => {
-    luckysheet.resize();
-  }, 500);
-})
-
-//엑셀 다운로드
-const downloadExcel = () => {
-  const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`;
-  fetch(url)
-    .then(response => response.blob())
-    .then(blob => {
-      // Blob 객체를 URL로 변환
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      // 파일 이름 지정
-      a.download = props.excelName ?? 'data.xlsx';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    })
-    .then(() => {
-      state.popup.content = ['엑셀 다운로드가 완료되었습니다.']
-      state.popup.btnCount = 1
-      state.popup.toggle = true
-    })
-    .catch(err => console.error('Error:', err));
-}
-
 // 정보 조회
 const getUserData = async () => {
   try{
@@ -245,44 +204,6 @@ const getUserData = async () => {
   }
 }
 
-//엑셀 저장
-const saveExcel = async () => {
-  isMaskShow.value = true
-
-  try{
-    const revision = localStorage.getItem('revision') ?? '[]';
-    const user = await getUserData();
-    const result = await axios.post('/file/edit', {
-      userId: user.id,
-      data: [...updateMap.values()],
-      revision: JSON.parse(revision),
-    });
-    console.log(result);
-    if (result.status === 201) {
-      state.popup.content = ['수정이 완료되었습니다.']
-      state.popup.btnCount = 1
-      state.popup.toggle = true
-      
-      const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
-      document.querySelector('.btn-save')?.classList.remove('active')
-      isMaskShow.value = true
-      reload_excel(url, props.excelName, window.luckysheet)
-    }
-  }
-  catch(error: any) {
-    if (error?.response?.status === 409) {
-      state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
-      state.popup.btnCount = 1
-      state.popup.toggle = true
-      return isMaskShow.value = false;
-    }
-    state.popup.content = ['수정에 실패하였습니다.']
-    state.popup.btnCount = 1
-    state.popup.toggle = true
-    return isMaskShow.value = false;
-  }
-}
-
 //엘리먼트 생성 후, 엑셀 파일 데이터 적용
 onMounted(() => {
   try{
@@ -295,8 +216,9 @@ onMounted(() => {
 
 //부모에게 함수 내보내기
 defineExpose({
-  downloadExcel,
-  saveExcel
+  onClickPrevButton,
+  onClickNextButton,
+  onClickSaveButton,
 })
 
 onUnmounted(() => {
@@ -311,7 +233,7 @@ onUnmounted(() => {
 
 
 #luckysheet {
-  height: calc(100vh - 200px);
+  height: calc(80vh - 200px);
 }
 
 #uploadBtn {

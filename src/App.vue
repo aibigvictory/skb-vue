@@ -5,12 +5,14 @@
   <!--  -->
   <Popup v-if="state.popup.toggle" @accept="state.popup.accept" @exit="state.popup.toggle = false" :content="state.popup.content" :btnCount="state.popup.btnCount"/>
   <Notice v-if="notice_state" @exit="notice_state = false"/>
+  <LuckysheetHeaderModal v-if="state.luckysheet.modal.toggle"/>
 </template>
 
 <script setup lang="ts">
 import FileUploadVue from "@/components/modals/general/FileUploadModal.vue";
 import Popup from '@/components/Popup.vue'
 import Notice from '@/components/Notice.vue'
+import LuckysheetHeaderModal from '@/components/lucky-sheet/LuckySheetHeaderAdjustModal.vue'
 
 import { defineComponent, nextTick, onMounted, ref } from "vue";
 import { useStore } from "vuex";
@@ -45,6 +47,7 @@ const checkTokenExp = () => {
   }
 }
 
+setTimeout(() => store.state.luckysheet.modal.toggle = true, 1000)
 setInterval(() => checkTokenExp, 5000)
 checkTokenExp()
 

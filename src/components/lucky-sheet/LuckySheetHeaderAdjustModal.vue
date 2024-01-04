@@ -1,16 +1,13 @@
 <template>
     <div class="wrap">
+        <div class="notice">헤더를 선택해주세요</div>
         <div class="header">
             <div class="left">
                 <div class="title">
-                    <svg :class="{active: excelBookmark}" @click="toggle_favorite" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M4.51542 19.3034C4.03237 19.5517 3.48541 19.1178 3.58266 18.5634L4.61982 12.6516L0.216907 8.45578C-0.194569 8.06366 0.0184315 7.34671 0.569668 7.2684L6.69276 6.39856L9.42291 0.990381C9.66885 0.503206 10.3351 0.503206 10.581 0.990381L13.3111 6.39856L19.4342 7.2684C19.9855 7.34671 20.1985 8.06366 19.787 8.45578L15.3841 12.6516L16.4212 18.5634C16.5185 19.1178 15.9715 19.5517 15.4885 19.3034L10.002 16.4835L4.51542 19.3034Z" fill="#EFF2F5"/>
-                    </svg>
                     <span>{{categoryName}}</span>
                     {{excelTitle}}
                 </div>
                 <div class="info">
-            
                     <div class="date">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M8.51496 1.01896C8.34401 1.00635 8.17225 1 8 1V0C8.19685 0 8.39314 0.00726199 8.58852 0.0216722L8.51496 1.01896ZM10.5193 1.46905C10.1985 1.34533 9.86912 1.2454 9.53371 1.17008L9.75282 0.194382C10.1361 0.280463 10.5126 0.394665 10.8792 0.536055L10.5193 1.46905ZM11.889 2.17971C11.7458 2.08402 11.5994 1.99388 11.4503 1.90939L11.9432 1.0393C12.1136 1.13586 12.2809 1.23888 12.4446 1.34824C12.6082 1.4576 12.7674 1.5727 12.9219 1.69322L12.3066 2.48158C12.1715 2.37612 12.0322 2.27541 11.889 2.17971ZM13.7231 3.96934C13.5252 3.68829 13.3068 3.42218 13.0697 3.17321L13.794 2.48368C14.0649 2.76821 14.3145 3.07233 14.5407 3.39353L13.7231 3.96934ZM14.4672 5.32122C14.4012 5.16208 14.3296 5.00583 14.2526 4.85271L15.1458 4.40311C15.2339 4.5781 15.3157 4.75667 15.391 4.93853C15.4664 5.12039 15.5348 5.30453 15.5962 5.49054L14.6467 5.80423C14.5929 5.64147 14.5331 5.48035 14.4672 5.32122ZM14.9979 7.82822C14.9895 7.48455 14.9557 7.14197 14.8969 6.80326L15.8822 6.63231C15.9494 7.01939 15.988 7.41092 15.9976 7.80367L14.9979 7.82822ZM14.8655 9.36563C14.8991 9.1967 14.9264 9.02699 14.9474 8.85687L15.9398 8.97929C15.9159 9.17372 15.8847 9.36766 15.8463 9.56072C15.8079 9.75378 15.7625 9.94489 15.7102 10.1337L14.7464 9.867C14.7922 9.70179 14.8319 9.53457 14.8655 9.36563ZM13.914 11.745C14.0979 11.4546 14.2602 11.151 14.3995 10.8367L15.3137 11.2419C15.1545 11.6011 14.969 11.9481 14.7588 12.28L13.914 11.745ZM12.9497 12.9497C13.0715 12.828 13.1885 12.702 13.3005 12.5722L14.0577 13.2254C13.9297 13.3737 13.796 13.5177 13.6569 13.6569L12.9497 12.9497Z" fill="white"/>
@@ -35,12 +32,25 @@
                 
             </div>
             <div class="right">
-                <div class="btn btn-save" @click="save_excel">저장하기</div>
-                <div class="btn btn-download" @click="download_excel">다운로드</div>
+                <div class="btn btn-pre" @click="prev">이전</div>
+                <div class="btn btn-next" @click="next">다음</div>
+                <div class="btn btn-save" @click="save">저장</div>
+                <div class="close">
+                    <svg @click="state.luckysheet.modal.toggle = false" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <mask id="mask0_1032_13894" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="28">
+                    <rect width="28" height="28" fill="#D9D9D9"/>
+                    </mask>
+                    <g mask="url(#mask0_1032_13894)">
+                    <path d="M14.0012 15.2287L8.08259 21.1473C7.92106 21.3088 7.71802 21.3915 7.47347 21.3952C7.22894 21.399 7.02217 21.3163 6.85316 21.1473C6.68412 20.9783 6.59961 20.7734 6.59961 20.5326C6.59961 20.2918 6.68412 20.0869 6.85316 19.9179L12.7717 13.9993L6.85316 8.08063C6.69161 7.91911 6.60897 7.71607 6.60524 7.47152C6.60149 7.22699 6.68412 7.02021 6.85316 6.8512C7.02217 6.68217 7.22707 6.59766 7.46787 6.59766C7.70867 6.59766 7.91358 6.68217 8.08259 6.8512L14.0012 12.7698L19.9198 6.8512C20.0813 6.68966 20.2844 6.60702 20.5289 6.60329C20.7735 6.59953 20.9802 6.68217 21.1493 6.8512C21.3183 7.02021 21.4028 7.22512 21.4028 7.46592C21.4028 7.70672 21.3183 7.91162 21.1493 8.08063L15.2307 13.9993L21.1493 19.9179C21.3108 20.0794 21.3934 20.2824 21.3972 20.527C21.4009 20.7715 21.3183 20.9783 21.1493 21.1473C20.9802 21.3163 20.7753 21.4008 20.5345 21.4008C20.2937 21.4008 20.0888 21.3163 19.9198 21.1473L14.0012 15.2287Z" fill="#222222"/>
+                    </g>
+                    </svg>
+                </div>
             </div>
             <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
         </div>
-        <LuckySheet ref="child" :excelName="excelTitle" :excelId="excelId"/>    
+        <div class="section">
+            <LuckySheetHeader ref="child" :excelName="excelTitle" :excelId="excelId"/>    
+        </div>
     </div>
 </template>
 
@@ -52,13 +62,7 @@ import { Actions } from '@/store/enums/StoreEnums'
 import axios from 'axios'
 import { computed, ref, watch } from 'vue'
 
-setInterval(() => {
-    if (excelId.value != Number(localStorage.getItem('id'))) {
-        excelId.value = Number(localStorage.getItem('id'))
-
-        init()
-    }
-}, 100)
+const state = store.state
 
 const excelId = ref(Number(localStorage.getItem('id')))
 const excelTitle = ref('')
@@ -73,19 +77,21 @@ const excelUploaderCompanyName = computed(() => {
         return store.getters.getData('company').find(con => con.id == excelUploaderCompanyId.value).name
     }
 })
-const excelBookmark = ref(0)
 
 const child: any = ref(null)
-const save_excel = () => {
-    child.value.saveExcel();
+const prev = () => {
+    child.value.onClickPrevButton();
 }
-const download_excel = () => {
-    child.value.downloadExcel();
+const next = () => {
+    child.value.onClickNextButton();
+}
+const save = () => {
+    child.value.onClickSaveButton();
 }
 
 const init = async () => {
     const { data } = await axios.get(`/file/${localStorage.getItem('id')}`)
-    const { name, user, folder, bookmark, revision } = data
+    const { name, user, folder, revision } = data
 
     excelTitle.value = name
     excelUploader.value = user.name
@@ -93,61 +99,36 @@ const init = async () => {
     excelUpdatedAt.value = user.updatedAt
     categoryName.value = folder.name
     excelUploaderCompanyId.value = user.companyId
-    excelBookmark.value = bookmark.length
     localStorage.setItem('revision', JSON.stringify(revision));
 }
 
 init()
 
-const toggle_favorite = async () => {
-    if (excelBookmark.value) {
-        await store.dispatch(Actions.POST_DATA_TO_SERVER, {
-            url: '/bookmark/delete',
-            pay: {fileId: excelId.value}
-        })
-        return excelBookmark.value = 0
-    }
-    if (!excelBookmark.value) {
-        await store.dispatch(Actions.POST_DATA_TO_SERVER, {
-            url: '/bookmark/create',
-            pay: {fileId: excelId.value}
-        })
-        return excelBookmark.value = 1
-    }
-}
-
-// const favorite = ref(true)
-
-// const toggle_favorite = async (ul) => {
-//     if (!ul.disactive) {
-//         await store.dispatch(Actions.POST_DATA_TO_SERVER, {
-//             url: '/bookmark/delete',
-//             pay: {fileId: ul.fileId}
-//         })
-//         return ul.disactive = true
-//     }
-//     if (ul.disactive) {
-//         await store.dispatch(Actions.POST_DATA_TO_SERVER, {
-//             url: '/bookmark/create',
-//             pay: {fileId: ul.fileId}
-//         })
-//         return ul.disactive = false
-//     }
-// }
-
-
 </script>
 
 <style lang="scss" scoped>
 .wrap{
-    margin: 18px 0;
-    padding: 0 30px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 80vw;
+    height: 80vh;
+    overflow: scroll;
     background: #fff;
+    padding: 30px;
+    .notice{
+        display: flex;
+        justify-content: center;
+        font-size: 16px;
+    }
     .header{
-        padding-top: 24px;
+        // padding-top: 24px;
         display: flex;
         justify-content: space-between;
         .left{
+            padding-top: 24px;
             .title{
                 display: flex;
                 align-items: center;
@@ -176,7 +157,7 @@ const toggle_favorite = async () => {
                 }
             }
             .info{
-                margin-left: 28px;
+                margin-left: 10px;
                 display: flex;
                 div{
                     padding: 0 6px;
@@ -202,6 +183,7 @@ const toggle_favorite = async () => {
         .right{
             display: flex;
             .btn{
+                margin-top: 24px;
                 cursor: pointer;
                 display: flex;
                 justify-content: center;
@@ -224,14 +206,19 @@ const toggle_favorite = async () => {
                     background: var(--default-red, #DA1E28);
                     color: #fff;
                 }
-                &.btn-download{
+                &.btn-pre, &.btn-next{
                     background: var(--default-red, #0095e8);
                 }
             }
+            .close{
+                margin-left: 30px;
+            }
         }
     }
+    .section{
+    }
 }
-.div{
-    margin: 0 -30px 0 -30px;
+svg{
+    cursor: pointer;
 }
 </style>
