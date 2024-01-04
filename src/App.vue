@@ -47,7 +47,7 @@ const checkTokenExp = () => {
   }
 }
 
-setTimeout(() => store.state.luckysheet.modal.toggle = true, 1000)
+// setTimeout(() => store.state.luckysheet.modal.toggle = true, 1000)
 setInterval(() => checkTokenExp, 5000)
 checkTokenExp()
 

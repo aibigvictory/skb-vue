@@ -39,6 +39,7 @@ const store = createStore({
       btnCount: 1
     },
     luckysheet: {
+      data: null,
       modal: {
         toggle: false,
       }

@@ -38,6 +38,9 @@ const reload_excel = (url, excelName, luckysheet) => {
         state.popup.toggle = true
         return 
     }
+
+    state.luckysheet.data = exportJson
+
     //초기화
     luckysheet.destroy();    
     //엑셀시트 뷰 생성
@@ -240,6 +243,7 @@ defineExpose({
 })
 
 onUnmounted(() => {
+  state.luckysheet.data = null
   window.luckysheet.destroy();
 })
 
