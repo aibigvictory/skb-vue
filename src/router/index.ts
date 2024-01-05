@@ -101,6 +101,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/header/adjust",
+        name: "header-adjust",
+        component: () => import("@/views/LuckySheetHeaderAdjust.vue"),
+        meta: {
+          pageTitle: "Header-adjust",
+          breadcrumbs: ["Header-adjust"],
+        },
+      },
+      {
         path: "/search",
         name: "search",
         component: () => import("@/views/SearchResult.vue"),

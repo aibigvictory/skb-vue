@@ -1,5 +1,5 @@
 <template>
-    <div class="popup">
+    <div class="popup" :class="{active: notice.length}">
         <div class="popup-wrap">
             <div class="popup-header">
                 <svg @click="emits('exit')" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
@@ -30,8 +30,10 @@
 
 <script setup lang="ts">
 import JwtService from "@/core/services/JwtService";
+import store from "@/store";
 import axios from "axios";
 import { defineComponent, ref } from "vue";
+const state = store.state
 
 const emits = defineEmits([
   'exit',
@@ -58,6 +60,8 @@ const init = async () => {
   console.log(data);
   
   notice.value = data
+
+  // if (!(data.length - 1)) state.notice.toggle = false
 }
 
 init()
@@ -66,6 +70,7 @@ init()
 
 <style lang="scss" scoped>
 .popup{
+    opacity: 0;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -76,6 +81,9 @@ init()
     display: flex;
     justify-content: center;
     align-items: center;
+    &.active{
+      opacity: 1;
+    }
     .popup-wrap{
         padding: 20px;
         background: #fff;

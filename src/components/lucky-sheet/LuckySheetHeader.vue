@@ -5,10 +5,10 @@
     <button @click="onClickSaveButton">헤더 저장</button>
   </div> -->
   <div id="luckysheetmodal"></div>
-  <!-- <div v-show="isMaskShow" id="tip">
+  <div v-show="isMaskShow" id="tip">
     <img src="@/assets/img/default-dark.png" alt="Metronic logo" />
     <span>Loading<div id="loading"><div class="spinner"></div></div></span>
-  </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -171,7 +171,7 @@ const reload_excel = (url, excelName, luckysheet) => {
     LuckyExcel.transformExcelToLuckyByUrl(url, excelName, function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
           // 예외처리
-          // isMaskShow.value = false
+          isMaskShow.value = false
   
           state.popup.content = ['엑셀 파일을 불러오지 못했습니다.']
           state.popup.btnCount = 1
@@ -281,7 +281,7 @@ const reload_excel = (url, excelName, luckysheet) => {
   }
     // luckysheet.setSheetColor("#ff0000")
 
-    // isMaskShow.value = false
+    isMaskShow.value = false
 }
 
 //엘리먼트 생성 후, 엑셀 파일 데이터 적용
@@ -308,7 +308,7 @@ defineExpose({
 
 
 #luckysheetmodal {
-  height: calc(80vh - 200px);
+  height: calc(100vh - 200px);
 }
 
 #uploadBtn {

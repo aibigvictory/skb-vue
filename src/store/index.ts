@@ -38,12 +38,15 @@ const store = createStore({
       content: [],
       btnCount: 1
     },
-    luckysheet: {
-      data: null,
-      modal: {
-        toggle: false,
-      }
+    notice: {
+      toggle: true
     }
+    // luckysheet: {
+    //   data: null,
+    //   modal: {
+    //     toggle: false,
+    //   }
+    // }
   }
 });
 

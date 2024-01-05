@@ -1,6 +1,5 @@
 <template>
     <div class="wrap">
-        <div class="notice">헤더를 선택해주세요</div>
         <div class="header">
             <div class="left">
                 <div class="title">
@@ -35,16 +34,6 @@
                 <div class="btn btn-pre" @click="prev">이전</div>
                 <div class="btn btn-next" @click="next">다음</div>
                 <div class="btn btn-save" @click="save">저장</div>
-                <div class="close">
-                    <svg @click="state.luckysheet.modal.toggle = false" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
-                    <mask id="mask0_1032_13894" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="28">
-                    <rect width="28" height="28" fill="#D9D9D9"/>
-                    </mask>
-                    <g mask="url(#mask0_1032_13894)">
-                    <path d="M14.0012 15.2287L8.08259 21.1473C7.92106 21.3088 7.71802 21.3915 7.47347 21.3952C7.22894 21.399 7.02217 21.3163 6.85316 21.1473C6.68412 20.9783 6.59961 20.7734 6.59961 20.5326C6.59961 20.2918 6.68412 20.0869 6.85316 19.9179L12.7717 13.9993L6.85316 8.08063C6.69161 7.91911 6.60897 7.71607 6.60524 7.47152C6.60149 7.22699 6.68412 7.02021 6.85316 6.8512C7.02217 6.68217 7.22707 6.59766 7.46787 6.59766C7.70867 6.59766 7.91358 6.68217 8.08259 6.8512L14.0012 12.7698L19.9198 6.8512C20.0813 6.68966 20.2844 6.60702 20.5289 6.60329C20.7735 6.59953 20.9802 6.68217 21.1493 6.8512C21.3183 7.02021 21.4028 7.22512 21.4028 7.46592C21.4028 7.70672 21.3183 7.91162 21.1493 8.08063L15.2307 13.9993L21.1493 19.9179C21.3108 20.0794 21.3934 20.2824 21.3972 20.527C21.4009 20.7715 21.3183 20.9783 21.1493 21.1473C20.9802 21.3163 20.7753 21.4008 20.5345 21.4008C20.2937 21.4008 20.0888 21.3163 19.9198 21.1473L14.0012 15.2287Z" fill="#222222"/>
-                    </g>
-                    </svg>
-                </div>
             </div>
             <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
         </div>
@@ -108,27 +97,14 @@ init()
 
 <style lang="scss" scoped>
 .wrap{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    width: 80vw;
-    height: 80vh;
-    overflow: scroll;
+    margin: 18px 0;
+    padding: 0 30px;
     background: #fff;
-    padding: 30px;
-    .notice{
-        display: flex;
-        justify-content: center;
-        font-size: 16px;
-    }
     .header{
-        // padding-top: 24px;
+        padding-top: 24px;
         display: flex;
         justify-content: space-between;
         .left{
-            padding-top: 24px;
             .title{
                 display: flex;
                 align-items: center;
@@ -183,7 +159,6 @@ init()
         .right{
             display: flex;
             .btn{
-                margin-top: 24px;
                 cursor: pointer;
                 display: flex;
                 justify-content: center;
