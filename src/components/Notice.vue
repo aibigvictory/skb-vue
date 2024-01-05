@@ -61,7 +61,7 @@ const init = async () => {
   
   notice.value = data
 
-  // if (!(data.length - 1)) state.notice.toggle = false
+  if (data.length < 1) state.notice.toggle = false
 }
 
 init()
@@ -70,7 +70,7 @@ init()
 
 <style lang="scss" scoped>
 .popup{
-    opacity: 0;
+    // opacity: 0;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -81,9 +81,9 @@ init()
     display: flex;
     justify-content: center;
     align-items: center;
-    &.active{
-      opacity: 1;
-    }
+    // &.active{
+    //   opacity: 1;
+    // }
     .popup-wrap{
         padding: 20px;
         background: #fff;
