@@ -7,7 +7,10 @@
           </div>
         </div>
         <div v-for="file in folder.files" :key="file" class="content">
-          <div class="sub-title">{{file.name}}</div>
+          <div class="sub-title">
+            {{file.name}} 
+            <span v-if="file.headerInfo && file.headerInfo == null" @click="toHeaderAdjust(file.id)" class="header-adjust">헤더 미지정</span>
+          </div>
           <div class="info">
             <div class="time">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -52,6 +55,7 @@ import { onMounted, ref, watch, defineExpose } from 'vue';
 import Grid from 'tui-grid';
 import 'tui-grid/dist/tui-grid.css';
 import store from '@/store';
+import router from '@/router';
 interface Merge {
   // The interface of xlsx library.
   // s: start, e: end, r: row, c: column
@@ -1161,6 +1165,10 @@ const save = async () => {
 
 //   create_toasrUiGrid(props.file_list)
 // })
+const toHeaderAdjust = (fileId) => {
+  localStorage.setItem('id', fileId)
+  router.push('/header/adjust')
+}
 
 </script>
 
@@ -1206,6 +1214,20 @@ ul{
           font-style: normal;
           font-weight: 700;
           line-height: 110%; /* 19.8px */
+          .header-adjust{
+            background: #009EF7;
+            margin-left: 6px;
+            display: flex;
+            padding: 2px 6px;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            color: #fff;
+            border-radius: 24px;
+            border: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
+            font-size: 13px !important;
+            cursor: pointer;
+          }
         }
         .info{
           display: flex;

@@ -67,107 +67,6 @@ const onClickSaveButton = () => {
 
 //엑셀 로드
 const reload_excel = (url, excelName, luckysheet) => {
-  if (state.luckysheet.data) {
-    luckysheet.create({
-      container: 'luckysheetmodal',
-      showinfobar: false,
-      showtoolbar: false,
-      data:state.luckysheet.data.sheets,
-      title:state.luckysheet.data.info.name,
-      userInfo:state.luckysheet.data.info.name.creator,
-      // loading: false,
-      hook: {
-        updated: (operate,data) => {
-          console.log('operate: ',operate);
-          console.log('data: ', data);
-          
-          /**
-           * ctrlType: "resizeC"
-           * ctrlValue: "columnlen"
-           */
-          const { type, ctrlType } = operate;
-          if (ctrlType === 'resizeC') {
-            const { config, curconfig } = operate;
-            const prevColumnLengthObj = config.columnlen;
-            const currentColumnLengthObj = curconfig.columnlen;
-            // 변경된 부분만 추가
-            for (const [key, value] of Object.entries(currentColumnLengthObj)) {
-              const prevLength = prevColumnLengthObj[key];
-              if (!prevLength) continue;
-              if (prevLength !== value) {
-                const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
-                updateMap.set(`resizeColumn_${props.excelId}_${sheetIndex}_${key}`, {
-                  action: 'resizeColumn',
-                  fileId: props.excelId,
-                  r: 0,
-                  c: parseInt(key),
-                  value: String(Math.round(value)),
-                  sheetName
-                });
-              }
-            }
-          }
-          if (type === 'zoomChange') {
-            const { zoomRatio, curZoomRatio } = operate;
-            const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
-            updateMap.set(`zoomChange_${props.excelId}_${sheetIndex}`, {
-              action: 'zoomChange',
-              fileId: props.excelId,
-              r: 0,
-              c: 0,
-              value: String(Math.round(curZoomRatio * 100)),
-              sheetName
-            });
-          }
-          
-          if (updateMap.size > 0) {
-            document.querySelector('.btn-save')?.classList.add('active')
-          }
-        },
-        cellUpdateBefore: function (r, c, value) {
-          console.log('! cellUpdateBefore', {r, c, value});
-          return true;
-        },
-        cellUpdated: function (r, c, oldValue, newValue) {
-          const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
-          console.log('! cellUpdated', {sheetName, r, c, oldValue, newValue});
-          const key = `editCell_${props.excelId}_${sheetIndex}_${r}_${c}`;
-          updateMap.set(key, {
-            action: 'editCell',
-            fileId: props.excelId,
-            r: r + 1,
-            c: c + 1,
-            value: String(newValue?.v) ?? '',
-            sheetName
-          });
-
-          luckysheet.setCellFormat(r, c, 'bg', '#fff000')
-        },
-        rangeSelect: function (sheet, range) {
-          console.log('rangeSelect', sheet, range);
-          headerSelector.selectRange(sheet, range);
-        },
-        workbookCreateAfter: function (book) {
-          console.log('workbookCreateAfter', book);
-          luckysheet.setSheetActive(0);
-          headerSelector.init(book.data);
-        },
-        // rangeMoveBefore: function () {
-        //   console.log('rangeMoveBefore');
-        // },
-        // rangeMoveAfter: function () {
-        //   console.log('rangeMoveAfter');
-        // },
-        // rangeEditBefore: function () {
-        //   console.log('rangeEditBefore');
-        // },
-        // rangeEditAfter: function () {
-        //   console.log('rangeEditAfter');
-        // }
-      }
-  });
-  }
-  else {
     LuckyExcel.transformExcelToLuckyByUrl(url, excelName, function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
           // 예외처리
@@ -278,7 +177,6 @@ const reload_excel = (url, excelName, luckysheet) => {
           }
       });
     });
-  }
     // luckysheet.setSheetColor("#ff0000")
 
     isMaskShow.value = false
