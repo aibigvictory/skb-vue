@@ -30,7 +30,7 @@ const state = store.state
 const checkTokenExp = () => {
   const decode = JwtService.decode(JwtService.getToken())
   const now = new Date()
-  const exp = new Date(Number(decode.exp + '000'))
+  const exp = new Date(Number(decode?.exp + '000'))
 
   console.log('decode');
   console.log(decode);
