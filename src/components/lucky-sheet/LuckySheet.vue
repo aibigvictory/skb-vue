@@ -92,6 +92,27 @@ const reload_excel = (url, excelName, luckysheet) => {
                 sheetName
               });
             }
+
+            if (type === 'dataChange') {
+              const { sheetIndex, dataRange, curdata } = operate;
+
+              dataRange.forEach((r) => {
+                const [row, column] = r;
+                const [minRow, maxRow] = row;
+                const [minCol, maxCol] = column;
+                let newValue: any;
+
+                for (let r = minRow; r < maxRow; r++) {
+                  const rowData = curdata[r];
+                  for (let c = minCol; c < maxCol; c++) {
+                    const colData = rowData[c];
+                    newValue = colData;
+                  }
+                }
+
+                console.log('dataChange', newValue);
+              });
+            }
             
             if (updateMap.size > 0) {
               document.querySelector('.btn-save')?.classList.add('active')

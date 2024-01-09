@@ -58,11 +58,34 @@ const onClickNextButton = () => {
   window.luckysheet.setSheetActive(currentSheetOrder + 1);
   window.luckysheet.setRangeShow(headerRange);
 };
-const onClickSaveButton = () => {
+const onClickSaveButton = async () => {
   const ranges = headerSelector.getHeaderRanges();
   ranges.forEach((range) => {
-    console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.headerRange.row}], column: [${range.headerRange.column}]`)
-  })
+    console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.row}], column: [${range.column}]`)
+  });
+
+  try {
+    const axios_config = {
+      headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+    }
+  
+    const { data } = await axios.post('/file/editHeaderInfo', {
+      id: props.excelId,
+      headerRange: ranges
+    }, axios_config);
+
+    state.popup.content = ['헤더 지정에 성공하였습니다.']
+    state.popup.btnCount = 1
+    state.popup.toggle = true
+  }
+  catch (error) {
+    console.error(error);
+    state.popup.content = ['헤더 지정에 실패하였습니다.']
+    state.popup.btnCount = 1
+    state.popup.toggle = true
+
+    throw new Error('헤더 지정에 실패하였습니다.');
+  }
 };
 
 //엑셀 로드
@@ -155,7 +178,12 @@ const reload_excel = (url, excelName, luckysheet) => {
             },
             rangeSelect: function (sheet, range) {
               console.log('rangeSelect', sheet, range);
-              headerSelector.selectRange(sheet, range);
+              const headerRange = {
+                sheetIndex: Number(sheet.index),
+                row: range[0].row,
+                column: range[0].column,
+              };
+              headerSelector.selectRange(sheet, headerRange);
             },
             workbookCreateAfter: function (book) {
               console.log('workbookCreateAfter', book);
