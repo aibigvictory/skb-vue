@@ -30,16 +30,6 @@ function minutesToTime(minutes) {
 
     return `${formattedHours}:${formattedMinutes}`;
 };
-function minutesFromMidnight() {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(0, 0, 0, 0); // 현재 날짜의 자정으로 설정
-
-    const elapsedMilliseconds = now - midnight;
-    const elapsedMinutes = Math.floor(elapsedMilliseconds / (60 * 1000));
-
-    return elapsedMinutes;
-};
 function splitArrayIntoThree(array) {
     if (!Array.isArray(array)) {
       return null; // 배열이 아닌 경우 예외 처리
@@ -57,6 +47,15 @@ function splitArrayIntoThree(array) {
   
     return dividedArrays;
 };
+function getDifferenceInMinutes(dateString) {
+    const inputDate = new Date(dateString);
+    const currentDate = new Date();
+
+    const differenceInMilliseconds = currentDate - inputDate;
+    const differenceInMinutes = Math.floor(differenceInMilliseconds / 60000);
+
+    return differenceInMinutes;
+}
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -82,8 +81,8 @@ function createLogTr({
         let isNonReceive = false;
         // cueM, B 값 다른지 여부
         const differentCue = cueM !== cueB;
-        const receiveMinutes = timeToMinutes(chrReceiveTime);
-        const nonReceiveMinutes = minutesFromMidnight() - receiveMinutes;
+        // 미수신 기간(분) = 현재 시간 - 마지막 수신 시간
+        const nonReceiveMinutes = getDifferenceInMinutes(`${chrReceiveDate} ${chrReceiveTime}`);
         // 만약 미수신 시간 4시간보다 크면 오류 빨간색 표시
         if (nonReceiveMinutes > 240) {
             isNonReceive = true;
