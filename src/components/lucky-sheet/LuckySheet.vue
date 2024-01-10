@@ -25,6 +25,7 @@ const props = defineProps({
 
 const isMaskShow = ref(true)
 const updateMap = new Map();
+const newUpdateMap = new Map();
 
 //엑셀 로드
 const reload_excel = (url, excelName, luckysheet) => {
@@ -93,25 +94,26 @@ const reload_excel = (url, excelName, luckysheet) => {
               });
             }
 
-            if (type === 'dataChange') {
+            if (type === 'datachange') {
               const { sheetIndex, dataRange, curdata } = operate;
+              console.log('curdata', curdata);
 
-              dataRange.forEach((r) => {
-                const [row, column] = r;
-                const [minRow, maxRow] = row;
-                const [minCol, maxCol] = column;
-                let newValue: any;
+              // dataRange.forEach((r) => {
+              //   const [row, column] = r;
+              //   const [minRow, maxRow] = row;
+              //   const [minCol, maxCol] = column;
+              //   let newValue: any;
 
-                for (let r = minRow; r < maxRow; r++) {
-                  const rowData = curdata[r];
-                  for (let c = minCol; c < maxCol; c++) {
-                    const colData = rowData[c];
-                    newValue = colData;
-                  }
-                }
+              //   for (let r = minRow; r < maxRow; r++) {
+              //     const rowData = curdata[r];
+              //     for (let c = minCol; c < maxCol; c++) {
+              //       const colData = rowData[c];
+              //       newValue = colData;
+              //     }
+              //   }
 
-                console.log('dataChange', newValue);
-              });
+              //   console.log('dataChange', newValue);
+              // });
             }
             
             if (updateMap.size > 0) {

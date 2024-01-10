@@ -62,9 +62,9 @@ export class HeaderSelector {
             this.setHeaderRange(i, _range);
         }
 
-        const ranges = this.getHeaderRanges();
-        ranges.forEach((range) => {
-            console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.row}], column: [${range.column}]`)
-        });
+        // const ranges = this.getHeaderRanges();
+        // ranges.forEach((range) => {
+        //     console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.row}], column: [${range.column}]`)
+        // });
     }
 }
