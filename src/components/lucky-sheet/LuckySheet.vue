@@ -146,7 +146,7 @@ const reload_excel = (url, excelName, luckysheet) => {
               fileId: props.excelId,
               r: r + 1,
               c: c + 1,
-              value: String(newValue?.v) ?? '',
+              value: newValue?.v?.toString() ?? '',
               sheetName
             });
 
