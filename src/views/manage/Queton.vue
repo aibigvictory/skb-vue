@@ -48,7 +48,7 @@
                 <div class="line">
                     <div class="item">
                         <label for="">nCTPortId</label>
-                        <input v-model="quetoneModel.nCTPortId" type="text" placeholder="" required>
+                        <input v-model="quetoneModel.nCTPortId" type="text" placeholder="">
                     </div>
                 </div>
                 <div class="line">
@@ -95,7 +95,7 @@
                 <div class="line">
                     <div class="item">
                         <label for="">nCTPortId</label>
-                        <input v-model="selectQuetoneModel.nCTPortId" type="text" placeholder="" required>
+                        <input v-model="selectQuetoneModel.nCTPortId" type="text" placeholder="">
                     </div>
                 </div>
                 <div class="line">

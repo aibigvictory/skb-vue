@@ -196,11 +196,10 @@ img{
 }
 
 .tui-grid-cell{
-    white-space: normal !important;
     border: 1px solid #EEE !important;
     .tui-grid-cell-content {
       word-break: normal;
-      padding: 0 !important;
+      // padding: 0 !important;
     }
     min-width: 70px !important;
 }

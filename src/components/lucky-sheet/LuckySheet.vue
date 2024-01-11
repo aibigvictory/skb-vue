@@ -97,7 +97,18 @@ const reload_excel = (url, excelName, luckysheet) => {
 
             if (type === 'datachange') {
               const { sheetIndex, dataRange, curdata } = operate;
+              const { name: sheetName } = luckysheet.getSheet();
+              const key = `batchCellUpdate${props.excelId}_${sheetIndex}`;
               console.log('curdata', curdata);
+
+              // updateMap.set(key, {
+              //   action: 'batchCellUpdate',
+              //   fileId: props.excelId,
+              //   r: 0,
+              //   c: 0,
+              //   cellList: curdata,
+              //   sheetName
+              // });
 
               // dataRange.forEach((r) => {
               //   const [row, column] = r;
