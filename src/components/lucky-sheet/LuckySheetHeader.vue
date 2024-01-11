@@ -77,7 +77,7 @@ const onClickNextButton = () => {
   window.luckysheet.setSheetZoom(currentZoomRatio);
   window.luckysheet.setRangeShow(headerRange);
 };
-const onClickSaveButton = () => {
+const onClickSaveButton = async () => {
   console.log(isSave.value);
   
   if (isSave.value) {
