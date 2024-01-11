@@ -34,6 +34,9 @@ const isMaskShow = ref(true)
 const isSave = ref(false)
 const updateMap = new Map();
 
+// 현재 줌 비율
+let currentZoomRatio = 0.5;
+
 // 헤더 선택기
 const headerSelector = new HeaderSelector();
 
@@ -42,21 +45,36 @@ const onClickPrevButton = () => {
   const currentSheet = window.luckysheet.getSheet();
   const currentSheetOrder = Number(currentSheet.order);
   console.log('onClickPrevButton', currentSheetOrder);
-  if (currentSheetOrder <= 0) return;
+  if (currentSheetOrder <= 0) {
+    document.querySelector('.btn-pre')?.classList.add('disabled');
+    return;
+  };
+
+  document.querySelector('.btn-next')?.classList.remove('disabled');
 
   const headerRange = headerSelector.getHeaderRange(currentSheetOrder - 1);
   window.luckysheet.setSheetActive(currentSheetOrder - 1);
+  window.luckysheet.setSheetZoom(currentZoomRatio);
   window.luckysheet.setRangeShow(headerRange);
 };
 const onClickNextButton = () => {
   const sheets = window.luckysheet.getAllSheets();
   const currentSheet = window.luckysheet.getSheet();
   const currentSheetOrder = Number(currentSheet.order);
-  console.log('onClickNextButton', currentSheetOrder, sheets.length);
-  if (currentSheetOrder >= sheets.length - 1) return;
+  console.log('onClickNextButton', currentSheetOrder, (sheets.length - 1));
+  if (currentSheetOrder + 1 == sheets.length - 1) {
+    document.querySelector('.btn-next')?.classList.add('disabled');
+    document.querySelector('.btn-save')?.classList.add('active');
+  }
+  if (currentSheetOrder >= sheets.length - 1) {
+    return;
+  };
+
+  document.querySelector('.btn-pre')?.classList.remove('disabled');
 
   const headerRange = headerSelector.getHeaderRange(currentSheetOrder + 1);
   window.luckysheet.setSheetActive(currentSheetOrder + 1);
+  window.luckysheet.setSheetZoom(currentZoomRatio);
   window.luckysheet.setRangeShow(headerRange);
 };
 const onClickSaveButton = () => {
@@ -65,15 +83,37 @@ const onClickSaveButton = () => {
   if (isSave.value) {
     const ranges = headerSelector.getHeaderRanges();
     ranges.forEach((range) => {
-      console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.headerRange.row}], column: [${range.headerRange.column}]`)
-    })
+      console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.row}], column: [${range.column}]`)
+    });
+
+    try {
+      const axios_config = {
+        headers: { Authorization: `Bearer ${JwtService.getToken()}` }
+      }
+    
+      const { data } = await axios.post('/file/editHeaderInfo', {
+        id: props.excelId,
+        headerRange: ranges
+      }, axios_config);
+
+      state.popup.content = ['헤더 지정에 성공하였습니다.']
+      state.popup.btnCount = 1
+      state.popup.toggle = true
+    }
+    catch (error) {
+      console.error(error);
+      state.popup.content = ['헤더 지정에 실패하였습니다.']
+      state.popup.btnCount = 1
+      state.popup.toggle = true
+
+      throw new Error('헤더 지정에 실패하였습니다.');
+    }
   }
   else{
     state.popup.content = ['헤더 수정을 해주세요.']
     state.popup.btnCount = 1
     state.popup.toggle = true
   }
-};
 
 //엑셀 로드
 const reload_excel = (url, excelName, luckysheet) => {
@@ -106,29 +146,9 @@ const reload_excel = (url, excelName, luckysheet) => {
                * ctrlValue: "columnlen"
                */
               const { type, ctrlType } = operate;
-              if (ctrlType === 'resizeC') {
-                const { config, curconfig } = operate;
-                const prevColumnLengthObj = config.columnlen;
-                const currentColumnLengthObj = curconfig.columnlen;
-                // 변경된 부분만 추가
-                for (const [key, value] of Object.entries(currentColumnLengthObj)) {
-                  const prevLength = prevColumnLengthObj[key];
-                  if (!prevLength) continue;
-                  if (prevLength !== value) {
-                    const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
-                    updateMap.set(`resizeColumn_${props.excelId}_${sheetIndex}_${key}`, {
-                      action: 'resizeColumn',
-                      fileId: props.excelId,
-                      r: 0,
-                      c: parseInt(key),
-                      value: String(Math.round(value)),
-                      sheetName
-                    });
-                  }
-                }
-              }
               if (type === 'zoomChange') {
                 const { zoomRatio, curZoomRatio } = operate;
+<<<<<<< HEAD
                 const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
                 updateMap.set(`zoomChange_${props.excelId}_${sheetIndex}`, {
                   action: 'zoomChange',
@@ -143,6 +163,10 @@ const reload_excel = (url, excelName, luckysheet) => {
               if (updateMap.size > 0) {
                 document.querySelector('.btn-save')?.classList.add('active')
                 isSave.value = true
+=======
+                console.log('zoomChange', curZoomRatio);
+                currentZoomRatio = curZoomRatio;
+>>>>>>> 59ea6ca1523a16871db6671ceb2b6dbd423338c0
               }
             },
             cellUpdateBefore: function (r, c, value) {
@@ -166,11 +190,17 @@ const reload_excel = (url, excelName, luckysheet) => {
             },
             rangeSelect: function (sheet, range) {
               console.log('rangeSelect', sheet, range);
-              headerSelector.selectRange(sheet, range);
+              const headerRange = {
+                sheetIndex: Number(sheet.index),
+                row: range[0].row,
+                column: range[0].column,
+              };
+              headerSelector.selectRange(sheet, headerRange);
             },
             workbookCreateAfter: function (book) {
               console.log('workbookCreateAfter', book);
               luckysheet.setSheetActive(0);
+              luckysheet.setSheetZoom(0.5);
               headerSelector.init(book.data);
             },
             // rangeMoveBefore: function () {

@@ -1,4 +1,3 @@
-// [{ row: [0, 2], column: [0, 10] }]
 interface HeaderRange {
     sheetIndex: number,
     row: number[],
@@ -6,11 +5,11 @@ interface HeaderRange {
 }
 
 export class HeaderSelector {
-    headerMap: Map<number, HeaderRange[]>;
+    headerMap: Map<number, HeaderRange>;
     sheetLength: number = 0;
 
     constructor() {
-        this.headerMap = new Map<number, HeaderRange[]>();
+        this.headerMap = new Map<number, HeaderRange>();
     }
 
     public init(sheets: any[]) {
@@ -19,13 +18,12 @@ export class HeaderSelector {
             const sheetOrder = Number(sheet.order);
             const sheetIndex = Number(sheet.index);
             
-            const range = [
-                {
-                    sheetIndex,
-                    row: [0, 2],
-                    column: [0, 10],
-                }
-            ];
+            const range = {
+                sheetIndex,
+                row: [0, 2],
+                column: [0, 10],
+            };
+
             this.headerMap.set(sheetOrder, range);
         })
     }
@@ -34,31 +32,39 @@ export class HeaderSelector {
         return this.headerMap.get(sheetOrder);
     }
 
-    public setHeaderRange(sheetOrder: number, headerRange: HeaderRange[]) {
+    public setHeaderRange(sheetOrder: number, headerRange: HeaderRange) {
         return this.headerMap.set(sheetOrder, headerRange);
     }
 
     public getHeaderRanges() {
-        const ranges: any[] = [];
+        const ranges: HeaderRange[] = [];
         this.headerMap.forEach((value, key, map) => {
-            ranges.push(value[0]);
+            ranges.push(value);
         });
 
         return ranges;
     }
 
-    public selectRange(sheet: any, ranges: any[]) {
+    public selectRange(sheet: any, range: HeaderRange) {
         const sheetOrder = Number(sheet.order);
         
         for (let i = sheetOrder; i < this.sheetLength; i++) {
-            const headerRange = this.getHeaderRange(sheetOrder);
+            const headerRange = this.getHeaderRange(i);
             if (!headerRange) {
                 continue;
             }
 
-            headerRange[0].row = ranges[0].row;
-            headerRange[0].column = ranges[0].column;
-            this.setHeaderRange(i, headerRange);
+            const _range: HeaderRange = {
+                sheetIndex: headerRange.sheetIndex,
+                row: range.row.slice(),
+                column: range.column.slice(),
+            };
+            this.setHeaderRange(i, _range);
         }
+
+        // const ranges = this.getHeaderRanges();
+        // ranges.forEach((range) => {
+        //     console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.row}], column: [${range.column}]`)
+        // });
     }
 }
