@@ -114,7 +114,7 @@ const onClickSaveButton = () => {
     state.popup.btnCount = 1
     state.popup.toggle = true
   }
-
+}
 //엑셀 로드
 const reload_excel = (url, excelName, luckysheet) => {
     LuckyExcel.transformExcelToLuckyByUrl(url, excelName, function(exportJson, luckysheetfile){                    
