@@ -148,7 +148,6 @@ const reload_excel = (url, excelName, luckysheet) => {
               const { type, ctrlType } = operate;
               if (type === 'zoomChange') {
                 const { zoomRatio, curZoomRatio } = operate;
-<<<<<<< HEAD
                 const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
                 updateMap.set(`zoomChange_${props.excelId}_${sheetIndex}`, {
                   action: 'zoomChange',
@@ -163,10 +162,8 @@ const reload_excel = (url, excelName, luckysheet) => {
               if (updateMap.size > 0) {
                 document.querySelector('.btn-save')?.classList.add('active')
                 isSave.value = true
-=======
                 console.log('zoomChange', curZoomRatio);
                 currentZoomRatio = curZoomRatio;
->>>>>>> 59ea6ca1523a16871db6671ceb2b6dbd423338c0
               }
             },
             cellUpdateBefore: function (r, c, value) {
