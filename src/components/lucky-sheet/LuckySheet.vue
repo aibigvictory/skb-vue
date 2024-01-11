@@ -203,10 +203,11 @@ const saveExcel = async () => {
       state.popup.btnCount = 1
       state.popup.toggle = true
       
-      const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
-      document.querySelector('.btn-save')?.classList.remove('active')
-      isMaskShow.value = true
-      reload_excel(url, props.excelName, window.luckysheet)
+      router.go(0)
+      // const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
+      // document.querySelector('.btn-save')?.classList.remove('active')
+      // isMaskShow.value = true
+      // reload_excel(url, props.excelName, window.luckysheet)
     }
   }
   catch(error: any) {

@@ -31,6 +31,7 @@ const props = defineProps({
 })
 
 const isMaskShow = ref(true)
+const isSave = ref(false)
 const updateMap = new Map();
 
 // 헤더 선택기
@@ -59,10 +60,19 @@ const onClickNextButton = () => {
   window.luckysheet.setRangeShow(headerRange);
 };
 const onClickSaveButton = () => {
-  const ranges = headerSelector.getHeaderRanges();
-  ranges.forEach((range) => {
-    console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.headerRange.row}], column: [${range.headerRange.column}]`)
-  })
+  console.log(isSave.value);
+  
+  if (isSave.value) {
+    const ranges = headerSelector.getHeaderRanges();
+    ranges.forEach((range) => {
+      console.log(`sheetIndex: ${range.sheetIndex}, row: [${range.headerRange.row}], column: [${range.headerRange.column}]`)
+    })
+  }
+  else{
+    state.popup.content = ['헤더 수정을 해주세요.']
+    state.popup.btnCount = 1
+    state.popup.toggle = true
+  }
 };
 
 //엑셀 로드
@@ -70,7 +80,7 @@ const reload_excel = (url, excelName, luckysheet) => {
     LuckyExcel.transformExcelToLuckyByUrl(url, excelName, function(exportJson, luckysheetfile){                    
       if(exportJson.sheets==null || exportJson.sheets.length==0){
           // 예외처리
-          isMaskShow.value = false
+          isMaskShow.value = true
   
           state.popup.content = ['엑셀 파일을 불러오지 못했습니다.']
           state.popup.btnCount = 1
@@ -132,6 +142,7 @@ const reload_excel = (url, excelName, luckysheet) => {
               
               if (updateMap.size > 0) {
                 document.querySelector('.btn-save')?.classList.add('active')
+                isSave.value = true
               }
             },
             cellUpdateBefore: function (r, c, value) {
@@ -187,6 +198,7 @@ onMounted(() => {
   try{
     const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`;
 
+    isMaskShow.value = true
     reload_excel(url, props.excelName, window.luckysheet)
   }
   catch(error) {}
