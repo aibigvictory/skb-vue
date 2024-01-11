@@ -24,6 +24,7 @@ const props = defineProps({
 })
 
 const isMaskShow = ref(true)
+const isSave = ref(false)
 const updateMap = new Map();
 const newUpdateMap = new Map();
 
@@ -118,6 +119,7 @@ const reload_excel = (url, excelName, luckysheet) => {
             
             if (updateMap.size > 0) {
               document.querySelector('.btn-save')?.classList.add('active')
+              isSave.value = true
             }
           },
           cellUpdateBefore: function (r, c, value) {
@@ -210,41 +212,51 @@ const getUserData = async () => {
 
 //엑셀 저장
 const saveExcel = async () => {
-  isMaskShow.value = true
-
-  try{
-    const revision = localStorage.getItem('revision') ?? '[]';
-    const user = await getUserData();
-    const result = await axios.post('/file/edit', {
-      userId: user.id,
-      data: [...updateMap.values()],
-      revision: JSON.parse(revision),
-    });
-    console.log(result);
-    if (result.status === 201) {
-      state.popup.content = ['수정이 완료되었습니다.']
-      state.popup.btnCount = 1
-      state.popup.toggle = true
-      
-      router.go(0)
-      // const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
-      // document.querySelector('.btn-save')?.classList.remove('active')
-      // isMaskShow.value = true
-      // reload_excel(url, props.excelName, window.luckysheet)
+  
+  if (isSave.value) {
+    isMaskShow.value = true
+    
+    try{
+      const revision = localStorage.getItem('revision') ?? '[]';
+      const user = await getUserData();
+      const result = await axios.post('/file/edit', {
+        userId: user.id,
+        data: [...updateMap.values()],
+        revision: JSON.parse(revision),
+      });
+      console.log(result);
+      if (result.status === 201) {
+        state.popup.content = ['수정이 완료되었습니다.']
+        state.popup.btnCount = 1
+        state.popup.toggle = true
+        
+        router.go(0)
+        // const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
+        // document.querySelector('.btn-save')?.classList.remove('active')
+        // isMaskShow.value = true
+        // reload_excel(url, props.excelName, window.luckysheet)
+      }
     }
-  }
-  catch(error: any) {
-    if (error?.response?.status === 409) {
-      state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
+    catch(error: any) {
+      if (error?.response?.status === 409) {
+        state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
+        state.popup.btnCount = 1
+        state.popup.toggle = true
+        return isMaskShow.value = false;
+      }
+      state.popup.content = ['수정에 실패하였습니다.']
       state.popup.btnCount = 1
       state.popup.toggle = true
       return isMaskShow.value = false;
     }
-    state.popup.content = ['수정에 실패하였습니다.']
+
+  }
+  else{
+    state.popup.content = ['엑셀 수정을 해주세요.']
     state.popup.btnCount = 1
     state.popup.toggle = true
-    return isMaskShow.value = false;
   }
+
 }
 
 //엘리먼트 생성 후, 엑셀 파일 데이터 적용
