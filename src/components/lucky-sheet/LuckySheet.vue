@@ -28,6 +28,24 @@ const isSave = ref(false)
 const updateMap = new Map();
 const newUpdateMap = new Map();
 
+// 셀 값 가져오기
+const getCellValue = (oldValue: any, cellValue: any) => {
+  try {
+    let returnValue = null;
+
+    if (cellValue.ct.t === 'inlineStr') {
+      returnValue = cellValue.ct.s.map((item) => item.v.replace(/\\r\\n/, '\\n')).join('\\n');
+    } else {
+      returnValue = cellValue.m?.toString();
+    }
+
+    return returnValue;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
 //엑셀 로드
 const reload_excel = (url, excelName, luckysheet) => {
   LuckyExcel.transformExcelToLuckyByUrl(url, excelName, function(exportJson, luckysheetfile){                    
@@ -141,16 +159,19 @@ const reload_excel = (url, excelName, luckysheet) => {
             const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
             console.log('! cellUpdated', {sheetName, r, c, oldValue, newValue});
             const key = `editCell_${props.excelId}_${sheetIndex}_${r}_${c}`;
-            updateMap.set(key, {
-              action: 'editCell',
-              fileId: props.excelId,
-              r: r + 1,
-              c: c + 1,
-              value: newValue?.v?.toString() ?? '',
-              sheetName
-            });
+            const cellValue = getCellValue(oldValue, newValue);
+            if (cellValue !== null) {
+              updateMap.set(key, {
+                action: 'editCell',
+                fileId: props.excelId,
+                r: r + 1,
+                c: c + 1,
+                value: cellValue,
+                sheetName
+              });
 
-            luckysheet.setCellFormat(r, c, 'bg', '#fff000')
+              luckysheet.setCellFormat(r, c, 'bg', '#fff000');
+            }
           }
         }
     })

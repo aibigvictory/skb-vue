@@ -32,7 +32,6 @@ const props = defineProps({
 
 const isMaskShow = ref(true)
 const isSave = ref(false)
-const updateMap = new Map();
 
 // 현재 줌 비율
 let currentZoomRatio = 0.5;
@@ -46,11 +45,8 @@ const onClickPrevButton = () => {
   const currentSheetOrder = Number(currentSheet.order);
   console.log('onClickPrevButton', currentSheetOrder);
   if (currentSheetOrder <= 0) {
-    document.querySelector('.btn-pre')?.classList.add('disabled');
     return;
   };
-
-  document.querySelector('.btn-next')?.classList.remove('disabled');
 
   const headerRange = headerSelector.getHeaderRange(currentSheetOrder - 1);
   window.luckysheet.setSheetActive(currentSheetOrder - 1);
@@ -62,15 +58,9 @@ const onClickNextButton = () => {
   const currentSheet = window.luckysheet.getSheet();
   const currentSheetOrder = Number(currentSheet.order);
   console.log('onClickNextButton', currentSheetOrder, (sheets.length - 1));
-  if (currentSheetOrder + 1 == sheets.length - 1) {
-    document.querySelector('.btn-next')?.classList.add('disabled');
-    document.querySelector('.btn-save')?.classList.add('active');
-  }
   if (currentSheetOrder >= sheets.length - 1) {
     return;
   };
-
-  document.querySelector('.btn-pre')?.classList.remove('disabled');
 
   const headerRange = headerSelector.getHeaderRange(currentSheetOrder + 1);
   window.luckysheet.setSheetActive(currentSheetOrder + 1);
@@ -150,20 +140,6 @@ const reload_excel = (url, excelName, luckysheet) => {
               const { type, ctrlType } = operate;
               if (type === 'zoomChange') {
                 const { zoomRatio, curZoomRatio } = operate;
-                const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
-                updateMap.set(`zoomChange_${props.excelId}_${sheetIndex}`, {
-                  action: 'zoomChange',
-                  fileId: props.excelId,
-                  r: 0,
-                  c: 0,
-                  value: String(Math.round(curZoomRatio * 100)),
-                  sheetName
-                });
-              }
-              
-              if (updateMap.size > 0) {
-                document.querySelector('.btn-save')?.classList.add('active')
-                isSave.value = true
                 console.log('zoomChange', curZoomRatio);
                 currentZoomRatio = curZoomRatio;
               }
@@ -172,23 +148,27 @@ const reload_excel = (url, excelName, luckysheet) => {
               console.log('! cellUpdateBefore', {r, c, value});
               return true;
             },
-            cellUpdated: function (r, c, oldValue, newValue) {
-              const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
-              console.log('! cellUpdated', {sheetName, r, c, oldValue, newValue});
-              const key = `editCell_${props.excelId}_${sheetIndex}_${r}_${c}`;
-              updateMap.set(key, {
-                action: 'editCell',
-                fileId: props.excelId,
-                r: r + 1,
-                c: c + 1,
-                value: String(newValue?.v) ?? '',
-                sheetName
-              });
-  
-              luckysheet.setCellFormat(r, c, 'bg', '#fff000')
-            },
             rangeSelect: function (sheet, range) {
-              console.log('rangeSelect', sheet, range);
+              const sheets = window.luckysheet.getAllSheets();
+              const currentSheetOrder = Number(sheet.order);
+              console.log('rangeSelect', sheet, range, currentSheetOrder, sheets.length);
+
+              if (currentSheetOrder == sheets.length - 1) {
+                document.querySelector('.btn-next')?.classList.add('disabled');
+                document.querySelector('.btn-save')?.classList.add('active');
+                isSave.value = true
+              } else {
+                document.querySelector('.btn-next')?.classList.remove('disabled');
+                document.querySelector('.btn-save')?.classList.remove('active');
+                isSave.value = false
+              }
+
+              if (currentSheetOrder <= 0) {
+                document.querySelector('.btn-pre')?.classList.add('disabled');
+              } else {
+                document.querySelector('.btn-pre')?.classList.remove('disabled');
+              }
+
               const headerRange = {
                 sheetIndex: Number(sheet.index),
                 row: range[0].row,
