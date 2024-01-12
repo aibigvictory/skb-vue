@@ -58,6 +58,7 @@
 
   <DashboardRevision/>
   <DashboardFavorites/>
+  <Notice/>
   
   <!--end::Row-->
 
@@ -69,6 +70,8 @@ import DashboardFavorites from "@/components/dashboard/DashboardFavorites.vue"
 import Widget1 from "@/components/dashboard-default-widgets/RecentUploadFile.vue";
 import Widget2 from "@/components/dashboard-default-widgets/ConnectMember.vue";
 import FileUploadVue from '@/components/file-upload/FileUpload.vue'
+import Notice from '@/components/Notice.vue'
+
 import { defineComponent, ref, watch } from "vue";
 import axios from "axios";
 import store from "@/store";

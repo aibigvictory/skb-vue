@@ -4,14 +4,14 @@
   <FileUploadVue/>
   <!--  -->
   <Popup v-if="state.popup.toggle" @accept="state.popup.accept" @exit="state.popup.toggle = false" :content="state.popup.content" :btnCount="state.popup.btnCount"/>
-  <Notice v-if="state.notice.toggle" @exit="state.notice.toggle = false"/>
+  <!-- <Notice v-if="state.notice.toggle" @exit="state.notice.toggle = false"/> -->
   <!-- <LuckysheetHeaderModal v-if="state.luckysheet.modal.toggle"/> -->
 </template>
 
 <script setup lang="ts">
 import FileUploadVue from "@/components/modals/general/FileUploadModal.vue";
 import Popup from '@/components/Popup.vue'
-import Notice from '@/components/Notice.vue'
+// import Notice from '@/components/Notice.vue'
 // import LuckysheetHeaderModal from '@/views/LuckySheetHeaderAdjust.vue'
 
 import { defineComponent, nextTick, onMounted, ref } from "vue";
@@ -26,15 +26,6 @@ import router from "./router";
 
 const store = useStore();
 const state = store.state
-
-const checkNoticeToggle = () => {
-  const noticeExp = localStorage.getItem('noticetoggle')
-  
-  if (noticeExp && noticeExp == new Date().toISOString().slice(0,10)) {
-    state.notice.toggle = false
-  }
-}
-checkNoticeToggle()
 
 const checkTokenExp = () => {
   const decode = JwtService.decode(JwtService.getToken())
