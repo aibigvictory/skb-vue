@@ -18,9 +18,9 @@
                     <!-- <p v-for="txt in content" :key="txt">{{txt}}</p> -->
                 </div>
             </div>
-            <div class="popup-section" v-if="!notice.length">
+            <!-- <div class="popup-section" v-if="!notice.length">
                 <div class="content">공지사항이 없습니다.</div>
-            </div>
+            </div> -->
             <div class="popup-footer">
                 오늘 다시 보지 않기<input type="checkbox" @change="check_not_today_notice">
             </div>
