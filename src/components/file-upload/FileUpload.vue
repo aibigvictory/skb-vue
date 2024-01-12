@@ -45,6 +45,7 @@ import { ca } from "element-plus/es/locale";
 import store from "@/store";
 import JwtService from "@/core/services/JwtService";
 import { change_popup_state } from '@/assets/utils/popup.js'
+import router from '@/router';
 
 const state = store.state
 const props = defineProps({
@@ -172,11 +173,11 @@ onMounted(() => {
 
         myDropzone.on("successmultiple", function(file) {
             console.log(file);
-            
+
             state.popup.content = ['업로드가 완료되었습니다.']
             state.popup.btnCount = 1
+            state.popup.accept = () => router.go(0)
             state.popup.toggle = true
-            state.luckysheet.modal.toggle = true
         });
 
         // myDropzone.on("success", function(file) {
