@@ -21,9 +21,9 @@
             <div class="popup-section" v-if="!notice.length">
                 <div class="content">공지사항이 없습니다.</div>
             </div>
-            <!-- <div class="popup-footer" v-if="btn == 1">
-                <button class="popup-btn accept">확인</button>
-            </div> -->
+            <div class="popup-footer">
+                오늘 다시 보지 않기<input type="checkbox" @change="check_not_today_notice">
+            </div>
         </div>
     </div>
 </template>
@@ -51,6 +51,23 @@ const notice = ref([])
 //   }
 // ])
 
+const check_not_today_notice = (e) => {
+    console.log(e.target.checked);
+
+    console.log(new Date().toISOString().slice(0,10) > '2024-01-11');
+    console.log(new Date().toISOString().slice(0,10) > '2024-01-12');
+    console.log(new Date().toISOString().slice(0,10) > '2024-01-13');
+    
+
+    if (e.target.checked) {
+        localStorage.setItem('noticetoggle', new Date().toISOString().slice(0,10))
+    }
+    else{
+        localStorage.setItem('noticetoggle', '0000-00-00')
+    }
+    
+}
+
 const init = async () => {
   const axios_config = {
       headers: { Authorization: `Bearer ${JwtService.getToken()}` }
@@ -61,7 +78,7 @@ const init = async () => {
   
   notice.value = data
 
-  if (data.length < 1) state.notice.toggle = false
+//   if (data.length < 1) state.notice.toggle = false
 }
 
 init()
@@ -111,6 +128,14 @@ init()
                 .contents{
                   opacity: 0.7;
                 }
+            }
+        }
+        .popup-footer{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            input{
+                margin-left: 10px;
             }
         }
     }

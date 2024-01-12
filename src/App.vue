@@ -27,6 +27,15 @@ import router from "./router";
 const store = useStore();
 const state = store.state
 
+const checkNoticeToggle = () => {
+  const noticeExp = localStorage.getItem('noticetoggle')
+  
+  if (noticeExp && noticeExp == new Date().toISOString().slice(0,10)) {
+    state.notice.toggle = false
+  }
+}
+checkNoticeToggle()
+
 const checkTokenExp = () => {
   const decode = JwtService.decode(JwtService.getToken())
   const now = new Date()
