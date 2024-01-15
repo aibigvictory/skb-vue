@@ -34,6 +34,7 @@
             <div class="popup-section">
                 <div class="content">
                     <div class="title">{{item.title}}</div>
+                    <!-- <div class="contents">{{item.contents}}</div> -->
                     <div class="contents">{{item.contents}}</div>
                     <!-- <p v-for="txt in content" :key="txt">{{txt}}</p> -->
                 </div>
@@ -169,6 +170,7 @@ init()
                 }
                 .contents{
                   opacity: 0.7;
+                  white-space: pre-wrap;
                 }
             }
         }
