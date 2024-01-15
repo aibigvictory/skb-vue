@@ -595,6 +595,10 @@ console.log(filter_fileUse(deepCopy(category_list)));
       return arr.some(e => e.id === str);
     }
 
+    const checkDeleteIdAndExcelId = (arr, str) => {
+      return arr.some(e => `${e}` === str);
+    }
+
     const checkInArray = (arr, file) => {
       return arr.some(e => e.id === file.id);
     }
@@ -725,7 +729,11 @@ console.log(filter_fileUse(deepCopy(category_list)));
               // })
               // .catch(() => alert('파일 삭제에 실패하였습니다.'))
             })
-  
+
+            if (checkDeleteIdAndExcelId(check_useless_manageFile_list.value, localStorage.getItem('id'))) {
+              state.popup.accept = () => router.push('/dashboard')
+            }
+
             state.popup.content = ['파일 삭제에 성공하였습니다.']
             state.popup.btnCount = 1
             state.popup.toggle = true
