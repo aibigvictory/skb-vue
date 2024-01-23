@@ -168,6 +168,22 @@
                         <input v-model="input_add_user.email" type="email" placeholder="입력해주세요." required>
                     </div>
                 </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">엑셀권한</label>
+                        <div class="radio d-flex">
+                            <label class="form-check-label" for="flexRadioDefault1">보기</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="view" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">수정</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="" name="flexRadioDefault" id="flexRadioDefault2">
+                            <label class="form-check-label" for="flexRadioDefault3">삭제</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="" name="flexRadioDefault" id="flexRadioDefault3">
+                            <label class="form-check-label" for="flexRadioDefault4">관리</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="" name="flexRadioDefault" id="flexRadioDefault4">
+                            <!-- <input v-model="input_adjust_user.excel" type="radio"> -->
+                        </div>
+                    </div>
+                </div>
                 <label for="">비고</label>
                 <textarea v-model="input_add_user.memo" placeholder="내용을 입력해주세요."></textarea>
             </div>
@@ -234,6 +250,19 @@
                         <input v-model="input_adjust_user.email" type="text" placeholder="입력해주세요." required>
                     </div>
                 </div>
+                <div class="line">
+                    <div class="item">
+                        <label for="">엑셀권한</label>
+                        <div>
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">asd</label>
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">asd</label>
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">asd</label>
+                        </div>
+                    </div>
+                </div>
                 <label for="">비고</label>
                 <textarea v-model="input_adjust_user.memo" placeholder="내용을 입력해주세요."></textarea>
             </div>
@@ -275,6 +304,7 @@ let input_add_user = ref({
     phone: null,
     memo: null,
     teamName: 'test',
+    excel: 'view'
 })
 
 let input_adjust_user = computed(() => {
@@ -679,24 +709,26 @@ li{list-style: none;}
         }
         .section{
             margin: 24px 0;
+            label{
+                display: block;
+                color: var(--primary-text, #222);
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
             .line{
                 display: flex;
                 justify-content: space-between;
                 .item{
                     width: calc(50% - 6px);
                     label{
-                        display: block;
-                        color: var(--primary-text, #222);
-                        font-size: 14px;
-                        font-weight: 500;
-                        margin-bottom: 10px;
                         span{
                             color: var(--data-bs-theme-light-bs-red, #DC3545);
                             font-size: 10px;
                             font-weight: 400;
                         }
                     }
-                    select, input{
+                    select, input[type="text"], input[type="email"]{
                         display: block;
                         height: 40px;
                         padding: 0 12px;
@@ -705,6 +737,15 @@ li{list-style: none;}
                         border-radius: 10px;
                         border: 1px solid var(--data-bs-theme-light-bs-gray-300, #E4E6EF);
                         background: #FFF;
+                    }
+                    .radio {
+                        margin-bottom: 10px;
+                        input[type="radio"] {
+                            margin: 0 20px 0 10px;
+                        }
+                        label{
+                            color: #858585;
+                        }
                     }
                 }
             }

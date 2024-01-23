@@ -151,37 +151,37 @@
     <!--end::Menu separator-->
 
     <!--begin::Menu item-->
-    <div class="menu-item px-5 my-1">
+    <div class="menu-item px-5 my-1" v-if="userType == 8 || userType == 9">
       <router-link to="/company/list" class="menu-link px-5">
         업체정보
       </router-link>
     </div>
-    <div class="menu-item px-5 my-1">
+    <div class="menu-item px-5 my-1" v-if="userType == 8 || userType == 9">
       <router-link to="/user/list" class="menu-link px-5">
         사용자 정보
       </router-link>
     </div>
-    <div class="menu-item px-5 my-1">
+    <div class="menu-item px-5 my-1" v-if="userType == 8 || userType == 9">
       <router-link to="/manage/file" class="menu-link px-5">
         관리파일 그룹
       </router-link>
     </div>
-    <div class="menu-item px-5 my-1">
+    <div class="menu-item px-5 my-1" v-if="userType == 9">
       <router-link to="/notice" class="menu-link px-5">
         공지사항
       </router-link>
     </div>
-    <div class="menu-item px-5 my-1">
+    <div class="menu-item px-5 my-1" v-if="userType == 9">
       <router-link to="/queton" class="menu-link px-5">
         큐톤
       </router-link>
     </div>
-    <div class="menu-item px-5 my-1">
+    <div class="menu-item px-5 my-1" v-if="userType == 9">
       <router-link to="/signup/accept" class="menu-link px-5">
         회원가입 승인
       </router-link>
     </div>
-    <div class="menu-item px-5 my-1">
+    <div class="menu-item px-5 my-1" v-if="userType == 9">
       <router-link to="/password/config" class="menu-link px-5">
         비밀번호 변경 설정
       </router-link>
@@ -268,6 +268,7 @@ export default defineComponent({
     const userName = ref('Name')
     const userEmail = ref('Email')
     const userTeam = ref('Team')
+    const userType = ref('1')
 
     const callInfo = async () => {
       const axios_config = {
@@ -275,11 +276,12 @@ export default defineComponent({
       }
 
       const { data } = await axios.post('/auth/info', {}, axios_config)
-      const { name, email, teamName } = data
+      const { name, email, teamName, type } = data
       
       userName.value = name
       userEmail.value = email
       userTeam.value = teamName
+      userType.value = type
     }
 
     callInfo()
@@ -293,6 +295,7 @@ export default defineComponent({
       userName,
       userEmail,
       userTeam,
+      userType,
     };
   },
 });
