@@ -56,6 +56,9 @@ function getDifferenceInMinutes(dateString) {
 
     return differenceInMinutes;
 }
+function formatNA(value) {
+    return value ?? `<span style="color: red; font-weight: bold;">N/A</span>`;
+}
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -92,16 +95,16 @@ function createLogTr({
         const tr = `
 <tr>
     <th scope="row">${no}</th>
-    <td><a href="${chLink}" target="_blank">${chName ?? 'N/A'}</a></td>
-    <td>${chNumber ?? 'N/A'}</td>
-    <td>${psipSrcNo ?? 'N/A'}</td>
-    <td>${nCTModuleID ?? 'N/A'}</td>
-    <td>${nCTPortID ?? 'N/A'}</td>
-    <td>${chrReceiveDate?.substring(5) ?? 'N/A'}</td>
-    <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${chrReceiveTime?.slice(0, -3) ?? 'N/A'}</td>
-    <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${nonReceiveTime ?? 'N/A'}</td>
-    <td ${differentCue ? ' style="color: red; font-weight: bold;"' : ''}>${cueM ?? 'N/A'}</td>
-    <td ${differentCue ? ' style="color: red; font-weight: bold;"' : ''}>${cueB ?? 'N/A'}</td>
+    <td><a href="${chLink}" target="_blank">${formatNA(chName)}</a></td>
+    <td>${formatNA(chNumber)}</td>
+    <td>${formatNA(psipSrcNo)}</td>
+    <td>${formatNA(nCTModuleID)}</td>
+    <td>${formatNA(nCTPortID)}</td>
+    <td>${formatNA(chrReceiveDate?.substring(5))}</t
+    <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${formatNA(chrReceiveTime?.slice(0, -3))}</td>
+    <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${formatNA(nonReceiveTime)}</td>
+    <td ${differentCue ? ' style="color: red; font-weight: bold;"' : ''}>${formatNA(cueM)}</td>
+    <td ${differentCue ? ' style="color: red; font-weight: bold;"' : ''}>${formatNA(cueB)}</td>
 </tr>
 `;
         return tr;

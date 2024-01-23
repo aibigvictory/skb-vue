@@ -100,6 +100,28 @@ const reload_excel = (url, excelName, luckysheet) => {
                 }
               }
             }
+            if (ctrlType === 'resizeR') {
+              const { config, curconfig } = operate;
+              const prevRowLengthObj = config.rowlen;
+              const currentRowLengthObj = curconfig.rowlen;
+              // 변경된 부분만 추가
+              for (const [key, value] of Object.entries(currentRowLengthObj)) {
+                const prevLength = prevRowLengthObj[key];
+                if (!prevLength) continue;
+                if (prevLength !== value) {
+                  const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+                  updateMap.set(`resizeRow_${props.excelId}_${sheetIndex}_${key}`, {
+                    action: 'resizeRow',
+                    fileId: props.excelId,
+                    r: parseInt(key),
+                    c: 0,
+                    value: String(Math.round(value)),
+                    sheetName
+                  });
+                  console.log('resizeR', String(Math.round(value)));
+                }
+              }
+            }
             if (type === 'zoomChange') {
               const { zoomRatio, curZoomRatio } = operate;
               const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
