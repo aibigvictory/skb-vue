@@ -173,14 +173,13 @@
                         <label for="">엑셀권한</label>
                         <div class="radio d-flex">
                             <label class="form-check-label" for="flexRadioDefault1">보기</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="view" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="view" name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label" for="flexRadioDefault2">수정</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="" name="flexRadioDefault" id="flexRadioDefault2">
+                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="adjust" name="flexRadioDefault" id="flexRadioDefault2">
                             <label class="form-check-label" for="flexRadioDefault3">삭제</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="" name="flexRadioDefault" id="flexRadioDefault3">
+                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="delete" name="flexRadioDefault" id="flexRadioDefault3">
                             <label class="form-check-label" for="flexRadioDefault4">관리</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="" name="flexRadioDefault" id="flexRadioDefault4">
-                            <!-- <input v-model="input_adjust_user.excel" type="radio"> -->
+                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="manage" name="flexRadioDefault" id="flexRadioDefault4">
                         </div>
                     </div>
                 </div>
@@ -253,13 +252,16 @@
                 <div class="line">
                     <div class="item">
                         <label for="">엑셀권한</label>
-                        <div>
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                            <label class="form-check-label" for="flexRadioDefault2">asd</label>
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                            <label class="form-check-label" for="flexRadioDefault2">asd</label>
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                            <label class="form-check-label" for="flexRadioDefault2">asd</label>
+                        <div class="radio d-flex">
+                            <label class="form-check-label" for="flexRadioDefault1">보기</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="view" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault2">수정</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="adjust" name="flexRadioDefault" id="flexRadioDefault2">
+                            <label class="form-check-label" for="flexRadioDefault3">삭제</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="delete" name="flexRadioDefault" id="flexRadioDefault3">
+                            <label class="form-check-label" for="flexRadioDefault4">관리</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="manage" name="flexRadioDefault" id="flexRadioDefault4">
+                            <!-- <input v-model="input_adjust_user.excel" type="radio"> -->
                         </div>
                     </div>
                 </div>
