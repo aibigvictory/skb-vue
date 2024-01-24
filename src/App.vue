@@ -182,9 +182,9 @@ img{
 .tui-grid-cell-content{
   text-align: center;
 }
-// .tui-grid-cell-header{
-//   word-break: keep-all;
-// }
+.tui-grid-cell-header{
+  white-space: normal !important;
+}
 .tui-grid-header-area{
   height: auto !important;
 

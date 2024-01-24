@@ -100,7 +100,7 @@ function createLogTr({
     <td>${formatNA(psipSrcNo)}</td>
     <td>${formatNA(nCTModuleID)}</td>
     <td>${formatNA(nCTPortID)}</td>
-    <td>${formatNA(chrReceiveDate?.substring(5))}</t
+    <td>${formatNA(chrReceiveDate?.substring(5))}</td>
     <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${formatNA(chrReceiveTime?.slice(0, -3))}</td>
     <td ${isNonReceive ? ' style="color: red; font-weight: bold;"' : ''}>${formatNA(nonReceiveTime)}</td>
     <td ${differentCue ? ' style="color: red; font-weight: bold;"' : ''}>${formatNA(cueM)}</td>

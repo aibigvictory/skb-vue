@@ -367,7 +367,7 @@ li{list-style: none;}
     background: #FFF;
     padding: 8px 24px;
     .category{
-      width: 180px;
+      width: 20%;
       height: 228px;
       margin: 14px 0;
       padding-right: 16px;
