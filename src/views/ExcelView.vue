@@ -53,14 +53,14 @@ import axios from 'axios'
 import { computed, ref, watch } from 'vue'
 
 setInterval(() => {
-    if (excelId.value != Number(localStorage.getItem('id'))) {
-        excelId.value = Number(localStorage.getItem('id'))
+    if (excelId.value != Number(sessionStorage.getItem('id'))) {
+        excelId.value = Number(sessionStorage.getItem('id'))
 
         init()
     }
 }, 100)
 
-const excelId = ref(Number(localStorage.getItem('id')))
+const excelId = ref(Number(sessionStorage.getItem('id')))
 const excelTitle = ref('')
 const excelUploader = ref('')
 const excelUploaderTeam = ref('')
@@ -84,7 +84,7 @@ const download_excel = () => {
 }
 
 const init = async () => {
-    const { data } = await axios.get(`/file/${localStorage.getItem('id')}`)
+    const { data } = await axios.get(`/file/${sessionStorage.getItem('id')}`)
     const { name, user, folder, bookmark, revision } = data
 
     excelTitle.value = name
@@ -94,7 +94,7 @@ const init = async () => {
     categoryName.value = folder.name
     excelUploaderCompanyId.value = user.companyId
     excelBookmark.value = bookmark.length
-    localStorage.setItem('revision', JSON.stringify(revision));
+    sessionStorage.setItem('revision', JSON.stringify(revision));
 }
 
 init()

@@ -271,7 +271,7 @@ const saveExcel = async () => {
     isMaskShow.value = true
     
     try{
-      const revision = localStorage.getItem('revision') ?? '[]';
+      const revision = sessionStorage.getItem('revision') ?? '[]';
       const user = await getUserData();
       const result = await axios.post('/file/edit', {
         userId: user.id,

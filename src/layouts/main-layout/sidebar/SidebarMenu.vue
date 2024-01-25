@@ -572,7 +572,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
     })
 
     const file_click = (id, name, user, team, date, cate) => {
-      localStorage.setItem('id', id)
+      sessionStorage.setItem('id', id)
       // localStorage.setItem('name', name)
       // localStorage.setItem('user', user)
       // localStorage.setItem('team', team)
@@ -730,7 +730,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
               // .catch(() => alert('파일 삭제에 실패하였습니다.'))
             })
 
-            if (checkDeleteIdAndExcelId(check_useless_manageFile_list.value, localStorage.getItem('id'))) {
+            if (checkDeleteIdAndExcelId(check_useless_manageFile_list.value, sessionStorage.getItem('id'))) {
               state.popup.accept = () => router.push('/dashboard')
             }
 

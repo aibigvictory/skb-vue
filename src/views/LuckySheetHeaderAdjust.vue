@@ -53,7 +53,7 @@ import { computed, ref, watch } from 'vue'
 
 const state = store.state
 
-const excelId = ref(Number(localStorage.getItem('id')))
+const excelId = ref(Number(sessionStorage.getItem('id')))
 const excelTitle = ref('')
 const excelUploader = ref('')
 const excelUploaderTeam = ref('')
@@ -79,7 +79,7 @@ const save = () => {
 }
 
 const init = async () => {
-    const { data } = await axios.get(`/file/${localStorage.getItem('id')}`)
+    const { data } = await axios.get(`/file/${sessionStorage.getItem('id')}`)
     const { name, user, folder, revision } = data
 
     excelTitle.value = name
@@ -88,7 +88,7 @@ const init = async () => {
     excelUpdatedAt.value = user.updatedAt
     categoryName.value = folder.name
     excelUploaderCompanyId.value = user.companyId
-    localStorage.setItem('revision', JSON.stringify(revision));
+    sessionStorage.setItem('revision', JSON.stringify(revision));
 }
 
 init()
