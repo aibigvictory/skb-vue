@@ -64,7 +64,7 @@ const router = useRoute()
 //     }
 // }, 100)
 
-const excelId = ref(Number(router.params))
+const excelId = ref(Number(router.params.id))
 const excelTitle = ref('')
 const excelUploader = ref('')
 const excelUploaderTeam = ref('')
@@ -88,7 +88,7 @@ const download_excel = () => {
 }
 
 const init = async () => {
-    const { data } = await axios.get(`/file/${router.params}`)
+    const { data } = await axios.get(`/file/${router.params.id}`)
     const { name, user, folder, bookmark, revision } = data
 
     excelTitle.value = name
@@ -139,8 +139,8 @@ const toggle_favorite = async () => {
 //     }
 // }
 
-console.log('router.params');
-console.log(router.params);
+console.log('router.params.id');
+console.log(router.params.id);
 
 
 </script>
