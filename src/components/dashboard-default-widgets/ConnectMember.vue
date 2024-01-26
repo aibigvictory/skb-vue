@@ -61,7 +61,9 @@ export default defineComponent({
       const { data } = await axios.get('/online')
 
       // console.log(data);
-      members.value = data
+      if (typeof data === 'object') {
+        members.value = data;
+      }
     }
 
     load_connect()

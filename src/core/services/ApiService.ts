@@ -31,6 +31,10 @@ class ApiService {
     ] = `Bearer ${JwtService.getToken()}`;
     ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
       "application/json";
+    
+    // ngrok 사용을 위해 필요한 헤더
+    ApiService.vueInstance.axios.defaults.headers.common["ngrok-skip-browser-warning"] =
+      'true';
   }
 
   /**

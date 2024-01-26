@@ -131,7 +131,9 @@ const load_connect = async () => {
   const { data } = await axios.get('/online')
 
   // console.log(data);
-  messages.value = data
+  if (typeof data === 'object') {
+    messages.value = data;
+  }
 }
 
 load_connect()

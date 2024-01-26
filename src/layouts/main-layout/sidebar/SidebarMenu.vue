@@ -572,6 +572,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
     })
 
     const file_click = (id, name, user, team, date, cate) => {
+      console.log(`file_click(${id}, ${name})`);
       sessionStorage.setItem('id', id)
       // localStorage.setItem('name', name)
       // localStorage.setItem('user', user)
@@ -580,7 +581,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
       // localStorage.setItem('cate', cate)
 
 
-      router.push(`excel/${id}`);
+      router.push(`/excel/${id}`);
     }
 
     let drag_file = null
