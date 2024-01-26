@@ -92,21 +92,14 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/excel",
+        path: "/excel/:id",
         name: "excel",
         component: () => import("@/views/ExcelView.vue"),
         meta: {
           pageTitle: "Excel",
           breadcrumbs: ["Excel"],
         },
-        children: [
-          {
-            path: "/excel/:id",
-            name: "excelFile",
-            component: () => import("@/views/ExcelView.vue"),
-            props: true
-          },
-        ]
+        props: true
       },
       {
         path: "/header/adjust",
