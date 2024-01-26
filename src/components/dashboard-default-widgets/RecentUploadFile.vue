@@ -69,7 +69,7 @@ export default defineComponent({
         // localStorage.setItem('date', date)
         // localStorage.setItem('cate', cate)
 
-        router.push({ name: "excel" });
+        router.push(`excel/${id}`);
     }
 
     return {

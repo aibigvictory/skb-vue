@@ -580,7 +580,7 @@ console.log(filter_fileUse(deepCopy(category_list)));
       // localStorage.setItem('cate', cate)
 
 
-      router.push({ name: "excel" });
+      router.push(`excel/${id}`);
     }
 
     let drag_file = null

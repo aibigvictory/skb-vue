@@ -47,20 +47,24 @@
 
 <script setup lang="ts">
 import LuckySheet from '@/components/lucky-sheet/LuckySheet.vue'
+
 import store from '@/store'
 import { Actions } from '@/store/enums/StoreEnums'
 import axios from 'axios'
 import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
-setInterval(() => {
-    if (excelId.value != Number(sessionStorage.getItem('id'))) {
-        excelId.value = Number(sessionStorage.getItem('id'))
+const router = useRoute()
 
-        init()
-    }
-}, 100)
+// setInterval(() => {
+//     if (excelId.value != Number(sessionStorage.getItem('id'))) {
+//         excelId.value = Number(sessionStorage.getItem('id'))
 
-const excelId = ref(Number(sessionStorage.getItem('id')))
+//         init()
+//     }
+// }, 100)
+
+const excelId = ref(Number(router.params))
 const excelTitle = ref('')
 const excelUploader = ref('')
 const excelUploaderTeam = ref('')
@@ -84,7 +88,7 @@ const download_excel = () => {
 }
 
 const init = async () => {
-    const { data } = await axios.get(`/file/${sessionStorage.getItem('id')}`)
+    const { data } = await axios.get(`/file/${router.params}`)
     const { name, user, folder, bookmark, revision } = data
 
     excelTitle.value = name
@@ -134,6 +138,9 @@ const toggle_favorite = async () => {
 //         return ul.disactive = false
 //     }
 // }
+
+console.log('router.params');
+console.log(router.params);
 
 
 </script>

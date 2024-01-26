@@ -158,7 +158,7 @@ const file_click = (id, name, user, team, date, cate) => {
 
 
     emits('exit')
-    router.push({ name: "excel" });
+    router.push(`excel/${id}`);
 }
 
 init()

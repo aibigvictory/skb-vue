@@ -157,7 +157,7 @@ const init = async () => {
 init()
 
 const file_click = (id, name, user, team, date, cate) => {
-  console.log(id, name);
+  // console.log(id, name);
   sessionStorage.setItem('id', id)
   // localStorage.setItem('name', name)
   // localStorage.setItem('user', user)
@@ -165,7 +165,7 @@ const file_click = (id, name, user, team, date, cate) => {
   // localStorage.setItem('date', date)
   // localStorage.setItem('cate', cate)
 
-  router.push({ name: "excel" });
+  router.push(`excel/${id}`);
 }
 </script>
 

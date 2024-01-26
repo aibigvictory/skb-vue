@@ -180,7 +180,7 @@ init()
 const file_click = (id, name, user, team, date, cate) => {
   sessionStorage.setItem('id', id)
 
-  router.push({ name: "excel" });
+  router.push(`excel/${id}`);
 }
 </script>
 

@@ -99,6 +99,14 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "Excel",
           breadcrumbs: ["Excel"],
         },
+        children: [
+          {
+            path: "/excel/:id",
+            name: "excelFile",
+            component: () => import("@/views/ExcelView.vue"),
+            props: true
+          },
+        ]
       },
       {
         path: "/header/adjust",

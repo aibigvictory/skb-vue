@@ -90,7 +90,7 @@ const onClickSaveButton = async () => {
       state.popup.btnCount = 1
       state.popup.toggle = true
 
-      router.push('/excel')
+      router.push(`excel/${props.excelId}`);
     }
     catch (error) {
       console.error(error);
