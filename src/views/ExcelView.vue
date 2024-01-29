@@ -41,7 +41,7 @@
             </div>
             <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
         </div>
-        <LuckySheet ref="child" :excelName="excelTitle" :excelId="excelId"/>    
+        <LuckySheet ref="child" :key="luckysheet_key" :excelName="excelTitle" :excelId="excelId"/>    
     </div>
 </template>
 
@@ -78,6 +78,7 @@ const excelUploaderCompanyName = computed(() => {
     }
 })
 const excelBookmark = ref(0)
+const luckysheet_key = ref(0)
 
 const child: any = ref(null)
 const save_excel = () => {
@@ -101,6 +102,7 @@ const init = async (id) => {
     excelUploaderCompanyId.value = user.companyId
     excelBookmark.value = bookmark.length
     sessionStorage.setItem('revision', JSON.stringify(revision));
+    luckysheet_key.value++
 }
 
 init(router.params.id)

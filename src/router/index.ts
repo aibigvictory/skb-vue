@@ -6,8 +6,8 @@ import JwtService from "@/core/services/JwtService";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    redirect: "/dashboard",
+    path: "/dashboard",
+    // redirect: "/dashboard",
     component: () => import("@/layouts/main-layout/MainLayout.vue"),
     children: [
       {
