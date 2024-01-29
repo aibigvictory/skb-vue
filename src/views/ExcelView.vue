@@ -94,6 +94,7 @@ const init = async (id) => {
     const { data } = await axios.get(`/file/${id}`)
     const { name, user, folder, bookmark, revision } = data
 
+    excelId.value = Number(id)
     excelTitle.value = name
     excelUploader.value = user.name
     excelUploaderTeam.value = user.teamName
