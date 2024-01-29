@@ -87,8 +87,10 @@ const download_excel = () => {
     child.value.downloadExcel();
 }
 
-const init = async () => {
-    const { data } = await axios.get(`/file/${router.params.id}`)
+const init = async (id) => {
+    console.log('init');
+    
+    const { data } = await axios.get(`/file/${id}`)
     const { name, user, folder, bookmark, revision } = data
 
     excelTitle.value = name
@@ -101,7 +103,11 @@ const init = async () => {
     sessionStorage.setItem('revision', JSON.stringify(revision));
 }
 
-init()
+init(router.params.id)
+
+watch(() => router.params, (params) => {
+    init(params.id)
+})
 
 const toggle_favorite = async () => {
     if (excelBookmark.value) {
