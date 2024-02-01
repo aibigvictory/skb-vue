@@ -136,8 +136,17 @@ const logWatcher = logObserver.watch(({ data, error }) => {
     // data - data for given key resolved by fetcher
     // error - error thrown by fetcher
     console.log(data.data);
+    const items = data.data;
+    items.sort((a, b) => {
+        let n1 = parseInt(a.chNumber, 10);
+        let n2 = parseInt(b.chNumber, 10);
+        if (Number.isNaN(n1)) n1 = Infinity;
+        if (Number.isNaN(n2)) n2 = Infinity;
+  
+        return n1 - n2;
+    });
     // 데이터
-    const logs = data.data.map((v, i, arr) => {
+    const logs = items.map((v, i, arr) => {
         return createLogTr({
             no: i + 1,
             ...v
