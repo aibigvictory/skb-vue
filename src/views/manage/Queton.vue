@@ -22,14 +22,14 @@
                         </li>
                     </ul>
                     <ul class="quetone">
-                        <li v-for="item in quetoneList" :key="item" @click="adjustMode = true; selectQuetoneModel = item;">
+                        <li v-for="item in quetoneList" :key="item">
                             <input v-model="quetone_checked_list" :value="item.id" type="checkbox">
-                            <div>{{item.nToneId}}</div>
-                            <div>{{item.nCTPortId}}</div>
-                            <div>{{item.chName}}</div>
-                            <div>{{item.psipSrcNo}}</div>
-                            <div>{{item.chNumber}}</div>
-                            <div>{{item.chLink}}</div>
+                            <div @click="adjustMode = true; selectQuetoneModel = item;">{{item.nToneId}}</div>
+                            <div @click="adjustMode = true; selectQuetoneModel = item;">{{item.nCTPortId}}</div>
+                            <div @click="adjustMode = true; selectQuetoneModel = item;">{{item.chName}}</div>
+                            <div @click="adjustMode = true; selectQuetoneModel = item;">{{item.psipSrcNo}}</div>
+                            <div @click="adjustMode = true; selectQuetoneModel = item;">{{item.chNumber}}</div>
+                            <div @click="adjustMode = true; selectQuetoneModel = item;">{{item.chLink}}</div>
                         </li>
                     </ul>
                 </div>
@@ -334,6 +334,7 @@ li{list-style: none;}
                         display: flex;
                         border-top: 1px solid #eee;
                         div{
+                            cursor: pointer;
                             display: flex;
                             align-items: center;
                             width: 180px;
