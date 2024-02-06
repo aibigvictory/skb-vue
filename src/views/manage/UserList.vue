@@ -306,7 +306,7 @@ let input_add_user = ref({
     phone: null,
     memo: null,
     teamName: 'test',
-    action: '1'
+    action: 1
 })
 
 let input_adjust_user = computed(() => {
