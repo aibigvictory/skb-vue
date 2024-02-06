@@ -172,14 +172,14 @@
                     <div class="item">
                         <label for="">엑셀권한</label>
                         <div class="radio d-flex">
-                            <label class="form-check-label" for="flexRadioDefault1">보기</label>
-                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="view" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault2">수정</label>
-                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="adjust" name="flexRadioDefault" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault3">삭제</label>
-                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="delete" name="flexRadioDefault" id="flexRadioDefault3">
-                            <label class="form-check-label" for="flexRadioDefault4">관리</label>
-                            <input class="form-check-input" type="radio" v-model="input_add_user.excel" value="manage" name="flexRadioDefault" id="flexRadioDefault4">
+                            <label class="form-check-label" for="flexRadioDefault1">읽기</label>
+                            <input class="form-check-input" type="radio" v-model="input_add_user.action" :value="1" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault2">쓰기</label>
+                            <input class="form-check-input" type="radio" v-model="input_add_user.action" :value="3" name="flexRadioDefault" id="flexRadioDefault2">
+                            <label class="form-check-label" for="flexRadioDefault3">수정</label>
+                            <input class="form-check-input" type="radio" v-model="input_add_user.action" :value="7" name="flexRadioDefault" id="flexRadioDefault3">
+                            <label class="form-check-label" for="flexRadioDefault4">삭제</label>
+                            <input class="form-check-input" type="radio" v-model="input_add_user.action" :value="15" name="flexRadioDefault" id="flexRadioDefault4">
                         </div>
                     </div>
                 </div>
@@ -253,14 +253,14 @@
                     <div class="item">
                         <label for="">엑셀권한</label>
                         <div class="radio d-flex">
-                            <label class="form-check-label" for="flexRadioDefault1">보기</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="view" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault2">수정</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="adjust" name="flexRadioDefault" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault3">삭제</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="delete" name="flexRadioDefault" id="flexRadioDefault3">
-                            <label class="form-check-label" for="flexRadioDefault4">관리</label>
-                            <input class="form-check-input" type="radio" v-model="input_adjust_user.excel" value="manage" name="flexRadioDefault" id="flexRadioDefault4">
+                            <label class="form-check-label" for="flexRadioDefault1">읽기</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.action" :value="1" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault2">쓰기</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.action" :value="3" name="flexRadioDefault" id="flexRadioDefault2">
+                            <label class="form-check-label" for="flexRadioDefault3">수정</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.action" :value="7" name="flexRadioDefault" id="flexRadioDefault3">
+                            <label class="form-check-label" for="flexRadioDefault4">삭제</label>
+                            <input class="form-check-input" type="radio" v-model="input_adjust_user.action" :value="15" name="flexRadioDefault" id="flexRadioDefault4">
                             <!-- <input v-model="input_adjust_user.excel" type="radio"> -->
                         </div>
                     </div>
@@ -306,7 +306,7 @@ let input_add_user = ref({
     phone: null,
     memo: null,
     teamName: 'test',
-    excel: 'view'
+    action: '1'
 })
 
 let input_adjust_user = computed(() => {
