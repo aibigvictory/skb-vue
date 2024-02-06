@@ -4,7 +4,8 @@
 
 @mixin scrollbar-color($color, $hover-color: null) {
     // Firefox
-    scrollbar-color: $color transparent;
+    // scrollbar-color: $color transparent;
+    scrollbar-color: transparent;
     
     // Webkit
     &::-webkit-scrollbar-thumb {
@@ -19,7 +20,8 @@
         // Hover state
         &:hover {
             // Firefox
-            scrollbar-color: $hover-color transparent;
+            // scrollbar-color: $hover-color transparent;
+            scrollbar-color: transparent;
 
             // Webkit
             &::-webkit-scrollbar-thumb {
