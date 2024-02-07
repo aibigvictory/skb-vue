@@ -90,7 +90,8 @@
                             <div>{{member.phone}}</div>
                             <div>{{member.email}}</div>
                             <div class="me"><span class="memo" data-tooltip-text="THIS IS TOOLTIP!!">{{member.memo}}</span></div>
-                            <div>{{new Date(member.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
+                            <!-- <div>{{new Date(member.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div> -->
+                            <div>{{new Date(new Date(member.createdAt).getTime() + 9 * 60 * 60 * 1000).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
                         </li>
                         <!-- <li>
                             <input type="checkbox">
