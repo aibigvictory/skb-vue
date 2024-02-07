@@ -37,8 +37,8 @@
                         <div>등록일자</div>
                     </li>
                 </ul>
-                <div class="no-member" v-if="!wait_count">승인 요청내역이 없습니다.</div>
-                <ul class="member" v-if="wait_count">
+                <div class="no-member" v-if="!view_member.length">승인 요청내역이 없습니다.</div>
+                <ul class="member" v-if="view_member.length">
                     <!-- <li>
                         <input type="checkbox">
                         <div>CATV운용팀</div>
@@ -53,7 +53,7 @@
                         <div>{{member.teamName}}</div>
                         <div>{{member.name}}</div>
                         <div>{{member.email}}</div>
-                        <div><span class="accept-type">{{member.accepted ?"승인" :"승인요청"}}</span></div>
+                        <div><span class="accept-type" :class="{wait: !member.accepted}">{{member.accepted ?"승인" :"승인요청"}}</span></div>
                         <div>{{member.system}}</div>
                         <div>{{member.createdAt.replace(/-/g, '.').replace(/T/, ' ').slice(0,16)}}</div>
                     </li>
@@ -77,11 +77,12 @@ const state = store.state
 
 let accept_type = ref('전체')
 let search_keyword = ref('')
-let wait_count = computed(() => filter_member('승인요청', view_member.value).length)
+// let wait_count = computed(() => filter_member('승인요청', origin_member).length)
 
 watch(accept_type, (type) => {
     view_member.value = search_member(search_keyword.value, origin_member)
     view_member.value = filter_member(accept_type.value, view_member.value)
+    
 })
 watch(search_keyword, (keyword) => {
     view_member.value = search_member(search_keyword.value, origin_member)
@@ -350,6 +351,10 @@ li{list-style: none;}
                             font-style: normal;
                             font-weight: 700;
                             line-height: 100%; /* 13px */
+                            &.wait{
+                                background: var(--data-bs-theme-light-bs-danger-light, #FFF5F8);
+                                color: var(--data-bs-theme-light-bs-danger, #F1416C);
+                            }
                         }
                     }
                     input{
