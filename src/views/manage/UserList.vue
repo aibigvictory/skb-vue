@@ -89,7 +89,7 @@
                             <div>{{member.mobile}}</div>
                             <div>{{member.phone}}</div>
                             <div>{{member.email}}</div>
-                            <div>{{member.memo}}</div>
+                            <div class="me"><span class="memo" data-tooltip-text="THIS IS TOOLTIP!!">{{member.memo}}</span></div>
                             <div>{{new Date(member.createdAt).toISOString().slice(0,16).replace(/T/g, ' ').replace(/-/g, '.')}}</div>
                         </li>
                         <!-- <li>
@@ -688,6 +688,29 @@ li{list-style: none;}
                                 font-style: normal;
                                 font-weight: 700;
                                 line-height: 100%; /* 13px */
+                            }
+                            &.me{
+                                min-width: 180px;
+                                .memo{
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                }
+                                &:hover{
+                                    .memo{
+                                        padding: 10px;
+                                        // position: absolute;
+                                        width: 250px;
+                                        // border: 1px solid #333;
+                                        box-shadow: 0px 0px 3px 1px rgba(50, 50, 50, 0.4);
+                                        overflow: none;
+                                        white-space: break-spaces;
+                                        // display: flex;
+                                        // justify-content: center;
+                                        // align-items: center;
+                                        background: #fff;
+                                    }   
+                                }
                             }
                         }
                         input{
