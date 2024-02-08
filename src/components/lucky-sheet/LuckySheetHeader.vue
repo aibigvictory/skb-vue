@@ -196,10 +196,11 @@ const reload_excel = (url, excelName, luckysheet) => {
             // }
           }
       });
+      
+      isMaskShow.value = false
     });
     // luckysheet.setSheetColor("#ff0000")
 
-    isMaskShow.value = false
 }
 
 //엘리먼트 생성 후, 엑셀 파일 데이터 적용

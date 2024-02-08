@@ -37,7 +37,7 @@
             <div class="right">
                 <div class="btn btn-save" @click="save_excel">저장하기</div>
                 <div class="btn btn-download" @click="download_excel">다운로드</div>
-                <router-link to="/header/adjust" class="btn btn-download">헤더 지정</router-link>
+                <router-link :to="`/header/adjust/${excelId}`" class="btn btn-download">헤더 지정</router-link>
             </div>
             <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
         </div>

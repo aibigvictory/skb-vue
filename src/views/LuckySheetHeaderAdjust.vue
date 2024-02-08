@@ -50,10 +50,12 @@ import store from '@/store'
 import { Actions } from '@/store/enums/StoreEnums'
 import axios from 'axios'
 import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
+const router = useRoute()
 const state = store.state
 
-const excelId = ref(Number(sessionStorage.getItem('id')))
+const excelId = ref(Number(router.params.id))
 const excelTitle = ref('')
 const excelUploader = ref('')
 const excelUploaderTeam = ref('')
@@ -78,10 +80,11 @@ const save = () => {
     child.value.onClickSaveButton();
 }
 
-const init = async () => {
-    const { data } = await axios.get(`/file/${sessionStorage.getItem('id')}`)
+const init = async (id) => {
+    const { data } = await axios.get(`/file/${id}`)
     const { name, user, folder, revision } = data
 
+    excelId.value = Number(id)
     excelTitle.value = name
     excelUploader.value = user.name
     excelUploaderTeam.value = user.teamName
@@ -91,7 +94,7 @@ const init = async () => {
     sessionStorage.setItem('revision', JSON.stringify(revision));
 }
 
-init()
+init(router.params.id)
 
 </script>
 

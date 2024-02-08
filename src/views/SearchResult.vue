@@ -57,6 +57,8 @@
             <ul class="search-result-item-list d-flex align-items-center">
               <!-- <li v-for="item in folder.files" :key="item" class="d-flex align-items-center"><input @change="check_file($event, folder, item)" type="checkbox" class="form-check-input" :id="`checkbox${item.id}`"><label :for="`checkbox${item.id}`">{{item.name}}</label></li> -->
               <li v-for="item in folder.files" :key="item" class="d-flex align-items-center">
+                <!-- <span v-if="!item.headerInfo">헤더지정필요</span> -->
+                <router-link v-if="!item.headerInfo" :to="`/header/adjust/${item.id}`">헤더지정필요</router-link>
                 <input v-model="checked_file_list" type="checkbox" class="form-check-input" :value="item" :id="`checkbox${item.id}`">
                 <label :for="`checkbox${item.id}`">{{item.name}}</label>
               </li>
@@ -420,6 +422,7 @@ li{list-style: none;}
     }
     .search-result-item{
       margin-left: 16px;
+      width: 80%;
       .search-result-item-button{
         margin: 14px 0 4px 0;
         padding-top: 22px;
@@ -452,7 +455,9 @@ li{list-style: none;}
         
       }
       .search-result-item-list{
+        flex-wrap: wrap;
         li{
+          margin-bottom: 10px;
           margin-right: 20px;
           color: var(--kt-form-label-color, #3F4254);
           text-align: center;
@@ -466,6 +471,15 @@ li{list-style: none;}
             width: 14px;
             height: 14px;
             border-radius: 1px;
+          }
+          a{
+            cursor: pointer;
+            width: 80px;
+            margin-right: 3px;
+            padding: 2px 8px;
+            border-radius: 16px;
+            background: var(--data-bs-theme-light-bs-danger, #F1416C);
+            color: #fff;
           }
         }
       }
