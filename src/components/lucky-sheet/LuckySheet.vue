@@ -280,32 +280,6 @@ const getUserData = async () => {
   }
 }
 
-// 객체 값 비교
-const isEqual = (a: object, b: object, excludeKey: string[] = []) => {
-  // 1. 객체의 key를 정렬.
-  // 2. 정렬된 key를 reduce로 순회하면서 key, value를 구성
-  let sortedA = Object.keys(a)
-    .sort()
-    .reduce((obj, key) => {
-      if (!excludeKey.includes(key)) {
-        obj[key] = a[key];
-      }
-      return obj;
-    }, {});
-
-  let sortedB = Object.keys(b)
-    .sort()
-    .reduce((obj, key) => {
-      if (!excludeKey.includes(key)) {
-        obj[key] = b[key];
-      }
-      return obj;
-    }, {});
-  
-  // return JSON.stringify(sortedA) === JSON.stringify(sortedB);
-  return Object.entries(sortedA).toString() === Object.entries(sortedB).toString();
-}
-
 //엑셀 저장(테스트)
 // const saveExcel = async () => {
 //   try {
