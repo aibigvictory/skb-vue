@@ -25,7 +25,7 @@ const props = defineProps({
 
 const isMaskShow = ref(true)
 const isSave = ref(false)
-const updateSet = new Set<number>();
+const updateMap = new Map();
 const newUpdateMap = new Map();
 
 // 셀 값 가져오기
@@ -64,30 +64,7 @@ const reload_excel = (url, excelName, luckysheet) => {
     luckysheet.create({
         container: 'luckysheet',
         showinfobar: false,
-        showtoolbar: true,
-        showtoolbarConfig: {
-          currencyFormat: false, //currency format
-          percentageFormat: false, //Percentage format
-          numberDecrease: false, //'Decrease the number of decimal places'
-          numberIncrease: false, //'Increase the number of decimal places
-          moreFormats: false, //'More Formats'
-          mergeCell: false,
-          textWrapMode: false, //'Wrap mode'
-          textRotateMode: false, //'Text Rotation Mode'
-          image: false, // 'Insert picture'
-          link: false, // 'Insert link'
-          chart: false, //'chart' (the icon is hidden, but if the chart plugin is configured, you can still create a new chart by right click)
-          postil: false, //'comment'
-          pivotTable: false, //'PivotTable'
-          frozenMode: false, //'freeze mode'
-          sortAndFilter: false, //'Sort and filter'
-          conditionalFormat: false, //'Conditional Format'
-          dataVerification: false, // 'Data Verification'
-          splitColumn: false, //'Split column'
-          screenshot: false, //'screenshot',
-          protection: false, // 'Worksheet protection'
-          print: false, // 'Print'
-        },
+        showtoolbar: false,
         data:exportJson.sheets,
         title:exportJson.info.name,
         userInfo:exportJson.info.name.creator,
@@ -101,10 +78,98 @@ const reload_excel = (url, excelName, luckysheet) => {
              * ctrlType: "resizeC"
              * ctrlValue: "columnlen"
              */
-            const { type, ctrlType, sheetIndex } = operate;
+            const { type, ctrlType } = operate;
+            if (ctrlType === 'resizeC') {
+              const { config, curconfig } = operate;
+              const prevColumnLengthObj = config.columnlen;
+              const currentColumnLengthObj = curconfig.columnlen;
+              // 변경된 부분만 추가
+              for (const [key, value] of Object.entries(currentColumnLengthObj)) {
+                const prevLength = prevColumnLengthObj[key];
+                if (!prevLength) continue;
+                if (prevLength !== value) {
+                  const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+                  updateMap.set(`resizeColumn_${props.excelId}_${sheetIndex}_${key}`, {
+                    action: 'resizeColumn',
+                    fileId: props.excelId,
+                    r: 0,
+                    c: parseInt(key),
+                    value: String(Math.round(value)),
+                    sheetName
+                  });
+                }
+              }
+            }
+            if (ctrlType === 'resizeR') {
+              const { config, curconfig } = operate;
+              const prevRowLengthObj = config.rowlen;
+              const currentRowLengthObj = curconfig.rowlen;
+              // 변경된 부분만 추가
+              for (const [key, value] of Object.entries(currentRowLengthObj)) {
+                const prevLength = prevRowLengthObj[key];
+                if (!prevLength) continue;
+                if (prevLength !== value) {
+                  const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+                  updateMap.set(`resizeRow_${props.excelId}_${sheetIndex}_${key}`, {
+                    action: 'resizeRow',
+                    fileId: props.excelId,
+                    r: parseInt(key),
+                    c: 0,
+                    value: String(Math.round(value)),
+                    sheetName
+                  });
+                  console.log('resizeR', String(Math.round(value)));
+                }
+              }
+            }
+            if (type === 'zoomChange') {
+              const { zoomRatio, curZoomRatio } = operate;
+              const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+              updateMap.set(`zoomChange_${props.excelId}_${sheetIndex}`, {
+                action: 'zoomChange',
+                fileId: props.excelId,
+                r: 0,
+                c: 0,
+                value: String(Math.round(curZoomRatio * 100)),
+                sheetName
+              });
+            }
 
-            updateSet.add(Number(sheetIndex));
-            if (updateSet.size > 0) {
+            if (type === 'datachange') {
+              // const { sheetIndex, dataRange, curdata, curconfig } = operate;
+              // const { name: sheetName } = luckysheet.getSheet();
+              // const key = `batchCellUpdate${props.excelId}_${sheetIndex}`;
+              // console.log('curdata', curdata);
+
+              // updateMap.set(key, {
+              //   action: 'batchCellUpdate',
+              //   fileId: props.excelId,
+              //   r: 0,
+              //   c: 0,
+              //   config: curconfig,
+              //   cellList: curdata,
+              //   sheetName
+              // });
+
+              // dataRange.forEach((r) => {
+              //   const [row, column] = r;
+              //   const [minRow, maxRow] = row;
+              //   const [minCol, maxCol] = column;
+              //   let newValue: any;
+
+              //   for (let r = minRow; r < maxRow; r++) {
+              //     const rowData = curdata[r];
+              //     for (let c = minCol; c < maxCol; c++) {
+              //       const colData = rowData[c];
+              //       newValue = colData;
+              //     }
+              //   }
+
+              //   console.log('dataChange', newValue);
+              // });
+            }
+            
+            if (updateMap.size > 0) {
               document.querySelector('.btn-save')?.classList.add('active')
               isSave.value = true
             }
@@ -113,6 +178,24 @@ const reload_excel = (url, excelName, luckysheet) => {
             console.log('! cellUpdateBefore', {r, c, value});
             return true;
           },
+          cellUpdated: function (r, c, oldValue, newValue) {
+            const { name: sheetName, index: sheetIndex } = luckysheet.getSheet();
+            console.log('! cellUpdated', {sheetName, r, c, oldValue, newValue});
+            const key = `editCell_${props.excelId}_${sheetIndex}_${r}_${c}`;
+            const cellValue = getCellValue(oldValue, newValue);
+            if (cellValue !== null) {
+              updateMap.set(key, {
+                action: 'editCell',
+                fileId: props.excelId,
+                r: r + 1,
+                c: c + 1,
+                value: cellValue,
+                sheetName
+              });
+
+              luckysheet.setCellFormat(r, c, 'bg', '#fff000');
+            }
+          }
         }
     })
     // luckysheet.setSheetColor("#ff0000")
@@ -183,117 +266,65 @@ const getUserData = async () => {
 }
 
 //엑셀 저장(테스트)
+// const saveExcel = async () => {
+//   try {
+//     console.log(updateMap.values()[0]);
+//     // const result = await axios.post('http://localhost:5213/api/excel/test', {
+
+//     // });
+//   } catch (e) {
+//     console.error(e);
+//   }
+// };
+
+// 엑셀 저장
 const saveExcel = async () => {
-  try {
-    if (isSave.value) {
-      isMaskShow.value = true
-
-      try {
-        const revision = sessionStorage.getItem('revision') ?? '[]';
-        const requestData: any[] = [];
-        luckysheet.getAllSheets().forEach((sheet) => {
-          const sheetIndex = Number(sheet.index);
-          if (updateSet.has(sheetIndex)) {
-            const { celldata, config, name, order, zoomRatio } = sheet;
-
-            requestData.push({
-              name, 
-              order, 
-              celldata, 
-              config: {...config, zoomRatio} 
-            });
-          }
-        });
-
-        const result = await axios.post('/file/editBulk', {
-          revision: JSON.parse(revision),
-          fileId: props.excelId,
-          dataList: requestData,
-        });
-        console.log(result);
-        if (result.status === 201) {
-          state.popup.content = ['수정이 완료되었습니다.']
-          state.popup.btnCount = 1
-          state.popup.toggle = true
-
-          router.go(0)
-          // const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
-          // document.querySelector('.btn-save')?.classList.remove('active')
-          // isMaskShow.value = true
-          // reload_excel(url, props.excelName, window.luckysheet)
-        }
+  
+  if (isSave.value) {
+    isMaskShow.value = true
+    
+    try{
+      const revision = sessionStorage.getItem('revision') ?? '[]';
+      const user = await getUserData();
+      const result = await axios.post('/file/edit', {
+        userId: user.id,
+        data: [...updateMap.values()],
+        revision: JSON.parse(revision),
+      });
+      console.log(result);
+      if (result.status === 201) {
+        state.popup.content = ['수정이 완료되었습니다.']
+        state.popup.btnCount = 1
+        state.popup.toggle = true
+        
+        router.go(0)
+        // const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
+        // document.querySelector('.btn-save')?.classList.remove('active')
+        // isMaskShow.value = true
+        // reload_excel(url, props.excelName, window.luckysheet)
       }
-      catch (error: any) {
-        if (error?.response?.status === 409) {
-          state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
-          state.popup.btnCount = 1
-          state.popup.toggle = true
-          return isMaskShow.value = false;
-        }
-        state.popup.content = ['수정에 실패하였습니다.']
+    }
+    catch(error: any) {
+      if (error?.response?.status === 409) {
+        state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
         state.popup.btnCount = 1
         state.popup.toggle = true
         return isMaskShow.value = false;
       }
-
-    } else {
-      state.popup.content = ['엑셀 수정을 해주세요.']
+      state.popup.content = ['수정에 실패하였습니다.']
       state.popup.btnCount = 1
       state.popup.toggle = true
+      return isMaskShow.value = false;
     }
-  } catch (e) {
-    console.error(e);
+
   }
-};
+  else{
+    state.popup.content = ['엑셀 수정을 해주세요.']
+    state.popup.btnCount = 1
+    state.popup.toggle = true
+  }
 
-// 엑셀 저장
-// const saveExcel = async () => {
-  
-//   if (isSave.value) {
-//     isMaskShow.value = true
-    
-//     try{
-//       const revision = sessionStorage.getItem('revision') ?? '[]';
-//       const user = await getUserData();
-//       const result = await axios.post('/file/edit', {
-//         userId: user.id,
-//         data: [...updateMap.values()],
-//         revision: JSON.parse(revision),
-//       });
-//       console.log(result);
-//       if (result.status === 201) {
-//         state.popup.content = ['수정이 완료되었습니다.']
-//         state.popup.btnCount = 1
-//         state.popup.toggle = true
-        
-//         router.go(0)
-//         // const url = `${process.env.VUE_APP_API_URL}/file/${props.excelId}/data`
-//         // document.querySelector('.btn-save')?.classList.remove('active')
-//         // isMaskShow.value = true
-//         // reload_excel(url, props.excelName, window.luckysheet)
-//       }
-//     }
-//     catch(error: any) {
-//       if (error?.response?.status === 409) {
-//         state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
-//         state.popup.btnCount = 1
-//         state.popup.toggle = true
-//         return isMaskShow.value = false;
-//       }
-//       state.popup.content = ['수정에 실패하였습니다.']
-//       state.popup.btnCount = 1
-//       state.popup.toggle = true
-//       return isMaskShow.value = false;
-//     }
-
-//   }
-//   else{
-//     state.popup.content = ['엑셀 수정을 해주세요.']
-//     state.popup.btnCount = 1
-//     state.popup.toggle = true
-//   }
-
-// }
+}
 
 //엘리먼트 생성 후, 엑셀 파일 데이터 적용
 onMounted(() => {
