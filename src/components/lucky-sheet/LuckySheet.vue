@@ -64,7 +64,30 @@ const reload_excel = (url, excelName, luckysheet) => {
     luckysheet.create({
         container: 'luckysheet',
         showinfobar: false,
-        showtoolbar: false,
+        showtoolbar: true,
+        showtoolbarConfig: {
+          currencyFormat: false, //currency format
+          percentageFormat: false, //Percentage format
+          numberDecrease: false, //'Decrease the number of decimal places'
+          numberIncrease: false, //'Increase the number of decimal places
+          moreFormats: false, //'More Formats'
+          mergeCell: false,
+          textWrapMode: false, //'Wrap mode'
+          textRotateMode: false, //'Text Rotation Mode'
+          image: false, // 'Insert picture'
+          link: false, // 'Insert link'
+          chart: false, //'chart' (the icon is hidden, but if the chart plugin is configured, you can still create a new chart by right click)
+          postil: false, //'comment'
+          pivotTable: false, //'PivotTable'
+          frozenMode: false, //'freeze mode'
+          sortAndFilter: false, //'Sort and filter'
+          conditionalFormat: false, //'Conditional Format'
+          dataVerification: false, // 'Data Verification'
+          splitColumn: false, //'Split column'
+          screenshot: false, //'screenshot',
+          protection: false, // 'Worksheet protection'
+          print: false, // 'Print'
+        },
         data:exportJson.sheets,
         title:exportJson.info.name,
         userInfo:exportJson.info.name.creator,
