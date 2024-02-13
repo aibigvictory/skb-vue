@@ -90,6 +90,7 @@ const download_excel = () => {
 
 const init = async (id) => {
     console.log('init');
+    if (!id) return
     
     const { data } = await axios.get(`/file/${id}`)
     const { name, user, folder, bookmark, revision } = data

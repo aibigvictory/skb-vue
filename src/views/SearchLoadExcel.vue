@@ -9,7 +9,7 @@
         <div v-for="file in folder.files" :key="file" class="content">
           <div class="sub-title">
             {{file.name}} 
-            <span v-if="file.headerInfo && file.headerInfo == null" @click="toHeaderAdjust(file.id)" class="header-adjust">헤더 미지정</span>
+            <span v-if="file.headerInfo == null" @click="toHeaderAdjust(file.id)" class="header-adjust">헤더 미지정</span>
           </div>
           <div class="info">
             <div class="time">
@@ -1166,8 +1166,8 @@ const save = async () => {
 //   create_toasrUiGrid(props.file_list)
 // })
 const toHeaderAdjust = (fileId) => {
-  localStorage.setItem('id', fileId)
-  router.push('/header/adjust')
+  sessionStorage.setItem('id', fileId)
+  router.push(`/header/adjust/${fileId}`)
 }
 
 </script>
@@ -1215,16 +1215,20 @@ ul{
           font-weight: 700;
           line-height: 110%; /* 19.8px */
           .header-adjust{
-            background: #009EF7;
+            cursor: pointer;
+            // width: 80px;
+            padding: 2px 8px;
+            border-radius: 16px;
+            background: var(--data-bs-theme-light-bs-danger, #F1416C);
             margin-left: 6px;
             display: flex;
-            padding: 2px 6px;
+            // padding: 2px 6px;
             justify-content: center;
             align-items: center;
             gap: 2px;
             color: #fff;
-            border-radius: 24px;
-            border: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
+            // border-radius: 24px;
+            // border: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
             font-size: 13px !important;
             cursor: pointer;
           }

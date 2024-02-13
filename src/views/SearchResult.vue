@@ -58,7 +58,7 @@
               <!-- <li v-for="item in folder.files" :key="item" class="d-flex align-items-center"><input @change="check_file($event, folder, item)" type="checkbox" class="form-check-input" :id="`checkbox${item.id}`"><label :for="`checkbox${item.id}`">{{item.name}}</label></li> -->
               <li v-for="item in folder.files" :key="item" class="d-flex align-items-center">
                 <!-- <span v-if="!item.headerInfo">헤더지정필요</span> -->
-                <router-link v-if="!item.headerInfo" :to="`/header/adjust/${item.id}`">헤더지정필요</router-link>
+                <!-- <router-link v-if="!item.headerInfo" :to="`/header/adjust/${item.id}`">헤더지정필요</router-link> -->
                 <input v-model="checked_file_list" type="checkbox" class="form-check-input" :value="item" :id="`checkbox${item.id}`">
                 <label :for="`checkbox${item.id}`">{{item.name}}</label>
               </li>
@@ -579,11 +579,14 @@ li{list-style: none;}
           padding-bottom: 6px;
           margin-top: 8px;
           border-radius: 6px;
+          flex-wrap: wrap;
           li{
             background: var(--root-data-theme-light-kt-light, #F5F8FA);
             display: inline;
             padding: 8px;
             margin-right: 8px;
+            margin-bottom: 5px;
+            margin-top: 5px;
             img{
               width: 14px;
               height: 14px;
