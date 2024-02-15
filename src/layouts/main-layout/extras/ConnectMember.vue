@@ -128,11 +128,16 @@ const messages = ref([
 ]);
 
 const load_connect = async () => {
-  const { data } = await axios.get('/online')
-
-  // console.log(data);
-  if (typeof data === 'object') {
-    messages.value = data;
+  try{
+    const { data } = await axios.get('/online')
+  
+    // console.log(data);
+    if (typeof data === 'object') {
+      messages.value = data;
+    }
+  }
+  catch(error) {
+    console.log(error);
   }
 }
 

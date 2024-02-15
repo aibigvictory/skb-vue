@@ -34,9 +34,13 @@ const checkTokenExp = () => {
 
   console.log('decode');
   console.log(decode);
+  console.log(now);
+  console.log(exp);
   
+  console.log(!decode);
+  console.log(now > exp);
 
-  if (!decode && now > exp) {
+  if (!decode || now > exp) {
     router.push({name: "sign-in"})
     JwtService.destroyToken()
   }
