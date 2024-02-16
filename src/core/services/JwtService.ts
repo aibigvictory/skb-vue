@@ -22,8 +22,11 @@ export const destroyToken = (): void => {
   window.localStorage.removeItem(ID_TOKEN_KEY);
 };
 
-export const decode = (token) => {
+export const decode = (token: string | null) => {
   try {
+    if (!token) {
+      return null;
+    }
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
