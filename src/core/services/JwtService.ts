@@ -36,6 +36,7 @@ export const decode = (token: string | null) => {
     return JSON.parse(jsonPayload);
   } catch (e) {
     console.error(e);
+    return null;
   }
 };
 
