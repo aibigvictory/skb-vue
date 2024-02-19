@@ -138,7 +138,8 @@
                             <!-- <span class="menu-bullet"></span> -->
                             <span class="menu-title" style="display: block">
                               <div class="info-wrap d-flex">
-                                <div class="info-date">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
+                                <div class="info-date">{{new Date(new Date(item2.updatedAt).getTime() + 9 * 60 * 60 * 1000).toISOString().replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
+                                <!-- <div class="info-date">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div> -->
                                 <div class="info-user" style="background: #622CE1 !important; margin-left: 4px;">{{item2.user.name}}</div>
                               </div>
                               <div class="icon-name d-flex align-items-start">
