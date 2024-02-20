@@ -121,6 +121,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/search/except",
+        name: "except",
+        component: () => import("@/views/manage/SearchExcept.vue"),
+        meta: {
+          pageTitle: "Except",
+          breadcrumbs: ["Except"],
+        },
+      },
+      {
         path: "/load",
         name: "load",
         component: () => import("@/views/SearchLoad.vue"),

@@ -191,6 +191,11 @@
         비밀번호 변경
       </router-link>
     </div>
+    <div class="menu-item px-5 my-1">
+      <router-link to="/search/except" class="menu-link px-5">
+        통합검색 제외
+      </router-link>
+    </div>
     <!--end::Menu item-->
 
     <!--begin::Menu item-->
