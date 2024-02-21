@@ -464,7 +464,7 @@ const create_toasrUiGrid = (file) => {
         }
       })
       data.forEach((item) => {
-        console.log(item);
+        // console.log(item);
         const sheetName = item["R1C0"].value;
 
         for (let key in item) {
@@ -624,16 +624,20 @@ onMounted(async() => {
   
   isMaskShow.value = false
 
-  search_result_list.value.forEach((folder) => {
+  const firstFolder = search_result_list.value[0];
+  if (firstFolder) {
+    if (firstFolder.files.length > 0) {
+      create_toasrUiGrid(firstFolder.files[0]);
+    }
+  }
+
+  search_result_list.value.forEach((folder, folderIdx) => {
     folder.files.forEach((file, idx) => {
-      if (idx == 0) {
-        create_toasrUiGrid(file)
-      }
-      else {
-        setTimeout(() => {
+      console.log(folderIdx, idx)
+      if (folderIdx === 0 && idx === 0) return;
+      setTimeout(() => {
           create_toasrUiGrid(file)
         }, 1)
-      }
     })
   })
 
