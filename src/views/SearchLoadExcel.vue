@@ -34,7 +34,7 @@
               <span>({{file.history && file.history.length && file.history[file.history.length - 1] && file.history[file.history.length - 1].user? file.history[file.history.length - 1].user.teamName : "CATV 운용팀"}})</span>
             </div>
           </div>
-          <div class="grid" :id="`grid${file.id}`"></div>
+          <div @loadeddata="create_toasrUiGrid(file)" class="grid" :id="`grid${file.id}`"></div>
         </div>
       </li>
     <!-- <div v-for="sheet in file.sheets" :key="sheet" class="grid" :id="`grid${sheet.index}`"></div> -->
@@ -86,9 +86,24 @@ console.log(new Date().getTime());
 const isMaskShow = ref(true)
 
 watch(() => props.searchType, async (value) => {
-    await init()
+  await init()
+  
+  isMaskShow.value = false
 
-    create_toasrUiGrid(file_list)
+  search_result_list.value.forEach((folder) => {
+    folder.files.forEach((file, idx) => {
+      if (idx == 0) {
+        create_toasrUiGrid(file)
+      }
+      else {
+        setTimeout(() => {
+          create_toasrUiGrid(file)
+        }, 1)
+      }
+    })
+  })
+    
+    
 })
 
 watch(() => props.sort, (value) => {
@@ -117,7 +132,7 @@ watch(() => props.sort, (value) => {
 let sheet_list:any = []
 let file_list: any = []
 let revisionArr: any[] = [];
-const search_result_list = ref({})
+const search_result_list = ref([])
 
 const category_in_file = (category_arr, file_arr, category_key, file_key) => {
   console.log('category in file');
@@ -406,8 +421,9 @@ class CustomTextEditor {
   }
 }
 
-const create_toasrUiGrid = (file_list) => {
-  file_list.forEach((file) => {
+const create_toasrUiGrid = (file) => {
+  console.log('create start');
+  
     file.sheets.forEach((sheet, index) => {
       const { columns, complexColumns, data } = sheet
   
@@ -559,9 +575,6 @@ const create_toasrUiGrid = (file_list) => {
       // toast
       toastArr[`${file.id}_${index}`] = toast;
     })
-  })
-
-  isMaskShow.value = false
 }
 
 // document.querySelector('#kt_app_sidebar_toggle').addEventListener('click', () => {
@@ -608,8 +621,23 @@ let toastArr: any = {}
 
 onMounted(async() => {
   await init()
+  
+  isMaskShow.value = false
 
-  create_toasrUiGrid(file_list)
+  search_result_list.value.forEach((folder) => {
+    folder.files.forEach((file, idx) => {
+      if (idx == 0) {
+        create_toasrUiGrid(file)
+      }
+      else {
+        setTimeout(() => {
+          create_toasrUiGrid(file)
+        }, 1)
+      }
+    })
+  })
+
+  // create_toasrUiGrid(file_list)
 })
 
 function getMergeRelationship(complexColumnHeaderData: string[][], rowOffset: number) {
