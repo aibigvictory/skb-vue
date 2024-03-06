@@ -19,7 +19,7 @@
                         </svg>
                         마지막 수정일자:
                         <!-- <span>{{excelUpdatedAt.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')}}</span> -->
-                        <span>{{new Date(new Date(excelUpdatedAt).getTime() + 9 * 60 * 60 * 1000).toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')}}</span>
+                        <span>{{excelUpdatedAt ?new Date(new Date(excelUpdatedAt).getTime() + 9 * 60 * 60 * 1000).toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5') :''}}</span>
                     </div>
                     <div class="user">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
