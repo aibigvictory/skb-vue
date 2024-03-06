@@ -100,7 +100,7 @@ const init = async (id) => {
     excelTitle.value = name
     excelUploader.value = user.name
     excelUploaderTeam.value = user.teamName
-    excelUpdatedAt.value = user.updatedAt
+    excelUpdatedAt.value = data.updatedAt
     categoryName.value = folder.name
     excelUploaderCompanyId.value = user.companyId
     excelBookmark.value = bookmark.length
