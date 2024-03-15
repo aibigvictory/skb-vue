@@ -27,6 +27,7 @@ const isMaskShow = ref(true)
 const isSave = ref(false)
 const updateSet = new Set<number>();
 const newUpdateMap = new Map();
+const originalDataArr: any[] = [];
 
 // 셀 값 가져오기
 const getCellValue = (oldValue: any, cellValue: any) => {
@@ -71,7 +72,7 @@ const reload_excel = (url, excelName, luckysheet) => {
           numberDecrease: false, //'Decrease the number of decimal places'
           numberIncrease: false, //'Increase the number of decimal places
           moreFormats: false, //'More Formats'
-          mergeCell: false,
+          //mergeCell: false,
           textWrapMode: false, //'Wrap mode'
           textRotateMode: false, //'Text Rotation Mode'
           image: false, // 'Insert picture'
@@ -91,6 +92,7 @@ const reload_excel = (url, excelName, luckysheet) => {
         data:exportJson.sheets,
         title:exportJson.info.name,
         userInfo:exportJson.info.name.creator,
+        accuracy: 2,
         // loading: false,
         hook: {
           updated: (operate,data) => {
@@ -117,6 +119,19 @@ const reload_excel = (url, excelName, luckysheet) => {
     })
     // luckysheet.setSheetColor("#ff0000")
 
+    const sheets = luckysheet.getAllSheets();
+    sheets.forEach((sheet) => {
+      const { index, celldata, config } = sheet;
+      const data = JSON.parse(JSON.stringify({ celldata, config }));
+      originalDataArr.push({
+        index: Number(index),
+        celldata: data.celldata,
+        config: data.config
+      });
+    });
+
+    console.log('origin', originalDataArr);
+    
     isMaskShow.value = false
   });
 }
@@ -182,28 +197,82 @@ const getUserData = async () => {
   }
 }
 
+// 객체 값 비교
+const isEqual = (a: object, b: object, excludeKey: string[] = []) => {
+  // 1. 객체의 key를 정렬.
+  // 2. 정렬된 key를 reduce로 순회하면서 key, value를 구성
+  let sortedA = Object.keys(a)
+    .sort()
+    .reduce((obj, key) => {
+      if (!excludeKey.includes(key)) {
+        obj[key] = a[key];
+      }
+      return obj;
+    }, {});
+
+  let sortedB = Object.keys(b)
+    .sort()
+    .reduce((obj, key) => {
+      if (!excludeKey.includes(key)) {
+        obj[key] = b[key];
+      }
+      return obj;
+    }, {});
+
+  // return JSON.stringify(sortedA) === JSON.stringify(sortedB);
+  return Object.entries(sortedA).toString() === Object.entries(sortedB).toString();
+}
+
 //엑셀 저장(테스트)
 const saveExcel = async () => {
   try {
+    const revision = sessionStorage.getItem('revision') ?? '[]';
+    const requestData: any[] = [];
+
     if (isSave.value) {
       isMaskShow.value = true
 
       try {
-        const revision = sessionStorage.getItem('revision') ?? '[]';
-        const requestData: any[] = [];
+        // original 데이터에서 변경점 비교
         luckysheet.getAllSheets().forEach((sheet) => {
           const sheetIndex = Number(sheet.index);
-          if (updateSet.has(sheetIndex)) {
-            const { celldata, config, name, order, zoomRatio } = sheet;
+          const { celldata, config, name, order, zoomRatio } = sheet;
+          let pushData: {
+            name: any,
+            order: any,
+            config: any,
+            celldata: any[]
+          } = {
+            name,
+            order,
+            config: {...config, zoomRatio},
+            celldata: []
+          };
 
-            requestData.push({
-              name, 
-              order, 
-              celldata, 
-              config: {...config, zoomRatio} 
-            });
+          const originData = originalDataArr.find((x) => x.index === sheetIndex);
+          if (originData) {
+            for (let i = 0; i < celldata.length; i++) {
+              const cell = celldata[i];
+              const originCell = originData.celldata.find(o => o.r === cell.r && o.c === cell.c);
+              if (originCell) {
+                // 특정 필드 제거
+                // delete originCell['mc'];
+                // delete cell['mc'];
+                if (!isEqual(cell.v, originCell.v, ['mc'])) {
+                  console.log('isNotEqual', cell, originCell);
+                  pushData.celldata.push(cell);
+                }
+              } else {
+                pushData.celldata.push(cell);
+              }
+            }
           }
+
+          // 변경점 반영
+          requestData.push(pushData);
         });
+
+        console.log('requestData', requestData);
 
         const result = await axios.post('/file/editBulk', {
           revision: JSON.parse(revision),
@@ -224,6 +293,7 @@ const saveExcel = async () => {
         }
       }
       catch (error: any) {
+        console.error(error);
         if (error?.response?.status === 409) {
           state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
           state.popup.btnCount = 1

@@ -137,7 +137,7 @@ const save = () => {
 
 const init = async (id) => {
   const { data } = await axios.get(`/file/${id}`);
-  const { name, user, folder, revision, version, extension } = data;
+  const { name, version, extension, user, folder, revision } = data;
 
   excelId.value = Number(id);
   excelTitle.value = `${name}${version ? `_${version}` : ""}.${extension}`;
