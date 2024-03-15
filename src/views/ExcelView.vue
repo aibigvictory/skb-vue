@@ -94,10 +94,10 @@ const init = async (id) => {
     if (!id) return
     
     const { data } = await axios.get(`/file/${id}`)
-    const { name, user, folder, bookmark, revision } = data
+    const { name, version, extension, user, folder, bookmark, revision } = data
 
     excelId.value = Number(id)
-    excelTitle.value = name
+    excelTitle.value = `${name}${version ? `_${version}` : ''}.${extension}`;
     excelUploader.value = user.name
     excelUploaderTeam.value = user.teamName
     excelUpdatedAt.value = data.updatedAt

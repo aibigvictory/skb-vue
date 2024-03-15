@@ -83,10 +83,10 @@ const save = () => {
 
 const init = async (id) => {
     const { data } = await axios.get(`/file/${id}`)
-    const { name, user, folder, revision } = data
+    const { name, version, extension, user, folder, revision } = data
 
     excelId.value = Number(id)
-    excelTitle.value = name
+    excelTitle.value = `${name}${version ? `_${version}` : ''}.${extension}`;
     excelUploader.value = user.name
     excelUploaderTeam.value = user.teamName
     excelUpdatedAt.value = user.updatedAt
