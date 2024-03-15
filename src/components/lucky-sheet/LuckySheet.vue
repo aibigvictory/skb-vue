@@ -67,6 +67,7 @@ const reload_excel = (url, excelName, luckysheet) => {
         showinfobar: false,
         showtoolbar: true,
         showtoolbarConfig: {
+          font: false,
           currencyFormat: false, //currency format
           percentageFormat: false, //Percentage format
           numberDecrease: false, //'Decrease the number of decimal places'
