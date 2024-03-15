@@ -57,7 +57,7 @@
               </div>
             </template>
             <!-- ACCORDION MENU START -->
-              <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
+            <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
             <div
               v-if="menuItem.sectionTitle"
               class="menu-item menu-accordion hover show"
@@ -89,30 +89,32 @@
                 }}</span>
                 <span class="menu-arrow"></span>
               </span>
-                <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
+              <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
               <div class="menu-sub menu-sub-accordion">
-                <template v-for="(category, k) in categorys_in_manageFiles" :key="k">
-                    <!-- v-if="category.name" -->
+                <template
+                  v-for="(category, k) in categorys_in_manageFiles"
+                  :key="k"
+                >
+                  <!-- v-if="category.name" -->
                   <div
                     class="menu-item menu-accordion"
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
                     style="color: #fff"
-                    @drop="file_drag_drop_unlock('manage')" @dragenter.prevent @dragover.prevent
+                    @drop="file_drag_drop_unlock('manage')"
+                    @dragenter.prevent
+                    @dragover.prevent
                   >
-                    
                     <span class="menu-link sub-menu-link">
                       <span class="menu-bullet">
-                        <img src="@/assets/img/art001.svg" alt="">
+                        <img src="@/assets/img/art001.svg" alt="" />
                       </span>
                       <span class="menu-title">{{
                         translate(category.name)
                       }}</span>
                       <span class="menu-arrow"></span>
                     </span>
-                    <div
-                      class="menu-sub menu-sub-accordion"
-                    >
+                    <div class="menu-sub menu-sub-accordion">
                       <template v-for="(item2, k) in category.files" :key="k">
                         <div v-if="item2.heading" class="menu-item">
                           <router-link
@@ -134,23 +136,55 @@
                           data-kt-menu-sub="accordion"
                           data-kt-menu-trigger="click"
                         >
-                          <span class="menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id)">
+                          <span
+                            class="menu-link sub-menu-link align-items-start"
+                            draggable="true"
+                            @dragstart="file_drag(item2)"
+                            @click="file_click(item2.id)"
+                          >
                             <!-- <span class="menu-bullet"></span> -->
                             <span class="menu-title" style="display: block">
                               <div class="info-wrap d-flex">
-                                <div class="info-date">{{new Date(new Date(item2.updatedAt).getTime() + 9 * 60 * 60 * 1000).toISOString().replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div>
+                                <div class="info-date">
+                                  {{
+                                    new Date(
+                                      new Date(item2.updatedAt).getTime() +
+                                        9 * 60 * 60 * 1000
+                                    )
+                                      .toISOString()
+                                      .replace(/-/g, ".")
+                                      .replace("T", " ")
+                                      .slice(0, 16)
+                                  }}
+                                </div>
                                 <!-- <div class="info-date">{{item2.updatedAt.replace(/-/g, '.').replace('T', ' ').slice(0,16)}}</div> -->
-                                <div class="info-user" style="background: #622CE1 !important; margin-left: 4px;">{{item2.user.name}}</div>
+                                <div
+                                  class="info-user"
+                                  style="
+                                    background: #622ce1 !important;
+                                    margin-left: 4px;
+                                  "
+                                >
+                                  {{ item2.user.name }}
+                                </div>
                               </div>
                               <div class="icon-name d-flex align-items-start">
-                                <div class="img img-excel"><img src="@/assets/img/group32.svg" alt=""></div>
-                                <div class="name">{{translate(item2.name)}}</div>
+                                <div class="img img-excel">
+                                  <img src="@/assets/img/group32.svg" alt="" />
+                                </div>
+                                <div class="name">
+                                  {{
+                                    translate(
+                                      `${item2.name}${
+                                        item2.version ? `_${item2.version}` : ""
+                                      }.${item2.extension}`
+                                    )
+                                  }}
+                                </div>
                               </div>
                             </span>
                           </span>
-                          <div
-                            class="menu-sub menu-sub-accordion"
-                          >
+                          <div class="menu-sub menu-sub-accordion">
                             <template v-for="(item3, k) in item2.sub" :key="k">
                               <div v-if="item3.heading" class="menu-item">
                                 <router-link
@@ -226,13 +260,15 @@
                 </template> -->
               </div>
             </div>
-              <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
+            <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
             <div
               v-if="menuItem.etcFile"
               class="menu-item menu-accordion"
               data-kt-menu-sub="accordion"
               data-kt-menu-trigger="click"
-              @drop="file_drag_drop_unlock('etc')" @dragenter.prevent @dragover.prevent
+              @drop="file_drag_drop_unlock('etc')"
+              @dragenter.prevent
+              @dragover.prevent
             >
               <span class="menu-link">
                 <span
@@ -260,15 +296,13 @@
                 <span class="menu-arrow"></span>
               </span>
               <!-- :class="{ show: hasActiveChildren(menuItem.route) }" -->
-              <div
-                class="menu-sub menu-sub-accordion"
-              >
+              <div class="menu-sub menu-sub-accordion">
                 <template v-for="(item2, k) in files_etc" :key="k">
                   <div v-if="item2.heading" class="menu-item">
                     <router-link
                       class="menu-link"
                       active-class="active"
-                      :to="item2.route" 
+                      :to="item2.route"
                     >
                       <span class="menu-bullet">
                         <span class="bullet bullet-dot"></span>
@@ -278,26 +312,38 @@
                       }}</span>
                     </router-link>
                   </div>
-                    <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
+                  <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
                   <div
                     v-if="item2.name"
                     class="menu-item menu-accordion show"
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
                   >
-                    <span class="menu-link sub-menu-link" draggable="true" @dragstart="file_drag(item2)" @click="file_click(item2.id, item2.name, item2.user.name, item2.user.teamName, item2.updatedAt, '기타파일')">
+                    <span
+                      class="menu-link sub-menu-link"
+                      draggable="true"
+                      @dragstart="file_drag(item2)"
+                      @click="
+                        file_click(
+                          item2.id,
+                          item2.name,
+                          item2.user.name,
+                          item2.user.teamName,
+                          item2.updatedAt,
+                          '기타파일'
+                        )
+                      "
+                    >
                       <span class="menu-bullet">
-                        <img src="@/assets/img/group32.svg" alt="">
+                        <img src="@/assets/img/group32.svg" alt="" />
                       </span>
                       <span class="menu-title">{{
                         translate(item2.name)
                       }}</span>
                       <!-- <span class="menu-arrow"></span> -->
                     </span>
-                      <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
-                    <div
-                      class="menu-sub menu-sub-accordion"
-                    >
+                    <!-- :class="{ show: hasActiveChildren(item2.route) }" -->
+                    <div class="menu-sub menu-sub-accordion">
                       <!-- <template v-for="(item3, k) in item2.sub" :key="k">
                         <div v-if="item3.heading" class="menu-item">
                           <router-link
@@ -351,12 +397,29 @@
               <div class="non-use-file">
                 <div class="menu nav">
                   <div class="form-check" v-if="lock_state == 'manage'">
-                    <input @change="check_all_useless_file" class="form-check-input" type="checkbox" value="" id="all-check" />
+                    <input
+                      @change="check_all_useless_file"
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="all-check"
+                    />
                   </div>
                   <div class="form-check" v-if="lock_state == 'etc'">
-                    <input @change="check_all_useless_file" class="form-check-input" type="checkbox" value="" id="all-check" />
+                    <input
+                      @change="check_all_useless_file"
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="all-check"
+                    />
                   </div>
-                  <div class="non-use-file-category active" data-bs-toggle="tab" href="#kt_tab_pane_11" @click="change_lock_state('manage')">
+                  <div
+                    class="non-use-file-category active"
+                    data-bs-toggle="tab"
+                    href="#kt_tab_pane_11"
+                    @click="change_lock_state('manage')"
+                  >
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <mask id="mask0_552_28805" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
                     <rect width="16" height="16" fill="#D9D9D9"/>
@@ -367,7 +430,12 @@
                     </svg> -->
                     관리파일
                   </div>
-                  <div class="non-use-file-category" data-bs-toggle="tab" href="#kt_tab_pane_22" @click="change_lock_state('etc')">
+                  <div
+                    class="non-use-file-category"
+                    data-bs-toggle="tab"
+                    href="#kt_tab_pane_22"
+                    @click="change_lock_state('etc')"
+                  >
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <mask id="mask0_552_28810" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
                     <rect width="16" height="16" fill="#D9D9D9"/>
@@ -378,46 +446,103 @@
                     </svg> -->
                     기타파일
                   </div>
-                  <div @click="delete_file" class="non-use-file-category delete"><div class="img"><img src="@/assets/img/trash.png" alt=""></div></div>
+                  <div
+                    @click="delete_file"
+                    class="non-use-file-category delete"
+                  >
+                    <div class="img">
+                      <img src="@/assets/img/trash.png" alt="" />
+                    </div>
+                  </div>
                 </div>
                 <!--begin::Plans-->
                 <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active" id="kt_tab_pane_11" role="tabpanel">
-                    <div class="lockfile-wrap" @drop="file_drag_drop_lock('manage')" @dragenter.prevent @dragover.prevent>
-                      <div v-for="item2 in useless_manageFile_list" :key="item2" class="d-flex">
+                  <div
+                    class="tab-pane fade show active"
+                    id="kt_tab_pane_11"
+                    role="tabpanel"
+                  >
+                    <div
+                      class="lockfile-wrap"
+                      @drop="file_drag_drop_lock('manage')"
+                      @dragenter.prevent
+                      @dragover.prevent
+                    >
+                      <div
+                        v-for="item2 in useless_manageFile_list"
+                        :key="item2"
+                        class="d-flex"
+                      >
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" v-model="check_useless_manageFile_list" :value="item2.id" id="flexCheckDefault" />
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            v-model="check_useless_manageFile_list"
+                            :value="item2.id"
+                            id="flexCheckDefault"
+                          />
                           <!-- <input class="form-check-input" type="checkbox" v-model="list_check_useless_file" :value="item2.id" id="flexCheckDefault" /> -->
                         </div>
-                        <span class="useless-file menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
+                        <span
+                          class="useless-file menu-link sub-menu-link align-items-start"
+                          draggable="true"
+                          @dragstart="file_drag(item2)"
+                        >
                           <span class="menu-bullet">
                             <div>
-                              <img src="@/assets/img/group32.svg" alt="">
+                              <img src="@/assets/img/group32.svg" alt="" />
                             </div>
                           </span>
                           <span class="menu-title" style="display: block">
                             <!-- <div>dsadsadsadasd</div> -->
-                            <div class="useless-file-title">{{item2.name}}</div>
+                            <div class="useless-file-title">
+                              {{ item2.name }}
+                            </div>
                           </span>
                         </span>
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="kt_tab_pane_22" role="tabpanel">
-                    <div class="lockfile-wrap" @drop="file_drag_drop_lock('etc')" @dragenter.prevent @dragover.prevent>
-                      <div v-for="item2 in useless_etcFile_list" :key="item2" class="d-flex">
+                  <div
+                    class="tab-pane fade"
+                    id="kt_tab_pane_22"
+                    role="tabpanel"
+                  >
+                    <div
+                      class="lockfile-wrap"
+                      @drop="file_drag_drop_lock('etc')"
+                      @dragenter.prevent
+                      @dragover.prevent
+                    >
+                      <div
+                        v-for="item2 in useless_etcFile_list"
+                        :key="item2"
+                        class="d-flex"
+                      >
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" v-model="check_useless_etcFile_list" :value="item2.id" id="flexCheckDefault" />
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            v-model="check_useless_etcFile_list"
+                            :value="item2.id"
+                            id="flexCheckDefault"
+                          />
                         </div>
-                        <span class="useless-file menu-link sub-menu-link align-items-start" draggable="true" @dragstart="file_drag(item2)">
+                        <span
+                          class="useless-file menu-link sub-menu-link align-items-start"
+                          draggable="true"
+                          @dragstart="file_drag(item2)"
+                        >
                           <span class="menu-bullet">
                             <div>
-                              <img src="@/assets/img/group32.svg" alt="">
+                              <img src="@/assets/img/group32.svg" alt="" />
                             </div>
                           </span>
                           <span class="menu-title" style="display: block">
                             <!-- <div>dsadsadsadasd</div> -->
-                            <div class="useless-file-title">{{item2.name}}</div>
+                            <div class="useless-file-title">
+                              {{ item2.name }}
+                            </div>
                           </span>
                         </span>
                       </div>
@@ -429,7 +554,6 @@
             </div>
           </template>
         </template>
-
       </div>
       <!--end::Menu-->
     </div>
@@ -451,30 +575,30 @@ export default defineComponent({
   name: "sidebar-menu",
   components: {},
   setup() {
-    const state = store.state
+    const state = store.state;
     const { t, te } = useI18n();
     const route = useRoute();
     const router = useRouter();
     const scrollElRef = (ref < null) | (HTMLElement > null);
 
-    let category_list = []
+    let category_list = [];
 
-    let manageFile_list = []
-    let etcFile_list = []
+    let manageFile_list = [];
+    let etcFile_list = [];
 
-    let useless_manageFile_list = ref([])
-    let useless_etcFile_list = ref([])
+    let useless_manageFile_list = ref([]);
+    let useless_etcFile_list = ref([]);
 
-    const categorys_in_manageFiles = ref([])
+    const categorys_in_manageFiles = ref([]);
 
     // const categorys = ref({})
     // const categorys_etc = ref({})
 
-    const files_etc = ref({})
+    const files_etc = ref({});
 
     const deepCopy = (target) => {
-      return JSON.parse(JSON.stringify(target))
-    }
+      return JSON.parse(JSON.stringify(target));
+    };
 
     // setInterval(() => {
     //   console.log(categorys_in_manageFiles.value);
@@ -482,300 +606,341 @@ export default defineComponent({
     // }, 5000)
 
     const init = async () => {
-      console.log('init');
-      try{
-        const { data } = await axios.post('/folder/list', {
-          type: 'manage'
-        })
+      console.log("init");
+      try {
+        const { data } = await axios.post("/folder/list", {
+          type: "manage",
+        });
 
-        category_list = data
+        category_list = data;
+      } catch (error) {
+        console.log(error);
       }
-      catch(error) {console.log(error);}
 
+      try {
+        const { data } = await axios.post("/file/list", {
+          type: "manage",
+        });
 
-      try{
-        const { data } = await axios.post('/file/list', {
-          type: 'manage'
-        })
-
-        manageFile_list = data
+        manageFile_list = data;
+      } catch (error) {
+        console.log(error);
       }
-      catch(error) {console.log(error);}
 
-      try{
-        const { data } = await axios.post('/file/list', {
-          type: 'etc'
-        })
-        etcFile_list = data
+      try {
+        const { data } = await axios.post("/file/list", {
+          type: "etc",
+        });
+        etcFile_list = data;
+      } catch (error) {
+        console.log(error);
       }
-      catch(error) {console.log(error);}
 
-console.log('deepCopy(category_list)');
-console.log(deepCopy(category_list));
-console.log('filter_fileUse(deepCopy(category_list))');
-console.log(filter_fileUse(deepCopy(category_list)));
+      console.log("deepCopy(category_list)");
+      console.log(deepCopy(category_list));
+      console.log("filter_fileUse(deepCopy(category_list))");
+      console.log(filter_fileUse(deepCopy(category_list)));
 
-      categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), filter_fileUse(manageFile_list), 'code', 'folderCd')
-      files_etc.value = filter_fileUse(etcFile_list)
+      categorys_in_manageFiles.value = category_in_file(
+        deepCopy(category_list),
+        filter_fileUse(manageFile_list),
+        "code",
+        "folderCd"
+      );
+      files_etc.value = filter_fileUse(etcFile_list);
 
-      useless_manageFile_list.value = useless_in_file(manageFile_list)
-      useless_etcFile_list.value = useless_in_file(etcFile_list)
-    }
+      useless_manageFile_list.value = useless_in_file(manageFile_list);
+      useless_etcFile_list.value = useless_in_file(etcFile_list);
+    };
 
-
-    const category_in_file = (category_arr, file_arr, category_key, file_key) => {
-      let result = []
+    const category_in_file = (
+      category_arr,
+      file_arr,
+      category_key,
+      file_key
+    ) => {
+      let result = [];
 
       for (let i = 0; i < category_arr.length; i++) {
-        const category = category_arr[i]
+        const category = category_arr[i];
 
-        result.push(category)
+        result.push(category);
 
-        category.files = []
+        category.files = [];
 
         for (let j = 0; j < file_arr.length; j++) {
-          const file = file_arr[j]
+          const file = file_arr[j];
 
           if (category[category_key] == file[file_key]) {
-            category.files.push(file)
+            category.files.push(file);
           }
         }
       }
 
-      return result
-    }
+      return result;
+    };
 
     const filter_fileUse = (arr) => {
-      return arr.filter(file => file.use)
-    }
+      return arr.filter((file) => file.use);
+    };
 
     const useless_in_file = (file_arr) => {
-      let result = []
+      let result = [];
 
       for (let i = 0; i < file_arr.length; i++) {
-        const file = file_arr[i]
+        const file = file_arr[i];
 
         if (!file.use) {
-          result.push(file)
+          result.push(file);
         }
       }
 
-      return result
+      return result;
+    };
 
-    }
+    init();
 
-    init()
+    watch(
+      () => store.state.upload,
+      async (value) => {
+        console.log(value);
 
-    watch(() => store.state.upload, async (value) => {
-      console.log(value);
-
-      init()
-    })
+        init();
+      }
+    );
 
     const file_click = (id, name, user, team, date, cate) => {
       console.log(`file_click(${id}, ${name})`);
-      sessionStorage.setItem('id', id)
+      sessionStorage.setItem("id", id);
       // localStorage.setItem('name', name)
       // localStorage.setItem('user', user)
       // localStorage.setItem('team', team)
       // localStorage.setItem('date', date)
       // localStorage.setItem('cate', cate)
 
-
       router.push(`/excel/${id}`);
-    }
+    };
 
-    let drag_file = null
+    let drag_file = null;
 
     const file_drag = (file) => {
       console.log(file);
 
-      drag_file = file
-    }
+      drag_file = file;
+    };
 
     const checkId = (arr, str) => {
-      return arr.some(e => e.id === str);
-    }
+      return arr.some((e) => e.id === str);
+    };
 
     const checkDeleteIdAndExcelId = (arr, str) => {
-      return arr.some(e => `${e}` === str);
-    }
+      return arr.some((e) => `${e}` === str);
+    };
 
     const checkInArray = (arr, file) => {
-      return arr.some(e => e.id === file.id);
-    }
+      return arr.some((e) => e.id === file.id);
+    };
 
     const file_drag_drop_lock = (type) => {
       console.log(type);
       console.log(checkInArray(manageFile_list, drag_file));
       console.log(checkInArray(etcFile_list, drag_file));
 
-      if (type == 'manage' && checkInArray(manageFile_list, drag_file)) {
-        if (!useless_manageFile_list.value.includes(drag_file)) useless_manageFile_list.value.push(drag_file)
-  
-        const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
+      if (type == "manage" && checkInArray(manageFile_list, drag_file)) {
+        if (!useless_manageFile_list.value.includes(drag_file))
+          useless_manageFile_list.value.push(drag_file);
 
-        categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
-      } 
+        const new_manageFile_list = manageFile_list.filter(
+          (con) => !checkId(useless_manageFile_list.value, con.id)
+        );
 
-      else if (type == 'etc' && checkInArray(etcFile_list, drag_file)) {
-        if (!useless_etcFile_list.value.includes(drag_file)) useless_etcFile_list.value.push(drag_file)
+        categorys_in_manageFiles.value = category_in_file(
+          deepCopy(category_list),
+          new_manageFile_list,
+          "code",
+          "folderCd"
+        );
+      } else if (type == "etc" && checkInArray(etcFile_list, drag_file)) {
+        if (!useless_etcFile_list.value.includes(drag_file))
+          useless_etcFile_list.value.push(drag_file);
 
-        const new_etcFile_list = etcFile_list.filter((con) => !checkId(useless_etcFile_list.value, con.id))
-  
-        files_etc.value = new_etcFile_list
+        const new_etcFile_list = etcFile_list.filter(
+          (con) => !checkId(useless_etcFile_list.value, con.id)
+        );
+
+        files_etc.value = new_etcFile_list;
+      } else {
+        if (type == "etc")
+          state.popup.content = [
+            "관리파일은 관리파일 카테고리 클릭 후 드래그 가능합니다.",
+          ];
+        if (type == "manage")
+          state.popup.content = [
+            "기타파일은 기타파일 카테고리 클릭 후 드래그 가능합니다.",
+          ];
+        state.popup.btnCount = 1;
+
+        return (state.popup.toggle = true);
       }
 
-      else {
-        if (type == 'etc') state.popup.content = ['관리파일은 관리파일 카테고리 클릭 후 드래그 가능합니다.']
-        if (type == 'manage') state.popup.content = ['기타파일은 기타파일 카테고리 클릭 후 드래그 가능합니다.']
-        state.popup.btnCount = 1
-
-        return state.popup.toggle = true
-      }
-
-      axios.post('/file/update', {
+      axios.post("/file/update", {
         id: drag_file.id,
-        use: false
-      })
+        use: false,
+      });
 
-      drag_file = null
-    }
+      drag_file = null;
+    };
 
     const file_drag_drop_unlock = (type) => {
-      if (type == 'manage') {
-        useless_manageFile_list.value = useless_manageFile_list.value.filter((con) => con.id != drag_file.id)
-  
-        const new_manageFile_list = manageFile_list.filter((con) => !checkId(useless_manageFile_list.value, con.id))
-  
-        categorys_in_manageFiles.value = category_in_file(deepCopy(category_list), new_manageFile_list, 'code', 'folderCd')
+      if (type == "manage") {
+        useless_manageFile_list.value = useless_manageFile_list.value.filter(
+          (con) => con.id != drag_file.id
+        );
+
+        const new_manageFile_list = manageFile_list.filter(
+          (con) => !checkId(useless_manageFile_list.value, con.id)
+        );
+
+        categorys_in_manageFiles.value = category_in_file(
+          deepCopy(category_list),
+          new_manageFile_list,
+          "code",
+          "folderCd"
+        );
       }
 
-      if (type == 'etc') {
-        useless_etcFile_list.value = useless_etcFile_list.value.filter((con) => con.id != drag_file.id)
-  
-        const new_etcFile_list = etcFile_list.filter((con) => !checkId(useless_etcFile_list.value, con.id))
-  
-        files_etc.value = new_etcFile_list
+      if (type == "etc") {
+        useless_etcFile_list.value = useless_etcFile_list.value.filter(
+          (con) => con.id != drag_file.id
+        );
+
+        const new_etcFile_list = etcFile_list.filter(
+          (con) => !checkId(useless_etcFile_list.value, con.id)
+        );
+
+        files_etc.value = new_etcFile_list;
       }
 
-      axios.post('/file/update', { 
+      axios.post("/file/update", {
         id: drag_file.id,
-        use: true
-      })
+        use: true,
+      });
 
-      drag_file = null
-    }
+      drag_file = null;
+    };
 
-    let check_useless_manageFile_list = ref([])
-    let check_useless_etcFile_list = ref([])
+    let check_useless_manageFile_list = ref([]);
+    let check_useless_etcFile_list = ref([]);
 
-    let lock_state = ref('manage')
+    let lock_state = ref("manage");
     // let list_check_useless_file = ref([])
     const change_lock_state = (state) => {
       // document.querySelector('#all-check').checked = false
-      lock_state.value = state
-    }
+      lock_state.value = state;
+    };
     const check_all_useless_file = (e) => {
-      if (lock_state.value == 'manage') {
-        check_useless_manageFile_list.value = []
+      if (lock_state.value == "manage") {
+        check_useless_manageFile_list.value = [];
 
         if (e.target.checked) {
           useless_manageFile_list.value.forEach((file) => {
-            check_useless_manageFile_list.value.push(file.id)
-          })
+            check_useless_manageFile_list.value.push(file.id);
+          });
         }
       }
-      if (lock_state.value == 'etc') {
-        check_useless_etcFile_list.value = []
+      if (lock_state.value == "etc") {
+        check_useless_etcFile_list.value = [];
 
         if (e.target.checked) {
           useless_etcFile_list.value.forEach((file) => {
-            check_useless_etcFile_list.value.push(file.id)
-          })
+            check_useless_etcFile_list.value.push(file.id);
+          });
         }
       }
-    }
+    };
 
     const delete_file = async () => {
-      if (lock_state.value == 'manage') {
+      if (lock_state.value == "manage") {
         if (!check_useless_manageFile_list.value.length) {
-          state.popup.content = ['선택된 미사용 파일이 없습니다']
-          state.popup.btnCount = 1
-          state.popup.toggle = true
-  
-          return
+          state.popup.content = ["선택된 미사용 파일이 없습니다"];
+          state.popup.btnCount = 1;
+          state.popup.toggle = true;
+
+          return;
         }
       }
-      if (lock_state.value == 'etc') {
+      if (lock_state.value == "etc") {
         if (!check_useless_etcFile_list.value.length) {
-          state.popup.content = ['선택된 미사용 파일이 없습니다']
-          state.popup.btnCount = 1
-          state.popup.toggle = true
-  
-          return
+          state.popup.content = ["선택된 미사용 파일이 없습니다"];
+          state.popup.btnCount = 1;
+          state.popup.toggle = true;
+
+          return;
         }
       }
 
-      try{
-        if (lock_state.value == 'manage') {
+      try {
+        if (lock_state.value == "manage") {
           console.log(useless_manageFile_list.value);
-          
-          try{
-            check_useless_manageFile_list.value.forEach(async (file_id, idx) => {
-              await axios.post('/file/delete', {id: Number(file_id)})
 
-              if (idx == check_useless_manageFile_list.value.length - 1) state.upload++
-              // .then(() => {
-              //   alert('파일 삭제에 성공하였습니다.')
-              // })
-              // .catch(() => alert('파일 삭제에 실패하였습니다.'))
-            })
+          try {
+            check_useless_manageFile_list.value.forEach(
+              async (file_id, idx) => {
+                await axios.post("/file/delete", { id: Number(file_id) });
 
-            if (checkDeleteIdAndExcelId(check_useless_manageFile_list.value, sessionStorage.getItem('id'))) {
-              state.popup.accept = () => router.push('/dashboard')
+                if (idx == check_useless_manageFile_list.value.length - 1)
+                  state.upload++;
+                // .then(() => {
+                //   alert('파일 삭제에 성공하였습니다.')
+                // })
+                // .catch(() => alert('파일 삭제에 실패하였습니다.'))
+              }
+            );
+
+            if (
+              checkDeleteIdAndExcelId(
+                check_useless_manageFile_list.value,
+                sessionStorage.getItem("id")
+              )
+            ) {
+              state.popup.accept = () => router.push("/dashboard");
             }
 
-            state.popup.content = ['파일 삭제에 성공하였습니다.']
-            state.popup.btnCount = 1
-            state.popup.toggle = true
+            state.popup.content = ["파일 삭제에 성공하였습니다."];
+            state.popup.btnCount = 1;
+            state.popup.toggle = true;
 
-            store.state.upload++
-          }
-          catch(error) {
-            state.popup.content = ['파일 삭제에 실패하였습니다.']
-            state.popup.btnCount = 1
-            state.popup.toggle = true
+            store.state.upload++;
+          } catch (error) {
+            state.popup.content = ["파일 삭제에 실패하였습니다."];
+            state.popup.btnCount = 1;
+            state.popup.toggle = true;
           }
         }
-        if (lock_state.value == 'etc') {
+        if (lock_state.value == "etc") {
           console.log(check_useless_etcFile_list.value);
-  
-          try{
+
+          try {
             check_useless_etcFile_list.value.forEach(async (file_id, idx) => {
-              await axios.post('/file/delete', {id: Number(file_id)})
+              await axios.post("/file/delete", { id: Number(file_id) });
 
-              if (idx == check_useless_etcFile_list.value.length - 1) state.upload++
-            })
+              if (idx == check_useless_etcFile_list.value.length - 1)
+                state.upload++;
+            });
 
-            state.popup.content = ['파일 삭제에 성공하였습니다.']
-            state.popup.btnCount = 1
-            state.popup.toggle = true
-            
-          }
-          catch(error) {
-            state.popup.content = ['파일 삭제에 실패하였습니다.']
-            state.popup.btnCount = 1
-            state.popup.toggle = true
+            state.popup.content = ["파일 삭제에 성공하였습니다."];
+            state.popup.btnCount = 1;
+            state.popup.toggle = true;
+          } catch (error) {
+            state.popup.content = ["파일 삭제에 실패하였습니다."];
+            state.popup.btnCount = 1;
+            state.popup.toggle = true;
           }
         }
-        
-        init()
-      }
-      catch(error) {
-        
-      }
-    }
+
+        init();
+      } catch (error) {}
+    };
 
     onMounted(() => {
       if (scrollElRef.value) {
@@ -794,8 +959,6 @@ console.log(filter_fileUse(deepCopy(category_list)));
     const hasActiveChildren = (match) => {
       return route.path.indexOf(match) !== -1;
     };
-
-    
 
     return {
       hasActiveChildren,
@@ -823,90 +986,94 @@ console.log(filter_fileUse(deepCopy(category_list)));
 </script>
 
 <style lang="scss" scoped>
-#kt_app_sidebar_menu_wrapper{
+#kt_app_sidebar_menu_wrapper {
   height: calc(100vh - 10px - 152px);
-  &::-webkit-scrollbar-thumb {background-color: #fff !important;}
-
+  &::-webkit-scrollbar-thumb {
+    background-color: #fff !important;
+  }
 }
-#kt_app_sidebar_menu{
+#kt_app_sidebar_menu {
   overflow-y: scroll;
   height: calc(100% - 260px);
 }
-.sub-menu-link{
+.sub-menu-link {
   padding-top: 5px;
   padding-bottom: 5px;
   // flex-wrap: wrap;
 }
-.menu-item.menu-accordion{
-  .svg{
-    width: 16px;height: 16px;
-    background: url('@/assets/img/art001.svg');
+.menu-item.menu-accordion {
+  .svg {
+    width: 16px;
+    height: 16px;
+    background: url("@/assets/img/art001.svg");
   }
 
-  &.hover{
-    .svg{
-      width: 16px;height: 16px;
-      background: url('@/assets/img/art005.svg');
+  &.hover {
+    .svg {
+      width: 16px;
+      height: 16px;
+      background: url("@/assets/img/art005.svg");
     }
   }
 
-  &.show{
-    .svg{
-      width: 16px;height: 16px;
-      background: url('@/assets/img/art005.svg');
+  &.show {
+    .svg {
+      width: 16px;
+      height: 16px;
+      background: url("@/assets/img/art005.svg");
     }
   }
 }
-.useless-file{
+.useless-file {
   flex-wrap: nowrap;
 }
-.icon-name{
+.icon-name {
   margin-top: 4px;
-  .img-excel{
+  .img-excel {
     width: 16px;
     // height: 2rem;
     // font-size: 12px;
     margin-right: 5px;
   }
-  .name{
+  .name {
     width: 100%;
   }
 }
-.menu-sub-accordion{
-  span.menu-title{
+.menu-sub-accordion {
+  span.menu-title {
     word-break: break-all;
-    .info-wrap{
+    .info-wrap {
       font-size: 12px !important;
       font-weight: 500;
-      .info-date{
+      .info-date {
         font-size: 10px;
         display: flex;
         font-weight: 600;
         align-items: center;
         padding: 3px 6px;
         border-radius: 13px;
-        background: #3471DB;
+        background: #3471db;
       }
-      .info-user{
+      .info-user {
         font-size: 10px;
         font-weight: 600;
         display: flex;
         align-items: center;
         padding: 3px 6px;
         border-radius: 13px;
-        background: #622CE1;
+        background: #622ce1;
       }
     }
   }
-  .menu-item{
+  .menu-item {
     // padding: 0;
   }
-  .menu-link{
+  .menu-link {
     // padding-top: 0;
     // padding-bottom: 0;
   }
 }
-.non-use-file-wrap{
+.non-use-file-wrap {
   // margin-top: 190px;
   // position: sticky;
   position: absolute;
@@ -914,14 +1081,14 @@ console.log(filter_fileUse(deepCopy(category_list)));
   right: 0;
   left: 0;
   overflow-x: hidden;
-  > .menu-link{
+  > .menu-link {
     background: #1e1e2d;
   }
-  .non-use-file{
+  .non-use-file {
     margin-top: 0;
     background: #112847;
     padding: 10px calc(12px + 0.75rem) 0 calc(12px + 0.75rem);
-    .lockfile-wrap{
+    .lockfile-wrap {
       width: 100%;
       min-height: 150px;
       max-height: 150px;
@@ -933,9 +1100,8 @@ console.log(filter_fileUse(deepCopy(category_list)));
       display: flex;
       align-items: center;
       margin: 10px 0;
-      
-      .non-use-file-category{
-        
+
+      .non-use-file-category {
         margin-left: 6px;
         display: flex;
         padding: 2px 6px;
@@ -944,31 +1110,31 @@ console.log(filter_fileUse(deepCopy(category_list)));
         gap: 2px;
         color: #fff;
         border-radius: 24px;
-        border: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
+        border: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #b5b5c3);
         font-size: 13px !important;
         cursor: pointer;
-        &.active{
-          background: #009EF7;
+        &.active {
+          background: #009ef7;
           border-color: transparent;
         }
-        &.delete{
+        &.delete {
           border: none;
           margin-left: 0;
         }
-  
-        .img{
+
+        .img {
           width: 25.5px;
           height: 25.5px;
         }
       }
     }
-  
-    .form-check{
+
+    .form-check {
       padding: 0;
       margin: 0;
       display: flex;
       align-items: center;
-      .form-check-input{
+      .form-check-input {
         border-radius: 1px;
         width: 14px;
         height: 14px;
