@@ -29,16 +29,19 @@
               />
             </svg>
             마지막 수정일자:
-            <!-- <span>{{excelUpdatedAt.replace(/T/, ' ').replace(/\..+/, '').replace(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/, '$1년 $2월 $3일 $4:$5')}}</span> -->
             <span>{{
-              new Date(new Date(excelUpdatedAt).getTime() + 9 * 60 * 60 * 1000)
-                .toISOString()
-                .replace(/T/, " ")
-                .replace(/\..+/, "")
-                .replace(
-                  /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/,
-                  "$1년 $2월 $3일 $4:$5"
-                )
+              excelUpdatedAt
+                ? new Date(
+                    new Date(excelUpdatedAt).getTime() + 9 * 60 * 60 * 1000
+                  )
+                    .toISOString()
+                    .replace(/T/, " ")
+                    .replace(/\..+/, "")
+                    .replace(
+                      /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/,
+                      "$1년 $2월 $3일 $4:$5"
+                    )
+                : ""
             }}</span>
           </div>
           <div class="user">
@@ -80,7 +83,6 @@
         <div class="btn btn-next" @click="next">다음</div>
         <div class="btn btn-save" @click="save">저장</div>
       </div>
-      <!-- <div class="title">{{localStorage.getItem('user')}}</div> -->
     </div>
     <div class="section">
       <LuckySheetHeader
@@ -101,8 +103,9 @@ import axios from "axios";
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
+// import route from "@/router";
 const router = useRoute();
-const state = store.state;
+// const state = store.state;
 
 const excelId = ref(Number(router.params.id));
 const excelTitle = ref("");
@@ -132,6 +135,7 @@ const next = () => {
   child.value.onClickNextButton();
 };
 const save = () => {
+  //   route.push(`excel/149`);
   child.value.onClickSaveButton();
 };
 
