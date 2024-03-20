@@ -99,7 +99,7 @@ const onClickSaveButton = async () => {
       state.popup.btnCount = 1;
       state.popup.toggle = true;
 
-      router.go(0);
+      router.push(`/excel/${props.excelId}`);
     } catch (error) {
       console.error(error);
       state.popup.content = ["헤더 지정에 실패하였습니다."];

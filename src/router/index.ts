@@ -99,7 +99,7 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "Excel",
           breadcrumbs: ["Excel"],
         },
-        props: true
+        props: true,
       },
       {
         path: "/header/adjust/:id",
@@ -109,7 +109,7 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "Header-adjust",
           breadcrumbs: ["Header-adjust"],
         },
-        props: true
+        props: true,
       },
       {
         path: "/search",
@@ -247,20 +247,20 @@ router.beforeEach(() => {
 
   // call new data
   store.dispatch(Actions.GET_DATA_TO_SERVER, {
-    name: 'company',
-    url: '/company/list',
-  })
-  
-  store.dispatch(Actions.POST_DATA_TO_SERVER, {
-    name: 'folder_all',
-    url: '/folder/list',
-  })
+    name: "company",
+    url: "/company/list",
+  });
 
   store.dispatch(Actions.POST_DATA_TO_SERVER, {
-    name: 'folder_manage',
-    url: '/folder/list',
-    pay: {type: 'manage'}
-  })
+    name: "folder_all",
+    url: "/folder/list",
+  });
+
+  store.dispatch(Actions.POST_DATA_TO_SERVER, {
+    name: "folder_manage",
+    url: "/folder/list",
+    pay: { type: "manage" },
+  });
 });
 
 export default router;
