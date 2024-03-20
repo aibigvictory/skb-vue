@@ -103,7 +103,7 @@ import axios from "axios";
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
-// import route from "@/router";
+import route from "@/router";
 const router = useRoute();
 // const state = store.state;
 
@@ -135,7 +135,6 @@ const next = () => {
   child.value.onClickNextButton();
 };
 const save = () => {
-  //   route.push(`excel/149`);
   child.value.onClickSaveButton();
 };
 
