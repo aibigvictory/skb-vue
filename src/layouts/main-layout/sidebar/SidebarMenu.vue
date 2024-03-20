@@ -496,7 +496,11 @@
                           <span class="menu-title" style="display: block">
                             <!-- <div>dsadsadsadasd</div> -->
                             <div class="useless-file-title">
-                              {{ item2.name }}
+                              {{
+                                `${item2.name}${
+                                  item2.version ? `_${item2.version}` : ""
+                                }.${item2.extension}`
+                              }}
                             </div>
                           </span>
                         </span>
@@ -541,7 +545,11 @@
                           <span class="menu-title" style="display: block">
                             <!-- <div>dsadsadsadasd</div> -->
                             <div class="useless-file-title">
-                              {{ item2.name }}
+                              {{
+                                `${item2.name}${
+                                  item2.version ? `_${item2.version}` : ""
+                                }.${item2.extension}`
+                              }}
                             </div>
                           </span>
                         </span>
