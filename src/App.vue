@@ -1,16 +1,22 @@
 <template>
   <router-view />
   <!--  -->
-  <FileUploadVue/>
+  <FileUploadVue />
   <!--  -->
-  <Popup v-if="state.popup.toggle" @accept="state.popup.accept" @exit="state.popup.toggle = false" :content="state.popup.content" :btnCount="state.popup.btnCount"/>
+  <Popup
+    v-if="state.popup.toggle"
+    @accept="state.popup.accept"
+    @exit="state.popup.toggle = false"
+    :content="state.popup.content"
+    :btnCount="state.popup.btnCount"
+  />
   <!-- <Notice v-if="state.notice.toggle" @exit="state.notice.toggle = false"/> -->
   <!-- <LuckysheetHeaderModal v-if="state.luckysheet.modal.toggle"/> -->
 </template>
 
 <script setup lang="ts">
 import FileUploadVue from "@/components/modals/general/FileUploadModal.vue";
-import Popup from '@/components/Popup.vue'
+import Popup from "@/components/Popup.vue";
 // import Notice from '@/components/Notice.vue'
 // import LuckysheetHeaderModal from '@/views/LuckySheetHeaderAdjust.vue'
 
@@ -25,56 +31,55 @@ import JwtService from "./core/services/JwtService";
 import router from "./router";
 
 const store = useStore();
-const state = store.state
+const state = store.state;
 
 const checkTokenExp = () => {
-  const decode = JwtService.decode(JwtService.getToken())
-  const now = new Date()
-  const exp = new Date(Number(decode?.exp + '000'))
+  const decode = JwtService.decode(JwtService.getToken());
+  const now = new Date();
+  const exp = new Date(Number(decode?.exp + "000"));
 
-  console.log('decode');
+  console.log("decode");
   console.log(decode);
   console.log(now);
   console.log(exp);
-  
+
   console.log(!decode);
   console.log(now > exp);
 
   if (!decode || now > exp) {
-    router.push({name: "sign-in"})
-    JwtService.destroyToken()
+    router.push({ name: "sign-in" });
+    JwtService.destroyToken();
+  } else {
+    console.log("clear");
   }
-  else{
-    console.log('clear');
-  }
-}
+};
 
 // setTimeout(() => store.state.luckysheet.modal.toggle = true, 1000)
-setInterval(() => checkTokenExp, 5000)
-checkTokenExp()
+setInterval(() => checkTokenExp, 5000);
+checkTokenExp();
 
 const init = async () => {
-  const { data } = await axios.post('/folder/list', {
-    type: 'manage'
-  })
+  const { data } = await axios.post("/folder/list", {
+    type: "manage",
+  });
 
   // folderList.value = data
 
   // console.log(folderList.value);
 
-  store.state.folderList.manage = data
-}
+  store.state.folderList.manage = data;
+};
 
-init()
+init();
 
 onMounted(() => {
-  config.value.sidebar.default.menu.iconType = "svg"
+  config.value.sidebar.default.menu.iconType = "svg";
 
   store.commit(Mutations.SET_LAYOUT_CONFIG_PROPERTY, {
     property: "general.mode",
-    value: 'light',
+    value: "light",
   });
-  store.dispatch(Actions.SET_THEME_MODE_ACTION, 'light');
+  store.dispatch(Actions.SET_THEME_MODE_ACTION, "light");
 
   // save new config to localStorage
   localStorage.setItem("config", JSON.stringify(config.value));
@@ -121,56 +126,58 @@ onMounted(() => {
 
 //RTL version styles
 //@import "assets/css/style.rtl.css";
-
 * {
   font-family: Pretendard !important;
+}
+body {
+  overflow-x: hidden;
 }
 
 #app {
   display: contents;
 }
-.text-left{
+.text-left {
   text-align: left !important;
 }
-img{
+img {
   width: 100%;
   height: 100%;
 }
-.vh-40{
+.vh-40 {
   height: 40vh;
 }
-.fz-20px{
+.fz-20px {
   font-size: 20px !important;
 }
-.fz-14px{
+.fz-14px {
   font-size: 14px !important;
 }
-.fw-500{
+.fw-500 {
   font-weight: 500 !important;
 }
-.fw-700{
+.fw-700 {
   font-weight: 700 !important;
 }
-.fw-800{
+.fw-800 {
   font-weight: 800 !important;
 }
-.fw-900{
+.fw-900 {
   font-weight: 900 !important;
 }
-.h-md-80{
+.h-md-80 {
   height: 80% !important;
 }
-.h-md-90{
+.h-md-90 {
   height: 90% !important;
 }
-.overflow-y-scroll{
+.overflow-y-scroll {
   overflow-y: scroll;
 }
 
-.luckysheet-sheet-area{
+.luckysheet-sheet-area {
   // position: fixed;
 }
-.luckysheet_info_detail{
+.luckysheet_info_detail {
   display: none !important;
 }
 
@@ -183,29 +190,28 @@ img{
 // .tui-grid-body-area{
 //   height: auto !important;
 // }
-.tui-grid-cell-content{
+.tui-grid-cell-content {
   text-align: center;
 }
-.tui-grid-cell-header{
+.tui-grid-cell-header {
   white-space: normal !important;
 }
-.tui-grid-header-area{
+.tui-grid-header-area {
   height: auto !important;
 
-  .tui-grid-cell{
-    background: #FAFAFA;
-    border: 1px solid #EEE;
-
+  .tui-grid-cell {
+    background: #fafafa;
+    border: 1px solid #eee;
   }
 }
 
-.tui-grid-cell{
-    border: 1px solid #EEE !important;
-    .tui-grid-cell-content {
-      word-break: normal;
-      // padding: 0 !important;
-    }
-    min-width: 70px !important;
+.tui-grid-cell {
+  border: 1px solid #eee !important;
+  .tui-grid-cell-content {
+    word-break: normal;
+    // padding: 0 !important;
+  }
+  min-width: 70px !important;
 }
 
 // .tui-grid-body-container{
@@ -230,7 +236,7 @@ img{
 // }
 // // .tui-grid-body-container{
 // //   height: auto !important;
-  
+
 //   .tui-grid-table-container{
 //     position: relative !important;
 
@@ -266,18 +272,18 @@ img{
 //         }
 //       }
 //     }
-    .tui-grid-layer-editing{
-      // height: 100% !important;
-      // line-height: normal !important;
+.tui-grid-layer-editing {
+  // height: 100% !important;
+  // line-height: normal !important;
 
-      textarea{
-        // line-height: normal;
-        text-align: center;
-        padding: 0;
-      }
-    //   height: calc(100% - 4px) !;
-      // line-height: normal
-    }
+  textarea {
+    // line-height: normal;
+    text-align: center;
+    padding: 0;
+  }
+  //   height: calc(100% - 4px) !;
+  // line-height: normal
+}
 //     .tui-grid-layer-selection{
 //       height: 100% !important;
 //     }
@@ -299,17 +305,17 @@ img{
   display: flex;
   flex-direction: column;
 
-  img{
+  img {
     margin-bottom: 30px;
     height: 30px !important;
     width: auto;
   }
 
-  span{
+  span {
     margin-top: 20px;
     position: relative;
     font-size: 12px;
-    color: #5E6278;
+    color: #5e6278;
     transition: none !important;
     text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
@@ -320,13 +326,17 @@ img{
     width: 100%;
     height: 100%;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
   }
 
   @keyframes spinner {
-    from {transform: rotate(0deg); }
-    to {transform: rotate(360deg);}
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   #loading .spinner {
@@ -342,9 +352,7 @@ img{
     border: 8px solid transparent;
     border-top-color: #f19022;
     border-bottom-color: #f19022;
-    animation: spinner .8s ease infinite;
+    animation: spinner 0.8s ease infinite;
   }
 }
-
-
 </style>
