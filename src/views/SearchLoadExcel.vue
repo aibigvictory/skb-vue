@@ -1,61 +1,129 @@
 <template>
-    <ul>
-      <li v-for="folder in search_result_list" :key="folder">
-        <div class="title">
-          <div class="text">
-            {{folder.name}}
-          </div>
+  <ul>
+    <li v-for="folder in search_result_list" :key="folder">
+      <div class="title">
+        <div class="text">
+          {{ folder.name }}
         </div>
-        <div v-for="file in folder.files" :key="file" class="content">
-          <div class="sub-title">
-            {{file.name}} 
-            <span v-if="file.headerInfo == null" @click="toHeaderAdjust(file.id)" class="header-adjust">헤더 미지정</span>
+      </div>
+      <div v-for="file in folder.files" :key="file" class="content">
+        <div class="sub-title">
+          {{
+            `${file.name}${file.version ? `_${file.version}` : ""}.${
+              file.extension
+            }`
+          }}
+          <span
+            v-if="file.headerInfo == null"
+            @click="toHeaderAdjust(file.id)"
+            class="header-adjust"
+            >헤더 미지정</span
+          >
+        </div>
+        <div class="info">
+          <div class="time">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M7.45059 0.891593C7.30101 0.88056 7.15072 0.875 7 0.875V0C7.17224 0 7.344 0.00635424 7.51495 0.0189631L7.45059 0.891593ZM9.20436 1.28542C8.92372 1.17717 8.63548 1.08973 8.342 1.02382L8.53372 0.170084C8.86912 0.245405 9.19854 0.345332 9.51927 0.469048L9.20436 1.28542ZM10.4029 1.90725C10.2776 1.82352 10.1495 1.74464 10.019 1.67071L10.4503 0.909389C10.5994 0.993881 10.7458 1.08402 10.889 1.17971C11.0322 1.2754 11.1715 1.37611 11.3066 1.48157L10.7683 2.17138C10.6501 2.0791 10.5282 1.99098 10.4029 1.90725ZM12.0077 3.47318C11.8345 3.22725 11.6434 2.99441 11.436 2.77656L12.0697 2.17322C12.3068 2.42219 12.5252 2.68829 12.7231 2.96934L12.0077 3.47318ZM12.6588 4.65606C12.6011 4.51682 12.5384 4.3801 12.471 4.24613L13.2526 3.85272C13.3296 4.00584 13.4012 4.16209 13.4672 4.32122C13.5331 4.48034 13.5929 4.64146 13.6467 4.80422L12.8159 5.0787C12.7688 4.93629 12.7164 4.79531 12.6588 4.65606ZM13.1232 6.84969C13.1158 6.54899 13.0863 6.24922 13.0348 5.95286L13.8969 5.80327C13.9557 6.14197 13.9895 6.48455 13.9979 6.82821L13.1232 6.84969ZM13.0073 8.19493C13.0367 8.04711 13.0606 7.89862 13.0789 7.74976L13.9474 7.85688C13.9264 8.027 13.8991 8.1967 13.8655 8.36563C13.8319 8.53456 13.7922 8.70178 13.7464 8.86699L12.9031 8.63362C12.9431 8.48907 12.9779 8.34275 13.0073 8.19493ZM12.1747 10.2769C12.3357 10.0227 12.4776 9.75709 12.5995 9.4821L13.3995 9.83669C13.2602 10.151 13.0979 10.4546 12.914 10.745L12.1747 10.2769ZM11.331 11.331C11.4376 11.2245 11.5399 11.1143 11.6379 11.0007L12.3005 11.5722C12.1885 11.702 12.0715 11.828 11.9497 11.9497L11.331 11.331Z"
+                fill="black"
+              />
+              <path
+                d="M7 0.875C5.99274 0.875 5.00102 1.12341 4.1127 1.59823C3.22437 2.07305 2.46686 2.75962 1.90725 3.59713C1.34765 4.43464 1.00322 5.39723 0.904495 6.39964C0.805766 7.40206 0.955777 8.41335 1.34124 9.34394C1.7267 10.2745 2.33572 11.0957 3.11434 11.7347C3.89297 12.3737 4.81716 12.8108 5.80507 13.0073C6.79298 13.2038 7.81411 13.1537 8.77799 12.8613C9.74188 12.5689 10.6188 12.0433 11.331 11.331L11.9497 11.9497C11.1358 12.7637 10.1336 13.3644 9.03199 13.6986C7.93041 14.0327 6.76341 14.0901 5.63437 13.8655C4.50533 13.6409 3.4491 13.1414 2.55925 12.4111C1.66939 11.6808 0.973374 10.7423 0.532845 9.67878C0.0923164 8.61525 -0.0791244 7.45949 0.0337087 6.31388C0.146542 5.16827 0.540166 4.06816 1.17971 3.11101C1.81926 2.15386 2.68499 1.3692 3.70022 0.826551C4.71545 0.2839 5.84885 0 7 0V0.875Z"
+                fill="black"
+              />
+              <path
+                d="M6.5625 2.625C6.80413 2.625 7 2.82088 7 3.0625V7.62111L9.84206 9.24514C10.0519 9.36502 10.1247 9.63227 10.0049 9.84206C9.88498 10.0519 9.61773 10.1247 9.40794 10.0049L6.34544 8.25486C6.20913 8.17696 6.125 8.032 6.125 7.875V3.0625C6.125 2.82088 6.32088 2.625 6.5625 2.625Z"
+                fill="black"
+              />
+            </svg>
+            마지막 수정일자:
+            <span>{{
+              new Date(
+                new Date(file.history[0].updatedAt).getTime() +
+                  9 * 60 * 60 * 1000
+              )
+                .toISOString()
+                .slice(0, 19)
+                .replace(/T/g, " ")
+            }}</span>
           </div>
-          <div class="info">
-            <div class="time">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7.45059 0.891593C7.30101 0.88056 7.15072 0.875 7 0.875V0C7.17224 0 7.344 0.00635424 7.51495 0.0189631L7.45059 0.891593ZM9.20436 1.28542C8.92372 1.17717 8.63548 1.08973 8.342 1.02382L8.53372 0.170084C8.86912 0.245405 9.19854 0.345332 9.51927 0.469048L9.20436 1.28542ZM10.4029 1.90725C10.2776 1.82352 10.1495 1.74464 10.019 1.67071L10.4503 0.909389C10.5994 0.993881 10.7458 1.08402 10.889 1.17971C11.0322 1.2754 11.1715 1.37611 11.3066 1.48157L10.7683 2.17138C10.6501 2.0791 10.5282 1.99098 10.4029 1.90725ZM12.0077 3.47318C11.8345 3.22725 11.6434 2.99441 11.436 2.77656L12.0697 2.17322C12.3068 2.42219 12.5252 2.68829 12.7231 2.96934L12.0077 3.47318ZM12.6588 4.65606C12.6011 4.51682 12.5384 4.3801 12.471 4.24613L13.2526 3.85272C13.3296 4.00584 13.4012 4.16209 13.4672 4.32122C13.5331 4.48034 13.5929 4.64146 13.6467 4.80422L12.8159 5.0787C12.7688 4.93629 12.7164 4.79531 12.6588 4.65606ZM13.1232 6.84969C13.1158 6.54899 13.0863 6.24922 13.0348 5.95286L13.8969 5.80327C13.9557 6.14197 13.9895 6.48455 13.9979 6.82821L13.1232 6.84969ZM13.0073 8.19493C13.0367 8.04711 13.0606 7.89862 13.0789 7.74976L13.9474 7.85688C13.9264 8.027 13.8991 8.1967 13.8655 8.36563C13.8319 8.53456 13.7922 8.70178 13.7464 8.86699L12.9031 8.63362C12.9431 8.48907 12.9779 8.34275 13.0073 8.19493ZM12.1747 10.2769C12.3357 10.0227 12.4776 9.75709 12.5995 9.4821L13.3995 9.83669C13.2602 10.151 13.0979 10.4546 12.914 10.745L12.1747 10.2769ZM11.331 11.331C11.4376 11.2245 11.5399 11.1143 11.6379 11.0007L12.3005 11.5722C12.1885 11.702 12.0715 11.828 11.9497 11.9497L11.331 11.331Z" fill="black"/>
-              <path d="M7 0.875C5.99274 0.875 5.00102 1.12341 4.1127 1.59823C3.22437 2.07305 2.46686 2.75962 1.90725 3.59713C1.34765 4.43464 1.00322 5.39723 0.904495 6.39964C0.805766 7.40206 0.955777 8.41335 1.34124 9.34394C1.7267 10.2745 2.33572 11.0957 3.11434 11.7347C3.89297 12.3737 4.81716 12.8108 5.80507 13.0073C6.79298 13.2038 7.81411 13.1537 8.77799 12.8613C9.74188 12.5689 10.6188 12.0433 11.331 11.331L11.9497 11.9497C11.1358 12.7637 10.1336 13.3644 9.03199 13.6986C7.93041 14.0327 6.76341 14.0901 5.63437 13.8655C4.50533 13.6409 3.4491 13.1414 2.55925 12.4111C1.66939 11.6808 0.973374 10.7423 0.532845 9.67878C0.0923164 8.61525 -0.0791244 7.45949 0.0337087 6.31388C0.146542 5.16827 0.540166 4.06816 1.17971 3.11101C1.81926 2.15386 2.68499 1.3692 3.70022 0.826551C4.71545 0.2839 5.84885 0 7 0V0.875Z" fill="black"/>
-              <path d="M6.5625 2.625C6.80413 2.625 7 2.82088 7 3.0625V7.62111L9.84206 9.24514C10.0519 9.36502 10.1247 9.63227 10.0049 9.84206C9.88498 10.0519 9.61773 10.1247 9.40794 10.0049L6.34544 8.25486C6.20913 8.17696 6.125 8.032 6.125 7.875V3.0625C6.125 2.82088 6.32088 2.625 6.5625 2.625Z" fill="black"/>
-              </svg>
-              마지막 수정일자:
-              <span>{{new Date(new Date(file.history[0].updatedAt).getTime() + 9 * 60 * 60 * 1000).toISOString().slice(0,19).replace(/T/g, ' ')}}</span>
-            </div>
-            <div class="type">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <mask id="mask0_623_14087" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
-              <rect width="20" height="20" fill="#D9D9D9"/>
+          <div class="type">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <mask
+                id="mask0_623_14087"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="20"
+                height="20"
+              >
+                <rect width="20" height="20" fill="#D9D9D9" />
               </mask>
               <g mask="url(#mask0_623_14087)">
-              <path d="M9.58301 9.32031C8.78094 9.32031 8.09431 9.02721 7.52313 8.44101C6.95194 7.85479 6.66635 7.15009 6.66635 6.32691C6.66635 5.50372 6.95194 4.79902 7.52313 4.21282C8.09431 3.6266 8.78094 3.3335 9.58301 3.3335C10.3851 3.3335 11.0717 3.6266 11.6429 4.21282C12.2141 4.79902 12.4997 5.50372 12.4997 6.32691C12.4997 7.15009 12.2141 7.85479 11.6429 8.44101C11.0717 9.02721 10.3851 9.32031 9.58301 9.32031ZM14.567 15.8335H4.59901C4.24752 15.8335 3.94866 15.7071 3.7024 15.4544C3.45614 15.2016 3.33301 14.8949 3.33301 14.5342V13.9322C3.33301 13.5133 3.44386 13.1255 3.66555 12.7686C3.88723 12.4117 4.18343 12.1373 4.55416 11.9454C5.37788 11.5309 6.20882 11.22 7.04696 11.0128C7.8851 10.8056 8.73045 10.702 9.58301 10.702C10.4356 10.702 11.2809 10.8056 12.1191 11.0128C12.9572 11.22 13.7881 11.5309 14.6119 11.9454C14.9826 12.1373 15.2788 12.4117 15.5005 12.7686C15.7222 13.1255 15.833 13.5133 15.833 13.9322V14.5342C15.833 14.8949 15.7099 15.2016 15.4636 15.4544C15.2174 15.7071 14.9185 15.8335 14.567 15.8335ZM4.58299 14.5506H14.583V13.9322C14.583 13.7589 14.5341 13.5986 14.4364 13.4511C14.3386 13.3036 14.2059 13.1833 14.0381 13.0901C13.3202 12.7271 12.5881 12.4522 11.8419 12.2652C11.0957 12.0783 10.3428 11.9848 9.58301 11.9848C8.82325 11.9848 8.07028 12.0783 7.32408 12.2652C6.57789 12.4522 5.84581 12.7271 5.12787 13.0901C4.96013 13.1833 4.82739 13.3036 4.72964 13.4511C4.63187 13.5986 4.58299 13.7589 4.58299 13.9322V14.5506ZM9.58301 8.03745C10.0413 8.03745 10.4337 7.86996 10.7601 7.53498C11.0865 7.2 11.2497 6.79731 11.2497 6.32691C11.2497 5.85652 11.0865 5.45383 10.7601 5.11885C10.4337 4.78387 10.0413 4.61638 9.58301 4.61638C9.12467 4.61638 8.73231 4.78387 8.40592 5.11885C8.07953 5.45383 7.91634 5.85652 7.91634 6.32691C7.91634 6.79731 8.07953 7.2 8.40592 7.53498C8.73231 7.86996 9.12467 8.03745 9.58301 8.03745Z" fill="#1C1B1F"/>
+                <path
+                  d="M9.58301 9.32031C8.78094 9.32031 8.09431 9.02721 7.52313 8.44101C6.95194 7.85479 6.66635 7.15009 6.66635 6.32691C6.66635 5.50372 6.95194 4.79902 7.52313 4.21282C8.09431 3.6266 8.78094 3.3335 9.58301 3.3335C10.3851 3.3335 11.0717 3.6266 11.6429 4.21282C12.2141 4.79902 12.4997 5.50372 12.4997 6.32691C12.4997 7.15009 12.2141 7.85479 11.6429 8.44101C11.0717 9.02721 10.3851 9.32031 9.58301 9.32031ZM14.567 15.8335H4.59901C4.24752 15.8335 3.94866 15.7071 3.7024 15.4544C3.45614 15.2016 3.33301 14.8949 3.33301 14.5342V13.9322C3.33301 13.5133 3.44386 13.1255 3.66555 12.7686C3.88723 12.4117 4.18343 12.1373 4.55416 11.9454C5.37788 11.5309 6.20882 11.22 7.04696 11.0128C7.8851 10.8056 8.73045 10.702 9.58301 10.702C10.4356 10.702 11.2809 10.8056 12.1191 11.0128C12.9572 11.22 13.7881 11.5309 14.6119 11.9454C14.9826 12.1373 15.2788 12.4117 15.5005 12.7686C15.7222 13.1255 15.833 13.5133 15.833 13.9322V14.5342C15.833 14.8949 15.7099 15.2016 15.4636 15.4544C15.2174 15.7071 14.9185 15.8335 14.567 15.8335ZM4.58299 14.5506H14.583V13.9322C14.583 13.7589 14.5341 13.5986 14.4364 13.4511C14.3386 13.3036 14.2059 13.1833 14.0381 13.0901C13.3202 12.7271 12.5881 12.4522 11.8419 12.2652C11.0957 12.0783 10.3428 11.9848 9.58301 11.9848C8.82325 11.9848 8.07028 12.0783 7.32408 12.2652C6.57789 12.4522 5.84581 12.7271 5.12787 13.0901C4.96013 13.1833 4.82739 13.3036 4.72964 13.4511C4.63187 13.5986 4.58299 13.7589 4.58299 13.9322V14.5506ZM9.58301 8.03745C10.0413 8.03745 10.4337 7.86996 10.7601 7.53498C11.0865 7.2 11.2497 6.79731 11.2497 6.32691C11.2497 5.85652 11.0865 5.45383 10.7601 5.11885C10.4337 4.78387 10.0413 4.61638 9.58301 4.61638C9.12467 4.61638 8.73231 4.78387 8.40592 5.11885C8.07953 5.45383 7.91634 5.85652 7.91634 6.32691C7.91634 6.79731 8.07953 7.2 8.40592 7.53498C8.73231 7.86996 9.12467 8.03745 9.58301 8.03745Z"
+                  fill="#1C1B1F"
+                />
               </g>
-              </svg>
-              {{file.history && file.history.length && file.history[file.history.length - 1] && file.history[file.history.length - 1].user? file.history[file.history.length - 1].user.name : "공유"}}
-              <span>({{file.history && file.history.length && file.history[file.history.length - 1] && file.history[file.history.length - 1].user? file.history[file.history.length - 1].user.teamName : "CATV 운용팀"}})</span>
-            </div>
+            </svg>
+            {{
+              file.history &&
+              file.history.length &&
+              file.history[file.history.length - 1] &&
+              file.history[file.history.length - 1].user
+                ? file.history[file.history.length - 1].user.name
+                : "공유"
+            }}
+            <span
+              >({{
+                file.history &&
+                file.history.length &&
+                file.history[file.history.length - 1] &&
+                file.history[file.history.length - 1].user
+                  ? file.history[file.history.length - 1].user.teamName
+                  : "CATV 운용팀"
+              }})</span
+            >
           </div>
-          <div class="grid" :id="`grid${file.id}`"></div>
         </div>
-      </li>
+        <div class="grid" :id="`grid${file.id}`"></div>
+      </div>
+    </li>
     <!-- <div v-for="sheet in file.sheets" :key="sheet" class="grid" :id="`grid${sheet.index}`"></div> -->
-    </ul>
-    <div class="save-wrap">
-      <button class="save-btn" @click="save">저장하기</button>
-    </div>
-    <div v-show="isMaskShow" id="tip">
-      <img src="@/assets/img/default-dark.png" alt="Metronic logo" />
-      <span>Loading<div id="loading"><div class="spinner"></div></div></span>
-    </div>
+  </ul>
+  <div class="save-wrap">
+    <button class="save-btn" @click="save">저장하기</button>
+  </div>
+  <div v-show="isMaskShow" id="tip">
+    <img src="@/assets/img/default-dark.png" alt="Metronic logo" />
+    <span
+      >Loading
+      <div id="loading"><div class="spinner"></div></div
+    ></span>
+  </div>
 </template>
 
 <script setup lang="ts">
-import JwtService from '@/core/services/JwtService';
-import axios from 'axios';
-import { onMounted, ref, watch, defineExpose } from 'vue';
-import Grid from 'tui-grid';
-import 'tui-grid/dist/tui-grid.css';
-import store from '@/store';
-import router from '@/router';
+import JwtService from "@/core/services/JwtService";
+import axios from "axios";
+import { onMounted, ref, watch, defineExpose } from "vue";
+import Grid from "tui-grid";
+import "tui-grid/dist/tui-grid.css";
+import store from "@/store";
+import router from "@/router";
 interface Merge {
   // The interface of xlsx library.
   // s: start, e: end, r: row, c: column
@@ -69,50 +137,52 @@ interface Merge {
   };
 }
 
-const state = store.state
+const state = store.state;
 
 const props = defineProps({
-    keyword: String,
-    sort: String,
-    searchType: String,
-    fileList: Object,
-    adjust: Boolean,
-})
+  keyword: String,
+  sort: String,
+  searchType: String,
+  fileList: Object,
+  adjust: Boolean,
+});
 
-let focusedGrid = '';
+let focusedGrid = "";
 
 console.log(new Date().getTime());
 
-const isMaskShow = ref(true)
+const isMaskShow = ref(true);
 
-watch(() => props.searchType, async (value) => {
-  await init()
-  
-  isMaskShow.value = false
+watch(
+  () => props.searchType,
+  async (value) => {
+    await init();
 
-  search_result_list.value.forEach((folder) => {
-    folder.files.forEach((file, idx) => {
-      if (idx == 0) {
-        create_toasrUiGrid(file)
-      }
-      else {
-        setTimeout(() => {
-          create_toasrUiGrid(file)
-        }, 1)
-      }
-    })
-  })
-    
-    
-})
+    isMaskShow.value = false;
 
-watch(() => props.sort, (value) => {
+    search_result_list.value.forEach((folder) => {
+      folder.files.forEach((file, idx) => {
+        if (idx == 0) {
+          create_toasrUiGrid(file);
+        } else {
+          setTimeout(() => {
+            create_toasrUiGrid(file);
+          }, 1);
+        }
+      });
+    });
+  }
+);
+
+watch(
+  () => props.sort,
+  (value) => {
     // for (let key in toastArr) {
     //     const toast = toastArr[key]
     //     toast.destroy()
     // }
 
-    sort_search_result(search_result_list.value, value)
+    sort_search_result(search_result_list.value, value);
 
     // let target = [
     //     {name: '테스트'},
@@ -122,193 +192,198 @@ watch(() => props.sort, (value) => {
     //     {name: '2022_다이렉트 HD방송_IPto8VSB_채널라인업'},
     // ]
 
-    
     // sort_search_result(target, value)
     // console.log(target);
 
     // create_toasrUiGrid(file_list)
-})
+  }
+);
 
-let sheet_list:any = []
-let file_list: any = []
+let sheet_list: any = [];
+let file_list: any = [];
 let revisionArr: any[] = [];
-const search_result_list = ref([])
+const search_result_list = ref([]);
 
 const category_in_file = (category_arr, file_arr, category_key, file_key) => {
-  console.log('category in file');
+  console.log("category in file");
   console.log(category_arr);
   console.log(file_arr);
-  let result: any = []
+  let result: any = [];
 
   for (let i = 0; i < category_arr.length; i++) {
-    const category = category_arr[i]
+    const category = category_arr[i];
 
-    result.push(category)
+    result.push(category);
 
-    category.files = []
+    category.files = [];
 
     for (let j = 0; j < file_arr.length; j++) {
-      const file = file_arr[j]
+      const file = file_arr[j];
 
       if (category[category_key] == file[file_key]) {
-        category.files.push(file)
+        category.files.push(file);
       }
     }
   }
 
   console.log(result);
 
-  return result
-}
+  return result;
+};
 
 const init = async () => {
-  if (!props.keyword) return 
+  if (!props.keyword) return;
 
-  let file_id_list:string[] = []
+  let file_id_list: string[] = [];
 
   // for (let key in props.fileList) {
   //   for (let key2 in props.fileList[key].files)
   //     file_id_list.push(key2)
   // }
   props.fileList.forEach((file) => {
-    file_id_list.push(file.id)
-  })
+    file_id_list.push(file.id);
+  });
 
   console.log(file_id_list);
-  
-  
-  const { data } = await axios.post('/search/detail', {
-    "q": props.keyword,
-    "id": file_id_list,
-    "match": props.searchType
-  })
-  const { folders, files, revision } = data
 
-  search_result_list.value = category_in_file(folders, files, 'code', 'folderCd')
+  const { data } = await axios.post("/search/detail", {
+    q: props.keyword,
+    id: file_id_list,
+    match: props.searchType,
+  });
+  const { folders, files, revision } = data;
 
-  file_list = files
+  search_result_list.value = category_in_file(
+    folders,
+    files,
+    "code",
+    "folderCd"
+  );
+
+  file_list = files;
   revisionArr = revision;
-}
+};
 
 const sort_search_result = (target, option) => {
   // console.log('backup');
-  
+
   // console.log(search_result_list_backup);
   // console.log(search_result_list.value);
-  
-  
-//   if (option == "default") return init()
+
+  //   if (option == "default") return init()
   // console.log(search_result_list.value);
-    if (option == "en") {
-        target.sort((a, b) => {
-            function getFirstCharType(str): any {
-                const firstChar = str.charAt(0);
-                if (firstChar >= '0' && firstChar <= '9') {
-                    return 2;
-                } else if ((firstChar >= 'a' && firstChar <= 'z') || (firstChar >= 'A' && firstChar <= 'Z')) {
-                    return 1;
-                } else if (firstChar >= '가' && firstChar <= '힣') {
-                    return 3;
-                }
-            }
+  if (option == "en") {
+    target.sort((a, b) => {
+      function getFirstCharType(str): any {
+        const firstChar = str.charAt(0);
+        if (firstChar >= "0" && firstChar <= "9") {
+          return 2;
+        } else if (
+          (firstChar >= "a" && firstChar <= "z") ||
+          (firstChar >= "A" && firstChar <= "Z")
+        ) {
+          return 1;
+        } else if (firstChar >= "가" && firstChar <= "힣") {
+          return 3;
+        }
+      }
 
-            const aFirstChar = a.name[0];
-            const bFirstChar = b.name[0];
+      const aFirstChar = a.name[0];
+      const bFirstChar = b.name[0];
 
-            const aFirstCharType = getFirstCharType(aFirstChar)
-            const bFirstCharType = getFirstCharType(bFirstChar)
+      const aFirstCharType = getFirstCharType(aFirstChar);
+      const bFirstCharType = getFirstCharType(bFirstChar);
 
-            if (aFirstCharType > bFirstCharType) return 1
-            if (aFirstCharType < bFirstCharType) return -1
-            if (aFirstCharType == bFirstCharType) {
-                if (aFirstChar > bFirstChar) return 1
-                if (aFirstChar < bFirstChar) return -1
-                if (aFirstChar == bFirstChar) return 0
-            }
-        });
-    }
-  
-    if (option == "num") {
+      if (aFirstCharType > bFirstCharType) return 1;
+      if (aFirstCharType < bFirstCharType) return -1;
+      if (aFirstCharType == bFirstCharType) {
+        if (aFirstChar > bFirstChar) return 1;
+        if (aFirstChar < bFirstChar) return -1;
+        if (aFirstChar == bFirstChar) return 0;
+      }
+    });
+  }
 
-        target.sort((a, b) => {
-            function getFirstCharType(str): any {
-                const firstChar = str.charAt(0);
-                if (firstChar >= '0' && firstChar <= '9') {
-                    return 1;
-                } else if ((firstChar >= 'a' && firstChar <= 'z') || (firstChar >= 'A' && firstChar <= 'Z')) {
-                    return 2;
-                } else if (firstChar >= '가' && firstChar <= '힣') {
-                    return 3;
-                }
-            }
+  if (option == "num") {
+    target.sort((a, b) => {
+      function getFirstCharType(str): any {
+        const firstChar = str.charAt(0);
+        if (firstChar >= "0" && firstChar <= "9") {
+          return 1;
+        } else if (
+          (firstChar >= "a" && firstChar <= "z") ||
+          (firstChar >= "A" && firstChar <= "Z")
+        ) {
+          return 2;
+        } else if (firstChar >= "가" && firstChar <= "힣") {
+          return 3;
+        }
+      }
 
-            const aFirstChar = a.name[0];
-            const bFirstChar = b.name[0];
+      const aFirstChar = a.name[0];
+      const bFirstChar = b.name[0];
 
-            const aFirstCharType = getFirstCharType(aFirstChar)
-            const bFirstCharType = getFirstCharType(bFirstChar)
+      const aFirstCharType = getFirstCharType(aFirstChar);
+      const bFirstCharType = getFirstCharType(bFirstChar);
 
-            if (aFirstCharType > bFirstCharType) return 1
-            if (aFirstCharType < bFirstCharType) return -1
-            if (aFirstCharType == bFirstCharType) {
-                if (aFirstChar > bFirstChar) return 1
-                if (aFirstChar < bFirstChar) return -1
-                if (aFirstChar == bFirstChar) return 0
-            }
-        });
+      if (aFirstCharType > bFirstCharType) return 1;
+      if (aFirstCharType < bFirstCharType) return -1;
+      if (aFirstCharType == bFirstCharType) {
+        if (aFirstChar > bFirstChar) return 1;
+        if (aFirstChar < bFirstChar) return -1;
+        if (aFirstChar == bFirstChar) return 0;
+      }
+    });
+  }
 
-    }
+  if (option == "ko") {
+    target.sort((a, b) => {
+      function getFirstCharType(str): any {
+        const firstChar = str.charAt(0);
+        if (firstChar >= "0" && firstChar <= "9") {
+          return 2;
+        } else if (
+          (firstChar >= "a" && firstChar <= "z") ||
+          (firstChar >= "A" && firstChar <= "Z")
+        ) {
+          return 3;
+        } else if (firstChar >= "가" && firstChar <= "힣") {
+          return 1;
+        }
+      }
 
-    if (option == "ko") {
+      const aFirstChar = a.name[0];
+      const bFirstChar = b.name[0];
 
-        target.sort((a, b) => {
-            function getFirstCharType(str): any {
-                const firstChar = str.charAt(0);
-                if (firstChar >= '0' && firstChar <= '9') {
-                    return 2;
-                } else if ((firstChar >= 'a' && firstChar <= 'z') || (firstChar >= 'A' && firstChar <= 'Z')) {
-                    return 3;
-                } else if (firstChar >= '가' && firstChar <= '힣') {
-                    return 1;
-                }
-            }
+      const aFirstCharType = getFirstCharType(aFirstChar);
+      const bFirstCharType = getFirstCharType(bFirstChar);
 
-            const aFirstChar = a.name[0];
-            const bFirstChar = b.name[0];
+      if (aFirstCharType > bFirstCharType) return 1;
+      if (aFirstCharType < bFirstCharType) return -1;
+      if (aFirstCharType == bFirstCharType) {
+        if (aFirstChar > bFirstChar) return 1;
+        if (aFirstChar < bFirstChar) return -1;
+        if (aFirstChar == bFirstChar) return 0;
+      }
+    });
+  }
 
-            const aFirstCharType = getFirstCharType(aFirstChar)
-            const bFirstCharType = getFirstCharType(bFirstChar)
+  //   target.sort((a, b) => {
+  //     if (a.name < b.name) {
+  //       return -1;
+  //     }
+  //     if (a.name > b.name) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
 
-            if (aFirstCharType > bFirstCharType) return 1
-            if (aFirstCharType < bFirstCharType) return -1
-            if (aFirstCharType == bFirstCharType) {
-                if (aFirstChar > bFirstChar) return 1
-                if (aFirstChar < bFirstChar) return -1
-                if (aFirstChar == bFirstChar) return 0
-            }
-        });
-
-    }
-
-//   target.sort((a, b) => {
-//     if (a.name < b.name) {
-//       return -1;
-//     }
-//     if (a.name > b.name) {
-//       return 1;
-//     }
-//     return 0;
-//   });
-
-  
   // 카테고리 클릭시 모든 html 요소에 active 클래스 제거하고 클릭한 요소에 active 클래스 추가
   // e.target.parentNode.childNodes.forEach(element => {
-  //     if (element.classList && !element.classList.contains('btn-secondary')) element.classList.add('btn-secondary')  
+  //     if (element.classList && !element.classList.contains('btn-secondary')) element.classList.add('btn-secondary')
   // })
   // e.target.classList.remove('btn-secondary')
-
-  
-}
+};
 
 // let adjust = null
 
@@ -316,30 +391,29 @@ const sort_search_result = (target, option) => {
 //   alert('1')
 // }
 
-let edit_list: any = new Map()
+let edit_list: any = new Map();
 
 class CustomTextEditor {
   constructor(props) {
-    const el = document.createElement('textarea');
+    const el = document.createElement("textarea");
     const { maxLength } = props.columnInfo.editor.options;
 
     // console.log('props.value: ', props.value);
     // console.log('getData: ', props.getData());
-    console.log('props: ',props);
-    console.log('props.value: ',props.value);
-    
+    console.log("props: ", props);
+    console.log("props.value: ", props.value);
 
     // el.type = 'text';
     // el.maxLength = maxLength;
     // el.value = String(props.value);
-    el.value = String(props.value.value).replace(/<br>/g, '\n');
-    el.setAttribute('r', props.value.r)
-    el.setAttribute('c', props.value.c)
-    el.setAttribute('sheetName', props.value.sheetName)
-    el.setAttribute('fileId', props.value.fileId)
-    el.setAttribute('type', props.value.type)
+    el.value = String(props.value.value).replace(/<br>/g, "\n");
+    el.setAttribute("r", props.value.r);
+    el.setAttribute("c", props.value.c);
+    el.setAttribute("sheetName", props.value.sheetName);
+    el.setAttribute("fileId", props.value.fileId);
+    el.setAttribute("type", props.value.type);
     // 수식이면 수정 불가
-    if (props.value?.type === 'formula') {
+    if (props.value?.type === "formula") {
       el.disabled = true;
     }
     // el.setAttribute('c', props.value.c)
@@ -355,7 +429,6 @@ class CustomTextEditor {
         toast.finishEditing();
       }
     }
-    
 
     this.el = el;
   }
@@ -363,7 +436,6 @@ class CustomTextEditor {
   getElement() {
     // console.log('getElement');
     // adjust = this.el
-    
 
     return this.el;
   }
@@ -371,22 +443,34 @@ class CustomTextEditor {
   getValue() {
     // console.log('getValue')
     // console.log(this.el.getAttribute('r'));
-    if (this.el.value && Number(this.el.getAttribute('r')) && Number(this.el.getAttribute('c')) && this.el.getAttribute('sheetName') && this.el.getAttribute('sheetName') != "undefined" && Number(this.el.getAttribute('fileId')) && Number(this.el.getAttribute('fileId')) != NaN) {
-      edit_list.set(`${this.el.getAttribute('fileId')}_${this.el.getAttribute('sheetName')}_r${this.el.getAttribute('r')}c${this.el.getAttribute('c')}`, {
-        action: 'editCell',
-        value: this.el.value,
-        r: Number(this.el.getAttribute('r')),
-        c: Number(this.el.getAttribute('c')),
-        sheetName: (this.el.getAttribute('sheetName')),
-        fileId: Number(this.el.getAttribute('fileId')),
-      })
+    if (
+      this.el.value &&
+      Number(this.el.getAttribute("r")) &&
+      Number(this.el.getAttribute("c")) &&
+      this.el.getAttribute("sheetName") &&
+      this.el.getAttribute("sheetName") != "undefined" &&
+      Number(this.el.getAttribute("fileId")) &&
+      Number(this.el.getAttribute("fileId")) != NaN
+    ) {
+      edit_list.set(
+        `${this.el.getAttribute("fileId")}_${this.el.getAttribute(
+          "sheetName"
+        )}_r${this.el.getAttribute("r")}c${this.el.getAttribute("c")}`,
+        {
+          action: "editCell",
+          value: this.el.value,
+          r: Number(this.el.getAttribute("r")),
+          c: Number(this.el.getAttribute("c")),
+          sheetName: this.el.getAttribute("sheetName"),
+          fileId: Number(this.el.getAttribute("fileId")),
+        }
+      );
     }
 
     // if ()
 
-    console.log('getValue(): ',this.el.value);
+    console.log("getValue(): ", this.el.value);
 
-    
     // if (!this.el.value) {
     //   return {
     //     value: "",
@@ -407,13 +491,12 @@ class CustomTextEditor {
 
     return {
       value: this.el.value,
-      r: Number(this.el.getAttribute('r')),
-      c: Number(this.el.getAttribute('c')),
-      sheetName: (this.el.getAttribute('sheetName')),
-      fileId: Number(this.el.getAttribute('fileId')),
-      type: this.el.getAttribute('type'),
-    }
-    
+      r: Number(this.el.getAttribute("r")),
+      c: Number(this.el.getAttribute("c")),
+      sheetName: this.el.getAttribute("sheetName"),
+      fileId: Number(this.el.getAttribute("fileId")),
+      type: this.el.getAttribute("type"),
+    };
   }
 
   mounted() {
@@ -422,160 +505,161 @@ class CustomTextEditor {
 }
 
 const create_toasrUiGrid = (file) => {
-  console.log('create start');
-  
-    file.sheets.forEach((sheet, index) => {
-      const { columns, complexColumns, data } = sheet
-  
-      columns.forEach((item) => {
-        item.width = 'auto'
-        item.editor = {
-          type: CustomTextEditor,
-          options: {
-            maxLength: 100
-          }
-        }
-        item.formatter = (value) => {
-          if (value && value.value && value.value.value) return value.value.value;
-        }
-        item.renderer = {
-          // 수식이면 background 변경
-          styles: {
-            'background-color': (props) => {
-              return props.value?.type === 'formula' ? '#f9f9f9' : 'inherit';
-            }
-          },
-          attributes: {
-            cellType: (props) => {
-              return props.value?.type === 'formula' ? 'formula' : 'normal';
-            }
-          }
-        }
-      })
+  console.log("create start");
 
-      columns.unshift({
-        "name": "R1C0",
-        "header": "시트",
-        "width": 'auto',
-        "formatter": (value) => {
-          if (value && value.value && value.value.value) return value.value.value;
-          if (value && value.value) return value.value;
-          if (value) return value;
-        }
-      })
-      data.forEach((item) => {
-        // console.log(item);
-        const sheetName = item["R1C0"].value;
+  file.sheets.forEach((sheet, index) => {
+    const { columns, complexColumns, data } = sheet;
 
-        for (let key in item) {
-            item[key].sheetName = sheetName
-            item[key].fileId = file.id
-        }
-        
-        // item.forEach(cell => {
-        //     cell.sheetNmae = name
-        //     cell.fileId = file.id
-        // })
-      })
-
-      const toast = new Grid({
-        el: document.getElementById(`grid${file.id}`),
-        scrollX: true,
-        scrollY: false,
-        rowHeight: 'auto',
-        // rowHeaders: ['rowNum'],
-        header: {
-          complexColumns,
+    columns.forEach((item) => {
+      item.width = "auto";
+      item.editor = {
+        type: CustomTextEditor,
+        options: {
+          maxLength: 100,
         },
-        columns,
-        data,
-        contextMenu: null,
-        editingEvent: 'dblclick',
-        copyOptions: {
-          customValue: (value, rowAttrs, column) => {
-            return value?.value;
-          }
-        }
-      });
+      };
+      item.formatter = (value) => {
+        if (value && value.value && value.value.value) return value.value.value;
+      };
+      item.renderer = {
+        // 수식이면 background 변경
+        styles: {
+          "background-color": (props) => {
+            return props.value?.type === "formula" ? "#f9f9f9" : "inherit";
+          },
+        },
+        attributes: {
+          cellType: (props) => {
+            return props.value?.type === "formula" ? "formula" : "normal";
+          },
+        },
+      };
+    });
 
-      console.log('toast: ', toast);
+    columns.unshift({
+      name: "R1C0",
+      header: "시트",
+      width: "auto",
+      formatter: (value) => {
+        if (value && value.value && value.value.value) return value.value.value;
+        if (value && value.value) return value.value;
+        if (value) return value;
+      },
+    });
+    data.forEach((item) => {
+      // console.log(item);
+      const sheetName = item["R1C0"].value;
 
-      toast.on('focusChange', (ev) => {
-        const instance = ev['instance'];
-        focusedGrid = `${instance?.el?.id}_${index}`;
-      });
-      document.getElementById(`grid${file.id}`)?.addEventListener('keydown', (ev) => {
+      for (let key in item) {
+        item[key].sheetName = sheetName;
+        item[key].fileId = file.id;
+      }
+
+      // item.forEach(cell => {
+      //     cell.sheetNmae = name
+      //     cell.fileId = file.id
+      // })
+    });
+
+    const toast = new Grid({
+      el: document.getElementById(`grid${file.id}`),
+      scrollX: true,
+      scrollY: false,
+      rowHeight: "auto",
+      // rowHeaders: ['rowNum'],
+      header: {
+        complexColumns,
+      },
+      columns,
+      data,
+      contextMenu: null,
+      editingEvent: "dblclick",
+      copyOptions: {
+        customValue: (value, rowAttrs, column) => {
+          return value?.value;
+        },
+      },
+    });
+
+    console.log("toast: ", toast);
+
+    toast.on("focusChange", (ev) => {
+      const instance = ev["instance"];
+      focusedGrid = `${instance?.el?.id}_${index}`;
+    });
+    document
+      .getElementById(`grid${file.id}`)
+      ?.addEventListener("keydown", (ev) => {
         // console.log('keydown', ev);
-        if (ev.key === 'F2' && focusedGrid === `grid${file.id}_${index}`) {
+        if (ev.key === "F2" && focusedGrid === `grid${file.id}_${index}`) {
           const { rowKey, columnName } = toast.getFocusedCell();
           if (rowKey == null || columnName == null) return;
           toast.startEditing(rowKey, columnName);
         }
       });
 
-      toast.on('click', (ev) => {
-        console.log(ev);
-        
-      });
+    toast.on("click", (ev) => {
+      console.log(ev);
+    });
 
-      toast.on('dblclick', (ev) => {
-        // 수정모드 off 면 이벤트 stop (수정 불가)
-        if (!props.adjust) {
-          ev.stop();
-        }
+    toast.on("dblclick", (ev) => {
+      // 수정모드 off 면 이벤트 stop (수정 불가)
+      if (!props.adjust) {
+        ev.stop();
+      }
 
-        // formula 체크
-        const rowKey = ev['rowKey'];
-        const columnName = ev['columnName'];
-        if (rowKey == undefined || columnName == undefined) {
-          return;
-        }
+      // formula 체크
+      const rowKey = ev["rowKey"];
+      const columnName = ev["columnName"];
+      if (rowKey == undefined || columnName == undefined) {
+        return;
+      }
 
-        const instance = ev['instance'];
-        const dataArr = instance?.dataManager?.getOriginData() ?? [];
-        const data = dataArr[rowKey][columnName];
+      const instance = ev["instance"];
+      const dataArr = instance?.dataManager?.getOriginData() ?? [];
+      const data = dataArr[rowKey][columnName];
 
-        // 수식이면 이벤트 stop (수정 불가)
-        if (data.type === 'formula') {
-          ev.stop();
-        }
-      });
+      // 수식이면 이벤트 stop (수정 불가)
+      if (data.type === "formula") {
+        ev.stop();
+      }
+    });
 
-      toast.on('afterChange', (ev) => {
-        console.log('afterChange', ev);
-        const changes = ev['changes'];
-        const rowKey = changes[0]?.rowKey;
-        const columnName = changes[0]?.columnName;
-        if (rowKey == undefined || columnName == undefined) {
-          return;
-        }
+    toast.on("afterChange", (ev) => {
+      console.log("afterChange", ev);
+      const changes = ev["changes"];
+      const rowKey = changes[0]?.rowKey;
+      const columnName = changes[0]?.columnName;
+      if (rowKey == undefined || columnName == undefined) {
+        return;
+      }
 
-        const instance = ev['instance'];
-        instance.addCellClassName(rowKey, columnName, 'edited-cell');
+      const instance = ev["instance"];
+      instance.addCellClassName(rowKey, columnName, "edited-cell");
 
-        document.querySelector('.save-btn')?.classList.add('active')
-      });
+      document.querySelector(".save-btn")?.classList.add("active");
+    });
 
-      // console.log(toast.getFocusedCell());
-      
-      // setInterval(() => {
-        
-      // }, 2000)
-      // toast.startEditing()
+    // console.log(toast.getFocusedCell());
 
-      // editor.on('keydown', function(event) {
-      //   console.log('Key downed:', event.data.keyCode);
-      // });
-      // setTimeout(() => {
-      //   console.log(1231231231);
-      //   toast.setWidth('auto')
-      //   toast.refreshLayout()
-        
-      // }, 5000)
-      // toast
-      toastArr[`${file.id}_${index}`] = toast;
-    })
-}
+    // setInterval(() => {
+
+    // }, 2000)
+    // toast.startEditing()
+
+    // editor.on('keydown', function(event) {
+    //   console.log('Key downed:', event.data.keyCode);
+    // });
+    // setTimeout(() => {
+    //   console.log(1231231231);
+    //   toast.setWidth('auto')
+    //   toast.refreshLayout()
+
+    // }, 5000)
+    // toast
+    toastArr[`${file.id}_${index}`] = toast;
+  });
+};
 
 // document.querySelector('#kt_app_sidebar_toggle').addEventListener('click', () => {
 //     for (let key in toastArr) {
@@ -585,22 +669,25 @@ const create_toasrUiGrid = (file) => {
 //         toast.setWidth('auto')
 //         toast.refreshLayout()
 //       }, 500)
-      
+
 //     }
 //   })
 
-watch(() => store.state.minimize, (value) => {
-  console.log(value);
-  
-  for (let key in toastArr) {
-    const toast = toastArr[key]
+watch(
+  () => store.state.minimize,
+  (value) => {
+    console.log(value);
 
-    setTimeout(() => {
-      // toast.setWidth('auto');
-      toast.refreshLayout();
-    }, 500);
+    for (let key in toastArr) {
+      const toast = toastArr[key];
+
+      setTimeout(() => {
+        // toast.setWidth('auto');
+        toast.refreshLayout();
+      }, 500);
+    }
   }
-})
+);
 
 // class CustomTextEditor {
 //   constructor(props) {
@@ -617,12 +704,12 @@ watch(() => store.state.minimize, (value) => {
 //   //...
 // }\
 
-let toastArr: any = {}
+let toastArr: any = {};
 
-onMounted(async() => {
-  await init()
-  
-  isMaskShow.value = false
+onMounted(async () => {
+  await init();
+
+  isMaskShow.value = false;
 
   const firstFolder = search_result_list.value[0];
   if (firstFolder) {
@@ -633,18 +720,21 @@ onMounted(async() => {
 
   search_result_list.value.forEach((folder, folderIdx) => {
     folder.files.forEach((file, idx) => {
-      console.log(folderIdx, idx)
+      console.log(folderIdx, idx);
       if (folderIdx === 0 && idx === 0) return;
       setTimeout(() => {
-          create_toasrUiGrid(file)
-        }, 1)
-    })
-  })
+        create_toasrUiGrid(file);
+      }, 1);
+    });
+  });
 
   // create_toasrUiGrid(file_list)
-})
+});
 
-function getMergeRelationship(complexColumnHeaderData: string[][], rowOffset: number) {
+function getMergeRelationship(
+  complexColumnHeaderData: string[][],
+  rowOffset: number
+) {
   interface Merge {
     // The interface of xlsx library.
     // s: start, e: end, r: row, c: column
@@ -656,7 +746,7 @@ function getMergeRelationship(complexColumnHeaderData: string[][], rowOffset: nu
       r: number;
       c: number;
     };
-  };
+  }
   const merges: Merge[] = [];
   const numOfRow = complexColumnHeaderData.length;
   const numOfColumn = complexColumnHeaderData[0].length;
@@ -664,28 +754,42 @@ function getMergeRelationship(complexColumnHeaderData: string[][], rowOffset: nu
   complexColumnHeaderData.forEach((row, rowIndex) => {
     row.forEach((currentName, colIndex) => {
       if (currentName) {
-        const merge: Merge = { s: { r: rowIndex, c: colIndex }, e: { r: rowIndex, c: colIndex } };
+        const merge: Merge = {
+          s: { r: rowIndex, c: colIndex },
+          e: { r: rowIndex, c: colIndex },
+        };
         let mergeRowNum, mergeColNum;
 
-        for (mergeRowNum = rowIndex + 1; mergeRowNum < numOfRow; mergeRowNum += 1) {
+        for (
+          mergeRowNum = rowIndex + 1;
+          mergeRowNum < numOfRow;
+          mergeRowNum += 1
+        ) {
           if (complexColumnHeaderData[mergeRowNum][colIndex] === currentName) {
-            complexColumnHeaderData[mergeRowNum][colIndex] = '';
+            complexColumnHeaderData[mergeRowNum][colIndex] = "";
             merge.e.r += 1;
           } else {
             break;
           }
         }
 
-        for (mergeColNum = colIndex + 1; mergeColNum < numOfColumn; mergeColNum += 1) {
-          if (complexColumnHeaderData[mergeRowNum - 1][mergeColNum] === currentName) {
-            complexColumnHeaderData[mergeRowNum - 1][mergeColNum] = '';
+        for (
+          mergeColNum = colIndex + 1;
+          mergeColNum < numOfColumn;
+          mergeColNum += 1
+        ) {
+          if (
+            complexColumnHeaderData[mergeRowNum - 1][mergeColNum] ===
+            currentName
+          ) {
+            complexColumnHeaderData[mergeRowNum - 1][mergeColNum] = "";
             merge.e.c += 1;
           } else {
             break;
           }
         }
 
-        complexColumnHeaderData[rowIndex][colIndex] = '';
+        complexColumnHeaderData[rowIndex][colIndex] = "";
 
         if (merge.s.r !== merge.e.r || merge.s.c !== merge.e.c) {
           merges.push(merge);
@@ -698,28 +802,28 @@ function getMergeRelationship(complexColumnHeaderData: string[][], rowOffset: nu
 }
 
 const isEmptyArray = (arr: any[]) => {
-  return arr.every(element => element === '');
+  return arr.every((element) => element === "");
 };
 
 const extractNumber = (str) => {
   let result = str.match(/\d+/g);
-  return result ? parseInt(result.join('')) : null;
+  return result ? parseInt(result.join("")) : null;
 };
 
 const extractColValue = (name: string): number => {
-  const c = name.split('C')[1];
+  const c = name.split("C")[1];
   return parseInt(c, 10);
 };
 
 const extractRowValue = (name: string) => {
   let match = name.match(/R(\d+)C/);
   return match ? parseInt(match[1]) : null;
-}
+};
 
 function groupByRow(arr) {
   let grouped = arr.reduce((acc, obj) => {
     let key = extractRowValue(obj.name) ?? 0;
-    
+
     acc[key] = acc[key] || [];
     acc[key].push(obj);
     return acc;
@@ -730,16 +834,25 @@ function groupByRow(arr) {
 
 const exportExcel = () => {
   console.log(file_list);
-  const fileName = `통합검색결과_${Intl.DateTimeFormat('ko-KR').format(new Date())}`;
+  const fileName = `통합검색결과_${Intl.DateTimeFormat("ko-KR").format(
+    new Date()
+  )}`;
   const workbook = XLSX.utils.book_new();
   const sheet = XLSX.utils.aoa_to_sheet([[]]);
   let dataArr: string[][] = [];
 
-  const onAfterExport = (headers: any[][], data: any[][], merges: Merge[] | null, fileId: number | null) => {
+  const onAfterExport = (
+    headers: any[][],
+    data: any[][],
+    merges: Merge[] | null,
+    fileId: number | null
+  ) => {
     const fileInfo = file_list.find((file) => file.id === fileId);
     // 파일 정보 추가
     dataArr.push([fileInfo.name]);
-    dataArr.push([`마지막 수정일자: ${fileInfo.history[0].createdAt} | 유저: ${fileInfo.history[0].user.name} (${fileInfo.history[0].user.teamName})`])
+    dataArr.push([
+      `마지막 수정일자: ${fileInfo.history[0].createdAt} | 유저: ${fileInfo.history[0].user.name} (${fileInfo.history[0].user.teamName})`,
+    ]);
     // 병합 데이터가 있으면
     if (merges) {
       // 지금까지 추가한 row 수 만큼 더함
@@ -748,10 +861,10 @@ const exportExcel = () => {
         merge.e.r += dataArr.length;
       });
       // 병합 데이터 추가
-      if (sheet['!merges']) {
-        sheet['!merges'] = sheet['!merges'].concat(merges);
+      if (sheet["!merges"]) {
+        sheet["!merges"] = sheet["!merges"].concat(merges);
       } else {
-        sheet['!merges'] = merges;
+        sheet["!merges"] = merges;
       }
       // 헤더 행 추가
       headers?.forEach((row) => {
@@ -766,157 +879,151 @@ const exportExcel = () => {
       }
     });
     // 마지막 행 한 줄 띄우기 위해 추가
-    dataArr.push(['']);
+    dataArr.push([""]);
   };
-  
 
   for (let key in toastArr) {
-    const toast = toastArr[key]
+    const toast = toastArr[key];
 
-    toast.on('afterExport', ev => {
+    toast.on("afterExport", (ev) => {
       let { data, complexHeaderData, merges, instance } = ev;
       const fileId = extractNumber(instance.el.id);
 
       onAfterExport(complexHeaderData, data, merges, fileId);
     });
 
-    toast.export('xlsx', {
+    toast.export("xlsx", {
       onlyFiltered: false,
     });
 
-    toast.off('afterExport');
+    toast.off("afterExport");
   }
 
   XLSX.utils.book_append_sheet(workbook, sheet);
   XLSX.utils.sheet_add_aoa(sheet, dataArr);
   XLSX.writeFile(workbook, `${fileName}.xlsx`);
-}
+};
 defineExpose({
-  exportExcel
+  exportExcel,
 });
 
 const save = async () => {
-  let adjustArr:any = []
+  let adjustArr: any = [];
 
   // console.log(toastArr);
 
-//   for (const sheetName in toastArr) {
-//     const columnArr = toastArr[sheetName].getData()
-//     // console.log(sheetName);
-//     // console.log(columnArr);
-    
-//     // console.log(toastArr[sheetName].el.id.replace('grid',''));
+  //   for (const sheetName in toastArr) {
+  //     const columnArr = toastArr[sheetName].getData()
+  //     // console.log(sheetName);
+  //     // console.log(columnArr);
 
-//     for (let i = 0; i < columnArr.length; i++) {
-//       const column = columnArr[i]
+  //     // console.log(toastArr[sheetName].el.id.replace('grid',''));
 
-//       // console.log(column);
-      
-//       for (const row in column) {
-//         const item = column[row]
-//         // console.log(item);
-//         // console.log(item.adjust);
-        
+  //     for (let i = 0; i < columnArr.length; i++) {
+  //       const column = columnArr[i]
 
-//         if (item && item.adjust) {
-//           adjustArr.push({
-//             fileId: Number(toastArr[sheetName].el.id.replace('grid','')),
-//             sheetName: sheetName,
-//             r: item.r,
-//             c: item.c,
-//             value: item.value
-//           })
-//         }
-          
-//       }
-//     }
-    
-//     // const adjust = {
-//     //   "fileId": 27,
-//     //   "sheetName": "도봉강북_QAM",
-//     //   "r": 6,
-//     //   "c": 5,
-//     //   "value": "수정 테스트"
-//     // }
-//   }
+  //       // console.log(column);
 
-    console.log(edit_list);
+  //       for (const row in column) {
+  //         const item = column[row]
+  //         // console.log(item);
+  //         // console.log(item.adjust);
+
+  //         if (item && item.adjust) {
+  //           adjustArr.push({
+  //             fileId: Number(toastArr[sheetName].el.id.replace('grid','')),
+  //             sheetName: sheetName,
+  //             r: item.r,
+  //             c: item.c,
+  //             value: item.value
+  //           })
+  //         }
+
+  //       }
+  //     }
+
+  //     // const adjust = {
+  //     //   "fileId": 27,
+  //     //   "sheetName": "도봉강북_QAM",
+  //     //   "r": 6,
+  //     //   "c": 5,
+  //     //   "value": "수정 테스트"
+  //     // }
+  //   }
+
+  console.log(edit_list);
 
   for (let key in toastArr) {
-    const toast = toastArr[key]
+    const toast = toastArr[key];
 
     toast.finishEditing();
   }
-    
 
   if (![...edit_list.values()].length) {
-    state.popup.content = ['수정 사항이 없습니다.']
-    state.popup.btnCount = 1
-    state.popup.toggle = true
+    state.popup.content = ["수정 사항이 없습니다."];
+    state.popup.btnCount = 1;
+    state.popup.toggle = true;
 
-    return
+    return;
   }
 
-  let userId = 1
+  let userId = 1;
 
-  try{
+  try {
     const axios_config = {
-      headers: { Authorization: `Bearer ${JwtService.getToken()}` }
-    }
-  
-    const { data } = await axios.post('/auth/info', {}, axios_config)
-    userId = data.id
-  }
-  catch(error) {
-    state.popup.content = ['사용자 정보 조회에 실패하였습니다.']
-    state.popup.btnCount = 1
-    state.popup.toggle = true
+      headers: { Authorization: `Bearer ${JwtService.getToken()}` },
+    };
+
+    const { data } = await axios.post("/auth/info", {}, axios_config);
+    userId = data.id;
+  } catch (error) {
+    state.popup.content = ["사용자 정보 조회에 실패하였습니다."];
+    state.popup.btnCount = 1;
+    state.popup.toggle = true;
   }
   // toastArr.forEach((toast) => {
   //   console.log(toast);
-    
+
   //   console.log(toast.getCellClassName());
   //   console.log(toast.getData());
-    
+
   // })
-  
 
   // const data = [
-    // {
-    //   "fileId": 27,
-    //   "sheetName": "도봉강북_QAM",
-    //   "r": 6,
-    //   "c": 5,
-    //   "value": "수정 테스트"
-    // },
+  // {
+  //   "fileId": 27,
+  //   "sheetName": "도봉강북_QAM",
+  //   "r": 6,
+  //   "c": 5,
+  //   "value": "수정 테스트"
+  // },
   // ]
 
-  
-  const adjustExcel = await axios.post('/file/edit', {
-    userId,
-    data: [...edit_list.values()],
-    revision: revisionArr,
-  })
-  .then(() => {
-    state.popup.content = ['엑셀 수정이 완료되었습니다.']
-    state.popup.btnCount = 1
-    state.popup.toggle = true
-  })
-  .catch((error) => {
-    if (error?.response?.status === 409) {
-      state.popup.content = ['버전이 충돌하여 수정에 실패하였습니다.']
-      state.popup.btnCount = 1
-      state.popup.toggle = true
-      return;
-    }
+  const adjustExcel = await axios
+    .post("/file/edit", {
+      userId,
+      data: [...edit_list.values()],
+      revision: revisionArr,
+    })
+    .then(() => {
+      state.popup.content = ["엑셀 수정이 완료되었습니다."];
+      state.popup.btnCount = 1;
+      state.popup.toggle = true;
+    })
+    .catch((error) => {
+      if (error?.response?.status === 409) {
+        state.popup.content = ["버전이 충돌하여 수정에 실패하였습니다."];
+        state.popup.btnCount = 1;
+        state.popup.toggle = true;
+        return;
+      }
 
-    state.popup.content = ['엑셀 수정에 실패하였습니다.']
-    state.popup.btnCount = 1
-    state.popup.toggle = true
-  })
+      state.popup.content = ["엑셀 수정에 실패하였습니다."];
+      state.popup.btnCount = 1;
+      state.popup.toggle = true;
+    });
   console.log(adjustExcel);
-  
-}
+};
 // let sheet_list:any = []
 // let file_list: any = []
 // const search_result_list = ref({})
@@ -954,7 +1061,7 @@ const save = async () => {
 // }
 
 // const init = async () => {
-//   if (!props.keyword) return 
+//   if (!props.keyword) return
 
 //   let file_id_list:string[] = []
 
@@ -962,14 +1069,14 @@ const save = async () => {
 //     for (let key2 in store.state.search_result[key].files)
 //       file_id_list.push(key2)
 //   }
-  
+
 //   const { data } = await axios.post('/search/detail', {
 //     "q": props.keyword,
-//     "id": file_id_list 
+//     "id": file_id_list
 //   })
 //   const { folders, files } = data
 
-//   search_result_list_backup = category_in_file(folders, files, 'code', 'folderCd') 
+//   search_result_list_backup = category_in_file(folders, files, 'code', 'folderCd')
 //   search_result_list.value = deepCopy(search_result_list_backup)
 
 //   file_list = files
@@ -988,7 +1095,6 @@ const save = async () => {
 //     el.setAttribute('c', '6')
 //     // el.value =  ' ' + String(props.value) + ' ';
 //     console.dir(el);
-    
 
 //     this.el = el;
 //   }
@@ -1003,8 +1109,7 @@ const save = async () => {
 //   getValue() {
 //     console.log('getValue')
 //     console.log(this.el.getAttribute('r'));
-    
-    
+
 //     // return this.el.value;
 //     return {
 //       value: this.el.value,
@@ -1024,18 +1129,16 @@ const save = async () => {
 
 // const create_toasrUiGrid = (file_list) => {
 //     console.log(file_list);
-    
+
 //     file_list.forEach((file) => {
 //         console.log(file);
-        
+
 //         file.sheets.forEach((sheet) => {
 //         console.log(sheet);
-        
+
 //         const { index, name, columns, complexColumns, data } = sheet
 //         console.log(index, name, columns, complexColumns, data);
 
-        
-    
 //         columns.unshift({
 //             "name": "R1C0",
 //             "header": "시트"
@@ -1046,7 +1149,7 @@ const save = async () => {
 //             sheetName: name
 //             }
 //         })
-    
+
 //         columns.forEach((item) => {
 //             item.width = 'auto'
 //             item.editor = {
@@ -1061,7 +1164,6 @@ const save = async () => {
 //         })
 
 //         console.log(document.getElementById(`grid${file.id}`));
-        
 
 //         const toast = new Grid({
 //             el: document.getElementById(`grid${file.id}`),
@@ -1093,19 +1195,18 @@ const save = async () => {
 //     const columnArr = toastArr[sheetName].getData()
 //     // console.log(sheetName);
 //     // console.log(columnArr);
-    
+
 //     // console.log(toastArr[sheetName].el.id.replace('grid',''));
 
 //     for (let i = 0; i < columnArr.length; i++) {
 //       const column = columnArr[i]
 
 //       // console.log(column);
-      
+
 //       for (const row in column) {
 //         const item = column[row]
 //         // console.log(item);
 //         // console.log(item.adjust);
-        
 
 //         if (item && item.adjust) {
 //           adjustArr.push({
@@ -1116,10 +1217,10 @@ const save = async () => {
 //             value: item.value
 //           })
 //         }
-          
+
 //       }
 //     }
-    
+
 //     // const adjust = {
 //     //   "fileId": 27,
 //     //   "sheetName": "도봉강북_QAM",
@@ -1137,7 +1238,7 @@ const save = async () => {
 //     const axios_config = {
 //       headers: { Authorization: `Bearer ${JwtService.getToken()}` }
 //     }
-  
+
 //     const { data } = await axios.post('/auth/info', {}, axios_config)
 //     userId = data.id
 //   }
@@ -1146,12 +1247,11 @@ const save = async () => {
 //   }
 //   // toastArr.forEach((toast) => {
 //   //   console.log(toast);
-    
+
 //   //   console.log(toast.getCellClassName());
 //   //   console.log(toast.getData());
-    
+
 //   // })
-  
 
 //   // const data = [
 //     // {
@@ -1163,7 +1263,7 @@ const save = async () => {
 //     // },
 //   // ]
 //   console.log(adjustArr);
-  
+
 //   const adjustExcel = await axios.post('/file/edit', {
 //     userId,
 //     data: adjustArr
@@ -1171,16 +1271,16 @@ const save = async () => {
 //   .then(() => {alert('엑셀 수정이 완료되었습니다.')})
 //   .catch(() => {alert('엑셀 수정에 실패하였습니다.')})
 //   console.log(adjustExcel);
-  
+
 // }
 
 // // onMounted(async() => {
 // //     console.log(document.getElementById(`grid${14}`));
 // //     // console.log(props.file_list);
-    
+
 // //   if (props.file_list && props.file_list.length) {
 // //     // console.log(props.file_list.length);
-    
+
 // //     create_toasrUiGrid(props.file_list)
 // //   }
 // //   if (props.file_list && !props.file_list.length) {
@@ -1190,7 +1290,7 @@ const save = async () => {
 // //         // create_toasrUiGrid(props.file_list)
 // //     })
 // //   }
-  
+
 // // })
 // onMounted(async() => {
 //   await init()
@@ -1198,128 +1298,138 @@ const save = async () => {
 //   create_toasrUiGrid(props.file_list)
 // })
 const toHeaderAdjust = (fileId) => {
-  sessionStorage.setItem('id', fileId)
-  router.push(`/header/adjust/${fileId}`)
-}
-
+  sessionStorage.setItem("id", fileId);
+  router.push(`/header/adjust/${fileId}`);
+};
 </script>
 
 <style>
 .edited-cell {
-    background-color: rgba(255, 255, 0, 1) !important;
-  }
+  background-color: rgba(255, 255, 0, 1) !important;
+}
 </style>
 <style lang="scss" scoped>
-ul{margin: 0;padding: 0;}
-li{list-style: none;}
-ul{
-    li{
-      margin-top: 24px;
-      padding-bottom: 24px;
-      background: #fff;
-      .title{
-        padding: 16px 20px 10px 20px;
-        .text{
-          display: flex;
-          align-items: center;
-          height: 52px;
-          padding: 8px 20px;
-          border-radius: 10px;
-          background: var(--bs-warning-light, #FFF8DD);
+ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+ul {
+  li {
+    margin-top: 24px;
+    padding-bottom: 24px;
+    background: #fff;
+    .title {
+      padding: 16px 20px 10px 20px;
+      .text {
+        display: flex;
+        align-items: center;
+        height: 52px;
+        padding: 8px 20px;
+        border-radius: 10px;
+        background: var(--bs-warning-light, #fff8dd);
 
-          color: var(--primary-text, #222);
-          font-size: 20px;
-          font-style: normal;
-          font-weight: 700;
-          line-height: 110%; /* 22px */
+        color: var(--primary-text, #222);
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 110%; /* 22px */
+      }
+    }
+    .content {
+      margin: 24px 24px;
+      .sub-title {
+        display: flex;
+        align-items: center;
+        height: 36px;
+        color: var(--primary-text, #222);
+        /* heading/heading6 */
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 110%; /* 19.8px */
+        .header-adjust {
+          cursor: pointer;
+          // width: 80px;
+          padding: 2px 8px;
+          border-radius: 16px;
+          background: var(--data-bs-theme-light-bs-danger, #f1416c);
+          margin-left: 6px;
+          display: flex;
+          // padding: 2px 6px;
+          justify-content: center;
+          align-items: center;
+          gap: 2px;
+          color: #fff;
+          // border-radius: 24px;
+          // border: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
+          font-size: 13px !important;
+          cursor: pointer;
         }
       }
-      .content{
-        margin: 24px 24px;
-        .sub-title{
-          display: flex;
-          align-items: center;
-          height: 36px;
+      .info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        .time {
           color: var(--primary-text, #222);
-          /* heading/heading6 */
-          font-size: 18px;
+          font-size: 14px;
           font-style: normal;
-          font-weight: 700;
-          line-height: 110%; /* 19.8px */
-          .header-adjust{
-            cursor: pointer;
-            // width: 80px;
-            padding: 2px 8px;
-            border-radius: 16px;
-            background: var(--data-bs-theme-light-bs-danger, #F1416C);
-            margin-left: 6px;
-            display: flex;
-            // padding: 2px 6px;
-            justify-content: center;
-            align-items: center;
-            gap: 2px;
-            color: #fff;
-            // border-radius: 24px;
-            // border: 1px solid var(--data-bs-theme-light-bs-text-gray-400, #B5B5C3);
-            font-size: 13px !important;
-            cursor: pointer;
+          font-weight: 500;
+          line-height: 100%; /* 14px */
+          span {
+            color: var(
+              --data-bs-theme-light-bs-secondary-text-emphasis,
+              #58595d
+            );
+            font-weight: 400;
           }
         }
-        .info{
-          display: flex;
-          align-items: center;
-          margin-bottom: 12px;
-          .time{
-            color: var(--primary-text, #222);
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 100%; /* 14px */
-            span{
-              color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
-              font-weight: 400;
-            }
-          }
-          .type{
-            margin-left: 12px;
-            color: var(--primary-text, #222);
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 100%; /* 14px */
-            span{
-              color: var(--data-bs-theme-light-bs-secondary-text-emphasis, #58595D);
-              font-weight: 400;
-            }
+        .type {
+          margin-left: 12px;
+          color: var(--primary-text, #222);
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 100%; /* 14px */
+          span {
+            color: var(
+              --data-bs-theme-light-bs-secondary-text-emphasis,
+              #58595d
+            );
+            font-weight: 400;
           }
         }
       }
     }
   }
-  .save-wrap{
-    // margin-top: 48px;
+}
+.save-wrap {
+  // margin-top: 48px;
+  display: flex;
+  justify-content: end;
+  position: relative;
+  .save-btn {
+    bottom: 30px;
+    right: 50px;
+    position: fixed;
+    z-index: 500;
+    border: none;
     display: flex;
-    justify-content: end;
-    position: relative;
-    .save-btn{
-      bottom: 30px;
-      right: 50px;
-      position: fixed;
-      z-index: 500;
-      border: none;
-      display: flex;
-      width: 210px;
-      height: 48px;
-      padding: 14px 58px;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      border-radius: 6px;
-      background: var(--el-color-info-light-8, #E9E9EB);
-      &.active{
-        color: #fff;
-        background: var(--default-red, #DA1E28);;
-      }
+    width: 210px;
+    height: 48px;
+    padding: 14px 58px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    background: var(--el-color-info-light-8, #e9e9eb);
+    &.active {
+      color: #fff;
+      background: var(--default-red, #da1e28);
     }
   }
+}
 </style>
