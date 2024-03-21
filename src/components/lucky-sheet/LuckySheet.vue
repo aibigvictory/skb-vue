@@ -219,7 +219,7 @@ const isEqual = (a: object, b: object, excludeKey: string[] = []) => {
       }
       return obj;
     }, {});
-
+  
   // return JSON.stringify(sortedA) === JSON.stringify(sortedB);
   return Object.entries(sortedA).toString() === Object.entries(sortedB).toString();
 }
@@ -238,6 +238,9 @@ const saveExcel = async () => {
         luckysheet.getAllSheets().forEach((sheet) => {
           const sheetIndex = Number(sheet.index);
           const { celldata, config, name, order, zoomRatio } = sheet;
+          // 수정 내역에 없으면 안함 (TODO: config 값도 비교해야 함)
+          if (!updateSet.has(sheetIndex)) return;
+          
           let pushData: {
             name: any,
             order: any,
@@ -250,16 +253,15 @@ const saveExcel = async () => {
             celldata: []
           };
 
-          const originData = originalDataArr.find((x) => x.index === sheetIndex);
+          const originData = originalDataArr.find((x) => Number(x.index) === sheetIndex);
           if (originData) {
+            console.log('originData', originData);
             for (let i = 0; i < celldata.length; i++) {
               const cell = celldata[i];
               const originCell = originData.celldata.find(o => o.r === cell.r && o.c === cell.c);
               if (originCell) {
-                // 특정 필드 제거
-                // delete originCell['mc'];
-                // delete cell['mc'];
-                if (!isEqual(cell.v, originCell.v, ['mc'])) {
+                // 두 셀의 값을 비교해서 다르면 추가
+                if (!isEqual(cell.v, originCell.v, ['mc', 'ct', 'm'])) {
                   console.log('isNotEqual', cell, originCell);
                   pushData.celldata.push(cell);
                 }
