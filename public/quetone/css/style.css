@@ -38,18 +38,11 @@ table {
 }
 
 .quetone-alert {
-    display: flex;
-    width: 500px;
-    height: 200px;
-    text-align: center;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 1;
-    align-content: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    right: 20px;
+    top: 30px;
+    opacity: 0.95;
+    padding: 20px;
 }
 
 .closed {
@@ -63,7 +56,7 @@ button {
 
 @keyframes blink-effect {
     50% {
-        opacity: 0.2;
+        opacity: 0.1;
     }
 }
 
