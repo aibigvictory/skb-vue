@@ -32,3 +32,19 @@ body {
 table {
     text-align: center;
 }
+
+.quetone-alert {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    opacity: 0.9;
+}
+
+.closed {
+    display: none;
+}
+
+button {
+    background-color: transparent;
+    border: 0;
+}
