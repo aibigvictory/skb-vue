@@ -35,9 +35,10 @@ table {
 
 .quetone-alert {
     position: absolute;
-    right: 20px;
-    top: 30px;
-    opacity: 0.9;
+    right: 10px;
+    top: 15px;
+    opacity: 0.8;
+    font-size: 14px;
 }
 
 .closed {
