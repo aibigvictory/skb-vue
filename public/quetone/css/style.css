@@ -6,14 +6,17 @@ header {
     padding-left: 20px;
     align-items: center;
 }
-header > #logo > img {
+
+header>#logo>img {
     height: 40px;
     object-fit: cover;
 }
+
 body {
     padding: 0;
     margin: 0;
 }
+
 #container {
     display: flex;
     height: 100%;
@@ -22,6 +25,7 @@ body {
     column-gap: 20px;
     flex-direction: column;
 }
+
 .log_container {
     display: flex;
     width: 100%;
@@ -37,8 +41,8 @@ table {
     position: absolute;
     right: 10px;
     top: 15px;
-    opacity: 0.8;
-    font-size: 14px;
+    opacity: 0.85;
+    padding: 20px;
 }
 
 .closed {
@@ -48,4 +52,21 @@ table {
 button {
     background-color: transparent;
     border: 0;
+}
+
+@keyframes blink-effect {
+    50% {
+        opacity: 0.1;
+    }
+}
+
+.blink {
+    animation: blink-effect 1.5s step-end infinite;
+
+    /*
+    animation-name: blink-effect;
+    animation-duration: 1s;
+    animation-iteration-count:infinite;
+    animation-timing-function:step-end;
+    */
 }

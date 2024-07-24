@@ -189,13 +189,15 @@ const clipWatcher = clipObserver.watch(({ data, error }) => {
 });
 
 const onAirObserver = window.SWR(`${API_URL}/quetone/onAir`, fetcher, { refreshInterval: 5 * 60 * 1000 });
-const onAirWatcher = clipObserver.watch(({ data, error }) => {
+const onAirWatcher = onAirObserver.watch(({ data, error }) => {
     // data - data for given key resolved by fetcher
     // error - error thrown by fetcher
-    console.log(data);
+    console.log('onAirWatcher', data);
 
     if (!error && data.length > 0) {
-        // 문제 상황 (불방 존재)
-        document.querySelector('.quetone-alert').classList.remove('closed')
+        if (data[0]?.count > 0) {
+            // 문제 상황 (불방 존재)
+            document.querySelector('.quetone-alert').classList.remove('closed')
+        }
     }
 });
