@@ -39,9 +39,9 @@ table {
 
 .quetone-alert {
     position: absolute;
-    right: 20px;
-    top: 30px;
-    opacity: 0.95;
+    right: 10px;
+    top: 15px;
+    opacity: 0.85;
     padding: 20px;
 }
 
